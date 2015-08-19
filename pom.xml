@@ -10,7 +10,7 @@
     <properties>
         <app.id>your-app-id</app.id>
         <app.version>1</app.version>
-        <appengine.version>${appengine.version}</appengine.version>
+        <appengine.version>1.9.25</appengine.version>
         <gcloud.plugin.version>0.9.58.v20150505</gcloud.plugin.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
