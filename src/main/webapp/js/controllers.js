@@ -50,7 +50,7 @@ var techListController = [
 				$scope.techName = "";
 				$scope.techDesc = "";
 			}
-
+			
 			function getTechList() {
 				var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
 				var list = [ {

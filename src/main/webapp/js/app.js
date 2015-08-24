@@ -20,7 +20,7 @@
 angular.module(
 		'techGallery',
 		[ 'techGallery.filters', 'techGallery.services',
-				'techGallery.directives', 'ngSanitize', 'ngRoute' ]).config(
+				'techGallery.directives', 'ngSanitize', 'ngRoute', 'ui.bootstrap' ]).config(
 		[ '$routeProvider', function($routeProvider) {
 
 			$routeProvider.when('/techList', {
