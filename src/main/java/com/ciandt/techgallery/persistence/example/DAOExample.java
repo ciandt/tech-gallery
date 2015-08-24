@@ -19,6 +19,8 @@ import com.ciandt.techgallery.persistence.model.UserGroup;
  *
  */
 @SuppressWarnings("serial")
+@Deprecated
+// there is no reason to be here anymore
 public class DAOExample extends HttpServlet {
 
   @SuppressWarnings("unused")
@@ -36,7 +38,6 @@ public class DAOExample extends HttpServlet {
       System.out
           .println("Group " + allGroups.get(i).getName() + " id: " + allGroups.get(i).getId());
     }
-
   }
 
   /**

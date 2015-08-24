@@ -5,25 +5,23 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 /**
- * Entity class for a User Group.
+ * Entity class for Card.
  * 
- * @author felipers
+ * @author felipegc
  *
  */
 @Entity
-public class UserGroup {
+public class Card {
 
   @Id
   private Long id;
-  /** user's group name. */
+
   @Index
   private String name;
 
-  public UserGroup() {}
+  private String desc;
 
-  public UserGroup(String name) {
-    this.name = name;
-  }
+  private String image;
 
   public Long getId() {
     return id;
@@ -41,4 +39,19 @@ public class UserGroup {
     this.name = name;
   }
 
+  public String getDesc() {
+    return desc;
+  }
+
+  public void setDesc(String desc) {
+    this.desc = desc;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
 }

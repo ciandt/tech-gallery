@@ -3,11 +3,11 @@ package com.ciandt.techgallery.ofy;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import com.ciandt.techgallery.persistence.model.Card;
 import com.ciandt.techgallery.persistence.model.UserGroup;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
-
 
 /**
  * Service class for Objectify settings.
@@ -21,6 +21,7 @@ public class OfyService implements ServletContextListener {
   static {
     // ObjectifyService.register(User.class);
     ObjectifyService.register(UserGroup.class);
+    ObjectifyService.register(Card.class);
   }
 
   /**
