@@ -7,7 +7,7 @@
 
 <div ngshow="showListTech">
 	<div>
-		<div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
+		<div class="col-sm-6 col-md-3" ng-repeat="tech in techListFiltered">
 			<div class="thumbnail">
 				<img src={{tech.image}} data-holder-rendered="true"
 					style="height: 200px; width: 100%; display: block;">
@@ -15,10 +15,18 @@
 					<h3>{{tech.name}}</h3>
 					<p>{{tech.desc}}</p>
 					<p>
-						<a href="#" class="btn btn-primary" role="button">Detalhes</a>
+						<a href="#" class="btn btn-primary" ng-click="redirect()" role="button">Detalhes</a>
 					</p>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
+<div style="text-align:center; clear:both">
+	<pagination boundary-links="true" 
+	         max-size="5"
+	         items-per-page="pageSize"
+	         total-items="totalItems" 
+	         ng-model="currentPage" 
+	         ng-change="pageChanged()"/>
 </div>

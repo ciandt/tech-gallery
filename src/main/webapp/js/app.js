@@ -20,13 +20,36 @@
 angular.module(
 		'techGallery',
 		[ 'techGallery.filters', 'techGallery.services',
-				'techGallery.directives', 'ngSanitize', 'ngRoute', 'ui.bootstrap' ]).config(
-		[ '$routeProvider', function($routeProvider) {
+				'techGallery.directives', 'ngSanitize', 'ngRoute', 'ui.bootstrap' ])
+				.config(function ($routeProvider, $locationProvider) {
+				    $routeProvider
+				      .when('/techList', {
+				        templateUrl: 'techList.html',
+				        controller: 'techListController'
+				      })
+				      .when('/techDetails', {
+				        templateUrl: 'techDetails.html',
+				        controller: 'techListController'
+				      })
+				      .otherwise({
+				        redirectTo: 'techList'
+				      });
 
-			$routeProvider.when('/techList', {
-				controller : 'techListController',
-				templateUrl : 'techList.html'
-			}).otherwise({
-				redirectTo : '/techList'
-			});
-		} ]);
+				    $locationProvider.html5Mode(true);
+				  });
+//				.config(
+//		[ '$routeProvider', function($routeProvider, $stateProvider) {
+//
+//			$routeProvider
+//			.when('/techList', {
+//				controller : 'techListController',
+//				templateUrl : 'techList.html'
+//			})
+//			.when('/techDetails', {
+//				controller : 'techListController',
+//				templateUrl : '/techDetails.html',
+//			})
+//			.otherwise({
+//				redirectTo : 'techList'
+//			});
+//		} ]);

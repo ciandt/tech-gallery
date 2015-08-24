@@ -45,12 +45,31 @@ var techListController = [
 				$scope.techList.push(tech);
 				cleanList();
 			}
-
+			
 			function cleanList() {
 				$scope.techName = "";
 				$scope.techDesc = "";
 			}
 			
+			$scope.currentPage = 1;
+			$scope.pageSize = 4;
+
+			$scope.getPage = function(){
+	            var begin = (($scope.currentPage - 1) * $scope.pageSize);
+	            var end = begin + $scope.pageSize;
+	            $scope.totalItems = $scope.techList.length;
+	            $scope.techListFiltered = $scope.techList.slice(begin, end);
+	        };
+	        $scope.getPage();
+          
+	        $scope.pageChanged = function() {
+	        	$scope.getPage(); 
+	        };
+	        
+	        $scope.redirect = function(){
+	        	$location.path('/techDetails');
+	        };
+			  
 			function getTechList() {
 				var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
 				var list = [ {
