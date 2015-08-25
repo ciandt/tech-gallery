@@ -6,6 +6,7 @@ import javax.servlet.ServletContextListener;
 import com.ciandt.techgallery.persistence.model.Card;
 import com.ciandt.techgallery.persistence.model.UserGroup;
 import com.ciandt.techgallery.sample.persistence.model.Recommendation;
+import com.ciandt.techgallery.sample.persistence.model.Sample;
 import com.ciandt.techgallery.sample.persistence.model.Technology;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
@@ -26,6 +27,7 @@ public class OfyService implements ServletContextListener {
     ObjectifyService.register(Card.class);
     ObjectifyService.register(Technology.class);
     ObjectifyService.register(Recommendation.class);
+    ObjectifyService.register(Sample.class);
   }
 
   /**

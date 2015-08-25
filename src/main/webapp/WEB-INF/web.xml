@@ -12,7 +12,7 @@
 		<servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
 		<init-param>
 			<param-name>services</param-name>
-			<param-value>com.ciandt.techgallery.services.endpoint.CardEndpointImpl,com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl</param-value>
+			<param-value>com.ciandt.techgallery.services.endpoint.CardEndpointImpl,com.ciandt.techgallery.services.endpoint.SampleEndpointImpl,com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>

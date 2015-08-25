@@ -2,7 +2,7 @@
   "extends" : "thirdParty.api",
   "abstract" : false,
   "root" : "https://${app.id}.appspot.com/_ah/api",
-  "name" : "cardEndpointImpl",
+  "name" : "sampleEndpointImpl",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
@@ -24,32 +24,32 @@
     "maxAge" : 0
   },
   "methods" : {
-    "cardEndpointImpl.cardEndpointImpl.listCards" : {
-      "path" : "card",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ "replace this with your web client ID" ],
-      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.CardEndpointImpl.listCards",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "cardEndpointImpl.card.inserts" : {
-      "path" : "card",
+    "sampleEndpointImpl.sample.add" : {
+      "path" : "addSample",
       "httpMethod" : "post",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.CardEndpointImpl.insertCard",
+      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.SampleEndpointImpl.addSample",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "sampleEndpointImpl.sampleEndpointImpl.listSamples" : {
+      "path" : "sample",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ "replace this with your web client ID" ],
+      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.SampleEndpointImpl.listSamples",
+      "request" : {
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -58,8 +58,8 @@
   },
   "descriptor" : {
     "schemas" : {
-      "Card" : {
-        "id" : "Card",
+      "Sample" : {
+        "id" : "Sample",
         "type" : "object",
         "properties" : {
           "id" : {
@@ -68,40 +68,34 @@
           },
           "name" : {
             "type" : "string"
-          },
-          "desc" : {
-            "type" : "string"
-          },
-          "image" : {
-            "type" : "string"
           }
         }
       },
-      "CardCollection" : {
-        "id" : "CardCollection",
+      "SampleCollection" : {
+        "id" : "SampleCollection",
         "type" : "object",
         "properties" : {
           "items" : {
             "type" : "array",
             "items" : {
-              "$ref" : "Card"
+              "$ref" : "Sample"
             }
           }
         }
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.services.endpoint.CardEndpointImpl.listCards" : {
-        "response" : {
-          "$ref" : "CardCollection"
-        }
-      },
-      "com.ciandt.techgallery.services.endpoint.CardEndpointImpl.insertCard" : {
+      "com.ciandt.techgallery.services.endpoint.SampleEndpointImpl.addSample" : {
         "request" : {
-          "$ref" : "Card"
+          "$ref" : "Sample"
         },
         "response" : {
-          "$ref" : "Card"
+          "$ref" : "Sample"
+        }
+      },
+      "com.ciandt.techgallery.services.endpoint.SampleEndpointImpl.listSamples" : {
+        "response" : {
+          "$ref" : "SampleCollection"
         }
       }
     }
