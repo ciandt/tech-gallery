@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ciandt.techgallery.persistence.dao.UserGroupDAO;
-import com.ciandt.techgallery.persistence.dao.UserGroupDAOImpl;
-import com.ciandt.techgallery.persistence.model.UserGroup;
 import com.ciandt.techgallery.sample.persistence.dao.RecommendationDAOImpl;
 import com.ciandt.techgallery.sample.persistence.dao.TechnologyDAOImpl;
 import com.ciandt.techgallery.sample.persistence.model.Recommendation;
@@ -56,7 +53,7 @@ public class DAORelacaoOneToMany extends HttpServlet {
 
     Technology t = new Technology();
     t.setName("Angular");
-    techDAO.addTechnology(t);
+    techDAO.add(t);
     Key<Technology> key = Key.create(Technology.class, t.getId());
 
     RecommendationDAOImpl recDAO = new RecommendationDAOImpl();
@@ -64,7 +61,7 @@ public class DAORelacaoOneToMany extends HttpServlet {
       Recommendation rec = new Recommendation();
       rec.setScore("" + i);
       rec.setTechnology(key);
-      recDAO.addRecommendation(rec);
+      recDAO.add(rec);
     }
 
   }

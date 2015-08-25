@@ -8,14 +8,14 @@ import com.ciandt.techgallery.sample.persistence.model.Technology;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 
-public class TechnologyDAOImpl {
+public class TechnologyDAOImpl extends GenericObjectFyDAO<Technology, Long> implements
+    TechnologyDAO {
 
-  public List<Technology> findAll() {
-    Objectify objectify = OfyService.ofy();
-    // field 'name' is indexed.
-    List<Technology> techs = objectify.load().type(Technology.class).order("-name").list();
-    return techs;
-  }
+  /*
+   * public List<Technology> findAll() { Objectify objectify = OfyService.ofy(); // field 'name' is
+   * indexed. List<Technology> techs =
+   * objectify.load().type(Technology.class).order("-name").list(); return techs; }
+   */
 
   public List<Technology> findTechnologiesByRecommendation(Recommendation recommendation) {
     Objectify objectify = OfyService.ofy();
@@ -27,17 +27,14 @@ public class TechnologyDAOImpl {
     return techs;
   }
 
-  public boolean addTechnology(final Technology technology) {
-    Objectify objectify = OfyService.ofy();
-    objectify.save().entity(technology).now();
-
-    // if group ID != null, it was saved
-    if (technology.getId() != null) {
-      return true;
-    } else {
-      return false;
-    }
-
-  }
+  /*
+   * public boolean addTechnology(final Technology technology) { Objectify objectify =
+   * OfyService.ofy(); objectify.save().entity(technology).now();
+   * 
+   * // if group ID != null, it was saved if (technology.getId() != null) { return true; } else {
+   * return false; }
+   * 
+   * }
+   */
 
 }

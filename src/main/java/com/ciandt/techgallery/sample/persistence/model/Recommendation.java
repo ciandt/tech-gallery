@@ -2,27 +2,26 @@ package com.ciandt.techgallery.sample.persistence.model;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class Recommendation {
+public class Recommendation extends BaseEntity {
 
-  @Id
-  Long id;
+  // @Id
+  // Long id;
 
   @Index
   String score;
 
   Key<Technology> technology;
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
+  // public Long getId() {
+  // return id;
+  // }
+  //
+  // public void setId(Long id) {
+  // this.id = id;
+  // }
 
   public String getScore() {
     return score;
@@ -39,4 +38,5 @@ public class Recommendation {
   public void setTechnology(Key<Technology> technology) {
     this.technology = technology;
   }
+
 }

@@ -19,8 +19,6 @@ import com.ciandt.techgallery.persistence.model.UserGroup;
  *
  */
 @SuppressWarnings("serial")
-@Deprecated
-// there is no reason to be here anymore
 public class DAOExample extends HttpServlet {
 
   @SuppressWarnings("unused")
@@ -38,6 +36,37 @@ public class DAOExample extends HttpServlet {
       System.out
           .println("Group " + allGroups.get(i).getName() + " id: " + allGroups.get(i).getId());
     }
+    // get one group by name
+    UserGroup group = ugDAO.findByName("Group 7");
+    System.out.println("Group: " + group.getName() + " id: " + group.getId());
+  }
+
+  /**
+   * PUT request for updating group.
+   */
+  @Override
+  public void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    UserGroupDAO ugDAO = new UserGroupDAOImpl();
+
+    System.out.println("Get by id: 5770237022568448");
+    UserGroup idTest = ugDAO.findById(5770237022568448L);
+    System.out.println("Group " + idTest.getName() + " id: " + idTest.getId());
+    idTest.setName("8UP");
+    ugDAO.updateGroup(idTest);
+    System.out.println("Group " + idTest.getName() + " id: " + idTest.getId());
+  }
+
+  /**
+   * DELETE request for deleting group.
+   */
+  @Override
+  public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    UserGroupDAO ugDAO = new UserGroupDAOImpl();
+
+    UserGroup idTest = ugDAO.findById(5770237022568448L);
+    System.out.println("Trying to delete id: 5770237022568448");
+    ugDAO.deleteGroup(idTest);
+    System.out.println("Deleted id: 5770237022568448");
   }
 
   /**
@@ -54,6 +83,5 @@ public class DAOExample extends HttpServlet {
       ugDAO.addGroup(group);
       System.out.println("Saved group " + i + " id: " + group.getId());
     }
-
   }
 }

@@ -19,27 +19,25 @@ public class UserGroupDAOImpl implements UserGroupDAO {
     Objectify objectify = OfyService.ofy();
     // field 'name' is indexed.
     List<UserGroup> groups = objectify.load().type(UserGroup.class).order("-name").list();
-    // objectify.load().type(UserGroup.class).order("-name").list();
     return groups;
   }
 
   @Override
   public UserGroup findById(final Long id) {
-    // TODO Auto-generated method stub
-    return null;
+    Objectify objectify = OfyService.ofy();
+    UserGroup group = objectify.load().type(UserGroup.class).id(id).now();
+    return group;
   }
 
   @Override
   public UserGroup findByName(final String name) {
-    // TODO Auto-generated method stub
-    return null;
+    Objectify objectify = OfyService.ofy();
+    UserGroup group = objectify.load().type(UserGroup.class).filter("name", name).list().get(0);
+    return group;
   }
 
   @Override
   public boolean addGroup(UserGroup group) {
-    // Objectify ofy = OfyService.ofy();
-    // ofy.save().entity(group).now();
-    // ObjectifyService.ofy().save().entity(group).now();
     Objectify objectify = OfyService.ofy();
     objectify.save().entity(group).now();
 
@@ -53,14 +51,22 @@ public class UserGroupDAOImpl implements UserGroupDAO {
 
   @Override
   public boolean updateGroup(UserGroup group) {
-    // TODO Auto-generated method stub
-    return false;
+    Objectify objectify = OfyService.ofy();
+    objectify.save().entity(group).now();
+    return true;
   }
 
   @Override
   public boolean deleteGroup(UserGroup group) {
-    // TODO Auto-generated method stub
-    return false;
+    Objectify objectify = OfyService.ofy();
+    objectify.delete().entity(group).now();
+
+    // if group ID = null, it was deleted
+    if (group.getId() == null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

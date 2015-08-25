@@ -5,21 +5,21 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class Sample {
+public class Sample extends BaseEntity {
 
-  @Id
-  private Long id;
+  // @Id
+  // private Long id;
 
   @Index
   private String name;
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
+  // public Long getId() {
+  // return id;
+  // }
+  //
+  // public void setId(Long id) {
+  // this.id = id;
+  // }
 
   public String getName() {
     return name;

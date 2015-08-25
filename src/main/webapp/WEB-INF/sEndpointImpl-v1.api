@@ -2,7 +2,7 @@
   "extends" : "thirdParty.api",
   "abstract" : false,
   "root" : "https://${app.id}.appspot.com/_ah/api",
-  "name" : "userGroupEndpointImpl",
+  "name" : "sEndpointImpl",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
@@ -24,14 +24,14 @@
     "maxAge" : 0
   },
   "methods" : {
-    "userGroupEndpointImpl.userGroup.inserts" : {
-      "path" : "usergroup",
+    "sEndpointImpl.sample.add" : {
+      "path" : "addSample",
       "httpMethod" : "post",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl.insertUserGroup",
+      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.SEndpointImpl.addSample",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -40,14 +40,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "userGroupEndpointImpl.userGroupEndpointImpl.listUsers" : {
-      "path" : "usergroup",
+    "sEndpointImpl.sEndpointImpl.listSamples" : {
+      "path" : "sample",
       "httpMethod" : "GET",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl.listUsers",
+      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.SEndpointImpl.listSamples",
       "request" : {
         "body" : "empty"
       },
@@ -58,8 +58,8 @@
   },
   "descriptor" : {
     "schemas" : {
-      "UserGroup" : {
-        "id" : "UserGroup",
+      "Sample" : {
+        "id" : "Sample",
         "type" : "object",
         "properties" : {
           "id" : {
@@ -71,31 +71,31 @@
           }
         }
       },
-      "UserGroupCollection" : {
-        "id" : "UserGroupCollection",
+      "SampleCollection" : {
+        "id" : "SampleCollection",
         "type" : "object",
         "properties" : {
           "items" : {
             "type" : "array",
             "items" : {
-              "$ref" : "UserGroup"
+              "$ref" : "Sample"
             }
           }
         }
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl.insertUserGroup" : {
+      "com.ciandt.techgallery.services.endpoint.SEndpointImpl.addSample" : {
         "request" : {
-          "$ref" : "UserGroup"
+          "$ref" : "Sample"
         },
         "response" : {
-          "$ref" : "UserGroup"
+          "$ref" : "Sample"
         }
       },
-      "com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl.listUsers" : {
+      "com.ciandt.techgallery.services.endpoint.SEndpointImpl.listSamples" : {
         "response" : {
-          "$ref" : "UserGroupCollection"
+          "$ref" : "SampleCollection"
         }
       }
     }

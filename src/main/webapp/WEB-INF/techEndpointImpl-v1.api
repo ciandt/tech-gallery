@@ -2,7 +2,7 @@
   "extends" : "thirdParty.api",
   "abstract" : false,
   "root" : "https://${app.id}.appspot.com/_ah/api",
-  "name" : "userGroupEndpointImpl",
+  "name" : "techEndpointImpl",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
@@ -24,32 +24,17 @@
     "maxAge" : 0
   },
   "methods" : {
-    "userGroupEndpointImpl.userGroup.inserts" : {
-      "path" : "usergroup",
+    "techEndpointImpl.tech.add" : {
+      "path" : "addTechnology",
       "httpMethod" : "post",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl.insertUserGroup",
+      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.TechEndpointImpl.addTechnology",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "userGroupEndpointImpl.userGroupEndpointImpl.listUsers" : {
-      "path" : "usergroup",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ "replace this with your web client ID" ],
-      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl.listUsers",
-      "request" : {
-        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -58,8 +43,8 @@
   },
   "descriptor" : {
     "schemas" : {
-      "UserGroup" : {
-        "id" : "UserGroup",
+      "TechnologyResponse" : {
+        "id" : "TechnologyResponse",
         "type" : "object",
         "properties" : {
           "id" : {
@@ -68,34 +53,51 @@
           },
           "name" : {
             "type" : "string"
+          },
+          "recommendations" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "RecommendationResponse"
+            }
+          },
+          "recommendationsPojo" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "RecommendationResponse"
+            }
           }
         }
       },
-      "UserGroupCollection" : {
-        "id" : "UserGroupCollection",
+      "RecommendationResponse" : {
+        "id" : "RecommendationResponse",
         "type" : "object",
         "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "UserGroup"
-            }
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "score" : {
+            "type" : "string"
+          },
+          "technology" : {
+            "$ref" : "TechnologyResponse"
           }
+        }
+      },
+      "Response" : {
+        "id" : "Response",
+        "type" : "object",
+        "properties" : {
         }
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl.insertUserGroup" : {
+      "com.ciandt.techgallery.services.endpoint.TechEndpointImpl.addTechnology" : {
         "request" : {
-          "$ref" : "UserGroup"
+          "$ref" : "TechnologyResponse"
         },
         "response" : {
-          "$ref" : "UserGroup"
-        }
-      },
-      "com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl.listUsers" : {
-        "response" : {
-          "$ref" : "UserGroupCollection"
+          "$ref" : "Response"
         }
       }
     }
