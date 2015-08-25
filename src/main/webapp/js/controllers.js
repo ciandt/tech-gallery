@@ -21,56 +21,43 @@ var techListController = [
 		'$http',
 		'$location',
 		'$routeParams',
-		'$route',
-		function($scope, $http, $location, $routeParams) {
+		'$timeout',
+		function($scope, $http, $location, $routeParams, $timeout) {
 
-			$scope.techList = getTechList();
+			$timeout(function() {
+				getTechList();
+			}, 200);
 
-			$scope.populateList = function() {
-				$scope.techList = getTechList();
-			}
-
-			$scope.showList = function() {
-				$scope.showListTech = true;
+			$scope.redirect = function() {
+				$location.path('/techDetails');
 			};
 
-			$scope.hideList = function() {
-				$scope.showListTech = false;
-			};
-
-			$scope.addTech = function() {
-				var tech = {};
-				tech.name = $scope.techName;
-				tech.desc = $scope.techDesc;
-				$scope.techList.push(tech);
-				cleanList();
-			}
-			
-			function cleanList() {
-				$scope.techName = "";
-				$scope.techDesc = "";
-			}
-			
-			$scope.currentPage = 1;
-			$scope.pageSize = 4;
-
-			$scope.getPage = function(){
-	            var begin = (($scope.currentPage - 1) * $scope.pageSize);
-	            var end = begin + $scope.pageSize;
-	            $scope.totalItems = $scope.techList.length;
-	            $scope.techListFiltered = $scope.techList.slice(begin, end);
-	        };
-	        $scope.getPage();
-          
-	        $scope.pageChanged = function() {
-	        	$scope.getPage(); 
-	        };
-	        
-	        $scope.redirect = function(){
-	        	$location.path('/techDetails');
-	        };
-			  
 			function getTechList() {
+				gapi.client.load('cardEndpointImpl', 'v1', callBackLoaded,
+						'http://localhost:8888/_ah/api/');
+				// mockList();
+			};
+			
+			function adjustPagination() {
+				$scope.currentPage = 1;
+				$scope.pageSize = 4;
+				$scope.getPage();
+			};
+			
+			$scope.getPage = function() {
+				if ($scope.techList) {
+					var begin = (($scope.currentPage - 1) * $scope.pageSize);
+					var end = begin + $scope.pageSize;
+					$scope.totalItems = $scope.techList.length;
+					$scope.techListFiltered = $scope.techList.slice(begin, end);
+				}
+			};
+			
+			$scope.pageChanged = function() {
+				$scope.getPage();
+			};
+			
+			function mockList() {
 				var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
 				var list = [ {
 					name : "Angular",
@@ -97,6 +84,15 @@ var techListController = [
 					desc : descr,
 					image : "/image/BOOT.png"
 				} ];
-				return list;
-			}
+				$scope.techList = list;
+			};
+			
+			function callBackLoaded() {
+				gapi.client.cardEndpointImpl.cardEndpointImpl.listCards()
+						.execute(function(data) {
+							$scope.techList = data.items;
+							adjustPagination();
+							$scope.$apply();
+						});
+			};
 		} ];
