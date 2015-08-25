@@ -24,6 +24,21 @@
     "maxAge" : 0
   },
   "methods" : {
+    "cardEndpointImpl.cardEndpointImpl.listCards" : {
+      "path" : "card",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ "replace this with your web client ID" ],
+      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.CardEndpointImpl.listCards",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "cardEndpointImpl.card.inserts" : {
       "path" : "card",
       "httpMethod" : "post",
@@ -35,21 +50,6 @@
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "cardEndpointImpl.cardEndpointImpl.listCards" : {
-      "path" : "card",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ "replace this with your web client ID" ],
-      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.CardEndpointImpl.listCards",
-      "request" : {
-        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -91,17 +91,17 @@
       }
     },
     "methods" : {
+      "com.ciandt.techgallery.services.endpoint.CardEndpointImpl.listCards" : {
+        "response" : {
+          "$ref" : "CardCollection"
+        }
+      },
       "com.ciandt.techgallery.services.endpoint.CardEndpointImpl.insertCard" : {
         "request" : {
           "$ref" : "Card"
         },
         "response" : {
           "$ref" : "Card"
-        }
-      },
-      "com.ciandt.techgallery.services.endpoint.CardEndpointImpl.listCards" : {
-        "response" : {
-          "$ref" : "CardCollection"
         }
       }
     }
