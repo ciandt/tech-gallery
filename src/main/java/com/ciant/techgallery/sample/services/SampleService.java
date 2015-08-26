@@ -6,9 +6,9 @@ import com.ciant.techgallery.sample.service.model.SampleResponse;
 /**
  * SampleService Interface.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
-public interface SampleService extends Service<SampleResponse, Sample, Long>{
+public interface SampleService extends Service<SampleResponse, Sample, Long> {
 
 }

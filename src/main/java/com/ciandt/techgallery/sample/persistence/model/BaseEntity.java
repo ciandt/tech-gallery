@@ -2,6 +2,12 @@ package com.ciandt.techgallery.sample.persistence.model;
 
 import com.googlecode.objectify.annotation.Id;
 
+/**
+ * BaseEntity entity.
+ * 
+ * @author Felipe Goncalves de Castro
+ *
+ */
 public class BaseEntity {
 
   @Id

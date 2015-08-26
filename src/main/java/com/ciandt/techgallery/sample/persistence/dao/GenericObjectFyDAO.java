@@ -12,7 +12,7 @@ import com.googlecode.objectify.Objectify;
 /**
  * GenericObjectFyDAO methods implementation.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public class GenericObjectFyDAO<T extends BaseEntity, ID extends Serializable> implements

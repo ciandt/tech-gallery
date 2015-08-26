@@ -7,7 +7,7 @@ import com.googlecode.objectify.annotation.Index;
 /**
  * Entity class for Card.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 @Entity

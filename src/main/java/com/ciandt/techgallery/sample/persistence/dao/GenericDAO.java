@@ -9,7 +9,7 @@ import com.googlecode.objectify.Key;
 /**
  * GenericObjectFyDAO methods.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface GenericDAO<T, ID extends Serializable> {

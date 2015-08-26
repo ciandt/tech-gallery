@@ -8,10 +8,16 @@ import com.ciandt.techgallery.sample.persistence.dao.TechnologyDAOImpl;
 import com.ciandt.techgallery.sample.persistence.model.Recommendation;
 import com.ciandt.techgallery.sample.persistence.model.Technology;
 import com.ciant.techgallery.sample.service.model.RecommendationResponse;
+import com.ciant.techgallery.sample.service.model.Response;
 import com.ciant.techgallery.sample.service.model.TechnologyResponse;
-import com.ciant.techgallery.sample.services.model.enums.ResponseMensagem;
 import com.googlecode.objectify.Key;
 
+/**
+ * TechnologyServiceImpl methods implementation.
+ * 
+ * @author Felipe Goncalves de Castro
+ *
+ */
 public class TechnologyServiceImpl extends GenericService<TechnologyResponse, Technology, Long>
     implements TechnologyService {
 
@@ -32,12 +38,12 @@ public class TechnologyServiceImpl extends GenericService<TechnologyResponse, Te
     Key<Technology> key = dao.add(entity);
 
     List<Key<Recommendation>> listKeyRec = null;
-    if (entrada.getRecommendationsPojo() != null) {
+    if (entrada.getRecommendationsResponse() != null) {
       listKeyRec = new ArrayList<Key<Recommendation>>();
 
-      for (RecommendationResponse recPojo : entrada.getRecommendationsPojo()) {
+      for (RecommendationResponse recResponse : entrada.getRecommendationsResponse()) {
         Recommendation rec = new Recommendation();
-        rec.setScore(recPojo.getScore());
+        rec.setScore(recResponse.getScore());
         rec.setTechnology(key);
 
         Key<Recommendation> keyRecAtual = recService.add(rec);
@@ -49,9 +55,14 @@ public class TechnologyServiceImpl extends GenericService<TechnologyResponse, Te
     dao.update(entity);
 
     entrada.setId(entity.getId());
-    entrada.setMensagem(ResponseMensagem.OK);
 
     return entrada;
+  }
+
+  @Override
+  public List<Response> listAll() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

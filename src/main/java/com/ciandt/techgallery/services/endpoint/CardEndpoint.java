@@ -7,7 +7,7 @@ import com.ciandt.techgallery.persistence.model.Card;
 /**
  * CardEndpoint Interface.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface CardEndpoint {

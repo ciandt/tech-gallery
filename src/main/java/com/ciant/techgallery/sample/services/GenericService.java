@@ -6,19 +6,18 @@ import java.util.List;
 import com.ciandt.techgallery.sample.persistence.dao.GenericObjectFyDAO;
 import com.ciandt.techgallery.sample.persistence.model.BaseEntity;
 import com.ciant.techgallery.sample.service.model.Response;
-import com.ciant.techgallery.sample.service.model.TechnologyResponse;
 import com.googlecode.objectify.Key;
 
 /**
  * GenericServices methods.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public abstract class GenericService<R extends Response, T extends BaseEntity, ID extends Serializable>
     implements Service<R, T, ID> {
 
-  private GenericObjectFyDAO<T, ID> dao;
+  protected GenericObjectFyDAO<T, ID> dao;
 
   public GenericService() {}
 
@@ -45,7 +44,5 @@ public abstract class GenericService<R extends Response, T extends BaseEntity, I
 
     return key;
   }
-
-  public abstract R add(R pojo);
 
 }

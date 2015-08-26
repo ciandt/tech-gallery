@@ -7,7 +7,7 @@ import com.ciandt.techgallery.persistence.model.UserGroup;
 /**
  * UserGroupEndpoint Interface.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface UserGroupEndpoint {

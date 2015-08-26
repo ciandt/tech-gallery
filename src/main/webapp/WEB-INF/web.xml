@@ -4,24 +4,16 @@
 		<servlet-class>com.ciandt.techgallery.persistence.example.DAOExample</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>daoRelacaoOneToMany</servlet-name>
-		<servlet-class>com.ciandt.techgallery.persistence.example.DAORelacaoOneToMany</servlet-class>
-	</servlet>
-	<servlet>
 		<servlet-name>SystemServiceServlet</servlet-name>
 		<servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
 		<init-param>
 			<param-name>services</param-name>
-			<param-value>com.ciandt.techgallery.services.endpoint.CardEndpointImpl,com.ciandt.techgallery.services.endpoint.SEndpointImpl,com.ciandt.techgallery.services.endpoint.TechEndpointImpl,com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl</param-value>
+			<param-value>com.ciandt.techgallery.services.endpoint.CardEndpointImpl,com.ciandt.techgallery.services.endpoint.SampleEndpointImpl,com.ciandt.techgallery.services.endpoint.TechEndpointImpl,com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>daoExample</servlet-name>
 		<url-pattern>/daoExample</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>daoRelacaoOneToMany</servlet-name>
-		<url-pattern>/daoRelacaoOneToMany</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>SystemServiceServlet</servlet-name>

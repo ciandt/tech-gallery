@@ -7,6 +7,12 @@ import com.ciandt.techgallery.sample.persistence.dao.RecommendationDAOImpl;
 import com.ciandt.techgallery.sample.persistence.model.Recommendation;
 import com.googlecode.objectify.Key;
 
+/**
+ * RecommendationService methods.
+ * 
+ * @author Felipe Goncalves de Castro
+ *
+ */
 public class RecommendationService {
 
   RecommendationDAO dao = new RecommendationDAOImpl();

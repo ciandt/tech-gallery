@@ -2,13 +2,13 @@ package com.ciandt.techgallery.services.endpoint;
 
 import java.util.List;
 
-import com.ciandt.techgallery.sample.persistence.model.Sample;
-import com.google.api.server.spi.config.ApiMethod;
+import com.ciant.techgallery.sample.service.model.Response;
+import com.ciant.techgallery.sample.service.model.SampleResponse;
 
 /**
  * SampleEndpoint Interface.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface SampleEndpoint {
@@ -18,7 +18,7 @@ public interface SampleEndpoint {
    * 
    * @return list of samples.
    */
-  public List<Sample> listSamples();
+  public List<Response> listAll();
 
   /**
    * Method that add Sample into datastore.
@@ -26,6 +26,6 @@ public interface SampleEndpoint {
    * @param sample to be persisted.
    * @return sample containing datas to be shown.
    */
-  public Sample addSample(Sample sample);
+  public Response addSample(SampleResponse sampleResponse);
 
 }

@@ -7,26 +7,19 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 
+/**
+ * Technology entity.
+ * 
+ * @author Felipe Goncalves de Castro
+ *
+ */
 @Entity
 public class Technology extends BaseEntity {
-
-  // @Id
-  // Long id;
 
   @Index
   String name;
 
-
-
   List<Key<Recommendation>> recommendations = new ArrayList<Key<Recommendation>>();
-
-  // public Long getId() {
-  // return id;
-  // }
-  //
-  // public void setId(Long id) {
-  // this.id = id;
-  // }
 
   public String getName() {
     return name;

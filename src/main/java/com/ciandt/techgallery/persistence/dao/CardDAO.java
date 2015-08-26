@@ -7,7 +7,7 @@ import com.ciandt.techgallery.persistence.model.Card;
 /**
  * Card DAO methods.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface CardDAO {

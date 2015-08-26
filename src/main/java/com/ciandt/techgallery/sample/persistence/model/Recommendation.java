@@ -4,24 +4,19 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 
+/**
+ * Recommendation entity.
+ * 
+ * @author Felipe Goncalves de Castro
+ *
+ */
 @Entity
 public class Recommendation extends BaseEntity {
-
-  // @Id
-  // Long id;
 
   @Index
   String score;
 
   Key<Technology> technology;
-
-  // public Long getId() {
-  // return id;
-  // }
-  //
-  // public void setId(Long id) {
-  // this.id = id;
-  // }
 
   public String getScore() {
     return score;

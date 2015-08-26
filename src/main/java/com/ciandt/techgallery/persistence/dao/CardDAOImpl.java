@@ -9,7 +9,7 @@ import com.googlecode.objectify.Objectify;
 /**
  * Card DAO Implementation class.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public class CardDAOImpl implements CardDAO {

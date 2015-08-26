@@ -5,7 +5,7 @@ import com.ciandt.techgallery.sample.persistence.model.Sample;
 /**
  * SampleDAO Interface.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface SampleDAO extends GenericDAO<Sample, Long> {

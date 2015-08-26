@@ -5,7 +5,7 @@ import com.ciandt.techgallery.sample.persistence.model.Technology;
 /**
  * TechnologyDAO Interface.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface TechnologyDAO extends GenericDAO<Technology, Long> {

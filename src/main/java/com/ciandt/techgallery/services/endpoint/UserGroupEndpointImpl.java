@@ -12,7 +12,7 @@ import com.google.api.server.spi.config.ApiMethod;
 /**
  * UserGroupEndpoint Implementation class.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 @Api(name = "userGroupEndpointImpl", version = "v1", scopes = {Constants.EMAIL_SCOPE},

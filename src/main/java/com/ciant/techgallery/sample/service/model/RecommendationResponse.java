@@ -1,5 +1,11 @@
 package com.ciant.techgallery.sample.service.model;
 
+/**
+ * RecommendationResponse entity.
+ * 
+ * @author Felipe Goncalves de Castro
+ *
+ */
 public class RecommendationResponse {
 
   Long id;

@@ -3,13 +3,17 @@ package com.ciant.techgallery.sample.service.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ciandt.techgallery.sample.persistence.model.Recommendation;
-
+/**
+ * TechnologyResponse entity.
+ * 
+ * @author Felipe Goncalves de Castro
+ *
+ */
 public class TechnologyResponse extends Response {
 
-  Long id;
-  String name;
-  List<RecommendationResponse> recommendations = new ArrayList<RecommendationResponse>();
+  private Long id;
+  private String name;
+  private List<RecommendationResponse> recommendations = new ArrayList<RecommendationResponse>();
 
   public Long getId() {
     return id;
@@ -27,12 +31,12 @@ public class TechnologyResponse extends Response {
     this.name = name;
   }
 
-  public List<RecommendationResponse> getRecommendationsPojo() {
+  public List<RecommendationResponse> getRecommendationsResponse() {
     return recommendations;
   }
 
   public void setRecommendations(List<RecommendationResponse> recommendations) {
     this.recommendations = recommendations;
   }
-
+  
 }

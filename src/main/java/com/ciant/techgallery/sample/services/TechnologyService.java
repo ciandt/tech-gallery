@@ -6,7 +6,7 @@ import com.ciant.techgallery.sample.service.model.TechnologyResponse;
 /**
  * TechnologyService Interface.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface TechnologyService extends Service<TechnologyResponse, Technology, Long> {
