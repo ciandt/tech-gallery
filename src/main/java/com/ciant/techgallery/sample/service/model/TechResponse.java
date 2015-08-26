@@ -9,11 +9,11 @@ import java.util.List;
  * @author Felipe Goncalves de Castro
  *
  */
-public class TechnologyResponse extends Response {
+public class TechResponse extends Response {
 
   private Long id;
   private String name;
-  private List<RecommendationResponse> recommendations = new ArrayList<RecommendationResponse>();
+  private List<RecResponse> recommendations = new ArrayList<RecResponse>();
 
   public Long getId() {
     return id;
@@ -31,11 +31,11 @@ public class TechnologyResponse extends Response {
     this.name = name;
   }
 
-  public List<RecommendationResponse> getRecommendationsResponse() {
+  public List<RecResponse> getRecommendationsResponse() {
     return recommendations;
   }
 
-  public void setRecommendations(List<RecommendationResponse> recommendations) {
+  public void setRecommendations(List<RecResponse> recommendations) {
     this.recommendations = recommendations;
   }
   

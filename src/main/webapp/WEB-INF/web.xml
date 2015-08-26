@@ -8,7 +8,7 @@
 		<servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
 		<init-param>
 			<param-name>services</param-name>
-			<param-value>com.ciandt.techgallery.services.endpoint.CardEndpointImpl,com.ciandt.techgallery.services.endpoint.SampleEndpointImpl,com.ciandt.techgallery.services.endpoint.TechEndpointImpl,com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl</param-value>
+			<param-value>com.ciandt.techgallery.sample.services.endpoint.CardEndpointImpl,com.ciandt.techgallery.sample.services.endpoint.SampleEndpointImpl,com.ciandt.techgallery.sample.services.endpoint.TechEndpointImpl,com.ciandt.techgallery.sample.services.endpoint.UserGroupEndpointImpl</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>

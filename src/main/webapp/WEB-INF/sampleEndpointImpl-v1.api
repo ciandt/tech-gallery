@@ -31,7 +31,7 @@
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.SampleEndpointImpl.listAll",
+      "rosyMethod" : "com.ciandt.techgallery.sample.services.endpoint.SampleEndpointImpl.listAll",
       "request" : {
         "body" : "empty"
       },
@@ -46,7 +46,7 @@
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.SampleEndpointImpl.addSample",
+      "rosyMethod" : "com.ciandt.techgallery.sample.services.endpoint.SampleEndpointImpl.addSample",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -87,12 +87,12 @@
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.services.endpoint.SampleEndpointImpl.listAll" : {
+      "com.ciandt.techgallery.sample.services.endpoint.SampleEndpointImpl.listAll" : {
         "response" : {
           "$ref" : "ResponseCollection"
         }
       },
-      "com.ciandt.techgallery.services.endpoint.SampleEndpointImpl.addSample" : {
+      "com.ciandt.techgallery.sample.services.endpoint.SampleEndpointImpl.addSample" : {
         "request" : {
           "$ref" : "SampleResponse"
         },

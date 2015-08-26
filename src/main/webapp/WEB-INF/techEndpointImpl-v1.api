@@ -31,7 +31,7 @@
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.services.endpoint.TechEndpointImpl.addTechnology",
+      "rosyMethod" : "com.ciandt.techgallery.sample.services.endpoint.TechEndpointImpl.addTechnology",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -43,8 +43,8 @@
   },
   "descriptor" : {
     "schemas" : {
-      "TechnologyResponse" : {
-        "id" : "TechnologyResponse",
+      "TechResponse" : {
+        "id" : "TechResponse",
         "type" : "object",
         "properties" : {
           "id" : {
@@ -57,19 +57,19 @@
           "recommendations" : {
             "type" : "array",
             "items" : {
-              "$ref" : "RecommendationResponse"
+              "$ref" : "RecResponse"
             }
           },
           "recommendationsResponse" : {
             "type" : "array",
             "items" : {
-              "$ref" : "RecommendationResponse"
+              "$ref" : "RecResponse"
             }
           }
         }
       },
-      "RecommendationResponse" : {
-        "id" : "RecommendationResponse",
+      "RecResponse" : {
+        "id" : "RecResponse",
         "type" : "object",
         "properties" : {
           "id" : {
@@ -80,7 +80,7 @@
             "type" : "string"
           },
           "technology" : {
-            "$ref" : "TechnologyResponse"
+            "$ref" : "TechResponse"
           }
         }
       },
@@ -92,9 +92,9 @@
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.services.endpoint.TechEndpointImpl.addTechnology" : {
+      "com.ciandt.techgallery.sample.services.endpoint.TechEndpointImpl.addTechnology" : {
         "request" : {
-          "$ref" : "TechnologyResponse"
+          "$ref" : "TechResponse"
         },
         "response" : {
           "$ref" : "Response"

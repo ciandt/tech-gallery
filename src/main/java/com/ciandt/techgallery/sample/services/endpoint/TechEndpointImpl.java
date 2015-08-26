@@ -1,9 +1,9 @@
-package com.ciandt.techgallery.services.endpoint;
+package com.ciandt.techgallery.sample.services.endpoint;
 
 import com.ciandt.techgallery.Constants;
 import com.ciant.techgallery.sample.service.model.Response;
-import com.ciant.techgallery.sample.service.model.TechnologyResponse;
-import com.ciant.techgallery.sample.services.TechnologyServiceImpl;
+import com.ciant.techgallery.sample.service.model.TechResponse;
+import com.ciant.techgallery.sample.services.TechServiceImpl;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 
@@ -13,7 +13,7 @@ import com.google.api.server.spi.config.ApiMethod;
 public class TechEndpointImpl {
 
   
-  TechnologyServiceImpl service = new TechnologyServiceImpl();
+  TechServiceImpl service = new TechServiceImpl();
 
 //  public List<TechnologyPojo> listTechnologies() {
 //    List<TechnologyPojo> list = service.findAll();
@@ -21,7 +21,7 @@ public class TechEndpointImpl {
 //  }
 
   @ApiMethod(name = "tech.add", httpMethod = "post")
-  public Response addTechnology(TechnologyResponse pojo) {
+  public Response addTechnology(TechResponse pojo) {
     service.add(pojo);
     return pojo;
   }

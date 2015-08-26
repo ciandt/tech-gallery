@@ -13,7 +13,7 @@ import com.googlecode.objectify.Key;
  * @author Felipe Goncalves de Castro
  *
  */
-public class RecommendationService {
+public class RecService {
 
   RecommendationDAO dao = new RecommendationDAOImpl();
 

@@ -6,12 +6,12 @@ package com.ciant.techgallery.sample.service.model;
  * @author Felipe Goncalves de Castro
  *
  */
-public class RecommendationResponse {
+public class RecResponse {
 
   Long id;
   String score;
 
-  TechnologyResponse technology;
+  TechResponse technology;
 
   public Long getId() {
     return id;
@@ -29,11 +29,11 @@ public class RecommendationResponse {
     this.score = score;
   }
 
-  public TechnologyResponse getTechnology() {
+  public TechResponse getTechnology() {
     return technology;
   }
 
-  public void setTechnology(TechnologyResponse technology) {
+  public void setTechnology(TechResponse technology) {
     this.technology = technology;
   }
 

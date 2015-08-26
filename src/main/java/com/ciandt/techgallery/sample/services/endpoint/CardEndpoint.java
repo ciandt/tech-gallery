@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.services.endpoint;
+package com.ciandt.techgallery.sample.services.endpoint;
 
 import java.util.List;
 
