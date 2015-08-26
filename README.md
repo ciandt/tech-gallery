@@ -1,4 +1,4 @@
-endpoints-skeleton
+Tech Gallery
 ==================
 
 A skeleton application for Google Cloud Endpoints in Java.
