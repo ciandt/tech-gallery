@@ -15,11 +15,6 @@ public class TechEndpointImpl {
   
   TechServiceImpl service = new TechServiceImpl();
 
-//  public List<TechnologyPojo> listTechnologies() {
-//    List<TechnologyPojo> list = service.findAll();
-//    return list;
-//  }
-
   @ApiMethod(name = "tech.add", httpMethod = "post")
   public Response addTechnology(TechResponse pojo) {
     service.add(pojo);
