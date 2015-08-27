@@ -6,7 +6,7 @@
 </div>
 <div>
 	<div>
-		<div class="col-sm-6 col-md-3" ng-repeat="tech in techListFiltered">
+		<div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
 			<div class="thumbnail">
 				<img src={{tech.image}} data-holder-rendered="true"
 					style="height: 200px; width: 100%; display: block;">
@@ -20,12 +20,4 @@
 			</div>
 		</div>
 	</div>
-</div>
-<div style="text-align:center; clear:both">
-	<pagination boundary-links="true" 
-	         max-size="5"
-	         items-per-page="pageSize"
-	         total-items="totalItems" 
-	         ng-model="currentPage" 
-	         ng-change="pageChanged()"/>
 </div>

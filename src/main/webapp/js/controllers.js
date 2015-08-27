@@ -16,14 +16,7 @@
 
 'use strict';
 
-var techListController = [
-		'$scope',
-		'$http',
-		'$location',
-		'$routeParams',
-		'$timeout',
-		'$rootScope',
-		function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
+angular.module('techGallery').controller('techListController', function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
 
 			$timeout(function() {
 				getTechList();
@@ -35,9 +28,9 @@ var techListController = [
 			};
 
 			function getTechList() {
-				gapi.client.load('cardEndpointImpl', 'v1', callBackLoaded,
-						'http://localhost:8888/_ah/api/');
-				// mockList();
+				//gapi.client.load('cardEndpointImpl', 'v1', callBackLoaded,
+				//		'http://localhost:8888/_ah/api/');
+			    mockList();
 			};
 			
 			function adjustPagination() {
@@ -97,16 +90,10 @@ var techListController = [
 							$scope.$apply();
 						});
 			};
-		} ];
+		});
 
-var techDetailsController = [
-                  		'$scope',
-                  		'$http',
-                  		'$location',
-                  		'$routeParams',
-                  		'$timeout',
-                  		'$rootScope',
-                  		function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
+
+angular.module('techGallery').controller('techDetailsController', function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
                   			alert($rootScope.techId);
                   			
                   			function fillTechnology(){};
@@ -115,4 +102,4 @@ var techDetailsController = [
                   				var technology = {};
                   				
                   			}
-                  		} ];
+                  		});
