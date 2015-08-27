@@ -29,7 +29,7 @@ angular.module(
 				      })
 				      .when('/techDetails', {
 				        templateUrl: '/techDetails.html',
-				        controller: 'techListController'
+				        controller: 'techDetailsController'
 				      })
 				      .otherwise({
 				        redirectTo: '/techList'

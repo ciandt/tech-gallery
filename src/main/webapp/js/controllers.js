@@ -22,13 +22,15 @@ var techListController = [
 		'$location',
 		'$routeParams',
 		'$timeout',
-		function($scope, $http, $location, $routeParams, $timeout) {
+		'$rootScope',
+		function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
 
 			$timeout(function() {
 				getTechList();
 			}, 200);
 
-			$scope.redirect = function() {
+			$scope.redirect = function(techId) {
+				$rootScope.techId=techId;
 				$location.path('/techDetails');
 			};
 
@@ -96,3 +98,21 @@ var techListController = [
 						});
 			};
 		} ];
+
+var techDetailsController = [
+                  		'$scope',
+                  		'$http',
+                  		'$location',
+                  		'$routeParams',
+                  		'$timeout',
+                  		'$rootScope',
+                  		function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
+                  			alert($rootScope.techId);
+                  			
+                  			function fillTechnology(){};
+                  			
+                  			function mockTechnology(){
+                  				var technology = {};
+                  				
+                  			}
+                  		} ];
