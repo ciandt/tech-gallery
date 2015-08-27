@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://${app.id}.appspot.com/_ah/api",
+  "root" : "https://tech-gallery.appspot.com/_ah/api",
   "name" : "sampleEndpointImpl",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://${app.id}.appspot.com/_ah/spi",
+    "bns" : "https://tech-gallery.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },

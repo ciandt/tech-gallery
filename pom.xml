@@ -8,7 +8,7 @@
     <artifactId>techgallery</artifactId>
 
     <properties>
-        <app.id>your-app-id</app.id>
+        <app.id>tech-gallery</app.id>
         <app.version>1</app.version>
         <appengine.version>1.9.25</appengine.version>
         <gcloud.plugin.version>0.9.58.v20150505</gcloud.plugin.version>
@@ -43,13 +43,12 @@
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
-        </dependency>
+        </dependency>     
         <dependency>
             <groupId>com.googlecode.objectify</groupId>
             <artifactId>objectify</artifactId>
-             <version>5.1.6</version>
+            <version>5.1.6</version>
         </dependency>
-
         <!-- Test Dependencies -->
         <dependency>
             <groupId>junit</groupId>

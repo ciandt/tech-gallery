@@ -1,12 +1,12 @@
 {
   "extends" : "thirdParty.api",
   "abstract" : false,
-  "root" : "https://${app.id}.appspot.com/_ah/api",
+  "root" : "https://tech-gallery.appspot.com/_ah/api",
   "name" : "cardEndpointImpl",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
-    "bns" : "https://${app.id}.appspot.com/_ah/spi",
+    "bns" : "https://tech-gallery.appspot.com/_ah/spi",
     "deadline" : 65.0,
     "type" : "lily"
   },
@@ -24,21 +24,6 @@
     "maxAge" : 0
   },
   "methods" : {
-    "cardEndpointImpl.cardEndpointImpl.listCards" : {
-      "path" : "card",
-      "httpMethod" : "GET",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ "replace this with your web client ID" ],
-      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.sample.services.endpoint.CardEndpointImpl.listCards",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "cardEndpointImpl.card.inserts" : {
       "path" : "card",
       "httpMethod" : "post",
@@ -50,6 +35,21 @@
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "cardEndpointImpl.cardEndpointImpl.listCards" : {
+      "path" : "card",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ "replace this with your web client ID" ],
+      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.sample.services.endpoint.CardEndpointImpl.listCards",
+      "request" : {
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -91,17 +91,17 @@
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.sample.services.endpoint.CardEndpointImpl.listCards" : {
-        "response" : {
-          "$ref" : "CardCollection"
-        }
-      },
       "com.ciandt.techgallery.sample.services.endpoint.CardEndpointImpl.insertCard" : {
         "request" : {
           "$ref" : "Card"
         },
         "response" : {
           "$ref" : "Card"
+        }
+      },
+      "com.ciandt.techgallery.sample.services.endpoint.CardEndpointImpl.listCards" : {
+        "response" : {
+          "$ref" : "CardCollection"
         }
       }
     }
