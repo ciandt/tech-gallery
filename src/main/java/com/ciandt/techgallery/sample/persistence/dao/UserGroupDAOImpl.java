@@ -9,7 +9,7 @@ import com.googlecode.objectify.Objectify;
 /**
  * User Group DAO Implementation class.
  * 
- * Obs: It doesn´t follow the generic standars
+ * Obs: It doesn´t follow the generic standards
  * 
  * @author felipers
  *

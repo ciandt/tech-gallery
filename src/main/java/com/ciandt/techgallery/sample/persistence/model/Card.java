@@ -3,11 +3,12 @@ package com.ciandt.techgallery.sample.persistence.model;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Unindex;
 
 /**
  * Entity class for Card.
  * 
- * Obs: It doesn´t follow the generic standars
+ * Obs: It doesn´t follow the generic standards
  * 
  * @author Felipe Goncalves de Castro
  *
@@ -20,9 +21,11 @@ public class Card {
 
   @Index
   private String name;
-
+  
+  @Unindex
   private String desc;
-
+  
+  @Unindex
   private String image;
 
   public Long getId() {

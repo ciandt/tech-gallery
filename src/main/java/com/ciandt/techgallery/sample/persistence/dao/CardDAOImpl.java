@@ -9,7 +9,7 @@ import com.googlecode.objectify.Objectify;
 /**
  * Card DAO Implementation class.
  * 
- * Obs: It doesn´t follow the generic standars
+ * Obs: It doesn´t follow the generic standards
  * 
  * @author Felipe Goncalves de Castro
  *
@@ -19,9 +19,7 @@ public class CardDAOImpl implements CardDAO {
   @Override
   public List<Card> findAll() {
     Objectify objectify = OfyService.ofy();
-    // field 'name' is indexed.
     List<Card> cards = objectify.load().type(Card.class).order("-name").list();
-    // objectify.load().type(UserGroup.class).order("-name").list();
     return cards;
   }
 

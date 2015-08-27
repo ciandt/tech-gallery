@@ -7,7 +7,7 @@ import com.ciandt.techgallery.sample.persistence.model.UserGroup;
 /**
  * User Group DAO methods.
  * 
- * Obs: It doesn´t follow the generic standars
+ * Obs: It doesn´t follow the generic standards
  * 
  * @author felipers
  *

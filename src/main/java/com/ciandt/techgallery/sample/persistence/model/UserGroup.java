@@ -7,7 +7,7 @@ import com.googlecode.objectify.annotation.Index;
 /**
  * Entity class for a User Group.
  * 
- * Obs: It doesn´t follow the generic standars
+ * Obs: It doesn´t follow the generic standards
  * 
  * @author felipers
  *

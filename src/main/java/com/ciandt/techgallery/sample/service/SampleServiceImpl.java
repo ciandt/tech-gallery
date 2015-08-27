@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.ciandt.techgallery.sample.persistence.dao.SampleDAOImpl;
 import com.ciandt.techgallery.sample.persistence.model.Sample;
-import com.ciandt.techgallery.sample.service.model.MensagemResponse;
+import com.ciandt.techgallery.sample.service.model.MessageResponse;
 import com.ciandt.techgallery.sample.service.model.Response;
 import com.ciandt.techgallery.sample.service.model.ResponseMessageEnum;
 import com.ciandt.techgallery.sample.service.model.SampleResponse;
@@ -26,15 +26,15 @@ public class SampleServiceImpl extends GenericService<SampleResponse, Sample, Lo
   @Override
   public List<Response> listAll() {
     List<Sample> listSample = findAll();
-    List<Response> listRetorno = new ArrayList<Response>();
+    List<Response> listReturn = new ArrayList<Response>();
 
     for (Sample sample : listSample) {
       SampleResponse sr = new SampleResponse();
       sr.setName(sample.getName());
-      listRetorno.add(sr);
+      listReturn.add(sr);
     }
 
-    return listRetorno;
+    return listReturn;
   }
 
   @Override
@@ -45,7 +45,7 @@ public class SampleServiceImpl extends GenericService<SampleResponse, Sample, Lo
 
     Key<Sample> key = dao.add(sample);
     
-    MensagemResponse msg = new MensagemResponse();
+    MessageResponse msg = new MessageResponse();
     msg.setMsg(ResponseMessageEnum.OK.descricao());
     
     return msg;

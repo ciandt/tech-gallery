@@ -25,7 +25,6 @@ public class OfyService implements ServletContextListener {
 
     // @TODO improve how to separate the samples' registers from the production's registers
     // Samples of registers
-    // ObjectifyService.register(User.class);
     ObjectifyService.register(UserGroup.class);
     ObjectifyService.register(Card.class);
     ObjectifyService.register(Technology.class);

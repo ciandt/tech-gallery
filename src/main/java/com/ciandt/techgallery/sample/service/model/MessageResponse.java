@@ -1,6 +1,6 @@
 package com.ciandt.techgallery.sample.service.model;
 
-public class MensagemResponse extends Response {
+public class MessageResponse extends Response {
   
   private String msg;
 

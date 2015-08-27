@@ -2,7 +2,7 @@ package com.ciandt.techgallery.sample.service.model;
 
 public enum ResponseMessageEnum {
 
-  ERRO("Erro"), OK("Ok");
+  ERRO("Error"), OK("Ok");
 
   String descricao;
 
