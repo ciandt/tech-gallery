@@ -4,13 +4,13 @@ public enum ResponseMessageEnum {
 
   ERRO("Error"), OK("Ok");
 
-  String descricao;
+  String description;
 
-  private ResponseMessageEnum(String descricao) {
-    this.descricao = descricao;
+  private ResponseMessageEnum(String description) {
+    this.description = description;
   }
 
-  public String descricao() {
-    return descricao;
+  public String description() {
+    return description;
   }
 }

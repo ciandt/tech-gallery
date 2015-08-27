@@ -46,7 +46,7 @@ public class SampleServiceImpl extends GenericService<SampleResponse, Sample, Lo
     Key<Sample> key = dao.add(sample);
     
     MessageResponse msg = new MessageResponse();
-    msg.setMsg(ResponseMessageEnum.OK.descricao());
+    msg.setMsg(ResponseMessageEnum.OK.description());
     
     return msg;
   }
