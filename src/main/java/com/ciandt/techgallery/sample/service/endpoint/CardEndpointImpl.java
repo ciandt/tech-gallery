@@ -1,18 +1,18 @@
-package com.ciandt.techgallery.services.endpoint;
+package com.ciandt.techgallery.sample.service.endpoint;
 
 import java.util.List;
 
 import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.persistence.dao.CardDAO;
-import com.ciandt.techgallery.persistence.dao.CardDAOImpl;
-import com.ciandt.techgallery.persistence.model.Card;
+import com.ciandt.techgallery.sample.persistence.dao.CardDAO;
+import com.ciandt.techgallery.sample.persistence.dao.CardDAOImpl;
+import com.ciandt.techgallery.sample.persistence.model.Card;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 
 /**
  * UserGroupEndpoint Implementation class.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 @Api(name = "cardEndpointImpl", version = "v1", scopes = {Constants.EMAIL_SCOPE}, clientIds = {

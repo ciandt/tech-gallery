@@ -1,18 +1,18 @@
-package com.ciandt.techgallery.services.endpoint;
+package com.ciandt.techgallery.sample.service.endpoint;
 
 import java.util.List;
 
 import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.persistence.dao.UserGroupDAO;
-import com.ciandt.techgallery.persistence.dao.UserGroupDAOImpl;
-import com.ciandt.techgallery.persistence.model.UserGroup;
+import com.ciandt.techgallery.sample.persistence.dao.UserGroupDAO;
+import com.ciandt.techgallery.sample.persistence.dao.UserGroupDAOImpl;
+import com.ciandt.techgallery.sample.persistence.model.UserGroup;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 
 /**
  * UserGroupEndpoint Implementation class.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 @Api(name = "userGroupEndpointImpl", version = "v1", scopes = {Constants.EMAIL_SCOPE},

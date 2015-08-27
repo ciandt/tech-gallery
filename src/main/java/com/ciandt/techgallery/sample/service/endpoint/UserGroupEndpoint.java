@@ -1,13 +1,13 @@
-package com.ciandt.techgallery.services.endpoint;
+package com.ciandt.techgallery.sample.service.endpoint;
 
 import java.util.List;
 
-import com.ciandt.techgallery.persistence.model.UserGroup;
+import com.ciandt.techgallery.sample.persistence.model.UserGroup;
 
 /**
  * UserGroupEndpoint Interface.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface UserGroupEndpoint {

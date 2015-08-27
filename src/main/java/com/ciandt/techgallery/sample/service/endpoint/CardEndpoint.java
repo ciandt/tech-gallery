@@ -1,13 +1,13 @@
-package com.ciandt.techgallery.services.endpoint;
+package com.ciandt.techgallery.sample.service.endpoint;
 
 import java.util.List;
 
-import com.ciandt.techgallery.persistence.model.Card;
+import com.ciandt.techgallery.sample.persistence.model.Card;
 
 /**
  * CardEndpoint Interface.
  * 
- * @author felipegc
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface CardEndpoint {

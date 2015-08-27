@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.persistence.model;
+package com.ciandt.techgallery.sample.persistence.model;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -6,6 +6,8 @@ import com.googlecode.objectify.annotation.Index;
 
 /**
  * Entity class for a User Group.
+ * 
+ * Obs: It doesn´t follow the generic standards
  * 
  * @author felipers
  *

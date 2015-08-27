@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<servlet>
 		<servlet-name>daoExample</servlet-name>
 		<servlet-class>com.ciandt.techgallery.persistence.example.DAOExample</servlet-class>
@@ -8,7 +12,7 @@
 		<servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
 		<init-param>
 			<param-name>services</param-name>
-			<param-value>com.ciandt.techgallery.services.endpoint.CardEndpointImpl,com.ciandt.techgallery.services.endpoint.UserGroupEndpointImpl</param-value>
+			<param-value>com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>

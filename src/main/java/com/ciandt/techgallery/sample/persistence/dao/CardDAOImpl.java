@@ -1,15 +1,17 @@
-package com.ciandt.techgallery.persistence.dao;
+package com.ciandt.techgallery.sample.persistence.dao;
 
 import java.util.List;
 
 import com.ciandt.techgallery.ofy.OfyService;
-import com.ciandt.techgallery.persistence.model.Card;
+import com.ciandt.techgallery.sample.persistence.model.Card;
 import com.googlecode.objectify.Objectify;
 
 /**
  * Card DAO Implementation class.
  * 
- * @author felipegc
+ * Obs: It doesn´t follow the generic standards
+ * 
+ * @author Felipe Goncalves de Castro
  *
  */
 public class CardDAOImpl implements CardDAO {
@@ -17,9 +19,7 @@ public class CardDAOImpl implements CardDAO {
   @Override
   public List<Card> findAll() {
     Objectify objectify = OfyService.ofy();
-    // field 'name' is indexed.
     List<Card> cards = objectify.load().type(Card.class).order("-name").list();
-    // objectify.load().type(UserGroup.class).order("-name").list();
     return cards;
   }
 

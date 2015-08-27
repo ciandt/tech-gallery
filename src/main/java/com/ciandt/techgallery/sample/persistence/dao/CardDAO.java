@@ -1,13 +1,15 @@
-package com.ciandt.techgallery.persistence.dao;
+package com.ciandt.techgallery.sample.persistence.dao;
 
 import java.util.List;
 
-import com.ciandt.techgallery.persistence.model.Card;
+import com.ciandt.techgallery.sample.persistence.model.Card;
 
 /**
  * Card DAO methods.
  * 
- * @author felipegc
+ * Obs: It doesn´t follow the generic standards
+ * 
+ * @author Felipe Goncalves de Castro
  *
  */
 public interface CardDAO {
