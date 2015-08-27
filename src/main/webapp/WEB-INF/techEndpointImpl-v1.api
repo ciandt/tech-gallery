@@ -31,7 +31,7 @@
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.sample.services.endpoint.TechEndpointImpl.addTechnology",
+      "rosyMethod" : "com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl.addTechnology",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -92,7 +92,7 @@
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.sample.services.endpoint.TechEndpointImpl.addTechnology" : {
+      "com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl.addTechnology" : {
         "request" : {
           "$ref" : "TechResponse"
         },

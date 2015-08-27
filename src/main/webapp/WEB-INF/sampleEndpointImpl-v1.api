@@ -24,22 +24,6 @@
     "maxAge" : 0
   },
   "methods" : {
-    "sampleEndpointImpl.sample.add" : {
-      "path" : "addSample",
-      "httpMethod" : "post",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ "replace this with your web client ID" ],
-      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.sample.services.endpoint.SampleEndpointImpl.addSample",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "sampleEndpointImpl.sampleEndpointImpl.listAll" : {
       "path" : "response",
       "httpMethod" : "GET",
@@ -47,9 +31,25 @@
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.sample.services.endpoint.SampleEndpointImpl.listAll",
+      "rosyMethod" : "com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl.listAll",
       "request" : {
         "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "sampleEndpointImpl.sample.add" : {
+      "path" : "addSample",
+      "httpMethod" : "post",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ "replace this with your web client ID" ],
+      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl.addSample",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -58,15 +58,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "SampleResponse" : {
-        "id" : "SampleResponse",
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          }
-        }
-      },
       "Response" : {
         "id" : "Response",
         "type" : "object",
@@ -84,20 +75,29 @@
             }
           }
         }
+      },
+      "SampleResponse" : {
+        "id" : "SampleResponse",
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          }
+        }
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.sample.services.endpoint.SampleEndpointImpl.addSample" : {
+      "com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl.listAll" : {
+        "response" : {
+          "$ref" : "ResponseCollection"
+        }
+      },
+      "com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl.addSample" : {
         "request" : {
           "$ref" : "SampleResponse"
         },
         "response" : {
           "$ref" : "Response"
-        }
-      },
-      "com.ciandt.techgallery.sample.services.endpoint.SampleEndpointImpl.listAll" : {
-        "response" : {
-          "$ref" : "ResponseCollection"
         }
       }
     }

@@ -8,6 +8,6 @@ import com.ciandt.techgallery.sample.persistence.model.Sample;
  * @author Felipe Goncalves de Castro
  *
  */
-public class SampleDAOImpl extends GenericObjectFyDAO<Sample, Long> implements SampleDAO {
+public class SampleDAOImpl extends GenericObjectifyDAO<Sample, Long> implements SampleDAO {
 
 }

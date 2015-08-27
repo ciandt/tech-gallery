@@ -8,7 +8,7 @@ import com.ciandt.techgallery.sample.persistence.model.Recommendation;
  * @author Felipe Goncalves de Castro
  *
  */
-public class RecommendationDAOImpl extends GenericObjectFyDAO<Recommendation, Long> implements
+public class RecommendationDAOImpl extends GenericObjectifyDAO<Recommendation, Long> implements
     RecommendationDAO {
 
 }

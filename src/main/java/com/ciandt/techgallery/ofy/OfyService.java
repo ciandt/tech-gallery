@@ -3,11 +3,11 @@ package com.ciandt.techgallery.ofy;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.ciandt.techgallery.persistence.model.Card;
-import com.ciandt.techgallery.persistence.model.UserGroup;
+import com.ciandt.techgallery.sample.persistence.model.Card;
 import com.ciandt.techgallery.sample.persistence.model.Recommendation;
 import com.ciandt.techgallery.sample.persistence.model.Sample;
 import com.ciandt.techgallery.sample.persistence.model.Technology;
+import com.ciandt.techgallery.sample.persistence.model.UserGroup;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
@@ -22,6 +22,9 @@ public class OfyService implements ServletContextListener {
 
   /** Define all entities first. */
   static {
+
+    // @TODO improve how to separate the samples' registers from the production's registers
+    // Samples of registers
     // ObjectifyService.register(User.class);
     ObjectifyService.register(UserGroup.class);
     ObjectifyService.register(Card.class);

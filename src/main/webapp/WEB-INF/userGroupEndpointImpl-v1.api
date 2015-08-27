@@ -31,7 +31,7 @@
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.sample.services.endpoint.UserGroupEndpointImpl.insertUserGroup",
+      "rosyMethod" : "com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl.insertUserGroup",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -47,7 +47,7 @@
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ "replace this with your web client ID" ],
       "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.sample.services.endpoint.UserGroupEndpointImpl.listUsers",
+      "rosyMethod" : "com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl.listUsers",
       "request" : {
         "body" : "empty"
       },
@@ -85,7 +85,7 @@
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.sample.services.endpoint.UserGroupEndpointImpl.insertUserGroup" : {
+      "com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl.insertUserGroup" : {
         "request" : {
           "$ref" : "UserGroup"
         },
@@ -93,7 +93,7 @@
           "$ref" : "UserGroup"
         }
       },
-      "com.ciandt.techgallery.sample.services.endpoint.UserGroupEndpointImpl.listUsers" : {
+      "com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl.listUsers" : {
         "response" : {
           "$ref" : "UserGroupCollection"
         }
