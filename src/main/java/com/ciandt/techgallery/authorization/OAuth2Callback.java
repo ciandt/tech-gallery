@@ -1,16 +1,15 @@
 package com.ciandt.techgallery.authorization;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.AuthorizationCodeResponseUrl;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeCallbackServlet;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.appengine.api.users.UserServiceFactory;
 
 public class OAuth2Callback extends AbstractAppEngineAuthorizationCodeCallbackServlet {
@@ -35,10 +34,7 @@ public class OAuth2Callback extends AbstractAppEngineAuthorizationCodeCallbackSe
   }
 
   @Override
-  protected  initializeFlow() throws IOException {
-    return GoogleAuthorizationCodeFlow
-        .Builder(HTTP_TRANSPORT, JSON_FACTORY, getClientCredential(),
-            Collections.singleton(CalendarScopes.CALENDAR)).setDataStoreFactory(DATA_STORE_FACTORY)
-        .setAccessType("offline").build();// OAuthUtils.newFlow();
+  protected  AuthorizationCodeFlow initializeFlow() throws IOException {
+    return OAuthUtils.newFlow();
   }
 }

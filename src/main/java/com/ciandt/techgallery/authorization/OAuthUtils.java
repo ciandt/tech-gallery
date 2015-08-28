@@ -8,15 +8,16 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.repackaged.com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.appengine.repackaged.com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.appengine.repackaged.com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.appengine.repackaged.com.google.api.client.http.GenericUrl;
-import com.google.appengine.repackaged.com.google.api.client.http.HttpTransport;
-import com.google.appengine.repackaged.com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.appengine.repackaged.com.google.api.client.json.JsonFactory;
-import com.google.appengine.repackaged.com.google.api.client.json.jackson2.JacksonFactory;
+
 
 public class OAuthUtils {
 
