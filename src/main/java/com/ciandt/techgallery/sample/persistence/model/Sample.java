@@ -10,7 +10,7 @@ import com.googlecode.objectify.annotation.Index;
  *
  */
 @Entity
-public class Sample extends SampleBaseEntity {
+public class Sample extends BaseEntity {
 
   @Index
   private String name;

@@ -14,12 +14,12 @@ import com.googlecode.objectify.annotation.Index;
  *
  */
 @Entity
-public class TechnologySample extends SampleBaseEntity {
+public class Technology extends BaseEntity {
 
   @Index
   String name;
 
-  List<Key<RecommendationSample>> recommendations = new ArrayList<Key<RecommendationSample>>();
+  List<Key<Recommendation>> recommendations = new ArrayList<Key<Recommendation>>();
 
   public String getName() {
     return name;
@@ -29,11 +29,11 @@ public class TechnologySample extends SampleBaseEntity {
     this.name = name;
   }
 
-  public List<Key<RecommendationSample>> getRecommendations() {
+  public List<Key<Recommendation>> getRecommendations() {
     return recommendations;
   }
 
-  public void setRecommendations(List<Key<RecommendationSample>> recommendations) {
+  public void setRecommendations(List<Key<Recommendation>> recommendations) {
     this.recommendations = recommendations;
   }
 }

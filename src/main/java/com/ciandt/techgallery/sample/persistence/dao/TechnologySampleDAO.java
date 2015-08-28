@@ -1,6 +1,6 @@
 package com.ciandt.techgallery.sample.persistence.dao;
 
-import com.ciandt.techgallery.sample.persistence.model.TechnologySample;
+import com.ciandt.techgallery.sample.persistence.model.Technology;
 
 /**
  * TechnologyDAO Interface.
@@ -8,6 +8,6 @@ import com.ciandt.techgallery.sample.persistence.model.TechnologySample;
  * @author Felipe Goncalves de Castro
  *
  */
-public interface TechnologySampleDAO extends GenericSampleDAO<TechnologySample, Long> {
+public interface TechnologyDAO extends GenericDAO<Technology, Long> {
 
 }
