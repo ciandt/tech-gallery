@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -130,13 +131,13 @@
                 <configuration>
                     <enableJarClasses>false</enableJarClasses>
                     <version>${app.version}</version>
-                    <!-- Comment in the below snippet to bind to all IPs instead of
-                      just localhost -->
+                    <!-- Comment in the below snippet to bind to all IPs 
+                        instead of just localhost -->
                     <!-- address>0.0.0.0</address> <port>8080</port -->
-                    <!-- Comment in the below snippet to enable local debugging with
-                      a remote debugger like those included with Eclipse or IntelliJ -->
-                    <!-- jvmFlags> <jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag>
-                      </jvmFlags -->
+                    <!-- Comment in the below snippet to enable local debugging 
+                        with a remote debugger like those included with Eclipse or IntelliJ -->
+                    <!-- jvmFlags> <jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag> 
+                        </jvmFlags -->
                 </configuration>
                 <executions>
                     <execution>
@@ -163,8 +164,8 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <!-- optional: you don't really need execution ids,
-                        but it looks nice in your build log. -->
+                        <!-- optional: you don't really need execution ids, 
+                            but it looks nice in your build log. -->
                         <id>install node and npm</id>
                         <goals>
                             <goal>install-node-and-npm</goal>
@@ -186,10 +187,9 @@
                         <phase>generate-resources</phase>
 
                         <configuration>
-                            <!-- optional: The default argument is actually
-                            "install", so unless you need to run some other npm command,
-                            you can remove this whole <configuration> section.
-                            -->
+                            <!-- optional: The default argument is actually 
+                                "install", so unless you need to run some other npm command, you can remove 
+                                this whole <configuration> section. -->
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
@@ -200,10 +200,9 @@
                         </goals>
 
                         <configuration>
-                            <!-- optional: The default argument is actually
-                            "install", so unless you need to run some other bower command,
-                            you can remove this whole <configuration> section.
-                            -->
+                            <!-- optional: The default argument is actually 
+                                "install", so unless you need to run some other bower command, you can remove 
+                                this whole <configuration> section. -->
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
@@ -212,8 +211,8 @@
         </plugins>
         <pluginManagement>
             <plugins>
-                <!--This plugin's configuration is used to store Eclipse m2e settings
-                  only. It has no influence on the Maven build itself. -->
+                <!--This plugin's configuration is used to store Eclipse 
+                    m2e settings only. It has no influence on the Maven build itself. -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>

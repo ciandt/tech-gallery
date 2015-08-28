@@ -27,12 +27,12 @@ public class TechnologyServiceImpl implements TechnologyService {
    * POST for adding a technology.
    */
   @Override
-  public Response addTechnology(TechnologyResponse technology)
-      throws InternalServerErrorException, BadRequestException {
+  public Response addTechnology(TechnologyResponse technology) throws InternalServerErrorException,
+      BadRequestException {
     String techName = technology.getName();
 
     if (techName == null || techName.equals("")) {
-      throw new BadRequestException("Nome da Tecnologia não pode ser em branco!");
+      throw new BadRequestException("Technology's name cannot be blank.");
     } else {
       Technology entity = new Technology();
       entity.setName(techName);
@@ -50,7 +50,7 @@ public class TechnologyServiceImpl implements TechnologyService {
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
     List<Technology> techEntities = technologyDAO.findAll();
     if (techEntities == null) {
-      throw new NotFoundException("Não foi encontrado nenhuma tecnologia!");
+      throw new NotFoundException("No technology was found.");
     } else {
       TechnologiesResponse response = new TechnologiesResponse();
       List<TechnologyResponse> internList = new ArrayList<TechnologyResponse>();

@@ -17,8 +17,8 @@ import com.googlecode.objectify.Objectify;
  */
 public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable> implements
     GenericDAO<T, ID> {
-  
-	private Class<T> clazz;
+
+  private Class<T> clazz;
 
   @SuppressWarnings("unchecked")
   public GenericDAOImpl() {
