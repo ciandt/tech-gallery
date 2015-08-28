@@ -13,7 +13,7 @@ import com.googlecode.objectify.Key;
  *
  */
 public interface GenericDAO<T, ID extends Serializable> {
-
+  
   /**
    * Method that return a list with all Entities.
    * 

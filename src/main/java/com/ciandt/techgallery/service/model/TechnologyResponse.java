@@ -6,7 +6,7 @@ package com.ciandt.techgallery.service.model;
  * @author felipers
  *
  */
-public class TechnologyResponse {
+public class TechnologyResponse implements Response {
 
   /** technology id. */
   private Long id;
