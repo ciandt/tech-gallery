@@ -24,22 +24,6 @@
     "maxAge" : 0
   },
   "methods" : {
-    "technology.technologyEndpoint.getTechnologies" : {
-      "path" : "response",
-      "httpMethod" : "get",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "replace this with your web client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "technology.technologyEndpoint.addTechnology" : {
       "path" : "addTechnology",
       "httpMethod" : "post",
@@ -55,22 +39,26 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
+    },
+    "technology.technologyEndpoint.getTechnologies" : {
+      "path" : "response",
+      "httpMethod" : "get",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "replace this with your web client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
     }
   },
   "descriptor" : {
     "schemas" : {
-      "TechnologiesResponse" : {
-        "id" : "TechnologiesResponse",
-        "type" : "object",
-        "properties" : {
-          "technologies" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "TechnologyResponse"
-            }
-          }
-        }
-      },
       "TechnologyResponse" : {
         "id" : "TechnologyResponse",
         "type" : "object",
@@ -89,20 +77,32 @@
         "type" : "object",
         "properties" : {
         }
+      },
+      "TechnologiesResponse" : {
+        "id" : "TechnologiesResponse",
+        "type" : "object",
+        "properties" : {
+          "technologies" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "TechnologyResponse"
+            }
+          }
+        }
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies" : {
+      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.addTechnology" : {
         "request" : {
-          "$ref" : "TechnologiesResponse"
+          "$ref" : "TechnologyResponse"
         },
         "response" : {
           "$ref" : "Response"
         }
       },
-      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.addTechnology" : {
+      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies" : {
         "request" : {
-          "$ref" : "TechnologyResponse"
+          "$ref" : "TechnologiesResponse"
         },
         "response" : {
           "$ref" : "Response"

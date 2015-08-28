@@ -15,9 +15,9 @@ public class BaseEntity<ID> {
 
 	@Id
 	ID id;
-	
+
 	@Unindex
-	Date createdDate;
+	Date inactivatedDate;
 
 	public ID getId() {
 		return id;
@@ -27,12 +27,12 @@ public class BaseEntity<ID> {
 		this.id = id;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
+	public Date getInactivatedDate() {
+		return inactivatedDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setInactivatedDate(Date inactivatedDate) {
+		this.inactivatedDate = inactivatedDate;
 	}
 
 }
