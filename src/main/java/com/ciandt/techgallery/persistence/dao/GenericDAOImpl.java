@@ -5,7 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import com.ciandt.techgallery.ofy.OfyService;
-import com.ciandt.techgallery.sample.persistence.model.SampleBaseEntity;
+import com.ciandt.techgallery.persistence.model.BaseEntity;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 
@@ -15,7 +15,7 @@ import com.googlecode.objectify.Objectify;
  * @author Felipe Goncalves de Castro
  *
  */
-public class GenericDAOImpl<T extends SampleBaseEntity, ID extends Serializable> implements
+public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable> implements
     GenericDAO<T, ID> {
   private Class<T> clazz;
 
