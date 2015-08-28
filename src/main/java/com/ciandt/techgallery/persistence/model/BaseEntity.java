@@ -14,16 +14,16 @@ import com.googlecode.objectify.annotation.Unindex;
 public class BaseEntity<ID> {
 
 	@Id
-	ID id;
+	Long id;
 
 	@Unindex
 	Date inactivatedDate;
 
-	public ID getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(ID id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

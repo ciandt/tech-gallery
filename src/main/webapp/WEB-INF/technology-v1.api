@@ -24,7 +24,7 @@
     "maxAge" : 0
   },
   "methods" : {
-    "technology.technologyEndpoint.getTechnologies" : {
+    "technology.getTechnologies" : {
       "path" : "technology",
       "httpMethod" : "get",
       "authLevel" : "NONE",
@@ -39,7 +39,7 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "technology.add" : {
+    "technology.addTechnology" : {
       "path" : "technology",
       "httpMethod" : "post",
       "authLevel" : "NONE",
