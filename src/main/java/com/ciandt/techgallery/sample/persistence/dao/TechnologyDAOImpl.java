@@ -8,7 +8,7 @@ import com.ciandt.techgallery.sample.persistence.model.Technology;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 
-public class TechnologyDAOImpl extends GenericObjectifyDAO<Technology, Long> implements
+public class TechnologyDAOImpl extends GenericSampleObjectifyDAO<Technology, Long> implements
     TechnologyDAO {
 
   public List<Technology> findTechnologiesByRecommendation(Recommendation recommendation) {

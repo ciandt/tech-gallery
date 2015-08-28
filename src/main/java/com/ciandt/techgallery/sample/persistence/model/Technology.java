@@ -14,7 +14,7 @@ import com.googlecode.objectify.annotation.Index;
  *
  */
 @Entity
-public class Technology extends BaseEntity {
+public class Technology extends SampleBaseEntity {
 
   @Index
   String name;

@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<servlet>
 		<servlet-name>daoExample</servlet-name>
-		<servlet-class>com.ciandt.techgallery.persistence.example.DAOExample</servlet-class>
+		<servlet-class>com.ciandt.techgallery.sample.service.servlet.DAOExample</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>SystemServiceServlet</servlet-name>

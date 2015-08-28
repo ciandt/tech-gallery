@@ -8,5 +8,5 @@ import com.ciandt.techgallery.sample.persistence.model.Recommendation;
  * @author Felipe Goncalves de Castro
  *
  */
-public interface RecommendationDAO extends GenericDAO<Recommendation, Long>{
+public interface RecommendationDAO extends GenericSampleDAO<Recommendation, Long>{
 }

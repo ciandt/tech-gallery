@@ -1,25 +1,26 @@
-package com.ciandt.techgallery.sample.persistence.dao;
+package com.ciandt.techgallery.persistence.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import com.ciandt.techgallery.ofy.OfyService;
-import com.ciandt.techgallery.sample.persistence.model.BaseEntity;
+import com.ciandt.techgallery.sample.persistence.model.SampleBaseEntity;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 
 /**
- * GenericObjectifyDAO methods implementation.
+ * GenericDAOImpl methods implementation.
  * 
  * @author Felipe Goncalves de Castro
  *
  */
-public class GenericObjectifyDAO<T extends BaseEntity, ID extends Serializable> implements
+public class GenericDAOImpl<T extends SampleBaseEntity, ID extends Serializable> implements
     GenericDAO<T, ID> {
   private Class<T> clazz;
 
-  public GenericObjectifyDAO() {
+  @SuppressWarnings("unchecked")
+  public GenericDAOImpl() {
     clazz =
         (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
   }

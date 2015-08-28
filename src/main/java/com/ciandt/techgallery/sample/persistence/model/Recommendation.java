@@ -11,7 +11,7 @@ import com.googlecode.objectify.annotation.Index;
  *
  */
 @Entity
-public class Recommendation extends BaseEntity {
+public class Recommendation extends SampleBaseEntity {
 
   @Index
   String score;
