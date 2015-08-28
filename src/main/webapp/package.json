@@ -1,0 +1,8 @@
+{
+  "name": "techgallery",
+  "version": "0.0.1",
+  "description": "A living Technology Gallery.",
+  "devDependencies": {
+    "bower": "1.5.2"
+  }
+}
