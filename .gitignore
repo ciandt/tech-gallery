@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .idea
 target
 *.iml
@@ -7,3 +8,14 @@ target
 src/main/webapp/lib/*
 src/main/webapp/node/*
 src/main/webapp/node_modules/*
+=======
+.idea
+target
+*.iml
+.project
+.classpath
+.settings
+src/main/webapp/lib/*
+src/main/webapp/node/*
+src/main/webapp/node_modules/*
+>>>>>>> develop
