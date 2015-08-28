@@ -16,16 +16,15 @@ public interface TechnologyService {
    * 
    * @param technology
    * @return
-   * @throws InternalServerErrorException 
+   * @throws InternalServerErrorException
    */
   public Response addTechnology(TechnologyResponse technology) throws InternalServerErrorException;
 
   /**
    * 
-   * @param technologies
    * @return
-   * @throws InternalServerErrorException 
+   * @throws InternalServerErrorException
    */
-  public Response getTechnologies(TechnologiesResponse technologies) throws InternalServerErrorException;
+  public Response getTechnologies() throws InternalServerErrorException;
 
 }

@@ -4,7 +4,6 @@ import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -26,26 +25,22 @@ public class TechnologyEndpoint {
    * 
    * @param json with technology info.
    * @return
-   * @throws InternalServerErrorException 
+   * @throws InternalServerErrorException
    */
-  @ApiMethod(name = "", httpMethod = "post")
+  @ApiMethod(name = "add", path = "technology", httpMethod = "post")
   public Response addTechnology(TechnologyResponse technology) throws InternalServerErrorException {
-    Response response = service.addTechnology(technology);
-    return response;
+    return service.addTechnology(technology);
   }
 
   /**
    * Endpoint for getting a list of Technologies.
    * 
-   * @param technologies json with list of technologies.
    * @return
    * @throws InternalServerErrorException
    */
-  @ApiMethod(name = "", httpMethod = "get")
-  public Response getTechnologies(TechnologiesResponse technologies)
-      throws InternalServerErrorException {
-    Response response = service.getTechnologies(technologies);
-    return response;
+  @ApiMethod(name = "", path = "technology", httpMethod = "get")
+  public Response getTechnologies() throws InternalServerErrorException {
+    return service.getTechnologies();
   }
 
 }
