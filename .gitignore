@@ -4,3 +4,6 @@ target
 .project
 .classpath
 .settings
+src/main/webapp/lib/*
+src/main/webapp/node/*
+src/main/webapp/node_modules/*
