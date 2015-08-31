@@ -8,8 +8,8 @@ import com.ciandt.techgallery.sample.persistence.model.TechnologySample;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 
-public class TechnologySampleDAOImpl extends GenericSampleObjectifyDAO<TechnologySample, Long> implements
-    TechnologySampleDAO {
+public class TechnologySampleDAOImpl extends GenericSampleObjectifyDAO<TechnologySample, Long>
+    implements TechnologySampleDAO {
 
   public List<TechnologySample> findTechnologiesByRecommendation(RecommendationSample recommendation) {
     Objectify objectify = OfyService.ofy();

@@ -1,6 +1,6 @@
 package com.ciandt.techgallery.sample.persistence.dao;
 
-import com.ciandt.techgallery.sample.persistence.model.Recommendation;
+import com.ciandt.techgallery.sample.persistence.model.RecommendationSample;
 
 /**
  * RecommendationDAO Interface.
@@ -8,5 +8,5 @@ import com.ciandt.techgallery.sample.persistence.model.Recommendation;
  * @author Felipe Goncalves de Castro
  *
  */
-public interface RecommendationDAO extends GenericDAO<Recommendation, Long>{
+public interface RecommendationSampleDAO extends GenericSampleDAO<RecommendationSample, Long> {
 }
