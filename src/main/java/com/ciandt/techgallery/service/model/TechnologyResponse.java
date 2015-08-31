@@ -12,6 +12,14 @@ public class TechnologyResponse implements Response {
   private Long id;
   /** technology name. */
   private String name;
+  /** technology description. */
+  private String description;
+  /** technology website. */
+  private String website;
+  /** technology author. */
+  private String author;
+  /** technology image. */
+  private String image;
 
   public Long getId() {
     return id;
@@ -28,4 +36,37 @@ public class TechnologyResponse implements Response {
   public void setName(String name) {
     this.name = name;
   }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getWebsite() {
+    return website;
+  }
+
+  public void setWebsite(String website) {
+    this.website = website;
+  }
+
+  public String getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(String author) {
+    this.author = author;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
 }

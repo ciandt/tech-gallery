@@ -17,7 +17,7 @@ import com.google.api.server.spi.response.NotFoundException;
  * @author felipers
  *
  */
-@Api(name = "technology", version = "v1", clientIds = {Constants.WEB_CLIENT_ID})
+@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID})
 public class TechnologyEndpoint {
 
   private TechnologyService service = new TechnologyServiceImpl();
