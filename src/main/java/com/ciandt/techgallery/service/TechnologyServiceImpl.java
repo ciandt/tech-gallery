@@ -98,9 +98,4 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
   
-  public void teste(){
-    //teste
-    // teste 2
-  }
-  
 }
