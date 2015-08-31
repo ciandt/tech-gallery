@@ -39,6 +39,27 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
+    "rest.getTechnology" : {
+      "path" : "technology/{id}",
+      "httpMethod" : "get",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "replace this with your web client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnology",
+      "request" : {
+        "parameters" : {
+          "id" : {
+            "type" : "int64",
+            "required" : true
+          }
+        },
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "rest.addTechnology" : {
       "path" : "technology",
       "httpMethod" : "post",
@@ -92,6 +113,11 @@
     },
     "methods" : {
       "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies" : {
+        "response" : {
+          "$ref" : "Response"
+        }
+      },
+      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnology" : {
         "response" : {
           "$ref" : "Response"
         }
