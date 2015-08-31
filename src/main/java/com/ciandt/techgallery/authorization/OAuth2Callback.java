@@ -1,11 +1,9 @@
 package com.ciandt.techgallery.authorization;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.AuthorizationCodeResponseUrl;
 import com.google.api.client.auth.oauth2.Credential;
@@ -16,12 +14,14 @@ public class OAuth2Callback extends AbstractAppEngineAuthorizationCodeCallbackSe
 
   private static final long serialVersionUID = 1L;
 
+  @Override
   protected void onSuccess(HttpServletRequest req, HttpServletResponse resp, Credential credential)
       throws ServletException, IOException {
     String email = UserServiceFactory.getUserService().getCurrentUser().getEmail();
     resp.sendRedirect("/");
   }
 
+  @Override
   protected void onError(HttpServletRequest req, HttpServletResponse resp,
       AuthorizationCodeResponseUrl errorResponse) throws ServletException, IOException {
     resp.setStatus(200);

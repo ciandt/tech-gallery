@@ -24,6 +24,21 @@
     "maxAge" : 0
   },
   "methods" : {
+    "technology.getTechnologies" : {
+      "path" : "technology",
+      "httpMethod" : "get",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "replace this with your web client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
     "technology.addTechnology" : {
       "path" : "technology",
       "httpMethod" : "post",
@@ -39,25 +54,16 @@
       "response" : {
         "body" : "autoTemplate(backendResponse)"
       }
-    },
-    "technology.getTechnologies" : {
-      "path" : "technology",
-      "httpMethod" : "get",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "replace this with your web client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
     }
   },
   "descriptor" : {
     "schemas" : {
+      "Response" : {
+        "id" : "Response",
+        "type" : "object",
+        "properties" : {
+        }
+      },
       "TechnologyResponse" : {
         "id" : "TechnologyResponse",
         "type" : "object",
@@ -70,24 +76,18 @@
             "type" : "string"
           }
         }
-      },
-      "Response" : {
-        "id" : "Response",
-        "type" : "object",
-        "properties" : {
-        }
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.addTechnology" : {
-        "request" : {
-          "$ref" : "TechnologyResponse"
-        },
+      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies" : {
         "response" : {
           "$ref" : "Response"
         }
       },
-      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies" : {
+      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.addTechnology" : {
+        "request" : {
+          "$ref" : "TechnologyResponse"
+        },
         "response" : {
           "$ref" : "Response"
         }
