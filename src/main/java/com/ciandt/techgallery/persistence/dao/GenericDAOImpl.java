@@ -15,21 +15,24 @@ import com.googlecode.objectify.Objectify;
  * @author Felipe Goncalves de Castro
  *
  */
-public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable> implements
-    GenericDAO<T, ID> {
+public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable>
+    implements GenericDAO<T, ID> {
 
   private Class<T> clazz;
 
   @SuppressWarnings("unchecked")
   public GenericDAOImpl() {
-    clazz =
-        (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
+        .getActualTypeArguments()[0];
   }
 
   @Override
   public List<T> findAll() {
     Objectify objectify = OfyService.ofy();
     List<T> entities = objectify.load().type(clazz).list();
+    if (entities == null || entities.size() <= 0) {
+      return null;
+    }
     return entities;
   }
 
