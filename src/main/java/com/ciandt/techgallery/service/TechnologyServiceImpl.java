@@ -97,5 +97,9 @@ public class TechnologyServiceImpl implements TechnologyService {
       return response;
     }
   }
-
+  
+  public void teste(){
+    //teste
+  }
+  
 }
