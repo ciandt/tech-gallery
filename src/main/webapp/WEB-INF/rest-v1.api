@@ -39,7 +39,6 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-<<<<<<< HEAD
     "rest.addTechnology" : {
       "path" : "technology",
       "httpMethod" : "post",
@@ -93,87 +92,6 @@
     },
     "methods" : {
       "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies" : {
-=======
-    "rest.getTechnology" : {
-      "path" : "technology/{id}",
-      "httpMethod" : "get",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "replace this with your web client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnology",
-      "request" : {
-        "parameters" : {
-          "id" : {
-            "type" : "int64",
-            "required" : true
-          }
-        },
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
-    "rest.addTechnology" : {
-      "path" : "technology",
-      "httpMethod" : "post",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "replace this with your web client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.addTechnology",
-      "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    }
-  },
-  "descriptor" : {
-    "schemas" : {
-      "Response" : {
-        "id" : "Response",
-        "type" : "object",
-        "properties" : {
-        }
-      },
-      "TechnologyResponse" : {
-        "id" : "TechnologyResponse",
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "int64"
-          },
-          "name" : {
-            "type" : "string"
-          },
-          "description" : {
-            "type" : "string"
-          },
-          "website" : {
-            "type" : "string"
-          },
-          "author" : {
-            "type" : "string"
-          },
-          "image" : {
-            "type" : "string"
-          }
-        }
-      }
-    },
-    "methods" : {
-      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies" : {
-        "response" : {
-          "$ref" : "Response"
-        }
-      },
-      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnology" : {
->>>>>>> refs/remotes/origin/develop
         "response" : {
           "$ref" : "Response"
         }
