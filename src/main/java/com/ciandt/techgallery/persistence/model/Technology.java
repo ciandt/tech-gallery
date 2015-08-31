@@ -15,7 +15,7 @@ import com.googlecode.objectify.annotation.Unindex;
 public class Technology extends BaseEntity<Long> {
 
   @Id
-  Long id;
+  private Long id;
 
   @Index
   private String name;
@@ -28,6 +28,9 @@ public class Technology extends BaseEntity<Long> {
 
   @Unindex
   private String author;
+
+  @Unindex
+  private String image;
 
   @Override
   public Long getId() {
@@ -69,6 +72,14 @@ public class Technology extends BaseEntity<Long> {
 
   public void setAuthor(String author) {
     this.author = author;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
   }
 
 }

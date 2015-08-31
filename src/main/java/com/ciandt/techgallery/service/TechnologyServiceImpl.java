@@ -27,15 +27,20 @@ public class TechnologyServiceImpl implements TechnologyService {
    * POST for adding a technology.
    */
   @Override
-  public Response addTechnology(TechnologyResponse technology) throws InternalServerErrorException,
-      BadRequestException {
+  public Response addTechnology(TechnologyResponse technology)
+      throws InternalServerErrorException, BadRequestException {
     String techName = technology.getName();
 
+    // technology name can't be null or empty
     if (techName == null || techName.equals("")) {
       throw new BadRequestException("Technology's name cannot be blank.");
     } else {
       Technology entity = new Technology();
       entity.setName(techName);
+      entity.setDescription(technology.getDescription());
+      entity.setAuthor(technology.getAuthor());
+      entity.setWebsite(technology.getWebsite());
+      entity.setImage(technology.getImage());
       technologyDAO.add(entity);
       // set the id and return it
       technology.setId(entity.getId());
@@ -60,6 +65,10 @@ public class TechnologyServiceImpl implements TechnologyService {
         TechnologyResponse techResponseItem = new TechnologyResponse();
         techResponseItem.setId(tech.getId());
         techResponseItem.setName(tech.getName());
+        techResponseItem.setAuthor(tech.getAuthor());
+        techResponseItem.setDescription(tech.getDescription());
+        techResponseItem.setImage(tech.getImage());
+        techResponseItem.setWebsite(tech.getWebsite());
         internList.add(techResponseItem);
       }
       response.setTechnologies(internList);
