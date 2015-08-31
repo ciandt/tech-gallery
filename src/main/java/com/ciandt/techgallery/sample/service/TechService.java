@@ -1,6 +1,6 @@
 package com.ciandt.techgallery.sample.service;
 
-import com.ciandt.techgallery.sample.persistence.model.Technology;
+import com.ciandt.techgallery.sample.persistence.model.TechnologySample;
 import com.ciandt.techgallery.sample.service.model.TechResponse;
 
 /**
@@ -9,6 +9,6 @@ import com.ciandt.techgallery.sample.service.model.TechResponse;
  * @author Felipe Goncalves de Castro
  *
  */
-public interface TechService extends Service<TechResponse, Technology, Long> {
+public interface TechService extends Service<TechResponse, TechnologySample, Long> {
 
 }

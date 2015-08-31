@@ -2,7 +2,7 @@
   "extends" : "thirdParty.api",
   "abstract" : false,
   "root" : "https://tech-gallery.appspot.com/_ah/api",
-  "name" : "userGroupEndpointImpl",
+  "name" : "technology",
   "version" : "v1",
   "defaultVersion" : false,
   "adapter" : {
@@ -24,14 +24,14 @@
     "maxAge" : 0
   },
   "methods" : {
-    "userGroupEndpointImpl.userGroup.inserts" : {
-      "path" : "usergroup",
+    "technology.addTechnology" : {
+      "path" : "technology",
       "httpMethod" : "post",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ "replace this with your web client ID" ],
-      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl.insertUserGroup",
+      "audiences" : [ ],
+      "clientIds" : [ "replace this with your web client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.addTechnology",
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
@@ -40,14 +40,14 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "userGroupEndpointImpl.userGroupEndpointImpl.listUsers" : {
-      "path" : "usergroup",
-      "httpMethod" : "GET",
+    "technology.getTechnologies" : {
+      "path" : "technology",
+      "httpMethod" : "get",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ "replace this with your web client ID" ],
-      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl.listUsers",
+      "audiences" : [ ],
+      "clientIds" : [ "replace this with your web client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies",
       "request" : {
         "body" : "empty"
       },
@@ -58,8 +58,8 @@
   },
   "descriptor" : {
     "schemas" : {
-      "UserGroup" : {
-        "id" : "UserGroup",
+      "TechnologyResponse" : {
+        "id" : "TechnologyResponse",
         "type" : "object",
         "properties" : {
           "id" : {
@@ -71,31 +71,25 @@
           }
         }
       },
-      "UserGroupCollection" : {
-        "id" : "UserGroupCollection",
+      "Response" : {
+        "id" : "Response",
         "type" : "object",
         "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "UserGroup"
-            }
-          }
         }
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl.insertUserGroup" : {
+      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.addTechnology" : {
         "request" : {
-          "$ref" : "UserGroup"
+          "$ref" : "TechnologyResponse"
         },
         "response" : {
-          "$ref" : "UserGroup"
+          "$ref" : "Response"
         }
       },
-      "com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl.listUsers" : {
+      "com.ciandt.techgallery.service.endpoint.TechnologyEndpoint.getTechnologies" : {
         "response" : {
-          "$ref" : "UserGroupCollection"
+          "$ref" : "Response"
         }
       }
     }
