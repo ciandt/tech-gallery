@@ -7,6 +7,7 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -46,6 +47,18 @@ public class TechnologyEndpoint {
   @ApiMethod(name = "getTechnologies", path = "technology", httpMethod = "get")
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
     return service.getTechnologies();
+  }
+
+  /**
+   * Endpoint for getting a Technology.
+   * 
+   * @param id entity id.
+   * @return
+   * @throws NotFoundException
+   */
+  @ApiMethod(name = "getTechnology", path = "technology/{id}", httpMethod = "get")
+  public Response getTechnology(@Named("id") Long id) throws NotFoundException {
+    return service.getTechnology(id);
   }
 
 }

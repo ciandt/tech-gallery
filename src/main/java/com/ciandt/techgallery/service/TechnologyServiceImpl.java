@@ -54,6 +54,7 @@ public class TechnologyServiceImpl implements TechnologyService {
   @Override
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
     List<Technology> techEntities = technologyDAO.findAll();
+    // if list is null, return a not found exception
     if (techEntities == null) {
       throw new NotFoundException("No technology was found.");
     } else {
@@ -76,4 +77,25 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
+  /**
+   * GET for getting one technology.
+   */
+  @Override
+  public Response getTechnology(Long id) throws NotFoundException {
+    Technology techEntity = technologyDAO.findById(id);
+    // if technology is null, return a not found exception
+    if (techEntity == null) {
+      throw new NotFoundException("No technology was found.");
+    } else {
+      TechnologyResponse response = new TechnologyResponse();
+      response.setId(techEntity.getId());
+      response.setName(techEntity.getName());
+      response.setAuthor(techEntity.getAuthor());
+      response.setDescription(techEntity.getDescription());
+      response.setImage(techEntity.getImage());
+      response.setWebsite(techEntity.getWebsite());
+      return response;
+    }
+  }
+  
 }
