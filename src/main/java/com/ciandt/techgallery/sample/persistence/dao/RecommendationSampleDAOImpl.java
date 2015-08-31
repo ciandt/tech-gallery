@@ -1,6 +1,6 @@
 package com.ciandt.techgallery.sample.persistence.dao;
 
-import com.ciandt.techgallery.sample.persistence.model.Recommendation;
+import com.ciandt.techgallery.sample.persistence.model.RecommendationSample;
 
 /**
  * RecommendationDAO methods Implementation.
@@ -8,7 +8,7 @@ import com.ciandt.techgallery.sample.persistence.model.Recommendation;
  * @author Felipe Goncalves de Castro
  *
  */
-public class RecommendationDAOImpl extends GenericObjectifyDAO<Recommendation, Long> implements
-    RecommendationDAO {
+public class RecommendationSampleDAOImpl extends GenericSampleObjectifyDAO<RecommendationSample, Long>
+    implements RecommendationSampleDAO {
 
 }
