@@ -32,8 +32,8 @@ public class UserEndpoint {
    * @throws BadRequestException
    */
   @ApiMethod(name = "addUser", path = "user", httpMethod = "post")
-  public Response addUser(UserResponse user)
-      throws InternalServerErrorException, BadRequestException {
+  public Response addUser(UserResponse user) throws InternalServerErrorException,
+      BadRequestException {
     return service.addUser(user);
   }
 
@@ -58,6 +58,18 @@ public class UserEndpoint {
   @ApiMethod(name = "getUser", path = "user/{id}", httpMethod = "get")
   public Response getUser(@Named("id") Long id) throws NotFoundException {
     return service.getUser(id);
+  }
+
+  /**
+   * Endpoint for getting a User by its Login.
+   * 
+   * @param id entity id.
+   * @return
+   * @throws NotFoundException
+   */
+  @ApiMethod(name = "getUserByLogin", path = "userByLogin/{login}", httpMethod = "get")
+  public Response getUserByLogin(@Named("login") String login) throws NotFoundException {
+    return service.getUserByLogin(login);
   }
 
 }

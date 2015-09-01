@@ -11,4 +11,9 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 public interface UserDAO extends GenericDAO<TechGalleryUser, Long> {
 
   public void updateProfilePicture(TechGalleryUser user, String picture);
+
+  /**
+   * Method that searches user by its email(used to authenticate into the app)
+   */
+  public TechGalleryUser findByLogin(String email);
 }

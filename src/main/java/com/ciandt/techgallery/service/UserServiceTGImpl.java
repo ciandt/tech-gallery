@@ -11,9 +11,6 @@ import com.ciandt.techgallery.service.model.UserResponse;
 import com.ciandt.techgallery.service.model.UsersResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 
 public class UserServiceTGImpl implements UserServiceTG {
 
@@ -79,7 +76,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     }
     // user obligatory information
     String userName = user.getName();
-    String userEmail = user.getName();
+    String userEmail = user.getEmail();
     // user's name cannot be blank
     if (userName == null || userName.equals("")) {
       throw new BadRequestException("User's name cannot be blank.");
@@ -111,6 +108,25 @@ public class UserServiceTGImpl implements UserServiceTG {
   public Response updateUser(final UserResponse user) {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  /**
+   * GET for getting an user by its login.
+   */
+  @Override
+  public Response getUserByLogin(final String login) throws NotFoundException {
+    TechGalleryUser userEntity = userDAO.findByLogin(login);
+    // if user is null, return a not found exception
+    if (userEntity == null) {
+      throw new NotFoundException("No user was found.");
+    } else {
+      UserResponse response = new UserResponse();
+      response.setId(userEntity.getId());
+      response.setName(userEntity.getName());
+      response.setEmail(userEntity.getEmail());
+      response.setPhoto(userEntity.getPhoto());
+      return response;
+    }
   }
 
 }

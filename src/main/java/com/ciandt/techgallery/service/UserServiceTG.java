@@ -35,7 +35,7 @@ public interface UserServiceTG {
    * 
    * @param user json with user info.
    * @return user info or message error.
-   * @throws BadRequestException 
+   * @throws BadRequestException
    */
   public Response addUser(final UserResponse user) throws BadRequestException;
 
@@ -46,5 +46,14 @@ public interface UserServiceTG {
    * @return user info or message error.
    */
   public Response updateUser(final UserResponse user);
+
+  /**
+   * Service for getting an User by its Login.
+   * 
+   * @param id entity id.
+   * @return
+   * @throws NotFoundException
+   */
+  public Response getUserByLogin(final String user) throws NotFoundException;
 
 }
