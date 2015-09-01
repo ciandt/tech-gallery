@@ -22,7 +22,7 @@ public interface TechnologyService {
    * @throws InternalServerErrorException
    * @throws BadRequestException
    */
-  public Response addTechnology(TechnologyResponse technology)
+  public Response addTechnology(final TechnologyResponse technology)
       throws InternalServerErrorException, BadRequestException;
 
   /**
@@ -33,5 +33,14 @@ public interface TechnologyService {
    * @throws NotFoundException
    */
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException;
+
+  /**
+   * Service for getting a technology.
+   * 
+   * @param id entity id.
+   * @return
+   * @throws NotFoundException
+   */
+  public Response getTechnology(final Long id) throws NotFoundException;
 
 }
