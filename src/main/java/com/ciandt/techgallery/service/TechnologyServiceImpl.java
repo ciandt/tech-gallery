@@ -9,6 +9,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
+import com.ciandt.techgallery.utils.I18n;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -33,7 +34,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     // technology name can't be null or empty
     if (techName == null || techName.equals("")) {
-      throw new BadRequestException("Technology's name cannot be blank.");
+      throw new BadRequestException(I18n.getInstance().t("Technology's name cannot be blank."));
     } else {
       Technology entity = new Technology();
       entity.setName(techName);
@@ -56,7 +57,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     List<Technology> techEntities = technologyDAO.findAll();
     // if list is null, return a not found exception
     if (techEntities == null) {
-      throw new NotFoundException("No technology was found.");
+      throw new NotFoundException(I18n.getInstance().t("No technology was found."));
     } else {
       TechnologiesResponse response = new TechnologiesResponse();
       List<TechnologyResponse> internList = new ArrayList<TechnologyResponse>();
@@ -85,7 +86,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     Technology techEntity = technologyDAO.findById(id);
     // if technology is null, return a not found exception
     if (techEntity == null) {
-      throw new NotFoundException("No technology was found.");
+      throw new NotFoundException(I18n.getInstance().t("No technology was found."));
     } else {
       TechnologyResponse response = new TechnologyResponse();
       response.setId(techEntity.getId());
