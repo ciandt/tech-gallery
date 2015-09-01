@@ -24,7 +24,7 @@ public class OAuthUtils {
 
   // Client secret must be stored as a resource and included in the build.
   // Can never be committed along with code
-  private static final String CLIENTSECRETS = "techgallerysecrets.json";// "edu-tech-gallery-secret.json";
+  private static final String CLIENTSECRETS = "client_secrets.json";// "edu-tech-gallery-secret.json";
 
   public static List<String> getScopes() {
     return SCOPES;
