@@ -30,12 +30,13 @@ angular
                     $scope.redirectUrl = function(techId) {
                         var host = 'http://' + location.host;
                         var path = location.pathname;
-                        if(path === '/'){
+                        if (path === '/') {
                             path = '';
                         }
                         var servletRedirect = '/viewTech'
                         var queryString = '?id=';
-                        return host + path + servletRedirect + queryString + techId;
+                        return host + path + servletRedirect + queryString
+                                + techId;
                     };
 
                     function getTechList() {
@@ -68,34 +69,34 @@ angular
                     };
 
                     function mockList() {
-                        var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
+                        var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lÃ¡ , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
                         var list = [ {
-                            id: 1,
+                            id : 1,
                             name : "Angular",
                             desc : descr,
                             image : "/image/ANGULAR.png"
                         }, {
-                            id: 2,
+                            id : 2,
                             name : "Google App Engine",
                             desc : descr,
                             image : "/image/GAE.png"
                         }, {
-                            id: 3,
+                            id : 3,
                             name : "Google Compute Engine",
                             desc : descr,
                             image : "/image/GCE.png"
                         }, {
-                            id: 4,
+                            id : 4,
                             name : "Google Cloud Storage",
                             desc : descr,
                             image : "/image/GCS.png"
                         }, {
-                            id: 5,
+                            id : 5,
                             name : "Google Big Query",
                             desc : descr,
                             image : "/image/BQ.png"
                         }, {
-                            id: 6,
+                            id : 6,
                             name : "BootStrap",
                             desc : descr,
                             image : "/image/BOOT.png"
@@ -115,14 +116,21 @@ angular
                     ;
                 });
 
-angular.module('techGallery').controller('techDetailsController',
-        function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
-            var id = getParameterByName('id');
-            alert(id);
-            function getParameterByName(name) {
-                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                    results = regex.exec(location.search);
-                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-            }
-        });
+angular
+        .module('techGallery')
+        .controller(
+                'techDetailsController',
+                function($scope, $http, $location, $routeParams, $timeout,
+                        $rootScope) {
+                    var id = getParameterByName('id');
+                    alert(id);
+                    function getParameterByName(name) {
+                        name = name.replace(/[\[]/, "\\[").replace(/[\]]/,
+                                "\\]");
+                        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex
+                                .exec(location.search);
+                        return results === null ? ""
+                                : decodeURIComponent(results[1].replace(/\+/g,
+                                        " "));
+                    }
+                });
