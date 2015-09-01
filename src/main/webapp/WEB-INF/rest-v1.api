@@ -24,21 +24,6 @@
     "maxAge" : 0
   },
   "methods" : {
-    "rest.getUsers" : {
-      "path" : "user",
-      "httpMethod" : "get",
-      "authLevel" : "NONE",
-      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
-      "audiences" : [ ],
-      "clientIds" : [ "replace this with your web client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.UserEndpoint.getUsers",
-      "request" : {
-        "body" : "empty"
-      },
-      "response" : {
-        "body" : "autoTemplate(backendResponse)"
-      }
-    },
     "rest.addUser" : {
       "path" : "user",
       "httpMethod" : "post",
@@ -50,6 +35,21 @@
       "request" : {
         "body" : "autoTemplate(backendRequest)",
         "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "rest.getUsers" : {
+      "path" : "user",
+      "httpMethod" : "get",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ ],
+      "clientIds" : [ "replace this with your web client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.UserEndpoint.getUsers",
+      "request" : {
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -179,17 +179,16 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "rest.addEndorsement" : {
+    "rest.getEndorsements" : {
       "path" : "endorsement",
-      "httpMethod" : "post",
+      "httpMethod" : "get",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "replace this with your web client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.EndorsementEndpoint.addEndorsement",
+      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.EndorsementEndpoint.getEndorsements",
       "request" : {
-        "body" : "autoTemplate(backendRequest)",
-        "bodyName" : "resource"
+        "body" : "empty"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -216,16 +215,17 @@
         "body" : "autoTemplate(backendResponse)"
       }
     },
-    "rest.getEndorsements" : {
+    "rest.addEndorsement" : {
       "path" : "endorsement",
-      "httpMethod" : "get",
+      "httpMethod" : "post",
       "authLevel" : "NONE",
       "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
       "audiences" : [ ],
       "clientIds" : [ "replace this with your web client ID" ],
-      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.EndorsementEndpoint.getEndorsements",
+      "rosyMethod" : "com.ciandt.techgallery.service.endpoint.EndorsementEndpoint.addEndorsement",
       "request" : {
-        "body" : "empty"
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
       },
       "response" : {
         "body" : "autoTemplate(backendResponse)"
@@ -234,12 +234,6 @@
   },
   "descriptor" : {
     "schemas" : {
-      "Response" : {
-        "id" : "Response",
-        "type" : "object",
-        "properties" : {
-        }
-      },
       "UserResponse" : {
         "id" : "UserResponse",
         "type" : "object",
@@ -257,6 +251,12 @@
           "photo" : {
             "type" : "string"
           }
+        }
+      },
+      "Response" : {
+        "id" : "Response",
+        "type" : "object",
+        "properties" : {
         }
       },
       "TechnologyResponse" : {
@@ -315,15 +315,15 @@
       }
     },
     "methods" : {
-      "com.ciandt.techgallery.service.endpoint.UserEndpoint.getUsers" : {
-        "response" : {
-          "$ref" : "Response"
-        }
-      },
       "com.ciandt.techgallery.service.endpoint.UserEndpoint.addUser" : {
         "request" : {
           "$ref" : "UserResponse"
         },
+        "response" : {
+          "$ref" : "Response"
+        }
+      },
+      "com.ciandt.techgallery.service.endpoint.UserEndpoint.getUsers" : {
         "response" : {
           "$ref" : "Response"
         }
@@ -366,10 +366,7 @@
           "$ref" : "Response"
         }
       },
-      "com.ciandt.techgallery.service.endpoint.EndorsementEndpoint.addEndorsement" : {
-        "request" : {
-          "$ref" : "EndorsementResponse"
-        },
+      "com.ciandt.techgallery.service.endpoint.EndorsementEndpoint.getEndorsements" : {
         "response" : {
           "$ref" : "Response"
         }
@@ -379,7 +376,10 @@
           "$ref" : "Response"
         }
       },
-      "com.ciandt.techgallery.service.endpoint.EndorsementEndpoint.getEndorsements" : {
+      "com.ciandt.techgallery.service.endpoint.EndorsementEndpoint.addEndorsement" : {
+        "request" : {
+          "$ref" : "EndorsementResponse"
+        },
         "response" : {
           "$ref" : "Response"
         }

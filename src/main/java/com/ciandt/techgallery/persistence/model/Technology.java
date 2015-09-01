@@ -35,8 +35,9 @@ public class Technology extends BaseEntity<String> {
   @Unindex
   private String image;
 
+  /** company recommendation info. */
   @Unindex
-  private String citRecommendation;
+  private String recommendation;
 
   @Override
   public String getId() {
@@ -96,12 +97,12 @@ public class Technology extends BaseEntity<String> {
     this.image = image;
   }
 
-  public String getCitRecommendation() {
-    return citRecommendation;
+  public String getRecommendation() {
+    return recommendation;
   }
 
-  public void setCitRecommendation(String citRecommendation) {
-    this.citRecommendation = citRecommendation;
+  public void setRecommendation(String recommendation) {
+    this.recommendation = recommendation;
   }
 
 }
