@@ -27,32 +27,24 @@ angular
                         getTechList();
                     }, 200);
 
+                    $scope.redirectUrl = function(techId) {
+                        var host = 'http://' + location.host;
+                        var path = location.pathname;
+                        if (path === '/') {
+                            path = '';
+                        }
+                        var servletRedirect = '/viewTech'
+                        var queryString = '?id=';
+                        return host + path + servletRedirect + queryString
+                                + techId;
+                    };
+
                     function getTechList() {
                         var host = location.host;
                         var complement = '/_ah/api/';
                         var rootUrl = 'http://' + host + complement;
                         gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
                         // mockList();
-                    };
-
-                    function adjustPagination() {
-                        $scope.currentPage = 1;
-                        $scope.pageSize = 4;
-                        $scope.getPage();
-                    };
-
-                    $scope.getPage = function() {
-                        if ($scope.techList) {
-                            var begin = (($scope.currentPage - 1) * $scope.pageSize);
-                            var end = begin + $scope.pageSize;
-                            $scope.totalItems = $scope.techList.length;
-                            $scope.techListFiltered = $scope.techList.slice(
-                                    begin, end);
-                        }
-                    };
-
-                    $scope.pageChanged = function() {
-                        $scope.getPage();
                     };
 
                     function mockList() {
@@ -96,15 +88,21 @@ angular
                     ;
                 });
 
-angular.module('techGallery').controller('techDetailsController',
-        function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
-            alert($rootScope.techId);
-
-            function fillTechnology() {
-            }
-            ;
-
-            function mockTechnology() {
-                var technology = {};
-            }
-        });
+angular
+        .module('techGallery')
+        .controller(
+                'techDetailsController',
+                function($scope, $http, $location, $routeParams, $timeout,
+                        $rootScope) {
+                    var id = getParameterByName('id');
+                    alert(id);
+                    function getParameterByName(name) {
+                        name = name.replace(/[\[]/, "\\[").replace(/[\]]/,
+                                "\\]");
+                        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex
+                                .exec(location.search);
+                        return results === null ? ""
+                                : decodeURIComponent(results[1].replace(/\+/g,
+                                        " "));
+                    }
+                });
