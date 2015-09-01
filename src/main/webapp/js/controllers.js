@@ -16,85 +16,95 @@
 
 'use strict';
 
-angular.module('techGallery').controller('techListController', function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
+angular
+        .module('techGallery')
+        .controller(
+                'techListController',
+                function($scope, $http, $location, $routeParams, $timeout,
+                        $rootScope) {
 
-			$timeout(function() {
-				getTechList();
-			}, 200);
+                    $timeout(function() {
+                        getTechList();
+                    }, 200);
 
-			function getTechList() {
-				gapi.client.load('rest', 'v1', callBackLoaded,
-						'http://localhost:8888/_ah/api/');
-//			    mockList();
-			};
-			
-			function adjustPagination() {
-				$scope.currentPage = 1;
-				$scope.pageSize = 4;
-				$scope.getPage();
-			};
-			
-			$scope.getPage = function() {
-				if ($scope.techList) {
-					var begin = (($scope.currentPage - 1) * $scope.pageSize);
-					var end = begin + $scope.pageSize;
-					$scope.totalItems = $scope.techList.length;
-					$scope.techListFiltered = $scope.techList.slice(begin, end);
-				}
-			};
-			
-			$scope.pageChanged = function() {
-				$scope.getPage();
-			};
-			
-			function mockList() {
-				var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
-				var list = [ {
-					name : "Angular",
-					desc : descr,
-					image : "/image/ANGULAR.png"
-				}, {
-					name : "Google App Engine",
-					desc : descr,
-					image : "/image/GAE.png"
-				}, {
-					name : "Google Compute Engine",
-					desc : descr,
-					image : "/image/GCE.png"
-				}, {
-					name : "Google Cloud Storage",
-					desc : descr,
-					image : "/image/GCS.png"
-				}, {
-					name : "Google Big Query",
-					desc : descr,
-					image : "/image/BQ.png"
-				}, {
-					name : "BootStrap",
-					desc : descr,
-					image : "/image/BOOT.png"
-				} ];
-				$scope.techList = list;
-			};
-			
-			function callBackLoaded() {
-				gapi.client.rest.getTechnologies()
-						.execute(function(data) {
-							$scope.techList = data.technologies;
-							adjustPagination();
-							$scope.$apply();
-						});
-			};
-		});
+                    function getTechList() {
+                        var host = location.host;
+                        var complement = '/_ah/api/';
+                        var rootUrl = 'http://' + host + complement;
+                        gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
+                        // mockList();
+                    };
 
+                    function adjustPagination() {
+                        $scope.currentPage = 1;
+                        $scope.pageSize = 4;
+                        $scope.getPage();
+                    };
 
-angular.module('techGallery').controller('techDetailsController', function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
-                  			alert($rootScope.techId);
-                  			
-                  			function fillTechnology(){};
-                  			
-                  			function mockTechnology(){
-                  				var technology = {};
-                  				
-                  			}
-                  		});
+                    $scope.getPage = function() {
+                        if ($scope.techList) {
+                            var begin = (($scope.currentPage - 1) * $scope.pageSize);
+                            var end = begin + $scope.pageSize;
+                            $scope.totalItems = $scope.techList.length;
+                            $scope.techListFiltered = $scope.techList.slice(
+                                    begin, end);
+                        }
+                    };
+
+                    $scope.pageChanged = function() {
+                        $scope.getPage();
+                    };
+
+                    function mockList() {
+                        var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
+                        var list = [ {
+                            name : "Angular",
+                            desc : descr,
+                            image : "/image/ANGULAR.png"
+                        }, {
+                            name : "Google App Engine",
+                            desc : descr,
+                            image : "/image/GAE.png"
+                        }, {
+                            name : "Google Compute Engine",
+                            desc : descr,
+                            image : "/image/GCE.png"
+                        }, {
+                            name : "Google Cloud Storage",
+                            desc : descr,
+                            image : "/image/GCS.png"
+                        }, {
+                            name : "Google Big Query",
+                            desc : descr,
+                            image : "/image/BQ.png"
+                        }, {
+                            name : "BootStrap",
+                            desc : descr,
+                            image : "/image/BOOT.png"
+                        } ];
+                        $scope.techList = list;
+                    };
+
+                    function callBackLoaded() {
+                        gapi.client.rest.getTechnologies().execute(
+                                function(data) {
+                                    $scope.techList = data.technologies;
+                                    adjustPagination();
+                                    $scope.$apply();
+                                });
+                    }
+                    ;
+                });
+
+angular.module('techGallery').controller('techDetailsController',
+        function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
+            alert($rootScope.techId);
+
+            function fillTechnology() {
+            }
+            ;
+
+            function mockTechnology() {
+                var technology = {};
+            }
+        });
