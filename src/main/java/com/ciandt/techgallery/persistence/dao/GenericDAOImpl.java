@@ -22,8 +22,8 @@ public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable>
 
   @SuppressWarnings("unchecked")
   public GenericDAOImpl() {
-    clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass())
-        .getActualTypeArguments()[0];
+    clazz =
+        (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
   }
 
   @Override

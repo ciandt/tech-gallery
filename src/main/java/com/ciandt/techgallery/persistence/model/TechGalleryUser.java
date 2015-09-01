@@ -15,8 +15,11 @@ import com.googlecode.objectify.annotation.Unindex;
 public class TechGalleryUser extends BaseEntity<Long> {
 
   @Id
-  private Long id;
+  Long id;
 
+  @Index
+  private String gplusId;
+  
   @Index
   private String name;
 
@@ -25,7 +28,7 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   @Unindex
   private String photo;
-
+  
   @Override
   public Long getId() {
     return id;
@@ -34,6 +37,14 @@ public class TechGalleryUser extends BaseEntity<Long> {
   @Override
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getGplusId() {
+    return gplusId;
+  }
+
+  public void setGplusId(String gplusId) {
+    this.gplusId = gplusId;
   }
 
   public String getName() {
