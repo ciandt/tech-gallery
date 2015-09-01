@@ -40,31 +40,11 @@ angular
                     };
 
                     function getTechList() {
-                        gapi.client.load('rest', 'v1', callBackLoaded,
-                                'http://localhost:8888/_ah/api/');
+                        var host = location.host;
+                        var complement = '/_ah/api/';
+                        var rootUrl = 'http://' + host + complement;
+                        gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
                         // mockList();
-                    }
-                    ;
-
-                    function adjustPagination() {
-                        $scope.currentPage = 1;
-                        $scope.pageSize = 4;
-                        $scope.getPage();
-                    }
-                    ;
-
-                    $scope.getPage = function() {
-                        if ($scope.techList) {
-                            var begin = (($scope.currentPage - 1) * $scope.pageSize);
-                            var end = begin + $scope.pageSize;
-                            $scope.totalItems = $scope.techList.length;
-                            $scope.techListFiltered = $scope.techList.slice(
-                                    begin, end);
-                        }
-                    };
-
-                    $scope.pageChanged = function() {
-                        $scope.getPage();
                     };
 
                     function mockList() {
@@ -101,18 +81,15 @@ angular
                             image : "/image/BOOT.png"
                         } ];
                         $scope.techList = list;
-                    }
-                    ;
+                    };
 
                     function callBackLoaded() {
                         gapi.client.rest.getTechnologies().execute(
                                 function(data) {
                                     $scope.techList = data.technologies;
-                                    adjustPagination();
                                     $scope.$apply();
                                 });
-                    }
-                    ;
+                    };
                 });
 
 angular
@@ -121,27 +98,31 @@ angular
                 'techDetailsController',
                 function($scope, $http, $location, $routeParams, $timeout,
                         $rootScope) {
-                    
+
                     $timeout(function() {
                         getTechnollogy();
-                    },200);
-                    
+                    }, 200);
+
                     function getTechnollogy() {
-                        gapi.client.load('rest', 'v1', callBackLoaded,
-                                'http://localhost:8888/_ah/api/');
-//                        mockTechnology();
+                        var host = location.host;
+                        var complement = '/_ah/api/';
+                        var rootUrl = 'http://' + host + complement;
+                        gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
+                        // mockTechnology();
                     };
-                    
-                    function mockTechnology(){
+
+                    function mockTechnology() {
                         $scope.name = "Nome da tecnologia de id ";
                         $scope.description = "Suco de cevadiss, é um leite divinis, qui tem lupuliz, matis, aguis e fermentis. Interagi no mé, cursus quis, vehicula ac nisi. Aenean vel dui dui. Nullam leo erat, aliquet quis tempus a, posuere ut mi. Ut scelerisque neque et turpis posuere pulvinar pellentesque nibh ullamcorper. Pharetra in mattis molestie, volutpat elementum justo. Aenean ut ante turpis. Pellentesque laoreet mé vel lectus scelerisque interdum cursus velit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ac mauris lectus, non scelerisque augue. Aenean justo massa.";
                         $scope.citDesc = "CI&T description";
                         $scope.image = "https://storage.googleapis.com/tech-gallery-assets/imagesLogo/adf.png";
                     };
-                    
+
                     function callBackLoaded() {
                         var idTechnology = getParameterByName('id');
-                        var req = {id:idTechnology};
+                        var req = {
+                            id : idTechnology
+                        };
                         gapi.client.rest.getTechnology(req).execute(
                                 function(data) {
                                     $scope.name = data.name;
@@ -151,7 +132,7 @@ angular
                                     $scope.$apply();
                                 });
                     };
-                    
+
                     function getParameterByName(name) {
                         name = name.replace(/[\[]/, "\\[").replace(/[\]]/,
                                 "\\]");

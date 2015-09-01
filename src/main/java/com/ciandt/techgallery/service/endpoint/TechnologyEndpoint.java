@@ -57,8 +57,9 @@ public class TechnologyEndpoint {
    * @throws NotFoundException
    */
   @ApiMethod(name = "getTechnology", path = "technology/{id}", httpMethod = "get")
-  public Response getTechnology(@Named("id") Long id) throws NotFoundException {
+  public Response getTechnology(@Named("id") String id) throws NotFoundException {
     return service.getTechnology(id);
   }
 
 }
+
