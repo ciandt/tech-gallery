@@ -20,7 +20,7 @@ public class AuthorizeServlet extends AbstractAppEngineAuthorizationCodeServlet 
   public void doGet(HttpServletRequest req, javax.servlet.http.HttpServletResponse resp) throws ServletException ,IOException {
     AuthorizationCodeFlow authFlow = initializeFlow();
     Credential credential = authFlow.loadCredential(getUserId(req));
-    //DO STUFF HERE
+    //Google+ API code grabbing user's photo should come here
         
     
   }

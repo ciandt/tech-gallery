@@ -52,7 +52,7 @@ public class OAuth2Callback extends AbstractAppEngineAuthorizationCodeCallbackSe
       AuthorizationCodeResponseUrl errorResponse) throws ServletException, IOException {
     resp.getWriter().print(
         "<h3>É preciso autorizar o uso do Google+ para ter acesso ao Tech Gallery</h3>");
-    resp.setStatus(200);
+    resp.setStatus(403);
     resp.addHeader("Content-Type", "text/html");
   }
 
