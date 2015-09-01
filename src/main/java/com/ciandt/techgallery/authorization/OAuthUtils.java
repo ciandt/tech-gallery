@@ -74,7 +74,10 @@ public class OAuthUtils {
   }
 
   /**
-   * TODO comment this
+   * Can be used to manually refresh the access token.
+   * When using App Engine libraries this is not necessary as
+   * they refresh the access token automatically when they are
+   * about to expire
    * 
    * @param user
    * @throws IOException
