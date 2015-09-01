@@ -8,6 +8,10 @@
         <servlet-class>com.ciandt.techgallery.sample.service.servlet.DAOExample</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>viewTech</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.ViewTech</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SystemServiceServlet</servlet-name>
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
@@ -20,11 +24,15 @@
         <url-pattern>/daoExample</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>viewTech</servlet-name>
+        <url-pattern>/viewTech</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>SystemServiceServlet</servlet-name>
         <url-pattern>/_ah/spi/*</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>techList.html</welcome-file>
     </welcome-file-list>
 
     <filter>
