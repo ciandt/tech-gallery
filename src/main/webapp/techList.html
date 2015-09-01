@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" style="background-color: #DDD" ng-app="techGallery"
+    ng-cloak>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/app.css" />
+<link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet">
+<script src="https://apis.google.com/js/client.js?onload=init"></script>
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+<script src="lib/angular-route/angular-route.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/services.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/directives.js"></script>
+</head>
+<body ng-controller="techListController">
+    <div class="page-header" style="background-color: #DDD">
+        <h1>
+            Technology Gallery <small> - Confira as principais
+                tecnologias do momento</small>
+        </h1>
+    </div>
+    <div>
+        <div>
+            <div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
+                <div class="thumbnail">
+                    <img src={{tech.image}} data-holder-rendered="true"
+                        style="height: 200px; width: 100%; display: block;">
+                    <div class="caption">
+                        <a href={{redirectUrl(tech.id)}}>
+                            <h3>{{tech.name}}</h3>
+                        </a>
+                        <p>{{tech.description}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
