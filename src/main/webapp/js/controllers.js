@@ -81,7 +81,6 @@ angular
                         gapi.client.rest.getTechnologies().execute(
                                 function(data) {
                                     $scope.techList = data.technologies;
-                                    adjustPagination();
                                     $scope.$apply();
                                 });
                     }
