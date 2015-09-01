@@ -10,6 +10,7 @@
     <servlet>
         <servlet-name>Authorize</servlet-name>
         <servlet-class>com.ciandt.techgallery.authorization.AuthorizeServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
         <servlet-name>oauth2Callback</servlet-name>
@@ -30,7 +31,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Authorize</servlet-name>
-        <url-pattern>/authorize</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>oauth2Callback</servlet-name>

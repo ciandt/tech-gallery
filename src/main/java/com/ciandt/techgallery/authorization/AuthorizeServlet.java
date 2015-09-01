@@ -1,15 +1,29 @@
 package com.ciandt.techgallery.authorization;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
+import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
 
 public class AuthorizeServlet extends AbstractAppEngineAuthorizationCodeServlet {
 
   private static final long serialVersionUID = 1L;
 
+  /**
+   * Gets the current user and their credentials 
+   */
+  @Override
+  public void doGet(HttpServletRequest req, javax.servlet.http.HttpServletResponse resp) throws ServletException ,IOException {
+    AuthorizationCodeFlow authFlow = initializeFlow();
+    Credential credential = authFlow.loadCredential(getUserId(req));
+    //DO STUFF HERE
+        
+    
+  }
   /**
    * Is called by Google after the authorization process, with the authorization 
    * token incorporated into the request. The URI must be registered
