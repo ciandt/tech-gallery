@@ -8,16 +8,34 @@
         <servlet-class>com.ciandt.techgallery.sample.service.servlet.DAOExample</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>Authorize</servlet-name>
+        <servlet-class>com.ciandt.techgallery.authorization.AuthorizeServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>oauth2Callback</servlet-name>
+        <servlet-class>com.ciandt.techgallery.authorization.OAuth2Callback</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SystemServiceServlet</servlet-name>
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint</param-value>
+            <param-value>com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl</param-value>
         </init-param>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>daoExample</servlet-name>
         <url-pattern>/daoExample</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Authorize</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>oauth2Callback</servlet-name>
+        <url-pattern>/oauth2callback/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SystemServiceServlet</servlet-name>
@@ -38,4 +56,18 @@
     <listener>
         <listener-class>com.ciandt.techgallery.ofy.OfyService</listener-class>
     </listener>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Authorize</web-resource-name>
+            <description>Authorization Flow</description>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
 </web-app>
