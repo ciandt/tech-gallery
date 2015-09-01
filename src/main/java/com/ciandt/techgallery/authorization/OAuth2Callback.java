@@ -1,6 +1,7 @@
 package com.ciandt.techgallery.authorization;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,23 +18,17 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.plus.Plus;
 import com.google.api.services.plus.model.Person;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 
 public class OAuth2Callback extends AbstractAppEngineAuthorizationCodeCallbackServlet {
 
   private static final long serialVersionUID = 1L;
 
+  private static final Logger log = Logger.getLogger(TechGalleryUser.class.getName());
+  
   @Override
   protected void onSuccess(HttpServletRequest req, HttpServletResponse resp, Credential credential)
       throws ServletException, IOException { 
 
-    UserService userService = UserServiceFactory.getUserService();
-    User user = userService.getCurrentUser();
-    System.out.println("Users API ID: " + user.getUserId());
-    
-    
     Plus plus = new Plus.Builder(new NetHttpTransport(), new JacksonFactory(), credential).setApplicationName("Tech Gallery").build();
     Person mePerson = plus.people().get("me").execute();
     
@@ -45,17 +40,15 @@ public class OAuth2Callback extends AbstractAppEngineAuthorizationCodeCallbackSe
       techGalleryUser.setGplusId(mePerson.getId());
       techGalleryUser.setName(mePerson.getDisplayName());
       techGalleryUser.setPhoto(mePerson.getImage().getUrl());
-      techGalleryUser.setEmail(mePerson.getEmails().get(0).toString());
+      if(mePerson.getEmails() != null)
+        techGalleryUser.setEmail(mePerson.getEmails().get(0).getValue());
       techGalleryUserDAO.add(techGalleryUser);
+      log.info("User created: " + mePerson.getDisplayName());
     } else{
       techGalleryUser.setPhoto(mePerson.getImage().getUrl());
       techGalleryUserDAO.update(techGalleryUser);
+      log.info("User updated: " + mePerson.getDisplayName());
     }
-    
-    System.out.println("ID:\t" + mePerson.getId());
-    System.out.println("Display Name:\t" + mePerson.getDisplayName());
-    System.out.println("Image URL:\t" + mePerson.getImage().getUrl());
-    System.out.println("Profile URL:\t" + mePerson.getUrl());
 
     resp.sendRedirect("/");
   }

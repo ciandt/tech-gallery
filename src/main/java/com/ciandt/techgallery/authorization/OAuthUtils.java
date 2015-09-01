@@ -21,12 +21,12 @@ public class OAuthUtils {
 
   //Client secret must be stored as a resource and included in the build.
   //Can never be committed along with code
-  //private static final String CLIENTSECRETS = "techgallerysecrets.json";
-  private static final String CLIENTSECRETS = "techgallerysecretsTest.json";
+  private static final String CLIENTSECRETS = "techgallerysecrets.json";//"edu-tech-gallery-secret.json";
   private static final String REDIRECT_URI = "/oauth2callback";
   private static final List<String> SCOPES = Arrays.asList(
       "https://www.googleapis.com/auth/plus.me",
-      "https://www.googleapis.com/auth/plus.stream.write");
+      "https://www.googleapis.com/auth/plus.stream.write",
+      "https://www.googleapis.com/auth/plus.profile.emails.read");
   private static GoogleCredential credential = new GoogleCredential();
 
   /**
