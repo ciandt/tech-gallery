@@ -8,6 +8,6 @@ import com.ciandt.techgallery.sample.persistence.model.Sample;
  * @author Felipe Goncalves de Castro
  *
  */
-public interface SampleDAO extends GenericDAO<Sample, Long> {
+public interface SampleDAO extends GenericSampleDAO<Sample, Long> {
 
 }

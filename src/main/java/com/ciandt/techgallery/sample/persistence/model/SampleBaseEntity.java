@@ -8,7 +8,7 @@ import com.googlecode.objectify.annotation.Id;
  * @author Felipe Goncalves de Castro
  *
  */
-public class BaseEntity {
+public class SampleBaseEntity {
 
   @Id
   Long id;

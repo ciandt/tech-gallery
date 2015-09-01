@@ -3,7 +3,7 @@ package com.ciandt.techgallery.sample.service;
 import java.io.Serializable;
 import java.util.List;
 
-import com.ciandt.techgallery.sample.persistence.model.BaseEntity;
+import com.ciandt.techgallery.sample.persistence.model.SampleBaseEntity;
 import com.ciandt.techgallery.sample.service.model.Response;
 import com.googlecode.objectify.Key;
 
@@ -13,7 +13,7 @@ import com.googlecode.objectify.Key;
  * @author Felipe Goncalves de Castro
  *
  */
-public interface Service<R extends Response, T extends BaseEntity, ID extends Serializable> {
+public interface Service<R extends Response, T extends SampleBaseEntity, ID extends Serializable> {
   
   /**
    * Method that return the List of Entities.

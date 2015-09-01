@@ -12,7 +12,7 @@ import com.googlecode.objectify.Key;
  * @author Felipe Goncalves de Castro
  *
  */
-public interface GenericDAO<T, ID extends Serializable> {
+public interface GenericSampleDAO<T, ID extends Serializable> {
 
   /**
    * Method that return a list with all Entities.
