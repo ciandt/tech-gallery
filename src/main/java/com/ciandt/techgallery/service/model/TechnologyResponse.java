@@ -22,8 +22,8 @@ public class TechnologyResponse implements Response {
   private String author;
   /** technology image. */
   private String image;
-  /** technology cit recommendation. */
-  private String citRecommendation;
+  /** technology company recommendation. */
+  private String recommendation;
 
   public String getId() {
     return id;
@@ -81,12 +81,12 @@ public class TechnologyResponse implements Response {
     this.image = image;
   }
 
-  public String getCitRecommendation() {
-    return citRecommendation;
+  public String getRecommendation() {
+    return recommendation;
   }
 
-  public void setCitRecommendation(String citRecommendation) {
-    this.citRecommendation = citRecommendation;
+  public void setRecommendation(String recommendation) {
+    this.recommendation = recommendation;
   }
 
 }
