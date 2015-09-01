@@ -12,13 +12,16 @@ import com.googlecode.objectify.annotation.Unindex;
  *
  */
 @Entity
-public class Technology extends BaseEntity<Long> {
+public class Technology extends BaseEntity<String> {
 
   @Id
-  private Long id;
+  private String id;
 
   @Index
   private String name;
+
+  @Unindex
+  private String shortDescription;
 
   @Unindex
   private String description;
@@ -32,13 +35,17 @@ public class Technology extends BaseEntity<Long> {
   @Unindex
   private String image;
 
+  /** company recommendation info. */
+  @Unindex
+  private String recommendation;
+
   @Override
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
   @Override
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -48,6 +55,14 @@ public class Technology extends BaseEntity<Long> {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getShortDescription() {
+    return shortDescription;
+  }
+
+  public void setShortDescription(String shortDescription) {
+    this.shortDescription = shortDescription;
   }
 
   public String getDescription() {
@@ -80,6 +95,14 @@ public class Technology extends BaseEntity<Long> {
 
   public void setImage(String image) {
     this.image = image;
+  }
+
+  public String getRecommendation() {
+    return recommendation;
+  }
+
+  public void setRecommendation(String recommendation) {
+    this.recommendation = recommendation;
   }
 
 }
