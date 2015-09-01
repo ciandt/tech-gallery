@@ -17,5 +17,26 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-angular.module('techGallery', [ 'techGallery.filters', 'techGallery.services',
-        'techGallery.directives', 'ngSanitize', 'ngRoute', 'ui.bootstrap' ]);
+angular.module(
+		'techGallery',
+		[ 'techGallery.filters', 'techGallery.services',
+				'techGallery.directives', 'ngSanitize', 'ngRoute', 'ui.bootstrap' ])
+				.config(function ($routeProvider, $locationProvider) {
+				    $routeProvider
+				      .when('/techList', {
+				        templateUrl: '/techList.html',
+				        controller: 'techListController'
+				      })
+				      .when('/techDetails', {
+				        templateUrl: '/techDetails.html',
+				        controller: 'techDetailsController'
+				      })
+				      .otherwise({
+				        redirectTo: '/techList'
+				      });
+
+				    $locationProvider.html5Mode({
+                      enabled: true,
+                      requireBase: false
+                    });
+				  });
