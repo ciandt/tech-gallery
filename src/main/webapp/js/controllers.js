@@ -22,15 +22,10 @@ angular.module('techGallery').controller('techListController', function($scope, 
 				getTechList();
 			}, 200);
 
-			$scope.redirect = function(techId) {
-				$rootScope.techId=techId;
-				$location.path('/techDetails');
-			};
-
 			function getTechList() {
-				//gapi.client.load('cardEndpointImpl', 'v1', callBackLoaded,
-				//		'http://localhost:8888/_ah/api/');
-			    mockList();
+				gapi.client.load('rest', 'v1', callBackLoaded,
+						'http://localhost:8888/_ah/api/');
+//			    mockList();
 			};
 			
 			function adjustPagination() {
@@ -83,9 +78,9 @@ angular.module('techGallery').controller('techListController', function($scope, 
 			};
 			
 			function callBackLoaded() {
-				gapi.client.cardEndpointImpl.cardEndpointImpl.listCards()
+				gapi.client.rest.getTechnologies()
 						.execute(function(data) {
-							$scope.techList = data.items;
+							$scope.techList = data.technologies;
 							adjustPagination();
 							$scope.$apply();
 						});
