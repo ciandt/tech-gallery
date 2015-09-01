@@ -15,8 +15,8 @@ import com.googlecode.objectify.Objectify;
  * @author Felipe Goncalves de Castro
  *
  */
-public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable> implements
-    GenericDAO<T, ID> {
+public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable>
+    implements GenericDAO<T, ID> {
 
   private Class<T> clazz;
 
@@ -30,6 +30,9 @@ public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable> i
   public List<T> findAll() {
     Objectify objectify = OfyService.ofy();
     List<T> entities = objectify.load().type(clazz).list();
+    if (entities == null || entities.size() <= 0) {
+      return null;
+    }
     return entities;
   }
 
