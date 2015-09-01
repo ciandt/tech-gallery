@@ -1,0 +1,105 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://tech-gallery.appspot.com/_ah/api",
+  "name" : "techEndpointImpl",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://tech-gallery.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "techEndpointImpl.tech.add" : {
+      "path" : "addTechnology",
+      "httpMethod" : "post",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ "replace this with your web client ID" ],
+      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl.addTechnology",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "TechResponse" : {
+        "id" : "TechResponse",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "recommendations" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "RecResponse"
+            }
+          },
+          "recommendationsResponse" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "RecResponse"
+            }
+          }
+        }
+      },
+      "RecResponse" : {
+        "id" : "RecResponse",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "score" : {
+            "type" : "string"
+          },
+          "technology" : {
+            "$ref" : "TechResponse"
+          }
+        }
+      },
+      "Response" : {
+        "id" : "Response",
+        "type" : "object",
+        "properties" : {
+        }
+      }
+    },
+    "methods" : {
+      "com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl.addTechnology" : {
+        "request" : {
+          "$ref" : "TechResponse"
+        },
+        "response" : {
+          "$ref" : "Response"
+        }
+      }
+    }
+  }
+}

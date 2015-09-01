@@ -1,0 +1,109 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://tech-gallery.appspot.com/_ah/api",
+  "name" : "cardEndpointImpl",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://tech-gallery.appspot.com/_ah/spi",
+    "deadline" : 65.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "cardEndpointImpl.cardEndpointImpl.listCards" : {
+      "path" : "card",
+      "httpMethod" : "GET",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ "replace this with your web client ID" ],
+      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl.listCards",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    },
+    "cardEndpointImpl.card.inserts" : {
+      "path" : "card",
+      "httpMethod" : "post",
+      "authLevel" : "NONE",
+      "scopes" : [ "https://www.googleapis.com/auth/userinfo.email" ],
+      "audiences" : [ "replace this with your web client ID" ],
+      "clientIds" : [ "replace this with your web client ID", "replace this with your Android client ID", "replace this with your iOS client ID" ],
+      "rosyMethod" : "com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl.insertCard",
+      "request" : {
+        "body" : "autoTemplate(backendRequest)",
+        "bodyName" : "resource"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "Card" : {
+        "id" : "Card",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "desc" : {
+            "type" : "string"
+          },
+          "image" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CardCollection" : {
+        "id" : "CardCollection",
+        "type" : "object",
+        "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Card"
+            }
+          }
+        }
+      }
+    },
+    "methods" : {
+      "com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl.listCards" : {
+        "response" : {
+          "$ref" : "CardCollection"
+        }
+      },
+      "com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl.insertCard" : {
+        "request" : {
+          "$ref" : "Card"
+        },
+        "response" : {
+          "$ref" : "Card"
+        }
+      }
+    }
+  }
+}

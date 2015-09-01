@@ -1,0 +1,22 @@
+<div class="page-header" style="background-color: #DDD">
+	<h1>
+		Technology Gallery <small> - Confira as principais tecnologias
+			do momento</small>
+	</h1>
+</div>
+<div>
+	<div>
+		<div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
+			<div class="thumbnail">
+				<img src={{tech.image}} data-holder-rendered="true"
+					style="height: 200px; width: 100%; display: block;">
+				<div class="caption">
+					<a href="#">
+						<h3>{{tech.name}}</h3>
+					</a>
+					<p>{{tech.description}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
