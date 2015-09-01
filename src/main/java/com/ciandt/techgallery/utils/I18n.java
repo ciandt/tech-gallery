@@ -11,8 +11,8 @@ import java.util.ResourceBundle;
  */
 public class I18n {
 	
-	private String language = "pt";
-	private String country = "BR";
+	private String language = "en";
+	private String country = "US";
 	
     static I18n instance = new I18n();
 	
@@ -40,7 +40,7 @@ public class I18n {
 	/**
 	 * @param language the language to set
 	 */
-	public void setLanguage(String language) {
+	public void setLanguage(String language) {	
 		this.language = language;
 	}
 
