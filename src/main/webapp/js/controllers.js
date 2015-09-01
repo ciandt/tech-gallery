@@ -40,75 +40,47 @@ angular
                     };
 
                     function getTechList() {
-                        // gapi.client.load('cardEndpointImpl', 'v1',
-                        // callBackLoaded,
-                        // 'http://localhost:8888/_ah/api/');
-                        mockList();
-                    }
-                    ;
-
-                    function adjustPagination() {
-                        $scope.currentPage = 1;
-                        $scope.pageSize = 4;
-                        $scope.getPage();
-                    }
-                    ;
-
-                    $scope.getPage = function() {
-                        if ($scope.techList) {
-                            var begin = (($scope.currentPage - 1) * $scope.pageSize);
-                            var end = begin + $scope.pageSize;
-                            $scope.totalItems = $scope.techList.length;
-                            $scope.techListFiltered = $scope.techList.slice(
-                                    begin, end);
-                        }
-                    };
-
-                    $scope.pageChanged = function() {
-                        $scope.getPage();
+                        var host = location.host;
+                        var complement = '/_ah/api/';
+                        var rootUrl = 'http://' + host + complement;
+                        gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
+                        // mockList();
                     };
 
                     function mockList() {
-                        var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lÃ¡ , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
+                        var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
                         var list = [ {
-                            id : 1,
                             name : "Angular",
                             desc : descr,
                             image : "/image/ANGULAR.png"
                         }, {
-                            id : 2,
                             name : "Google App Engine",
                             desc : descr,
                             image : "/image/GAE.png"
                         }, {
-                            id : 3,
                             name : "Google Compute Engine",
                             desc : descr,
                             image : "/image/GCE.png"
                         }, {
-                            id : 4,
                             name : "Google Cloud Storage",
                             desc : descr,
                             image : "/image/GCS.png"
                         }, {
-                            id : 5,
                             name : "Google Big Query",
                             desc : descr,
                             image : "/image/BQ.png"
                         }, {
-                            id : 6,
                             name : "BootStrap",
                             desc : descr,
                             image : "/image/BOOT.png"
                         } ];
                         $scope.techList = list;
-                    }
-                    ;
+                    };
 
                     function callBackLoaded() {
-                        gapi.client.cardEndpointImpl.cardEndpointImpl
-                                .listCards().execute(function(data) {
-                                    $scope.techList = data.items;
+                        gapi.client.rest.getTechnologies().execute(
+                                function(data) {
+                                    $scope.techList = data.technologies;
                                     adjustPagination();
                                     $scope.$apply();
                                 });
