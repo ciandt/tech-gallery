@@ -48,7 +48,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       entity.setAuthor(technology.getAuthor());
       entity.setWebsite(technology.getWebsite());
       entity.setImage(technology.getImage());
-      entity.setCitRecommendation(technology.getCitRecommendation());
+      entity.setRecommendation(technology.getCitRecommendation());
       technologyDAO.add(entity);
       // set the id and return it
       technology.setId(entity.getId());
@@ -79,7 +79,7 @@ public class TechnologyServiceImpl implements TechnologyService {
         techResponseItem.setDescription(tech.getDescription());
         techResponseItem.setImage(tech.getImage());
         techResponseItem.setWebsite(tech.getWebsite());
-        techResponseItem.setCitRecommendation(tech.getCitRecommendation());
+        techResponseItem.setCitRecommendation(tech.getRecommendation());
         internList.add(techResponseItem);
       }
       response.setTechnologies(internList);
@@ -105,7 +105,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       response.setDescription(techEntity.getDescription());
       response.setImage(techEntity.getImage());
       response.setWebsite(techEntity.getWebsite());
-      response.setCitRecommendation(techEntity.getCitRecommendation());
+      response.setCitRecommendation(techEntity.getRecommendation());
       return response;
     }
   }
