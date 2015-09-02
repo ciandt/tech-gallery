@@ -2,4 +2,7 @@
 
 .technologydescription {
     text-align: justify;
+    height: 200px;
+    width: 100%;
+    display: block;
 }
