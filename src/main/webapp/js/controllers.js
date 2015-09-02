@@ -45,7 +45,8 @@ angular
                         var rootUrl = 'http://' + host + complement;
                         gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
                         // mockList();
-                    };
+                    }
+                    ;
 
                     function mockList() {
                         var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
@@ -75,7 +76,8 @@ angular
                             image : "/image/BOOT.png"
                         } ];
                         $scope.techList = list;
-                    };
+                    }
+                    ;
 
                     function callBackLoaded() {
                         gapi.client.rest.getTechnologies().execute(
@@ -93,8 +95,78 @@ angular
                 'techDetailsController',
                 function($scope, $http, $location, $routeParams, $timeout,
                         $rootScope) {
-                    var id = getParameterByName('id');
-                    alert(id);
+
+                    $scope.idTechnology = getParameterByName('id');
+                    $scope.domain = "@ciandt.com";
+
+                    var alerts = {
+                        success : {
+                            type : 'success',
+                            msg : 'Indicação efetuada!'
+                        },
+                        failure : {
+                            type : 'error',
+                            msg : 'Usuário não encontrado!'
+                        },
+                        duplicated : {
+                            type : 'warning',
+                            msg : 'Você já fez essa indicação anteriormente!'
+                        },
+                        selfEndorse : {
+                            type : 'warning',
+                            msg : 'Você não pode indicar a si mesmo. Peça para seus colegas fazerem a indicação.'
+                        }
+                        
+                    }
+
+                    $scope.endorse = function() {
+                        var req = {};
+                        req.endorsed = $scope.endorsed + $scope.domain;
+                        req.technology = $scope.idTechnology;
+                        if ($scope.endorsed) {
+                            console.log(req);
+                            $scope.alert = alerts.success;
+                            $scope.endorsed = '';
+                        }
+                    }
+
+                    $timeout(function() {
+                        getTechnollogy();
+                    }, 200);
+
+                    function getTechnollogy() {
+                        var protocol = location.protocol + '//';
+                        var host = location.host;
+                        var complement = '/_ah/api/';
+                        var rootUrl = protocol + host + complement;
+                        gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
+                        // mockTechnology();
+                    }
+
+                    function mockTechnology() {
+                        $scope.name = "Nome da tecnologia de id ";
+                        $scope.description = "Suco de cevadiss, é um leite divinis, qui tem lupuliz, matis, aguis e fermentis. Interagi no mé, cursus quis, vehicula ac nisi. Aenean vel dui dui. Nullam leo erat, aliquet quis tempus a, posuere ut mi. Ut scelerisque neque et turpis posuere pulvinar pellentesque nibh ullamcorper. Pharetra in mattis molestie, volutpat elementum justo. Aenean ut ante turpis. Pellentesque laoreet mé vel lectus scelerisque interdum cursus velit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ac mauris lectus, non scelerisque augue. Aenean justo massa.";
+                        $scope.recommendation = "Digite aqui a recomendação da sua empresa para esta tecnologia";
+                        $scope.image = "https://storage.googleapis.com/tech-gallery-assets/imagesLogo/adf.png";
+                    }
+
+                    function callBackLoaded() {
+                        var idTech = $scope.idTechnology;
+                        var req = {
+                            id : idTech
+                        };
+                        gapi.client.rest
+                                .getTechnology(req)
+                                .execute(
+                                        function(data) {
+                                            $scope.name = data.name;
+                                            $scope.description = data.description;
+                                            $scope.recommendation = data.recommendation;
+                                            $scope.image = data.image;
+                                            $scope.$apply();
+                                        });
+                    }
+
                     function getParameterByName(name) {
                         name = name.replace(/[\[]/, "\\[").replace(/[\]]/,
                                 "\\]");
@@ -103,5 +175,9 @@ angular
                         return results === null ? ""
                                 : decodeURIComponent(results[1].replace(/\+/g,
                                         " "));
+                    }
+
+                    $scope.closeAlert = function() {
+                        $scope.alert = undefined;
                     }
                 });
