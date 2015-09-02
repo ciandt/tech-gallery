@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" style="background-color: #DDD" ng-app="techGallery"
-    ng-cloak>
+<html lang="en" ng-app="techGallery" ng-cloak>
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="css/app.css" />
+<link rel="stylesheet" href="css/techgallery.css" />
 <script src="https://apis.google.com/js/client.js?onload=init"></script>
 <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet">
@@ -18,8 +18,8 @@
 <script src="js/filters.js"></script>
 <script src="js/directives.js"></script>
 </head>
-<body ng-controller="techListController" style="background-color: #ddd;">
-    <div class="page-header" style="background-color: #DDD">
+<body ng-controller="techListController">
+    <div class="page-header">
         <h1>
             Technology Gallery <small> - Confira as principais
                 tecnologias do momento</small>
@@ -30,7 +30,7 @@
             <div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
                 <div class="thumbnail">
                     <img src={{tech.image}} data-holder-rendered="true"
-                        style="height: 200px; width: 100%; display: block;">
+                        class="thumbnail-Image">
                     <div class="caption">
                         <a href={{redirectUrl(tech.id)}}>
                             <h3>{{tech.name}}</h3>
@@ -41,8 +41,8 @@
             </div>
         </div>
     </div>
-    <div style="width: 50%; text-align: center; margin: 0 auto;">
-        <a ng-show="showLogin" href="#" ng-click="login()" class="btn btn-primary"
-                role="button">Login</a>
+    <div class="login-Button">
+        <a ng-show="showLogin" href="#" ng-click="login()"
+            class="btn btn-primary" role="button">Login</a>
     </div>
 </body>
