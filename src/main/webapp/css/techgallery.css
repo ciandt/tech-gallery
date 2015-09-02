@@ -10,3 +10,19 @@
 .spacingtop{
 	margin-top: 2%;	
 }
+
+body, html {
+	background-color: #ddd !important;
+}
+
+.thumbnail-Image {
+	height: 200px;
+	width: 100%;
+	display: block;
+}
+
+.login-Button {
+	width: 50%;
+	text-align: center;
+	margin: 0 auto;
+}
