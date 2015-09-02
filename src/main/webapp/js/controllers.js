@@ -21,22 +21,22 @@ angular.module('techGallery').controller('techListController',
 
             $scope.showLogin = true;
 
-            $scope.login = function() {
+            var executeAuth = function() {
                 $timeout(function() {
                     jsUtils.checkAuth(successFunction);
                 }, 200);
             }
 
+            $scope.login = function() {
+                executeAuth();
+            }
+
             var successFunction = function() {
-                $timeout(function() {
-                    getTechList();
-                }, 200);
+                getTechList();
                 $scope.showLogin = false;
             }
 
-            $timeout(function() {
-                jsUtils.checkAuth(successFunction);
-            }, 200);
+            executeAuth();
 
             $scope.redirectUrl = function(techId) {
                 var protocol = location.protocol + '//';
@@ -67,69 +67,59 @@ angular.module('techGallery').controller('techListController',
             }
         });
 
-angular
-        .module('techGallery')
-        .controller(
-                'techDetailsController',
-                function($scope, $http, $location, $routeParams, $timeout,
-                        $rootScope) {
+angular.module('techGallery').controller('techDetailsController',
+        function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
 
-                    $scope.idTechnology = jsUtils.getParameterByName('id');
-                    
-                    //Fill this property with the domain of your choice
-                    $scope.domain = "@ciandt.com";
+            $scope.idTechnology = jsUtils.getParameterByName('id');
 
-                    var alerts = jsUtils.alerts;
+            //Fill this property with the domain of your choice
+            $scope.domain = "@ciandt.com";
 
-                    $scope.endorse = function() {
-                        var req = {};
-                        req.endorsed = $scope.endorsed + $scope.domain;
-                        req.technology = $scope.idTechnology;
-                        if ($scope.endorsed) {
-                            console.log(req);
-                            $scope.alert = alerts.caution;
-                            $scope.endorsed = '';
-                        }
-                    }
+            var alerts = jsUtils.alerts;
 
-                    var successFunction = function() {
-                        $timeout(function() {
-                            var protocol = location.protocol + '//';
-                            var host = location.host;
-                            var complement = '/_ah/api/';
-                            var rootUrl = protocol + host + complement;
-                            gapi.client.load('rest', 'v1', callBackLoaded,
-                                    rootUrl);
-//                            fillTechnology(jsUtils.mockTechnology());
-                        }, 200);
-                    }
+            $scope.endorse = function() {
+                var req = {};
+                req.endorsed = $scope.endorsed + $scope.domain;
+                req.technology = $scope.idTechnology;
+                if ($scope.endorsed) {
+                    console.log(req);
+                    $scope.alert = alerts.caution;
+                    $scope.endorsed = '';
+                }
+            }
 
-                    $timeout(function() {
-                        jsUtils.checkAuth(successFunction);
-                    }, 200);
+            var successFunction = function() {
+                var protocol = location.protocol + '//';
+                var host = location.host;
+                var complement = '/_ah/api/';
+                var rootUrl = protocol + host + complement;
+                gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
+                //                            fillTechnology(jsUtils.mockTechnology());
+            }
 
-                    function callBackLoaded() {
-                        var idTech = $scope.idTechnology;
-                        var req = {
-                            id : idTech
-                        };
-                        gapi.client.rest
-                                .getTechnology(req)
-                                .execute(
-                                        function(data) {
-                                            fillTechnology(data);
-                                            $scope.$apply();
-                                        });
-                    }
-                    
-                    function fillTechnology(technology){
-                        $scope.name = technology.name;
-                        $scope.description = technology.description;
-                        $scope.recommendation = technology.recommendation;
-                        $scope.image = technology.image;
-                    }
+            $timeout(function() {
+                jsUtils.checkAuth(successFunction);
+            }, 200);
 
-                    $scope.closeAlert = function() {
-                        $scope.alert = undefined;
-                    }
+            function callBackLoaded() {
+                var idTech = $scope.idTechnology;
+                var req = {
+                    id : idTech
+                };
+                gapi.client.rest.getTechnology(req).execute(function(data) {
+                    fillTechnology(data);
+                    $scope.$apply();
                 });
+            }
+
+            function fillTechnology(technology) {
+                $scope.name = technology.name;
+                $scope.description = technology.description;
+                $scope.recommendation = technology.recommendation;
+                $scope.image = technology.image;
+            }
+
+            $scope.closeAlert = function() {
+                $scope.alert = undefined;
+            }
+        });
