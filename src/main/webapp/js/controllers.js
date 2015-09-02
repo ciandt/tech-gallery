@@ -48,7 +48,7 @@ angular
                     };
 
                     function mockList() {
-                        var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lÃ¡ , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
+                        var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá, depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
                         var list = [ {
                             id : 1,
                             name : "Angular",
@@ -114,7 +114,7 @@ angular
                     function mockTechnology() {
                         $scope.name = "Nome da tecnologia de id ";
                         $scope.description = "Suco de cevadiss, é um leite divinis, qui tem lupuliz, matis, aguis e fermentis. Interagi no mé, cursus quis, vehicula ac nisi. Aenean vel dui dui. Nullam leo erat, aliquet quis tempus a, posuere ut mi. Ut scelerisque neque et turpis posuere pulvinar pellentesque nibh ullamcorper. Pharetra in mattis molestie, volutpat elementum justo. Aenean ut ante turpis. Pellentesque laoreet mé vel lectus scelerisque interdum cursus velit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ac mauris lectus, non scelerisque augue. Aenean justo massa.";
-                        $scope.citDesc = "CI&T description";
+                        $scope.enterpriseRecommendation = "Digite aqui a recomendação da sua empresa para esta tecnologia";
                         $scope.image = "https://storage.googleapis.com/tech-gallery-assets/imagesLogo/adf.png";
                     };
 
@@ -127,7 +127,7 @@ angular
                                 function(data) {
                                     $scope.name = data.name;
                                     $scope.description = data.description;
-                                    $scope.citDesc = data.citDesc;
+                                    $scope.enterpriseRecommendation = data.enterpriseRecommendation;
                                     $scope.image = data.image;
                                     $scope.$apply();
                                 });
