@@ -1,7 +1,14 @@
 package com.ciandt.techgallery.service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.ciandt.techgallery.persistence.dao.UserDAO;
 import com.ciandt.techgallery.persistence.dao.UserDAOImpl;
@@ -11,10 +18,12 @@ import com.ciandt.techgallery.service.model.UserResponse;
 import com.ciandt.techgallery.service.model.UsersResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.repackaged.org.codehaus.jackson.map.ObjectMapper;
 
 public class UserServiceTGImpl implements UserServiceTG {
 
   UserDAO userDAO = new UserDAOImpl();
+  static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
 
   /**
    * GET for getting all users.
@@ -85,9 +94,7 @@ public class UserServiceTGImpl implements UserServiceTG {
       if (userEmail == null || userEmail.equals("")) {
         throw new BadRequestException("User's email cannot be blank.");
       } else {
-        // carregar perfil de acordo com seu email
-        // UserService userService = UserServiceFactory.getUserService();
-        // User googleUser = userService.getCurrentUser();
+
         TechGalleryUser userEntity = new TechGalleryUser();
         userEntity.setName(userName);
         userEntity.setEmail(userEmail);
@@ -127,6 +134,36 @@ public class UserServiceTGImpl implements UserServiceTG {
       response.setPhoto(userEntity.getPhoto());
       return response;
     }
+  }
+
+  /**
+   * Uses a user login to get
+   * 
+   * @param userlogin
+   */
+  @Override
+  public Response getUserFromProvider(final String user) throws NotFoundException{
+    String fullRequest = PEOPLE_ENDPOINT + user + "?format=json";
+    try {
+      URL url = new URL(fullRequest);
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      conn.setDoOutput(true);
+      conn.setRequestMethod("GET");
+      conn.setRequestProperty("Authorization", "Basic <USER:PASSWORD all base64 encoded>");
+      ObjectMapper mapper = new ObjectMapper(); 
+      Map<String,Object> userData = mapper.readValue(conn.getInputStream(), Map.class); 
+      UserResponse uResp = new UserResponse();
+      uResp.setEmail((String) userData.get("email"));
+      uResp.setName((String) userData.get("name"));
+      //uResp.set(null);
+    
+    } catch (MalformedURLException e) {
+      //TODO ...
+    } catch (IOException e) {
+      //TODO ...
+    }
+    UserResponse response = new UserResponse();
+    return response;
   }
 
 }

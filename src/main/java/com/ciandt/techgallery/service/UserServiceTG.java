@@ -56,4 +56,13 @@ public interface UserServiceTG {
    */
   public Response getUserByLogin(final String user) throws NotFoundException;
 
-}
+  /**
+   * Service for getting an User from an external provider by its Login.
+   * 
+   * @param id entity id.
+   * @return
+   * @throws NotFoundException
+   */
+  public Response getUserFromProvider(final String user) throws NotFoundException;
+
+  }

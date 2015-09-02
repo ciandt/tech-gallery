@@ -71,5 +71,20 @@ public class UserEndpoint {
   public Response getUserByLogin(@Named("login") String login) throws NotFoundException {
     return service.getUserByLogin(login);
   }
+  
+  /**
+   * Endpoint for getting a User from a user provider.
+   * The interface with the provider is made by the service
+   * 
+   * @param id entity id.
+   * @return
+   * @throws NotFoundException
+   */
+  @ApiMethod(name = "getUserFromProvider", path = "userFromProvider/{login}", httpMethod = "get")
+  public Response getUserFromProvider(@Named("login") String login) throws NotFoundException {
+    return service.getUserFromProvider(login);
+  }
+  
+  
 
 }

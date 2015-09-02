@@ -62,7 +62,7 @@
         <web-resource-collection>
             <web-resource-name>Authorize</web-resource-name>
             <description>Authorization Flow</description>
-            <url-pattern>/*</url-pattern>
+            <url-pattern>/authorize</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>*</role-name>
