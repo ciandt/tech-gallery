@@ -1,0 +1,2 @@
+Please note this directory is mandatory for a successful build of this application.
+Some files need to be copied during the build process and MUST NOT be under version control, such as client_secrets.json.
