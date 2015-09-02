@@ -14,6 +14,9 @@ import com.ciandt.techgallery.service.model.Response;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserServiceFactory;
 
 /**
  * Services for Endorsement Endpoint requests.
@@ -39,17 +42,22 @@ public class EndorsementServiceImpl implements EndorsementService {
   @Override
   public Response addOrUpdateEndorsement(EndorsementResponse endorsement)
       throws InternalServerErrorException, BadRequestException {
-    // TechGalleryUser id can't be null and must exists on datastore
-    Long endorserId = endorsement.getEndorser();
-    TechGalleryUser tgUser;
-    if (endorserId == null) {
-      throw new BadRequestException("Endorser user was not especified!");
-    } else {
-      tgUser = userDAO.findById(endorserId);
-      if (tgUser == null) {
-        throw new BadRequestException("Endorser user do not exists!");
-      }
-    }
+    // Get the current user 
+    UserService userService = UserServiceFactory.getUserService();
+    User googleUser = userService.getCurrentUser();
+    String googleId = googleUser.getUserId();
+
+ // TechGalleryUser id can't be null and must exists on datastore
+    // TechGalleryUser tgUser;
+    // if (endorserId == null) {
+    // throw new BadRequestException("Endorser user was not especified!");
+    // } else {
+    // // replace with User Service method
+    // tgUser = userDAO.findById(endorserId);
+    // if (tgUser == null) {
+    // throw new BadRequestException("Endorser user do not exists!");
+    // }
+    // }
 
     // endorsed email can't be null.
     String endorsed = endorsement.getEndorsed();
@@ -57,7 +65,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new BadRequestException("Endorsed user was not especified!");
     }
 
-    // technology id or name? can't be null and must exists on datastore
+    // technology id can't be null and must exists on datastore
     String technologyId = endorsement.getTechnology();
     Technology technology;
     if (technologyId == null || technologyId.equals("")) {
@@ -65,7 +73,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     } else {
       technology = techDAO.findById(technologyId);
       if (technology == null) {
-        throw new BadRequestException("Technology user do not exists!");
+        throw new BadRequestException("Technology do not exists!");
       }
     }
 
@@ -73,7 +81,7 @@ public class EndorsementServiceImpl implements EndorsementService {
   }
 
   /**
-   * GET for getting all technologies.
+   * GET for getting all endorsements.
    */
   @Override
   public Response getEndorsements() throws InternalServerErrorException, NotFoundException {
@@ -81,7 +89,7 @@ public class EndorsementServiceImpl implements EndorsementService {
   }
 
   /**
-   * GET for getting one technology.
+   * GET for getting one endorsement.
    */
   @Override
   public Response getEndorsement(Long id) throws NotFoundException {

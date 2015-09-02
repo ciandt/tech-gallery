@@ -10,7 +10,7 @@ import com.googlecode.objectify.Objectify;
  * @author bliberal
  *
  */
-public class UserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long> implements UserDAO {
+public class UserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long>implements UserDAO {
 
   @Override
   public void updateProfilePicture(TechGalleryUser user, String picture) {
@@ -18,7 +18,7 @@ public class UserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long> implement
     update(user);
   }
 
-   
+
   /**
    * {@inheritDoc}
    */
@@ -27,6 +27,18 @@ public class UserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long> implement
     Objectify objectify = OfyService.ofy();
     TechGalleryUser entity = null;
     entity = objectify.load().type(TechGalleryUser.class).filter("email", email).first().now();
+
+    return entity;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public TechGalleryUser findByGoogleId(String id) {
+    Objectify objectify = OfyService.ofy();
+    TechGalleryUser entity = null;
+    entity = objectify.load().type(TechGalleryUser.class).filter("googleId", id).first().now();
 
     return entity;
   }
