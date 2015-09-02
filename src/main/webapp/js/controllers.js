@@ -16,83 +16,56 @@
 
 'use strict';
 
-angular
-        .module('techGallery')
-        .controller(
-                'techListController',
-                function($scope, $http, $location, $routeParams, $timeout,
-                        $rootScope) {
+angular.module('techGallery').controller('techListController',
+        function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
 
-                    $timeout(function() {
-                        getTechList();
-                    }, 200);
+            $scope.showLogin = true;
 
-                    $scope.redirectUrl = function(techId) {
-                        var protocol = location.protocol + '//';
-                        var host = protocol + location.host;
-                        var path = location.pathname;
-                        if (path === '/') {
-                            path = '';
-                        }
-                        var servletRedirect = '/viewTech'
-                        var queryString = '?id=';
-                        return host + path + servletRedirect + queryString
-                                + techId;
-                    };
+            $scope.login = function() {
+                $timeout(function() {
+                    jsUtils.checkAuth(successFunction);
+                }, 200);
+            }
 
-                    function getTechList() {
-                        var protocol = location.protocol + '//';
-                        var host = location.host;
-                        var complement = '/_ah/api/';
-                        var rootUrl = protocol + host + complement;
-                        gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
-                        // mockList();
-                    }
+            var successFunction = function() {
+                $timeout(function() {
+                    getTechList();
+                }, 200);
+                $scope.showLogin = false;
+            }
 
-                    function mockList() {
-                        var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá, depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
-                        var list = [ {
-                            id : 1,
-                            name : "Angular",
-                            desc : descr,
-                            image : "/image/ANGULAR.png"
-                        }, {
-                            id : 2,
-                            name : "Google App Engine",
-                            desc : descr,
-                            image : "/image/GAE.png"
-                        }, {
-                            id : 3,
-                            name : "Google Compute Engine",
-                            desc : descr,
-                            image : "/image/GCE.png"
-                        }, {
-                            id : 4,
-                            name : "Google Cloud Storage",
-                            desc : descr,
-                            image : "/image/GCS.png"
-                        }, {
-                            id : 5,
-                            name : "Google Big Query",
-                            desc : descr,
-                            image : "/image/BQ.png"
-                        }, {
-                            id : 6,
-                            name : "BootStrap",
-                            desc : descr,
-                            image : "/image/BOOT.png"
-                        } ];
-                        $scope.techList = list;
-                    }
+            $timeout(function() {
+                jsUtils.checkAuth(successFunction);
+            }, 200);
 
-                    function callBackLoaded() {
-                        gapi.client.rest.getTechnologies().execute(
-                                function(data) {
-                                    $scope.techList = data.technologies;
-                                    $scope.$apply();
-                                });
-                    }
+            $scope.redirectUrl = function(techId) {
+                var protocol = location.protocol + '//';
+                var host = protocol + location.host;
+                var path = location.pathname;
+                if (path === '/') {
+                    path = '';
+                }
+                var servletRedirect = '/viewTech'
+                var queryString = '?id=';
+                return host + path + servletRedirect + queryString + techId;
+            };
+
+            function getTechList() {
+                var protocol = location.protocol + '//';
+                var host = location.host;
+                var complement = '/_ah/api/';
+                var rootUrl = protocol + host + complement;
+                gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
+                //                        $scope.techList = jsUtils.mockTechList();
+            }
+
+            function callBackLoaded() {
+                gapi.client.rest.getTechnologies().execute(function(data) {
+                    $scope.techList = data.technologies;
+                    $scope.$apply();
                 });
+            }
+        });
 
 angular
         .module('techGallery')
@@ -101,23 +74,12 @@ angular
                 function($scope, $http, $location, $routeParams, $timeout,
                         $rootScope) {
 
-                    $scope.idTechnology = getParameterByName('id');
+                    $scope.idTechnology = jsUtils.getParameterByName('id');
+                    
+                    //Fill this property with the domain of your choice
                     $scope.domain = "@ciandt.com";
 
-                    var alerts = {
-                        success : {
-                            type : 'success',
-                            msg : 'Indicação efetuada!'
-                        },
-                        failure : {
-                            type : 'error',
-                            msg : 'Usuário não encontrado!'
-                        },
-                        caution : {
-                            type : 'warning',
-                            msg : 'Você já fez essa indicação anteriormente!'
-                        }
-                    }
+                    var alerts = jsUtils.alerts;
 
                     $scope.endorse = function() {
                         var req = {};
@@ -130,49 +92,41 @@ angular
                         }
                     }
 
+                    var successFunction = function() {
+                        $timeout(function() {
+                            var protocol = location.protocol + '//';
+                            var host = location.host;
+                            var complement = '/_ah/api/';
+                            var rootUrl = protocol + host + complement;
+                            gapi.client.load('rest', 'v1', callBackLoaded,
+                                    rootUrl);
+//                            fillTechnology(jsUtils.mockTechnology());
+                        }, 200);
+                    }
+
                     $timeout(function() {
-                        getTechnollogy();
+                        jsUtils.checkAuth(successFunction);
                     }, 200);
-
-                    function getTechnollogy() {
-                        var protocol = location.protocol + '//';
-                        var host = location.host;
-                        var complement = '/_ah/api/';
-                        var rootUrl = protocol + host + complement;
-                        gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
-                        // mockTechnology();
-                    }
-
-                    function mockTechnology() {
-                        $scope.name = "Nome da tecnologia de id ";
-                        $scope.description = "Suco de cevadiss, é um leite divinis, qui tem lupuliz, matis, aguis e fermentis. Interagi no mé, cursus quis, vehicula ac nisi. Aenean vel dui dui. Nullam leo erat, aliquet quis tempus a, posuere ut mi. Ut scelerisque neque et turpis posuere pulvinar pellentesque nibh ullamcorper. Pharetra in mattis molestie, volutpat elementum justo. Aenean ut ante turpis. Pellentesque laoreet mé vel lectus scelerisque interdum cursus velit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ac mauris lectus, non scelerisque augue. Aenean justo massa.";
-                        $scope.recommendation = "Digite aqui a recomendação da sua empresa para esta tecnologia";
-                        $scope.image = "https://storage.googleapis.com/tech-gallery-assets/imagesLogo/adf.png";
-                    }
 
                     function callBackLoaded() {
                         var idTech = $scope.idTechnology;
                         var req = {
                             id : idTech
                         };
-                        gapi.client.rest.getTechnology(req).execute(
-                                function(data) {
-                                    $scope.name = data.name;
-                                    $scope.description = data.description;
-                                    $scope.recommendation = data.recommendation;
-                                    $scope.image = data.image;
-                                    $scope.$apply();
-                                });
+                        gapi.client.rest
+                                .getTechnology(req)
+                                .execute(
+                                        function(data) {
+                                            fillTechnology(data);
+                                            $scope.$apply();
+                                        });
                     }
-
-                    function getParameterByName(name) {
-                        name = name.replace(/[\[]/, "\\[").replace(/[\]]/,
-                                "\\]");
-                        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex
-                                .exec(location.search);
-                        return results === null ? ""
-                                : decodeURIComponent(results[1].replace(/\+/g,
-                                        " "));
+                    
+                    function fillTechnology(technology){
+                        $scope.name = technology.name;
+                        $scope.description = technology.description;
+                        $scope.recommendation = technology.recommendation;
+                        $scope.image = technology.image;
                     }
 
                     $scope.closeAlert = function() {
