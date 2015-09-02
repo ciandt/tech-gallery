@@ -58,17 +58,4 @@
     <listener>
         <listener-class>com.ciandt.techgallery.ofy.OfyService</listener-class>
     </listener>
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Authorize</web-resource-name>
-            <description>Authorization Flow</description>
-            <url-pattern>/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>*</role-name>
-        </auth-constraint>
-        <user-data-constraint>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
 </web-app>
