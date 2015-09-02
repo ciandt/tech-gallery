@@ -27,7 +27,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   TechGalleryUserDAO userDAO = new TechGalleryUserDAOImpl();
   static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
   static final String USER_NOT_FOUND = "User not found";
-  static final String PROVIDER_AUTH = "Basic ";
+  static final String PROVIDER_AUTH = "Basic ZWR1YXJkb2dmOk04YzBkOGs4Kw==";
 
   /**
    * GET for getting all users.
@@ -158,6 +158,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    * @throws BadRequestException
    * @throws InternalServerErrorException
    */
+  @Override
   public TechGalleryUser getUserSyncedWithProvider(final String userLogin) throws NotFoundException,
       BadRequestException, InternalServerErrorException {
     TechGalleryUser tgUser = null;
