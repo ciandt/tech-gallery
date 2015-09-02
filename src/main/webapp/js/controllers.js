@@ -45,7 +45,7 @@ angular
                         var rootUrl = 'http://' + host + complement;
                         gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
                         // mockList();
-                    };
+                    }
 
                     function mockList() {
                         var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lÃ¡ , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
@@ -81,7 +81,7 @@ angular
                             image : "/image/BOOT.png"
                         } ];
                         $scope.techList = list;
-                    };
+                    }
 
                     function callBackLoaded() {
                         gapi.client.rest.getTechnologies().execute(
@@ -89,7 +89,8 @@ angular
                                     $scope.techList = data.technologies;
                                     $scope.$apply();
                                 });
-                    };
+                    }
+                    ;
                 });
 
 angular
@@ -98,6 +99,35 @@ angular
                 'techDetailsController',
                 function($scope, $http, $location, $routeParams, $timeout,
                         $rootScope) {
+
+                    $scope.idTechnology = getParameterByName('id');
+                    $scope.domain = "@ciandt.com";
+
+                    var alerts = {
+                        success : {
+                            type : 'success',
+                            msg : 'Indicação efetuada!'
+                        },
+                        failure : {
+                            type : 'error',
+                            msg : 'Usuário não encontrado!'
+                        },
+                        caution : {
+                            type : 'warning',
+                            msg : 'Você já fez essa indicação anteriormente!'
+                        }
+                    }
+
+                    $scope.endorse = function() {
+                        var req = {};
+                        req.endorsed = $scope.endorsed + $scope.domain;
+                        req.technology = $scope.idTechnology;
+                        if ($scope.endorsed) {
+                            console.log(req);
+                            $scope.alert = alerts.caution;
+                            $scope.endorsed = '';
+                        }
+                    }
 
                     $timeout(function() {
                         getTechnollogy();
@@ -109,29 +139,29 @@ angular
                         var rootUrl = 'http://' + host + complement;
                         gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
                         // mockTechnology();
-                    };
+                    }
 
                     function mockTechnology() {
                         $scope.name = "Nome da tecnologia de id ";
                         $scope.description = "Suco de cevadiss, é um leite divinis, qui tem lupuliz, matis, aguis e fermentis. Interagi no mé, cursus quis, vehicula ac nisi. Aenean vel dui dui. Nullam leo erat, aliquet quis tempus a, posuere ut mi. Ut scelerisque neque et turpis posuere pulvinar pellentesque nibh ullamcorper. Pharetra in mattis molestie, volutpat elementum justo. Aenean ut ante turpis. Pellentesque laoreet mé vel lectus scelerisque interdum cursus velit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ac mauris lectus, non scelerisque augue. Aenean justo massa.";
-                        $scope.citDesc = "CI&T description";
+                        $scope.enterpriseRecommendation = "CI&T description";
                         $scope.image = "https://storage.googleapis.com/tech-gallery-assets/imagesLogo/adf.png";
-                    };
+                    }
 
                     function callBackLoaded() {
-                        var idTechnology = getParameterByName('id');
+                        var idTech = $scope.idTechnology;
                         var req = {
-                            id : idTechnology
+                            id : idTech
                         };
                         gapi.client.rest.getTechnology(req).execute(
                                 function(data) {
                                     $scope.name = data.name;
                                     $scope.description = data.description;
-                                    $scope.citDesc = data.citDesc;
+                                    $scope.enterpriseRecommendation = data.enterpriseRecommendation;
                                     $scope.image = data.image;
                                     $scope.$apply();
                                 });
-                    };
+                    }
 
                     function getParameterByName(name) {
                         name = name.replace(/[\[]/, "\\[").replace(/[\]]/,
@@ -141,5 +171,9 @@ angular
                         return results === null ? ""
                                 : decodeURIComponent(results[1].replace(/\+/g,
                                         " "));
+                    }
+
+                    $scope.closeAlert = function() {
+                        $scope.alert = undefined;
                     }
                 });

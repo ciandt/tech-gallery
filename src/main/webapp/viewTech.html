@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" style="background-color: #DDD" ng-app="techGallery"
-	ng-cloak>
+    ng-cloak>
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="css/app.css" />
@@ -9,6 +9,7 @@
 <script src="https://apis.google.com/js/client.js?onload=init"></script>
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
 <script src="lib/angular-route/angular-route.min.js"></script>
 <script src="js/app.js"></script>
@@ -17,22 +18,38 @@
 <script src="js/filters.js"></script>
 <script src="js/directives.js"></script>
 </head>
-<body ng-controller="techDetailsController">
-	<div class="page-header" style="background-color: #DDD">
-		<div id="div_container" class="container">
-			<div class="row">
-				<div id="div_image" class="col-xs-6">
-					<img src={{image}} class="img-responsive">
-				</div>
-				<div id="div_teste" class="container">
-					<div id="div_image_name" class="col-xs-6">
-						<h1>{{name}}</h1>
-						<h4>{{citDesc}}</h4>
-					</div>
-				</div>
-			</div>
-			<div class="voting_wrapper" id="div_details">{{description}}</div>
-		</div>
-	</div>
+<body ng-controller="techDetailsController"
+    style="background-color: #ddd;">
+    <div class="page-header" style="background-color: #DDD">
+        <div id="div_container" class="container">
+            <div class="row">
+                <div id="div_image" class="col-xs-6">
+                    <img src={{image}} class="img-responsive">
+                </div>
+                <div id="div_teste" class="container">
+                    <div id="div_image_name" class="col-xs-6">
+                        <h1>{{name}}</h1>
+                        <h4>{{enterpriseRecommendation}}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="voting_wrapper" id="div_details">{{description}}</div>
+        </div>
+    </div>
+    <div class="container" style="background-color: #DDD">
+        <h3>Quem manja muito desta tecnologia?</h3>
+        <div class="input-group"
+            style="width: 30%; float: left; margin-right: 10%;">
+            <input ng-model="endorsed" type="text" class="form-control"
+                placeholder="(usuário)" aria-describedby="basic-addon2">
+            <span class="input-group-addon" id="basic-addon2">{{domain}}</span>
+        </div>
+        <a href="#" ng-click="endorse()" class="btn btn-primary"
+            role="button">Indicar</a>
+    </div>
+    <div style="width: 50%; text-align: center; margin: 0 auto;">
+        <alert ng-show="alert" type="{{alert.type}}"
+            close="closeAlert()">{{alert.msg}}</alert>
+    </div>
 <body>
 </html>
