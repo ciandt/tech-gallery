@@ -1,9 +1,9 @@
 /* Tech Gallery css stylesheet */
 .technologydescription {
-    text-align: justify;
-    height: 200px;
-    width: 100%;
-    display: block;
+	text-align: justify;
+	height: 80px;
+	width: 100%;
+	display: block;
 }
 
 .spacingtop{
