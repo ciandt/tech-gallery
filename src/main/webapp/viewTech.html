@@ -29,7 +29,7 @@
                 <div id="div_teste" class="container">
                     <div id="div_image_name" class="col-xs-6">
                         <h1>{{name}}</h1>
-                        <h4>{{enterpriseRecommendation}}</h4>
+                        <h4>{{recommendation}}</h4>
                     </div>
                 </div>
             </div>
@@ -51,22 +51,4 @@
         <alert ng-show="alert" type="{{alert.type}}"
             close="closeAlert()">{{alert.msg}}</alert>
     </div>
-<body ng-controller="techDetailsController">
-    <div class="page-header" style="background-color: #DDD">
-        <div id="div_container" class="container">
-            <div class="row">
-                <div id="div_image" class="col-xs-6">
-                    <img src={{image}} class="img-responsive">
-                </div>
-                <div id="div_teste" class="container">
-                    <div id="div_image_name" class="col-xs-6">
-                        <h1>{{name}}</h1>
-                        <h4>{{enterpriseRecommendation}}</h4>
-                    </div>
-                </div>
-            </div>
-            <div class="voting_wrapper" id="div_details">{{description}}</div>
-        </div>
-    </div>
-<body>
 </html>
