@@ -28,7 +28,8 @@ angular
                     }, 200);
 
                     $scope.redirectUrl = function(techId) {
-                        var host = 'http://' + location.host;
+                        var protocol = location.protocol + '//';
+                        var host = protocol + location.host;
                         var path = location.pathname;
                         if (path === '/') {
                             path = '';
@@ -40,9 +41,10 @@ angular
                     };
 
                     function getTechList() {
+                        var protocol = location.protocol + '//';
                         var host = location.host;
                         var complement = '/_ah/api/';
-                        var rootUrl = 'http://' + host + complement;
+                        var rootUrl = protocol + host + complement;
                         gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
                         // mockList();
                     }
@@ -133,9 +135,10 @@ angular
                     }, 200);
 
                     function getTechnollogy() {
+                        var protocol = location.protocol + '//';
                         var host = location.host;
                         var complement = '/_ah/api/';
-                        var rootUrl = 'http://' + host + complement;
+                        var rootUrl = protocol + host + complement;
                         gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
                         // mockTechnology();
                     }

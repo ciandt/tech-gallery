@@ -36,19 +36,4 @@
             <div class="voting_wrapper" id="div_details">{{description}}</div>
         </div>
     </div>
-    <div class="container" style="background-color: #DDD">
-        <h3>Quem manja muito desta tecnologia?</h3>
-        <div class="input-group"
-            style="width: 30%; float: left; margin-right: 10%;">
-            <input ng-model="endorsed" type="text" class="form-control"
-                placeholder="(usuário)" aria-describedby="basic-addon2">
-            <span class="input-group-addon" id="basic-addon2">{{domain}}</span>
-        </div>
-        <a href="#" ng-click="endorse()" class="btn btn-primary"
-            role="button">Indicar</a>
-    </div>
-    <div style="width: 50%; text-align: center; margin: 0 auto;">
-        <alert ng-show="alert" type="{{alert.type}}"
-            close="closeAlert()">{{alert.msg}}</alert>
-    </div>
 </html>
