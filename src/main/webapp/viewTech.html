@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" style="background-color: #DDD" ng-app="techGallery"
-	ng-cloak>
+    ng-cloak>
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="css/app.css" />
@@ -9,6 +9,7 @@
 <script src="https://apis.google.com/js/client.js?onload=init"></script>
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
 <script src="lib/angular-route/angular-route.min.js"></script>
 <script src="js/app.js"></script>
@@ -17,31 +18,22 @@
 <script src="js/filters.js"></script>
 <script src="js/directives.js"></script>
 </head>
-<body ng-controller="techDetailsController">
-	<div class="page-header" style="background-color: #DDD">
-		<div id="div_container" class="container">
-			<div class="row">
-				<div id="div_image" class="col-xs-6">
-					<img src="img/teste.png" class="img-responsive">
-				</div>
-				<div id="div_teste" class="container">
-					<div id="div_image_name" class="col-xs-6">
-						<h1>LOREM</h1>
-						<h4>CI&T Description</h4>
-					</div>
-				</div>
-			</div>
-			<div class="voting_wrapper" id="div_details">Lorem Ipsum is
-				simply dummy text of the printing and typesetting industry. Lorem
-				Ipsum has been the industry's standard dummy text ever since the
-				1500s, when an unknown printer took a galley of type and scrambled
-				it to make a type specimen book. It has survived not only five
-				centuries, but also the leap into electronic typesetting, remaining
-				essentially unchanged. It was popularised in the 1960s with the
-				release of Letraset sheets containing Lorem Ipsum passages, and more
-				recently with desktop publishing software like Aldus PageMaker
-				including versions of Lorem Ipsum</div>
-		</div>
-	</div>
-<body>
+<body ng-controller="techDetailsController"
+    style="background-color: #ddd;">
+    <div class="page-header" style="background-color: #DDD">
+        <div id="div_container" class="container">
+            <div class="row">
+                <div id="div_image" class="col-xs-6">
+                    <img src={{image}} class="img-responsive">
+                </div>
+                <div id="div_teste" class="container">
+                    <div id="div_image_name" class="col-xs-6">
+                        <h1>{{name}}</h1>
+                        <h4>{{recommendation}}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="voting_wrapper" id="div_details">{{description}}</div>
+        </div>
+    </div>
 </html>
