@@ -107,7 +107,7 @@
             <version>${appengine.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Google apis -->
+        <!-- Google Plus -->
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-plus</artifactId>

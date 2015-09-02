@@ -16,4 +16,11 @@ public interface UserDAO extends GenericDAO<TechGalleryUser, Long> {
    * Method that searches user by its email(used to authenticate into the app)
    */
   public TechGalleryUser findByLogin(String email);
+  
+  /**
+   * Method the searches user by its google id provided by UserAPI
+   * 
+   * @return
+   */
+  public TechGalleryUser findByGoogleId(String id);
 }

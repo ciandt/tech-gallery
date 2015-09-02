@@ -11,6 +11,7 @@ import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 /**
  * Endpoint controller class for Endorsements requests. Endorsements are used only for users.
@@ -32,7 +33,7 @@ public class EndorsementEndpoint {
    * @throws BadRequestException 
    */
   @ApiMethod(name = "addEndorsement", path = "endorsement", httpMethod = "post")
-  public Response addEndorsement(EndorsementResponse endorsement)
+  public Response addEndorsement(EndorsementResponse endorsement, User user)
       throws InternalServerErrorException, BadRequestException {
     return service.addOrUpdateEndorsement(endorsement);
   }
