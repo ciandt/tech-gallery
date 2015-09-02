@@ -79,9 +79,11 @@ public class UserEndpoint {
    * @param id entity id.
    * @return
    * @throws NotFoundException
+   * @throws InternalServerErrorException 
+   * @throws BadRequestException 
    */
   @ApiMethod(name = "getUserFromProvider", path = "userFromProvider/{login}", httpMethod = "get")
-  public Response getUserFromProvider(@Named("login") String login) throws NotFoundException {
+  public Response getUserFromProvider(@Named("login") String login) throws NotFoundException, BadRequestException, InternalServerErrorException {
     return service.getUserFromProvider(login);
   }
   
