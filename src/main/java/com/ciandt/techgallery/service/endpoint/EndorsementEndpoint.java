@@ -31,11 +31,12 @@ public class EndorsementEndpoint {
    * @return
    * @throws InternalServerErrorException
    * @throws BadRequestException 
+   * @throws NotFoundException 
    */
   @ApiMethod(name = "addEndorsement", path = "endorsement", httpMethod = "post")
   public Response addEndorsement(EndorsementResponse endorsement, User user)
-      throws InternalServerErrorException, BadRequestException {
-    return service.addOrUpdateEndorsement(endorsement);
+      throws InternalServerErrorException, BadRequestException, NotFoundException {
+    return service.addOrUpdateEndorsement(endorsement, user);
   }
 
   /**
