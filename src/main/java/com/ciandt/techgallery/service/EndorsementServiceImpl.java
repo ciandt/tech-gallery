@@ -86,13 +86,8 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new BadRequestException("Endorsed email was not especified!");
     } else {
       // only for testing
-      peopleUser = (UserResponse) userService.getUserFromProvider(endorsedEmail);
-      String peopleUserName = peopleUser.getName();
-      String peopleUserEmail = peopleUser.getEmail();
-      // CREATE A USER BASED ON PEOPLE API INFO
-      // if(){
-      //
-      // }
+      //tgEndorsedUser = userService.get(endorsedEmail);
+     
     }
 
     // technology id can't be null and must exists on datastore
