@@ -17,7 +17,7 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
   public TechGalleryUser findByGplusId(final String gplusId) {
     Objectify objectify = OfyService.ofy();
     List<TechGalleryUser> listTechGalleryUser = objectify.load().type(TechGalleryUser.class).filter("gplusId", gplusId).list();
-    if(listTechGalleryUser==null)
+    if(listTechGalleryUser.isEmpty())
        return null;
     else
       return listTechGalleryUser.get(0);

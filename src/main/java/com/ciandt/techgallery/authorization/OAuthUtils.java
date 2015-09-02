@@ -33,7 +33,8 @@ public class OAuthUtils {
   private static final String REDIRECT_URI = "/oauth2callback";
   private static final List<String> SCOPES = Arrays.asList(
       "https://www.googleapis.com/auth/plus.me",
-      "https://www.googleapis.com/auth/plus.stream.write");
+      "https://www.googleapis.com/auth/plus.stream.write",
+      "https://www.googleapis.com/auth/plus.profile.emails.read");
   private static GoogleCredential credential = new GoogleCredential();
   private static GoogleAuthorizationCodeFlow authorizationCodeFlow;
 
@@ -51,7 +52,7 @@ public class OAuthUtils {
   }
 
   /**
-   * Builds and returns an Authorization Flow with predefined scopes and access type
+   * Builds and returns an Authorization Flow with pre-defined scopes and access type
    * 
    * @return the new Authorization Flow
    * @throws IOException when the client secret is not found
@@ -59,22 +60,22 @@ public class OAuthUtils {
   static GoogleAuthorizationCodeFlow newFlow() throws IOException {
     HttpTransport httpTransport = new NetHttpTransport();
     JacksonFactory jsonFactory = new JacksonFactory();
+
     Reader reader =
         new InputStreamReader(OAuthUtils.class.getClassLoader().getResourceAsStream(CLIENTSECRETS));
     GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(new JacksonFactory(), reader);
-
     if (authorizationCodeFlow == null) {
       authorizationCodeFlow =
           new GoogleAuthorizationCodeFlow.Builder(httpTransport, jsonFactory, clientSecrets, SCOPES)
               .setDataStoreFactory(AppEngineDataStoreFactory.getDefaultInstance())
-              .setApprovalPrompt("force")
-              .build();
+              .setApprovalPrompt("force").build();
     }
     return authorizationCodeFlow;
   }
 
   /**
-   * TODO comment this
+   * Can be used to manually refresh the access token. When using App Engine libraries this is not
+   * necessary as they refresh the access token automatically when they are about to expire
    * 
    * @param user
    * @throws IOException
