@@ -6,12 +6,16 @@
 	display: block;
 }
 
+.spacingtop{
+	margin-top: 2%;	
+}
+
 body, html {
 	background-color: #ddd !important;
 }
 
 .thumbnail-Image {
-	height: 200px;
+	height: 200px !important;
 	width: 100%;
 	display: block;
 }
