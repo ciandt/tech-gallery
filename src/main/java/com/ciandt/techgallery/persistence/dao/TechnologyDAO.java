@@ -8,6 +8,6 @@ import com.ciandt.techgallery.persistence.model.Technology;
  * @author Felipe Goncalves de Castro
  *
  */
-public interface TechnologyDAO extends GenericDAO<Technology, Long>{
+public interface TechnologyDAO extends GenericDAO<Technology, String>{
 
 }

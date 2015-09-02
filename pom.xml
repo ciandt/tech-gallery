@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="http://maven.apache.org/POM/4.0.0"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -21,6 +22,7 @@
     <prerequisites>
         <maven>3.1.0</maven>
     </prerequisites>
+
     <dependencies>
         <!-- Compile/runtime dependencies -->
         <dependency>
@@ -53,7 +55,7 @@
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
-            <version>1.18.0-rc</version>
+            <version>1.19.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.oauth-client</groupId>
@@ -73,7 +75,7 @@
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson2</artifactId>
-            <version>1.15.0-rc</version>
+            <version>1.19.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.oauth-client</groupId>
@@ -105,8 +107,13 @@
             <version>${appengine.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- Google Plus -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-plus</artifactId>
+            <version>v1-rev255-1.20.0</version>
+        </dependency>
     </dependencies>
-
     <build>
         <!-- for hot reload of the web application -->
         <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
