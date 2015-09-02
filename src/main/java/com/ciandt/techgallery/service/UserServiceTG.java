@@ -82,4 +82,7 @@ public interface UserServiceTG {
   public TechGalleryUser getUserByNameAndEmail(String name, String email) throws NotFoundException,
       BadRequestException, InternalServerErrorException;
 
+  TechGalleryUser getUserSyncedWithProvider(String userLogin) throws NotFoundException,
+      BadRequestException, InternalServerErrorException;
+
 }
