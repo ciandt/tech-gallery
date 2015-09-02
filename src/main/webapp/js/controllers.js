@@ -117,6 +117,7 @@ angular.module('techGallery').controller('techDetailsController',
                 $scope.description = technology.description;
                 $scope.recommendation = technology.recommendation;
                 $scope.image = technology.image;
+                $scope.website = technology.website;
             }
 
             $scope.closeAlert = function() {
