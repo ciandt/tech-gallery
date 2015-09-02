@@ -161,6 +161,7 @@ angular
                                     $scope.description = data.description;
                                     $scope.recommendation = data.recommendation;
                                     $scope.image = data.image;
+                                    $scope.website = data.website;
                                     $scope.$apply();
                                 });
                     }
