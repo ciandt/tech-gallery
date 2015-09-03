@@ -33,8 +33,45 @@
                     </div>
                 </div>
             </div>
-            <div class="voting_wrapper technologydescription spacingtop" id="div_details">{{description}}</div>
+            <div class="voting_wrapper technologydescription spacingtop"
+                id="div_details">{{description}}</div>
         </div>
+
+        <div id="div_showRecommendation" class="container">
+            <div class="row">
+
+                <div class="spacingtop"
+                    ng-repeat="response in showEndorsementResponse track by $index">
+                    <div class="media col-xs-6">
+                        <div class="media-left media-middle">
+                            <img class="media-object endorsed-image"
+                                src={{response.endorsed.photo}}>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{response.endorsed.name}}</h4>
+                        </div>
+                    </div>
+
+                    <div id="div_image_recomendations" class="container">
+                        <div class="col-xs-6">
+                            <div
+                                ng-repeat="endorser in response.endorsers track by $index">
+                                <img
+                                    class="media-object endorsers-image"
+                                    src={{endorser.photo}}
+                                    tooltip={{endorser.name}}>
+                            </div>
+                            <a href="#"
+                                ng-show="showAllEndorsers(response.endorsers)"
+                                class="glyphicon glyphicon-play"
+                                ng-click="open(response.endorsers)"></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
