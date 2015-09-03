@@ -1,8 +1,10 @@
 package com.ciandt.techgallery.service;
 
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 
 /**
@@ -44,8 +46,9 @@ public interface UserServiceTG {
    * 
    * @param user json with user info.
    * @return user info or message error.
+   * @throws BadRequestException
    */
-  public Response updateUser(final UserResponse user);
+  public Response updateUser(final UserResponse user) throws BadRequestException;
 
   /**
    * Service for getting an User by its Login.
@@ -55,5 +58,31 @@ public interface UserServiceTG {
    * @throws NotFoundException
    */
   public Response getUserByLogin(final String user) throws NotFoundException;
+
+  /**
+   * Service for getting an User from an external provider by its Login.
+   * 
+   * @param id entity id.
+   * @return
+   * @throws NotFoundException
+   * @throws BadRequestException
+   * @throws InternalServerErrorException
+   */
+  public Response getUserFromProvider(final String user) throws NotFoundException,
+      BadRequestException, InternalServerErrorException;
+  /**
+   * Seaches user on datastore by user's name and email
+   * @param name user's name
+   * @param email user's email
+   * @return user response
+   * @throws NotFoundException
+   * @throws BadRequestException
+   * @throws InternalServerErrorException
+   */
+  public TechGalleryUser getUserByNameAndEmail(String name, String email) throws NotFoundException,
+      BadRequestException, InternalServerErrorException;
+
+  TechGalleryUser getUserSyncedWithProvider(String userLogin) throws NotFoundException,
+      BadRequestException, InternalServerErrorException;
 
 }

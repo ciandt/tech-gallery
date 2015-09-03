@@ -5,6 +5,7 @@ import com.ciandt.techgallery.service.model.Response;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 /**
  * Services for Endorsements.
@@ -18,12 +19,14 @@ public interface EndorsementService {
    * Service for adding a endorsement.
    * 
    * @param endorsement json with endorsement info.
+   * @param user current user logged.
    * @return endorsement info or message error.
    * @throws InternalServerErrorException
-   * @throws BadRequestException 
+   * @throws BadRequestException
+   * @throws NotFoundException 
    */
-  public Response addOrUpdateEndorsement(final EndorsementResponse endorsement)
-      throws InternalServerErrorException, BadRequestException;
+  public Response addOrUpdateEndorsement(final EndorsementResponse endorsement, final User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException;
 
   /**
    * Service for getting all endorsements.

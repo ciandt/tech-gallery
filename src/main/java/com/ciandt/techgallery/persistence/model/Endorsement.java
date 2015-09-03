@@ -2,10 +2,11 @@ package com.ciandt.techgallery.persistence.model;
 
 import java.util.Date;
 
-import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
 
 /**
@@ -21,38 +22,43 @@ public class Endorsement extends BaseEntity<Long> {
   private Long id;
 
   @Index
-  private Key<TechGalleryUser> endorser;
+  @Load
+  private Ref<TechGalleryUser> endorser;
 
   @Index
-  private Key<TechGalleryUser> endorsed;
+  @Load
+  private Ref<TechGalleryUser> endorsed;
 
   @Unindex
   private Date timestamp;
 
   @Index
-  private Key<Technology> technology;
+  @Load
+  private Ref<Technology> technology;
 
+  @Override
   public Long getId() {
     return id;
   }
 
+  @Override
   public void setId(Long id) {
     this.id = id;
   }
 
-  public Key<TechGalleryUser> getEndorser() {
+  public Ref<TechGalleryUser> getEndorser() {
     return endorser;
   }
 
-  public void setEndorser(Key<TechGalleryUser> endorser) {
+  public void setEndorser(Ref<TechGalleryUser> endorser) {
     this.endorser = endorser;
   }
 
-  public Key<TechGalleryUser> getEndorsed() {
+  public Ref<TechGalleryUser> getEndorsed() {
     return endorsed;
   }
 
-  public void setEndorsed(Key<TechGalleryUser> endorsed) {
+  public void setEndorsed(Ref<TechGalleryUser> endorsed) {
     this.endorsed = endorsed;
   }
 
@@ -64,11 +70,11 @@ public class Endorsement extends BaseEntity<Long> {
     this.timestamp = timestamp;
   }
 
-  public Key<Technology> getTechnology() {
+  public Ref<Technology> getTechnology() {
     return technology;
   }
 
-  public void setTechnology(Key<Technology> technology) {
+  public void setTechnology(Ref<Technology> technology) {
     this.technology = technology;
   }
 
