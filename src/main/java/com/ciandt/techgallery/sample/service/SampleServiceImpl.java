@@ -17,7 +17,8 @@ import com.googlecode.objectify.Key;
  * @author Felipe Goncalves de Castro
  *
  */
-public class SampleServiceImpl extends GenericService<SampleResponse, Sample, Long> implements SampleService {
+public class SampleServiceImpl extends GenericService<SampleResponse, Sample, Long> implements
+    SampleService {
 
   public SampleServiceImpl() {
     super(new SampleDAOImpl());
@@ -44,11 +45,20 @@ public class SampleServiceImpl extends GenericService<SampleResponse, Sample, Lo
     sample.setName(sampleResponse.getName());
 
     Key<Sample> key = dao.add(sample);
-    
+
     MessageResponse msg = new MessageResponse();
     msg.setMsg(ResponseMessageEnum.OK.description());
-    
+
     return msg;
   }
 
+  public SampleResponse doSomeCoolThing(SampleResponse sampleResponse) {
+    if (sampleResponse != null) {
+      SampleResponse ret = new SampleResponse();
+      ret.setName("cool");
+      return ret;
+    }
+
+    return null;
+  }
 }
