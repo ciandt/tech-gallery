@@ -16,121 +16,111 @@
 
 'use strict';
 
-angular
-        .module('techGallery')
-        .controller(
-                'techListController',
-                function($scope, $http, $location, $routeParams, $timeout,
-                        $rootScope) {
+angular.module('techGallery').controller('techListController',
+        function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
 
-                    $timeout(function() {
-                        getTechList();
-                    }, 200);
+            $scope.showLogin = true;
 
-                    $scope.redirectUrl = function(techId) {
-                        var host = 'http://' + location.host;
-                        var path = location.pathname;
-                        if (path === '/') {
-                            path = '';
-                        }
-                        var servletRedirect = '/viewTech'
-                        var queryString = '?id=';
-                        return host + path + servletRedirect + queryString
-                                + techId;
-                    };
+            var executeAuth = function() {
+                $timeout(function() {
+                    jsUtils.checkAuth(successFunction);
+                }, 200);
+            }
 
-                    function getTechList() {
-                        // gapi.client.load('cardEndpointImpl', 'v1',
-                        // callBackLoaded,
-                        // 'http://localhost:8888/_ah/api/');
-                        mockList();
-                    }
-                    ;
+            $scope.login = function() {
+                executeAuth();
+            }
 
-                    function adjustPagination() {
-                        $scope.currentPage = 1;
-                        $scope.pageSize = 4;
-                        $scope.getPage();
-                    }
-                    ;
+            var successFunction = function() {
+                getTechList();
+                $scope.showLogin = false;
+            }
 
-                    $scope.getPage = function() {
-                        if ($scope.techList) {
-                            var begin = (($scope.currentPage - 1) * $scope.pageSize);
-                            var end = begin + $scope.pageSize;
-                            $scope.totalItems = $scope.techList.length;
-                            $scope.techListFiltered = $scope.techList.slice(
-                                    begin, end);
-                        }
-                    };
+            executeAuth();
 
-                    $scope.pageChanged = function() {
-                        $scope.getPage();
-                    };
+            $scope.redirectUrl = function(techId) {
+                var protocol = location.protocol + '//';
+                var host = protocol + location.host;
+                var path = location.pathname;
+                if (path === '/') {
+                    path = '';
+                }
+                var servletRedirect = '/viewTech'
+                var queryString = '?id=';
+                return host + path + servletRedirect + queryString + techId;
+            };
 
-                    function mockList() {
-                        var descr = "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lÃ¡ , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.";
-                        var list = [ {
-                            id : 1,
-                            name : "Angular",
-                            desc : descr,
-                            image : "/image/ANGULAR.png"
-                        }, {
-                            id : 2,
-                            name : "Google App Engine",
-                            desc : descr,
-                            image : "/image/GAE.png"
-                        }, {
-                            id : 3,
-                            name : "Google Compute Engine",
-                            desc : descr,
-                            image : "/image/GCE.png"
-                        }, {
-                            id : 4,
-                            name : "Google Cloud Storage",
-                            desc : descr,
-                            image : "/image/GCS.png"
-                        }, {
-                            id : 5,
-                            name : "Google Big Query",
-                            desc : descr,
-                            image : "/image/BQ.png"
-                        }, {
-                            id : 6,
-                            name : "BootStrap",
-                            desc : descr,
-                            image : "/image/BOOT.png"
-                        } ];
-                        $scope.techList = list;
-                    }
-                    ;
+            function getTechList() {
+                var protocol = location.protocol + '//';
+                var host = location.host;
+                var complement = '/_ah/api/';
+                var rootUrl = protocol + host + complement;
+                gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
+                //                        $scope.techList = jsUtils.mockTechList();
+            }
 
-                    function callBackLoaded() {
-                        gapi.client.cardEndpointImpl.cardEndpointImpl
-                                .listCards().execute(function(data) {
-                                    $scope.techList = data.items;
-                                    adjustPagination();
-                                    $scope.$apply();
-                                });
-                    }
-                    ;
+            function callBackLoaded() {
+                gapi.client.rest.getTechnologies().execute(function(data) {
+                    $scope.techList = data.technologies;
+                    $scope.$apply();
                 });
+            }
+        });
 
-angular
-        .module('techGallery')
-        .controller(
-                'techDetailsController',
-                function($scope, $http, $location, $routeParams, $timeout,
-                        $rootScope) {
-                    var id = getParameterByName('id');
-                    alert(id);
-                    function getParameterByName(name) {
-                        name = name.replace(/[\[]/, "\\[").replace(/[\]]/,
-                                "\\]");
-                        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex
-                                .exec(location.search);
-                        return results === null ? ""
-                                : decodeURIComponent(results[1].replace(/\+/g,
-                                        " "));
-                    }
+angular.module('techGallery').controller('techDetailsController',
+        function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
+
+            $scope.idTechnology = jsUtils.getParameterByName('id');
+
+            //Fill this property with the domain of your choice
+            $scope.domain = "@ciandt.com";
+
+            var alerts = jsUtils.alerts;
+
+            $scope.endorse = function() {
+                var req = {};
+                req.endorsed = $scope.endorsed + $scope.domain;
+                req.technology = $scope.idTechnology;
+                if ($scope.endorsed) {
+                    console.log(req);
+                    $scope.alert = alerts.caution;
+                    $scope.endorsed = '';
+                }
+            }
+
+            var successFunction = function() {
+                var protocol = location.protocol + '//';
+                var host = location.host;
+                var complement = '/_ah/api/';
+                var rootUrl = protocol + host + complement;
+                gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
+                //                            fillTechnology(jsUtils.mockTechnology());
+            }
+
+            $timeout(function() {
+                jsUtils.checkAuth(successFunction);
+            }, 200);
+
+            function callBackLoaded() {
+                var idTech = $scope.idTechnology;
+                var req = {
+                    id : idTech
+                };
+                gapi.client.rest.getTechnology(req).execute(function(data) {
+                    fillTechnology(data);
+                    $scope.$apply();
                 });
+            }
+
+            function fillTechnology(technology) {
+                $scope.name = technology.name;
+                $scope.description = technology.description;
+                $scope.recommendation = technology.recommendation;
+                $scope.image = technology.image;
+                $scope.website = technology.website;
+            }
+
+            $scope.closeAlert = function() {
+                $scope.alert = undefined;
+            }
+        });

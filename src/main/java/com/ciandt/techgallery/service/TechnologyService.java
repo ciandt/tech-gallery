@@ -41,6 +41,6 @@ public interface TechnologyService {
    * @return
    * @throws NotFoundException
    */
-  public Response getTechnology(final Long id) throws NotFoundException;
+  public Response getTechnology(final String id) throws NotFoundException;
 
 }
