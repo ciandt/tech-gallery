@@ -85,14 +85,11 @@ public class EndorsementServiceImpl implements EndorsementService {
     if (endorsedEmail == null || endorsedEmail.equals("")) {
       throw new BadRequestException("Endorsed email was not especified!");
     } else {
-      // only for testing
-      peopleUser = (UserResponse) userService.getUserFromProvider(endorsedEmail);
-      String peopleUserName = peopleUser.getName();
-      String peopleUserEmail = peopleUser.getEmail();
-      // CREATE A USER BASED ON PEOPLE API INFO
-      // if(){
-      //
-      // }
+      // get user from PEOPLE
+      tgEndorsedUser = userService.getUserSyncedWithProvider(endorsedEmail);
+      if (tgEndorsedUser == null) {
+        throw new BadRequestException("Endorsed email was not found on PEOPLE!");
+      }
     }
 
     // technology id can't be null and must exists on datastore
@@ -109,7 +106,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     // final checks and persist
     Endorsement entity = new Endorsement();
     entity.setEndorser(Ref.create(tgEndorserUser));
-    entity.setEndorsed(null);
+    entity.setEndorsed(Ref.create(tgEndorsedUser));
     entity.setTimestamp(new Date());
     entity.setTechnology(Ref.create(technology));
     endorsementDAO.add(entity);

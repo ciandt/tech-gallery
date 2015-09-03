@@ -27,7 +27,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   TechGalleryUserDAO userDAO = new TechGalleryUserDAOImpl();
   static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
   static final String USER_NOT_FOUND = "User not found";
-  static final String PROVIDER_AUTH = "Basic ZWR1YXJkb2dmOk04YzBkOGs4Kw==";
+  static final String PROVIDER_AUTH = "Basic ";
 
   /**
    * GET for getting all users.
