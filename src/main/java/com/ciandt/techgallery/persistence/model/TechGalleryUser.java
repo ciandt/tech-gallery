@@ -19,7 +19,7 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   @Index
   private String gplusId;
-  
+
   @Index
   private String name;
 
@@ -28,7 +28,10 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   @Unindex
   private String photo;
-  
+
+  @Unindex
+  private String googleId;
+
   @Override
   public Long getId() {
     return id;
@@ -69,6 +72,14 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   public void setPhoto(String photo) {
     this.photo = photo;
+  }
+
+  public String getGoogleId() {
+    return googleId;
+  }
+
+  public void setGoogleId(String googleId) {
+    this.googleId = googleId;
   }
 
 }

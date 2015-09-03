@@ -1,5 +1,8 @@
 package com.ciandt.techgallery.service;
 
+import java.util.Date;
+import java.util.List;
+
 import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
 import com.ciandt.techgallery.persistence.dao.EndorsementDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
@@ -9,11 +12,15 @@ import com.ciandt.techgallery.persistence.dao.UserDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.sample.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
+import com.googlecode.objectify.Ref;
 
 /**
  * Services for Endorsement Endpoint requests.
@@ -29,51 +36,89 @@ public class EndorsementServiceImpl implements EndorsementService {
   UserDAO userDAO = new UserDAOImpl();
   /** technology dao for getting technologies. */
   TechnologyDAO techDAO = new TechnologyDAOImpl();
+  /** tech gallery user service for getting PEOPLE API user. */
+  UserServiceTG userService = new UserServiceTGImpl();
 
   /**
    * POST for adding a endorsement.
    * 
    * @throws InternalServerErrorException
    * @throws BadRequestException
+   * @throws NotFoundException
    */
   @Override
-  public Response addOrUpdateEndorsement(EndorsementResponse endorsement)
-      throws InternalServerErrorException, BadRequestException {
-    // TechGalleryUser id can't be null and must exists on datastore
-    Long endorserId = endorsement.getEndorser();
-    TechGalleryUser tgUser;
-    if (endorserId == null) {
-      throw new BadRequestException("Endorser user was not especified!");
+  public Response addOrUpdateEndorsement(EndorsementResponse endorsement, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException {
+    // endorser user google id
+    String googleId;
+    // endorser user from techgallery datastore
+    TechGalleryUser tgEndorserUser;
+    // endorsed user from techgallery datastore
+    TechGalleryUser tgEndorsedUser;
+    // endorsed email
+    String endorsedEmail;
+    // user json info from PEOPLE API
+    UserResponse peopleUser;
+    // technology id
+    String technologyId;
+    // technology from techgallery datastore
+    Technology technology;
+
+    // User from endpoint (endorser) can't be null
+    if (user == null) {
+      throw new BadRequestException("Current user was not sent to endorsement endpoint!");
     } else {
-      tgUser = userDAO.findById(endorserId);
-      if (tgUser == null) {
-        throw new BadRequestException("Endorser user do not exists!");
+      googleId = user.getUserId();
+    }
+
+    // TechGalleryUser can't be null and must exists on datastore
+    if (googleId == null || googleId.equals("")) {
+      throw new NotFoundException("Current user was not found!");
+    } else {
+      // get the TechGalleryUser from datastore
+      tgEndorserUser = userDAO.findByGoogleId(googleId);
+      if (tgEndorserUser == null) {
+        throw new BadRequestException("Endorser user do not exists on datastore!");
       }
     }
 
     // endorsed email can't be null.
-    String endorsed = endorsement.getEndorsed();
-    if (endorsed == null || endorsed.equals("")) {
-      throw new BadRequestException("Endorsed user was not especified!");
+    endorsedEmail = endorsement.getEndorsed();
+    if (endorsedEmail == null || endorsedEmail.equals("")) {
+      throw new BadRequestException("Endorsed email was not especified!");
+    } else {
+      // get user from PEOPLE
+      tgEndorsedUser = userService.getUserSyncedWithProvider(endorsedEmail);
+      if (tgEndorsedUser == null) {
+        throw new BadRequestException("Endorsed email was not found on PEOPLE!");
+      }
     }
 
-    // technology id or name? can't be null and must exists on datastore
-    String technologyId = endorsement.getTechnology();
-    Technology technology;
+    // technology id can't be null and must exists on datastore
+    technologyId = endorsement.getTechnology();
     if (technologyId == null || technologyId.equals("")) {
       throw new BadRequestException("Technology was not especified!");
     } else {
       technology = techDAO.findById(technologyId);
       if (technology == null) {
-        throw new BadRequestException("Technology user do not exists!");
+        throw new BadRequestException("Technology do not exists!");
       }
     }
 
-    throw new InternalServerErrorException("Not yet implemented!");
+    // final checks and persist
+    Endorsement entity = new Endorsement();
+    entity.setEndorser(Ref.create(tgEndorserUser));
+    entity.setEndorsed(Ref.create(tgEndorsedUser));
+    entity.setTimestamp(new Date());
+    entity.setTechnology(Ref.create(technology));
+    endorsementDAO.add(entity);
+    // set the id and return it
+    endorsement.setId(entity.getId());
+    return endorsement;
   }
 
   /**
-   * GET for getting all technologies.
+   * GET for getting all endorsements.
    */
   @Override
   public Response getEndorsements() throws InternalServerErrorException, NotFoundException {
@@ -81,7 +126,7 @@ public class EndorsementServiceImpl implements EndorsementService {
   }
 
   /**
-   * GET for getting one technology.
+   * GET for getting one endorsement.
    */
   @Override
   public Response getEndorsement(Long id) throws NotFoundException {
@@ -95,6 +140,13 @@ public class EndorsementServiceImpl implements EndorsementService {
       response.setTimestamp(endorseEntity.getTimestamp());
       return response;
     }
+  }
+
+  @Override
+  public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
+      List<Endorsement> endorsements) {
+    // TODO damorim
+    return null;
   }
 }
 

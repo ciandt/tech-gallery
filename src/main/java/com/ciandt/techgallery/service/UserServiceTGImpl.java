@@ -1,20 +1,34 @@
 package com.ciandt.techgallery.service;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.ciandt.techgallery.persistence.dao.UserDAO;
-import com.ciandt.techgallery.persistence.dao.UserDAOImpl;
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
 import com.ciandt.techgallery.service.model.UsersResponse;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 
 public class UserServiceTGImpl implements UserServiceTG {
 
-  UserDAO userDAO = new UserDAOImpl();
+  TechGalleryUserDAO userDAO = new TechGalleryUserDAOImpl();
+  private static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
+
+  private static final String OPERATION_FAILED = "Operation failed";
+  private static final String PROVIDER_AUTH = "Basic ";
 
   /**
    * GET for getting all users.
@@ -24,7 +38,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     List<TechGalleryUser> userEntities = userDAO.findAll();
     // if user list is null, return a not found exception
     if (userEntities == null) {
-      throw new NotFoundException("No user was found.");
+      throw new NotFoundException(OPERATION_FAILED);
     } else {
       UsersResponse response = new UsersResponse();
       List<UserResponse> innerList = new ArrayList<UserResponse>();
@@ -70,44 +84,44 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   @Override
   public Response addUser(final UserResponse user) throws BadRequestException {
-    // if user is null, return a bad request exception
-    if (user == null) {
-      throw new BadRequestException("User JSON cannot be null.");
-    }
-    // user obligatory information
-    String userName = user.getName();
-    String userEmail = user.getEmail();
-    // user's name cannot be blank
-    if (userName == null || userName.equals("")) {
-      throw new BadRequestException("User's name cannot be blank.");
+    if (!userDataIsValid(user)) {
+      throw new BadRequestException("User's email cannot be blank.");
     } else {
-      // user's email cannot be blank
-      if (userEmail == null || userEmail.equals("")) {
-        throw new BadRequestException("User's email cannot be blank.");
-      } else {
-        // carregar perfil de acordo com seu email
-        // UserService userService = UserServiceFactory.getUserService();
-        // User googleUser = userService.getCurrentUser();
-        TechGalleryUser userEntity = new TechGalleryUser();
-        userEntity.setName(userName);
-        userEntity.setEmail(userEmail);
-        userEntity.setPhoto(userEntity.getPhoto());
-        userDAO.add(userEntity);
-        // set the id and return it
-        user.setId(userEntity.getId());
-        return user;
-      }
+      TechGalleryUser userEntity = new TechGalleryUser();
+      fillUserData(user, userEntity);
+      userDAO.add(userEntity);
+      // set the id and return it
+      user.setId(userEntity.getId());
+      return user;
     }
-
   }
 
   /**
    * PUT for editing a user.
+   * 
+   * @throws BadRequestException
    */
   @Override
-  public Response updateUser(final UserResponse user) {
-    // TODO Auto-generated method stub
-    return null;
+  public Response updateUser(final UserResponse user) throws BadRequestException {
+    if (!userDataIsValid(user) && user.getId() != null) {
+      throw new BadRequestException("User's email cannot be blank.");
+    } else {
+      TechGalleryUser tgCurrentUser = userDAO.findById(user.getId());
+      fillUserData(user, tgCurrentUser);
+      userDAO.update(tgCurrentUser);
+      return user;
+    }
+  }
+
+  private void fillUserData(final UserResponse user, TechGalleryUser tgCurrentUser) {
+    String userName = user.getName();
+    String userEmail = user.getEmail();
+    String userPhoto = user.getPhoto();
+    tgCurrentUser.setName(userName);
+    tgCurrentUser.setEmail(userEmail);
+    if (userPhoto != null) {
+      tgCurrentUser.setPhoto(userPhoto);
+    }
   }
 
   /**
@@ -116,9 +130,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   @Override
   public Response getUserByLogin(final String login) throws NotFoundException {
     TechGalleryUser userEntity = userDAO.findByLogin(login);
-    // if user is null, return a not found exception
     if (userEntity == null) {
-      throw new NotFoundException("No user was found.");
+      throw new NotFoundException(OPERATION_FAILED);
     } else {
       UserResponse response = new UserResponse();
       response.setId(userEntity.getId());
@@ -127,6 +140,110 @@ public class UserServiceTGImpl implements UserServiceTG {
       response.setPhoto(userEntity.getPhoto());
       return response;
     }
+  }
+
+  @Override
+  public TechGalleryUser getUserByNameAndEmail(final String name, final String email)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
+    return userDAO.findByNameAndEmail(name, email);
+  }
+
+  /**
+   * 
+   * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists, adds to
+   * TG's datastore (if not there). Returns the user.
+   * 
+   * @param userLogin
+   * @return
+   * @throws NotFoundException
+   * @throws BadRequestException
+   * @throws InternalServerErrorException
+   */
+  @Override
+  public TechGalleryUser getUserSyncedWithProvider(final String userLogin)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
+    TechGalleryUser tgUser = null;
+    try {
+      UserResponse uResp = (UserResponse) getUserFromProvider(userLogin);
+      tgUser = getUserByNameAndEmail(uResp.getName(), uResp.getEmail());
+      if (tgUser == null) {
+        addUser(uResp);
+      }
+    } catch (BadRequestException e) {
+      // User not found on provider
+      if (e.getMessage().equals(OPERATION_FAILED)) {
+        // Logs to App Engine log
+        System.err.println(OPERATION_FAILED + ": " + e.getMessage());
+      }
+    }
+    return tgUser;
+  }
+
+  /**
+   * GET Calls the provider API passing a login to obtain user information
+   * 
+   * @param userlogin the user login to pass to the provider API
+   * @throws BadRequestException if any IO exceptions occur
+   * @throws InternalServerErrorException
+   */
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  @Override
+  public Response getUserFromProvider(final String userLogin) throws NotFoundException,
+      BadRequestException, InternalServerErrorException {
+
+    String fullRequest = PEOPLE_ENDPOINT + userLogin + "?format=json";
+    UserResponse uResp = new UserResponse();
+    try {
+      URL url = new URL(fullRequest);
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      conn.setDoOutput(true);
+      conn.setRequestMethod("GET");
+      conn.setRequestProperty("Authorization", PROVIDER_AUTH);
+      ObjectMapper mapper = new ObjectMapper();
+
+      Map<String, Object> providerResponse = mapper.readValue(conn.getInputStream(), Map.class);
+      HashMap<String, Object> userData = (LinkedHashMap) providerResponse.get("personal_info");
+      uResp.setEmail((String) userData.get("email"));
+      uResp.setName((String) userData.get("name"));
+
+    } catch (JsonParseException e) {
+      throw new BadRequestException(OPERATION_FAILED);
+
+    } catch (MalformedURLException e) {
+      throw new BadRequestException(e.getMessage());
+
+    } catch (IOException e) {
+      System.err.println("An internal server error ocurred!");
+      System.err.println(e.getMessage());
+      throw new InternalServerErrorException("An internal server error ocurred.");
+
+    }
+    return uResp;
+  }
+
+  /**
+   * Validates user data
+   * 
+   * @param user the user data wrapped in a UserResponse entity
+   * @return true if data is valid, false otherwise
+   */
+  private static boolean userDataIsValid(UserResponse user) {
+    // if user is null, return a bad request exception
+    if (user == null) {
+      return false;
+    }
+    String userName = user.getName();
+    String userEmail = user.getEmail();
+    // user name cannot be blank
+    if (userName == null || userName.replaceAll("\\s", "").equals("")) {
+      return false;
+    }
+    // user email cannot be blank
+    if (userEmail == null || userEmail.replaceAll("\\s", "").equals("")) {
+      return false;
+    }
+    return true;
+
   }
 
 }
