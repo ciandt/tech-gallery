@@ -16,18 +16,19 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
 import com.ciandt.techgallery.service.model.UsersResponse;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.repackaged.org.codehaus.jackson.JsonParseException;
-import com.google.appengine.repackaged.org.codehaus.jackson.map.ObjectMapper;
 
 public class UserServiceTGImpl implements UserServiceTG {
 
   TechGalleryUserDAO userDAO = new TechGalleryUserDAOImpl();
-  static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
-  static final String USER_NOT_FOUND = "User not found";
-  static final String PROVIDER_AUTH = "Basic ";
+  private static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
+
+  private static final String OPERATION_FAILED = "Operation failed";
+  private static final String PROVIDER_AUTH = "Basic ";
 
   /**
    * GET for getting all users.
@@ -37,7 +38,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     List<TechGalleryUser> userEntities = userDAO.findAll();
     // if user list is null, return a not found exception
     if (userEntities == null) {
-      throw new NotFoundException(USER_NOT_FOUND);
+      throw new NotFoundException(OPERATION_FAILED);
     } else {
       UsersResponse response = new UsersResponse();
       List<UserResponse> innerList = new ArrayList<UserResponse>();
@@ -130,7 +131,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   public Response getUserByLogin(final String login) throws NotFoundException {
     TechGalleryUser userEntity = userDAO.findByLogin(login);
     if (userEntity == null) {
-      throw new NotFoundException(USER_NOT_FOUND);
+      throw new NotFoundException(OPERATION_FAILED);
     } else {
       UserResponse response = new UserResponse();
       response.setId(userEntity.getId());
@@ -148,9 +149,9 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   *  
-   * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists,
-   * adds to TG's datastore (if not there). Returns the user.
+   * 
+   * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists, adds to
+   * TG's datastore (if not there). Returns the user.
    * 
    * @param userLogin
    * @return
@@ -159,8 +160,8 @@ public class UserServiceTGImpl implements UserServiceTG {
    * @throws InternalServerErrorException
    */
   @Override
-  public TechGalleryUser getUserSyncedWithProvider(final String userLogin) throws NotFoundException,
-      BadRequestException, InternalServerErrorException {
+  public TechGalleryUser getUserSyncedWithProvider(final String userLogin)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
     TechGalleryUser tgUser = null;
     try {
       UserResponse uResp = (UserResponse) getUserFromProvider(userLogin);
@@ -169,11 +170,10 @@ public class UserServiceTGImpl implements UserServiceTG {
         addUser(uResp);
       }
     } catch (BadRequestException e) {
-      //User not found on provider
-      if (e.getMessage().equals(USER_NOT_FOUND)) {
-        //Logs to App Engine
-        System.err.println(USER_NOT_FOUND+": "+e.getMessage());
-        //Might delete user from tech gallery datastore in the future
+      // User not found on provider
+      if (e.getMessage().equals(OPERATION_FAILED)) {
+        // Logs to App Engine log
+        System.err.println(OPERATION_FAILED + ": " + e.getMessage());
       }
     }
     return tgUser;
@@ -207,7 +207,7 @@ public class UserServiceTGImpl implements UserServiceTG {
       uResp.setName((String) userData.get("name"));
 
     } catch (JsonParseException e) {
-      throw new BadRequestException(USER_NOT_FOUND);
+      throw new BadRequestException(OPERATION_FAILED);
 
     } catch (MalformedURLException e) {
       throw new BadRequestException(e.getMessage());
@@ -232,15 +232,13 @@ public class UserServiceTGImpl implements UserServiceTG {
     if (user == null) {
       return false;
     }
-
-    // user obligatory information
     String userName = user.getName();
     String userEmail = user.getEmail();
-    // user's name cannot be blank
+    // user name cannot be blank
     if (userName == null || userName.replaceAll("\\s", "").equals("")) {
       return false;
     }
-    // user's email cannot be blank
+    // user email cannot be blank
     if (userEmail == null || userEmail.replaceAll("\\s", "").equals("")) {
       return false;
     }
