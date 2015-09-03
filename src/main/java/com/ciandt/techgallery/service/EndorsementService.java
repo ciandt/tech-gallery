@@ -23,7 +23,7 @@ public interface EndorsementService {
    * @return endorsement info or message error.
    * @throws InternalServerErrorException
    * @throws BadRequestException
-   * @throws NotFoundException 
+   * @throws NotFoundException
    */
   public Response addOrUpdateEndorsement(final EndorsementResponse endorsement, final User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException;
@@ -45,4 +45,10 @@ public interface EndorsementService {
    * @throws NotFoundException
    */
   public Response getEndorsement(final Long id) throws NotFoundException;
+
+  // TODO remove it
+  public Response addEndorsementTest();
+
+  // TODO remove it
+  public Response getEndorsementTest();
 }
