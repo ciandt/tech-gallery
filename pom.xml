@@ -15,7 +15,7 @@
         <appengine.version>1.9.25</appengine.version>
         <gcloud.plugin.version>0.9.58.v20150505</gcloud.plugin.version>
         <jackson.databind-version>2.2.3</jackson.databind-version>
-
+        
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
     </properties>
@@ -146,6 +146,8 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                    <fork>true</fork>
+                    <executable>${JAVA_HOME}\bin\javac</executable>
                 </configuration>
             </plugin>
             <plugin>
