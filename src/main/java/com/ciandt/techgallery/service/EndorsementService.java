@@ -1,5 +1,9 @@
 package com.ciandt.techgallery.service;
 
+import java.util.List;
+
+import com.ciandt.techgallery.persistence.model.Endorsement;
+import com.ciandt.techgallery.sample.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.Response;
 import com.google.api.server.spi.response.BadRequestException;
@@ -46,9 +50,19 @@ public interface EndorsementService {
    */
   public Response getEndorsement(final Long id) throws NotFoundException;
 
-  // TODO remove it
+  /**
+   * Service for getting a endorsement.
+   * 
+   * @param endorsements List of Endorsement.
+   * 
+   * @return
+   */
+  public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
+      List<Endorsement> endorsements);
+
+  // TODO felipegc remove it
   public Response addEndorsementTest();
 
-  // TODO remove it
+  // TODO felipegc remove it
   public Response getEndorsementTest();
 }

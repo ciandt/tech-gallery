@@ -13,6 +13,7 @@ import com.ciandt.techgallery.persistence.dao.UserDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.sample.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
@@ -144,6 +145,13 @@ public class EndorsementServiceImpl implements EndorsementService {
       response.setTimestamp(endorseEntity.getTimestamp());
       return response;
     }
+  }
+
+  @Override
+  public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
+      List<Endorsement> endorsements) {
+    // TODO damorim
+    return null;
   }
 
   @Override
