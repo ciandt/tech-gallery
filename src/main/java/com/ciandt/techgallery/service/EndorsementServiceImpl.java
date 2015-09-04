@@ -1,7 +1,12 @@
 package com.ciandt.techgallery.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
@@ -152,9 +157,36 @@ public class EndorsementServiceImpl implements EndorsementService {
   @Override
   public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
       List<Endorsement> endorsements) {
-    // TODO damorim
+
+    Map<TechGalleryUser, List<TechGalleryUser>> mapUsersGrouped = new HashMap<TechGalleryUser, List<TechGalleryUser>>();
     
-    return null;
+    for (Endorsement endorsement : endorsements) {
+      TechGalleryUser endorsed = endorsement.getEndorsedEntity();
+      
+      if (mapUsersGrouped.containsKey(endorsed)){
+        List<TechGalleryUser> endorsersList = mapUsersGrouped.get(endorsed);
+        endorsersList.add(endorsement.getEndorserEntity());
+        mapUsersGrouped.put(endorsed, endorsersList);
+      } else {
+        List<TechGalleryUser> endorsersList = new ArrayList<TechGalleryUser>();
+        endorsersList.add(endorsement.getEndorserEntity());
+        mapUsersGrouped.put(endorsed, endorsersList);
+      }
+    }
+    return transformGroupedUserMapIntoList(mapUsersGrouped);
+  }
+
+  private List<EndorsementsGroupedByEndorsedTransient> transformGroupedUserMapIntoList(
+      Map<TechGalleryUser, List<TechGalleryUser>> mapUsersGrouped) {
+    List<EndorsementsGroupedByEndorsedTransient> groupedList = new ArrayList<EndorsementsGroupedByEndorsedTransient>();
+    
+    for(Map.Entry<TechGalleryUser, List<TechGalleryUser>> entry : mapUsersGrouped.entrySet()){
+      EndorsementsGroupedByEndorsedTransient grouped = new EndorsementsGroupedByEndorsedTransient();
+      grouped.setEndorsed(entry.getKey());
+      grouped.setEndorsers(entry.getValue());
+      groupedList.add(grouped);
+    }
+    return groupedList;
   }
 
   @Override

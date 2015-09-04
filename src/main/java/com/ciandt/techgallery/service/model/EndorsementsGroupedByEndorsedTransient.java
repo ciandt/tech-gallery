@@ -17,5 +17,21 @@ public class EndorsementsGroupedByEndorsedTransient extends Response {
   TechGalleryUser endorsed;
   
   List<TechGalleryUser> endorsers;
+
+  public TechGalleryUser getEndorsed() {
+    return endorsed;
+  }
+
+  public void setEndorsed(TechGalleryUser endorsed) {
+    this.endorsed = endorsed;
+  }
+
+  public List<TechGalleryUser> getEndorsers() {
+    return endorsers;
+  }
+
+  public void setEndorsers(List<TechGalleryUser> endorsers) {
+    this.endorsers = endorsers;
+  }
   
 }
