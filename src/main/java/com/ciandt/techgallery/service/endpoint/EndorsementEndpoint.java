@@ -73,8 +73,8 @@ public class EndorsementEndpoint {
    * @throws InternalServerErrorException 
    */
   @ApiMethod(name = "getEndorsementsByTech", path = "endorsement/tech/{id}", httpMethod = "get")
-  public Response getEndorsementsByTech(@Named("id") String id) throws NotFoundException, InternalServerErrorException {
-    return service.getEndorsementsByTech(id);
+  public Response getEndorsementsByTech(@Named("id") String id, User user) throws NotFoundException, InternalServerErrorException {
+    return service.getEndorsementsByTech(id, user);
   } 
   
   @ApiMethod(name = "addEndorsementTest", path = "endorsementTest", httpMethod = "post")

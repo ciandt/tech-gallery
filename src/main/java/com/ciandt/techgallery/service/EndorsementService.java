@@ -69,7 +69,7 @@ public interface EndorsementService {
    * @return
    * @throws InternalServerErrorException 
    */
-  public Response getEndorsementsByTech(final String techId) throws InternalServerErrorException;
+  public Response getEndorsementsByTech(final String techId, User user) throws InternalServerErrorException;
   
   // TODO felipegc remove it
   public Response addEndorsementTest();

@@ -20,7 +20,7 @@ public interface EndorsementDAO extends GenericDAO<Endorsement, Long> {
    * @param technology
    * @return list of endorsements based on technology
    */
-  public List<Endorsement> findAllByTechnology(Technology technology);
+  public List<Endorsement> findAllByTechnology(String techId);
 
   /**
    * Method that return an endorsement by its users and technology

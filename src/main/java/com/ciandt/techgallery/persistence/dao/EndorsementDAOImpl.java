@@ -22,10 +22,12 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long> implem
    * {@inheritDoc}
    */
   @Override
-  public List<Endorsement> findAllByTechnology(Technology technology) {
+  public List<Endorsement> findAllByTechnology(String techId) {
+    Technology tech = new Technology();
+    tech.setId(techId);
     Objectify objectify = OfyService.ofy();
     List<Endorsement> entities =
-        objectify.load().type(Endorsement.class).filter("technology", Ref.create(technology))
+        objectify.load().type(Endorsement.class).filter("technology", Ref.create(tech))
             .list();
 
     if (entities == null || entities.size() <= 0) {

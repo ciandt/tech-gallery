@@ -21,6 +21,7 @@ import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementsResponse;
 import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -192,8 +193,13 @@ public class EndorsementServiceImpl implements EndorsementService {
    * @throws InternalServerErrorException 
    */
   @Override
-  public Response getEndorsementsByTech(String techId) throws InternalServerErrorException {
-    throw new InternalServerErrorException("Not yet implemented!");
+  public Response getEndorsementsByTech(String techId, User user) throws InternalServerErrorException {
+    List<Endorsement> endorsementsByTech = endorsementDAO.findAllByTechnology(techId);
+    List<EndorsementsGroupedByEndorsedTransient> grouped = groupEndorsementByEndorsed(endorsementsByTech);
+    
+    ShowEndorsementsResponse response = new ShowEndorsementsResponse();
+    response.setEndorsements(grouped);
+    return response;
   }
   
   @Override
@@ -241,6 +247,10 @@ public class EndorsementServiceImpl implements EndorsementService {
       TechGalleryUser endorser = new TechGalleryUser();
       endorser.setName("endorser name" + i);
       Key<TechGalleryUser> keyEndorser = userDAO.add(endorser);
+      
+      TechGalleryUser endorser2 = new TechGalleryUser();
+      endorser.setName("endorser name" + i + "b");
+      Key<TechGalleryUser> keyEndorser2 = userDAO.add(endorser2);
 
 
       TechGalleryUser endorsed = new TechGalleryUser();
@@ -256,8 +266,14 @@ public class EndorsementServiceImpl implements EndorsementService {
       endorsment.setEndorser(Ref.create(keyEndorser));
       endorsment.setEndorsed(Ref.create(keyEndorsed));
       endorsment.setTechnology(Ref.create(keyTech));
+      
+      Endorsement endorsment2 = new Endorsement();
+      endorsment.setEndorser(Ref.create(keyEndorser2));
+      endorsment.setEndorsed(Ref.create(keyEndorsed));
+      endorsment.setTechnology(Ref.create(keyTech));
 
       endorsementDAO.add(endorsment);
+      endorsementDAO.add(endorsment2);
     }
 
     return null;
@@ -269,9 +285,8 @@ public class EndorsementServiceImpl implements EndorsementService {
 
     for (int i = 1; i <= 10; i++) {
       log.info("Fetching endorsement list by technology");
-      Technology tech = new Technology();
-      tech.setId("tech" + i);
-      List<Endorsement> list = endorsementDAO.findAllByTechnology(tech);
+      String techId  = "tech" + i;
+      List<Endorsement> list = endorsementDAO.findAllByTechnology(techId);
 
       for (Endorsement end : list) {
         log.info("Endorsment id: " + end.getId());
