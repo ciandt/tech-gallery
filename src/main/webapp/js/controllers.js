@@ -118,20 +118,22 @@ angular.module('techGallery').controller('techDetailsController',
        * Início da parte de recommend 
        * 
        */
-      $scope.endorse = function() {
+      $scope.endorse = function(alertUser) {
         var req = {};
         req.endorsed = $scope.endorsed;
         req.technology = $scope.idTechnology;
         if ($scope.endorsed) {
           gapi.client.rest.addEndorsement(req).execute(function(data) {
-            var alert;
-            if (data.hasOwnProperty('error')) {
-              alert = alerts.failure;
-              alert.msg = data.error.message;
-            }else{
-              alert = alerts.success;
+            if(alertUser){
+              var alert;
+              if (data.hasOwnProperty('error')) {
+                alert = alerts.failure;
+                alert.msg = data.error.message;
+              }else{
+                alert = alerts.success;
+              }
+              $scope.alert = alert;
             }
-            $scope.alert = alert;
             $scope.endorsed = '';
             $scope.$apply();
           });
