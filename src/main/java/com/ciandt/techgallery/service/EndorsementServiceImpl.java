@@ -20,6 +20,7 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.EndorsementEntityResponse;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
+import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementsResponse;
 import com.ciandt.techgallery.service.model.Response;
 import com.google.api.server.spi.response.BadRequestException;
