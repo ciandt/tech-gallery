@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('techGallery').controller('techListController',
-        function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
+        function($scope, $location, $timeout) {
 
             $scope.showLogin = true;
 
@@ -68,7 +68,7 @@ angular.module('techGallery').controller('techListController',
         });
 
 angular.module('techGallery').controller('techDetailsController',
-        function($scope, $http, $location, $routeParams, $timeout, $rootScope) {
+        function($scope, $timeout, $modal) {
 
             $scope.idTechnology = jsUtils.getParameterByName('id');
 
@@ -123,4 +123,40 @@ angular.module('techGallery').controller('techDetailsController',
             $scope.closeAlert = function() {
                 $scope.alert = undefined;
             }
+            
+            
+            /*
+             * 
+             * Início da parte de show Endorsement 
+             * 
+             */
+            $scope.showAllEndorsers = function(endorsers){
+                return (endorsers.length > 0)
+            }
+            
+            $scope.showEndorsementResponse = jsUtils.mockShowEndorsementResponse();
+            
+            $scope.open = function (endorsers, size) {
+              var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: '/showEndorsementModal.html',
+                controller: 'modalController',
+                size: size,
+                resolve: {
+                    endorsers: function () {
+                    return endorsers;
+                  }
+                }
+              });
+            };
         });
+
+angular.module('techGallery').controller('modalController', function ($scope, $modalInstance, endorsers) {
+
+    $scope.endorsers = endorsers;
+
+    $scope.ok = function () {
+      $modalInstance.close();
+    };
+
+  });

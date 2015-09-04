@@ -31,8 +31,8 @@ public class EndorsementEndpoint {
    * @param endorsement json with endorsement info.
    * @return
    * @throws InternalServerErrorException
-   * @throws BadRequestException 
-   * @throws NotFoundException 
+   * @throws BadRequestException
+   * @throws NotFoundException
    * @throws OAuthRequestException 
    */
   @ApiMethod(name = "addEndorsement", path = "endorsement", httpMethod = "post")
@@ -65,4 +65,17 @@ public class EndorsementEndpoint {
     return service.getEndorsement(id);
   }
 
+  @ApiMethod(name = "addEndorsementTest", path = "endorsementTest", httpMethod = "post")
+  public Response addEndorsementTest() throws InternalServerErrorException, BadRequestException,
+      NotFoundException {
+    // TODO felipegc remove it
+    return service.addEndorsementTest();
+  }
+
+  @ApiMethod(name = "getEndorsementTest", path = "getEndorsementTest", httpMethod = "post")
+  public Response getEndorsementTest() throws InternalServerErrorException, BadRequestException,
+      NotFoundException {
+    // TODO felipegc remove it
+    return service.getEndorsementTest();
+  }
 }
