@@ -29,4 +29,11 @@ public interface TechGalleryUserDAO extends GenericDAO<TechGalleryUser, Long> {
    * @return
    */
   public TechGalleryUser findByNameAndEmail(String name, String email);
+
+  /**
+   * Searches for an user by email
+   * @param email
+   * @return
+   */
+  public TechGalleryUser findByEmail(String email);
 }

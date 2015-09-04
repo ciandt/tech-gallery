@@ -99,6 +99,7 @@ var mockShowEndorsementResponse = function(){
         response.endorsed.name = names[i-1];
         response.endorsed.photo = "https://storage.googleapis.com/tech-gallery-assets/userPhotos/user" + i + ".jpg";
         response.endorsed.clientId = i;
+        response.endorsed.email = response.endorsed.name+"@example.com";
         
         for(var j = 1; j < i; j++){
             var endorser = {};
@@ -116,10 +117,10 @@ var mockShowEndorsementResponse = function(){
 var alerts = {
         success : {
             type : 'success',
-            msg : 'Indicação efetuada!'
+            msg : 'Endorsement successfull!'
         },
         failure : {
-            type : 'error',
+            type : 'danger',
             msg : 'Usuário não encontrado!'
         },
         caution : {

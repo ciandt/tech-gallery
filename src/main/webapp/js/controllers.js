@@ -77,17 +77,6 @@ angular.module('techGallery').controller('techDetailsController',
 
       var alerts = jsUtils.alerts;
 
-      $scope.endorse = function() {
-        var req = {};
-        req.endorsed = $scope.endorsed + $scope.domain;
-        req.technology = $scope.idTechnology;
-        if ($scope.endorsed) {
-          console.log(req);
-          $scope.alert = alerts.caution;
-          $scope.endorsed = '';
-        }
-      }
-
       var successFunction = function(data) {
         $scope.clientId = data.client_id;
         var protocol = location.protocol + '//';
@@ -125,6 +114,37 @@ angular.module('techGallery').controller('techDetailsController',
         $scope.alert = undefined;
       }
 
+      
+      
+      /*
+       * 
+       * Início da parte de recommend 
+       * 
+       */
+      $scope.endorse = function(alertUser) {
+        var req = {};
+        req.endorsed = $scope.endorsed;
+        req.technology = $scope.idTechnology;
+        if ($scope.endorsed) {
+          gapi.client.rest.addEndorsement(req).execute(function(data) {
+            if(alertUser){
+              var alert;
+              if (data.hasOwnProperty('error')) {
+                alert = alerts.failure;
+                alert.msg = data.error.message;
+              }else{
+                alert = alerts.success;
+              }
+              $scope.alert = alert;
+            }
+            $scope.endorsed = '';
+            $scope.$apply();
+          });
+        }
+      }
+
+      
+      
       /*
        * 
        * Início da parte de show Endorsement 
@@ -150,6 +170,7 @@ angular.module('techGallery').controller('techDetailsController',
         });
       };
 
+      
       
       /*
        * 
