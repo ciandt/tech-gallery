@@ -114,10 +114,10 @@ var mockShowEndorsementResponse = function(){
 var alerts = {
         success : {
             type : 'success',
-            msg : 'Indicação efetuada!'
+            msg : 'Endorsement successfull!'
         },
         failure : {
-            type : 'error',
+            type : 'danger',
             msg : 'Usuário não encontrado!'
         },
         caution : {

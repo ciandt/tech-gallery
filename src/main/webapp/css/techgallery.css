@@ -5,6 +5,14 @@
 	width: 100%;
 	display: block;
 }
+.img-tech-view{
+	height: 355px;
+	width: 355px;
+}
+
+.thumbnail{
+	height: 380px;
+}
 
 .spacingtop {
 	margin-top: 2%;
@@ -46,4 +54,16 @@ body, html {
 	margin-left: 5px;
 	margin-right: 5px;
 	margin-bottom: 10px;
+}
+
+.endorse-input {
+	width: 30%;
+	float: left;
+	margin-right: 10%;
+}
+
+.endorse-alerts {
+	width: 50%;
+	text-align: center;
+	margin: 0 auto;
 }
