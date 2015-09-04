@@ -3,6 +3,7 @@ package com.ciandt.techgallery.persistence.dao;
 import java.util.List;
 
 import com.ciandt.techgallery.persistence.model.Endorsement;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 
 /**
@@ -19,6 +20,17 @@ public interface EndorsementDAO extends GenericDAO<Endorsement, Long> {
    * @param technology
    * @return list of endorsements based on technology
    */
-  public List<Endorsement> findAllByTechnology(Technology technology);
+  public List<Endorsement> findAllByTechnology(String techId);
 
+  /**
+   * Method that return an endorsement by its users and technology
+   * 
+   * @param endorser
+   * @param endorsed
+   * @param technology
+   * @return
+   */
+  public List<Endorsement> findByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
+      Technology technology);
+  
 }

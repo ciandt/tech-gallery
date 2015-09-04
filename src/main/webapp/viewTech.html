@@ -24,7 +24,7 @@
     <div id="div_container" class="container">
       <div class="row">
         <div id="div_image" class="col-xs-6">
-          <img src={{image}} class="img-responsive">
+          <img src={{image}} class="img-responsive img-tech-view">
         </div>
         <div id="div_teste" class="container">
           <div id="div_image_name" class="col-xs-6">
@@ -35,6 +35,20 @@
       </div>
       <div class="voting_wrapper technologydescription spacingtop"
         id="div_details">{{description}}</div>
+    </div>
+
+    <div class="container">
+      <h3>Quem manja muito desta tecnologia?</h3>
+      <div class="input-group endorse-input">
+        <input ng-model="endorsed" type="text" class="form-control"
+          placeholder="(usuário)" aria-describedby="basic-addon2">
+        <span class="input-group-addon" id="basic-addon2">{{domain}}</span>
+      </div>
+      <a href="#" ng-click="endorse()" class="btn btn-primary"
+        role="button">Indicar</a>
+    </div>
+    <div class="endorse-alerts spacingtop">
+      <alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
     </div>
 
     <div id="div_showRecommendation" class="container">
@@ -54,10 +68,6 @@
 
           <div id="div_image_recomendations" class="container">
             <div class="col-xs-6">
-              <button ng-show="showPlusOne(response.endorsed.clientId)" type="button" id={{generateId($index)}}
-                style="float: left"
-                ng-click="addEndorse(response.endorsed, generateId($index))"
-                class="btn btn-primary">+1</button>
               <div
                 ng-repeat="endorser in response.endorsers track by $index">
                 <img class="media-object endorsers-image"

@@ -1,5 +1,9 @@
 package com.ciandt.techgallery.service.endpoint;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.UserServiceTGImpl;
@@ -11,6 +15,8 @@ import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
 
 /**
  * Endpoint controller class for User requests.
@@ -18,7 +24,8 @@ import com.google.api.server.spi.response.NotFoundException;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID})
+@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
+    Constants.API_EXPLORER_CLIENT_ID})
 public class UserEndpoint {
 
   private UserServiceTG service = new UserServiceTGImpl();
@@ -71,22 +78,28 @@ public class UserEndpoint {
   public Response getUserByLogin(@Named("login") String login) throws NotFoundException {
     return service.getUserByLogin(login);
   }
-  
+
   /**
-   * Endpoint for getting a User from a user provider.
-   * The interface with the provider is made by the service
+   * Endpoint for getting a User from a user provider. The interface with the provider is made by
+   * the service
    * 
    * @param id entity id.
    * @return
    * @throws NotFoundException
-   * @throws InternalServerErrorException 
-   * @throws BadRequestException 
+   * @throws InternalServerErrorException
+   * @throws BadRequestException
    */
   @ApiMethod(name = "getUserFromProvider", path = "userFromProvider/{login}", httpMethod = "get")
-  public Response getUserFromProvider(@Named("login") String login) throws NotFoundException, BadRequestException, InternalServerErrorException {
+  public Response getUserFromProvider(@Named("login") String login) throws NotFoundException,
+      BadRequestException, InternalServerErrorException {
     return service.getUserFromProvider(login);
   }
-  
-  
+
+  @ApiMethod(name = "handleLogin", path = "handleLogin", httpMethod = "post")
+  public Response handleLogin(User user, HttpServletRequest req) throws NotFoundException,
+      BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
+    return service.handleLogin(user, req);
+  }
+
 
 }

@@ -65,6 +65,18 @@ public class EndorsementEndpoint {
     return service.getEndorsement(id);
   }
 
+  /**
+   * Endpoint for getting all endorsements of a Technology.
+   * @param id technology id.
+   * @return
+   * @throws NotFoundException
+   * @throws InternalServerErrorException 
+   */
+  @ApiMethod(name = "getEndorsementsByTech", path = "endorsement/tech/{id}", httpMethod = "get")
+  public Response getEndorsementsByTech(@Named("id") String id, User user) throws NotFoundException, InternalServerErrorException {
+    return service.getEndorsementsByTech(id, user);
+  } 
+  
   @ApiMethod(name = "addEndorsementTest", path = "endorsementTest", httpMethod = "post")
   public Response addEndorsementTest() throws InternalServerErrorException, BadRequestException,
       NotFoundException {

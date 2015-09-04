@@ -31,7 +31,7 @@ angular.module('techGallery').controller('techListController',
         executeAuth();
       }
 
-      var successFunction = function(data) {
+      var successFunction = function() {
         getTechList();
         $scope.showLogin = false;
       }
@@ -77,19 +77,7 @@ angular.module('techGallery').controller('techDetailsController',
 
       var alerts = jsUtils.alerts;
 
-      $scope.endorse = function() {
-        var req = {};
-        req.endorsed = $scope.endorsed + $scope.domain;
-        req.technology = $scope.idTechnology;
-        if ($scope.endorsed) {
-          console.log(req);
-          $scope.alert = alerts.caution;
-          $scope.endorsed = '';
-        }
-      }
-
-      var successFunction = function(data) {
-        $scope.clientId = data.client_id;
+      var successFunction = function() {
         var protocol = location.protocol + '//';
         var host = location.host;
         var complement = '/_ah/api/';
@@ -127,6 +115,31 @@ angular.module('techGallery').controller('techDetailsController',
 
       /*
        * 
+       * Início da parte de recommend 
+       * 
+       */
+      $scope.endorse = function() {
+        var req = {};
+        req.endorsed = $scope.endorsed;
+        req.technology = $scope.idTechnology;
+        if ($scope.endorsed) {
+          gapi.client.rest.addEndorsement(req).execute(function(data) {
+            var alert;
+            if (data.hasOwnProperty('error')) {
+              alert = alerts.failure;
+              alert.msg = data.error.message;
+            }else{
+              alert = alerts.success;
+            }
+            $scope.alert = alert;
+            $scope.endorsed = '';
+            $scope.$apply();
+          });
+        }
+      }
+
+      /*
+       * 
        * Início da parte de show Endorsement 
        * 
        */
@@ -149,36 +162,6 @@ angular.module('techGallery').controller('techDetailsController',
           }
         });
       };
-
-      
-      /*
-       * 
-       * Início da parte de +1 
-       * 
-       */
-      $scope.showPlusOne = function(id){
-        if($scope.clientId == id){
-          return false;
-        }
-        return true;
-      }
-      
-      $scope.generateId = function(index) {
-        return 'plusOne' + index;
-      }
-
-      $scope.addEndorse = function(endorsed, id) {
-        var elementClassIncrease = 'btn btn-primary';
-        var elementClassDecrease = 'btn btn-danger';
-        var elementClass = document.getElementById(id).className;
-        if (elementClass.indexOf('btn-danger') < 0) {
-          //Make API call to add endorse
-          document.getElementById(id).className = elementClassDecrease;
-        } else {
-          //Make API call to remove endorse
-          document.getElementById(id).className = elementClassIncrease;
-        }
-      }
     });
 
 angular.module('techGallery').controller('modalController',
