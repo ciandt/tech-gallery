@@ -28,7 +28,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   private static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
 
   private static final String OPERATION_FAILED = "Operation failed";
-  private static final String PROVIDER_AUTH = "Basic ";
+  private static final String PROVIDER_AUTH = "Basic c2FfdGdhbGxlcnk6UEBzc3cwcmQ=";
 
   /**
    * GET for getting all users.

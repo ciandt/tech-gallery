@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
-        <servlet-name>daoExample</servlet-name>
-        <servlet-class>com.ciandt.techgallery.sample.service.servlet.DAOExample</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>viewTech</servlet-name>
         <servlet-class>com.ciandt.techgallery.servlets.ViewTech</servlet-class>
     </servlet>
@@ -15,10 +11,6 @@
             <param-value>com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl,com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint</param-value>
         </init-param>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>daoExample</servlet-name>
-        <url-pattern>/daoExample</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>viewTech</servlet-name>
         <url-pattern>/viewTech</url-pattern>
