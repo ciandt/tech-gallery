@@ -172,8 +172,10 @@ angular.module('techGallery').controller('techDetailsController',
         var elementClassDecrease = 'btn btn-danger';
         var elementClass = document.getElementById(id).className;
         if (elementClass.indexOf('btn-danger') < 0) {
+          //Make API call to add endorse
           document.getElementById(id).className = elementClassDecrease;
         } else {
+          //Make API call to remove endorse
           document.getElementById(id).className = elementClassIncrease;
         }
       }
