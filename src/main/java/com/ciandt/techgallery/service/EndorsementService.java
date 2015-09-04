@@ -5,6 +5,7 @@ import com.ciandt.techgallery.service.model.Response;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 /**
@@ -24,9 +25,10 @@ public interface EndorsementService {
    * @throws InternalServerErrorException
    * @throws BadRequestException
    * @throws NotFoundException 
+   * @throws OAuthRequestException 
    */
   public Response addOrUpdateEndorsement(final EndorsementResponse endorsement, final User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException;
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
 
   /**
    * Service for getting all endorsements.

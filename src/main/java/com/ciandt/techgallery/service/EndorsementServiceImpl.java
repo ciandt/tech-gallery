@@ -17,6 +17,7 @@ import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Ref;
 
@@ -43,10 +44,11 @@ public class EndorsementServiceImpl implements EndorsementService {
    * @throws InternalServerErrorException
    * @throws BadRequestException
    * @throws NotFoundException
+   * @throws OAuthRequestException 
    */
   @Override
   public Response addOrUpdateEndorsement(EndorsementResponse endorsement, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     // endorser user google id
     String googleId;
     // endorser user from techgallery datastore
@@ -64,7 +66,7 @@ public class EndorsementServiceImpl implements EndorsementService {
 
     // User from endpoint (endorser) can't be null
     if (user == null) {
-      throw new BadRequestException("Current user was not sent to endorsement endpoint!");
+      throw new OAuthRequestException("oauth error, user reference null");
     } else {
       googleId = user.getUserId();
     }

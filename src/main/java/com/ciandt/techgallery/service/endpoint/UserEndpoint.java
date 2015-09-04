@@ -18,7 +18,7 @@ import com.google.api.server.spi.response.NotFoundException;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID})
+@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID})
 public class UserEndpoint {
 
   private UserServiceTG service = new UserServiceTGImpl();
