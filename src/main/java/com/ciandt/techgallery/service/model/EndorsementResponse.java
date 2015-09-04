@@ -3,7 +3,7 @@ package com.ciandt.techgallery.service.model;
 import java.util.Date;
 
 /**
- * Response with a endorsement entity.
+ * Response used by frontend to make an Endorsement.
  * 
  * @author felipers
  *

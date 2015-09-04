@@ -54,11 +54,12 @@ public class EndorsementServiceImpl implements EndorsementService {
    * @throws InternalServerErrorException
    * @throws BadRequestException
    * @throws NotFoundException
-   * @throws OAuthRequestException 
+   * @throws OAuthRequestException
    */
   @Override
   public Response addOrUpdateEndorsement(EndorsementResponse endorsement, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException {
     // endorser user google id
     String googleId;
     // endorser user email
@@ -87,7 +88,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new NotFoundException("Current user was not found!");
     } else {
       // get the TechGalleryUser from datastore or PEOPLE API
-      tgEndorserUser = userService.getUserSyncedWithProvider("felipers");//userDAO.findByGoogleId(googleId);
+      tgEndorserUser = userService.getUserSyncedWithProvider(endorserEmail.replace("@ciandt.com", ""));
       if (tgEndorserUser == null) {
         throw new BadRequestException("Endorser user do not exists on datastore!");
       }
@@ -118,12 +119,12 @@ public class EndorsementServiceImpl implements EndorsementService {
 
     // final checks and persist
     // user cannot endorse itself
-    if(tgEndorserUser.getId() == tgEndorsedUser.getId()){
+    if (tgEndorserUser.getId() == tgEndorsedUser.getId()) {
       throw new BadRequestException("You cannot endorse yourself!");
     }
     // user cannot endorse the same people twice
-    if(true){
-      
+    if (endorsementDAO.findByUsers(tgEndorserUser, tgEndorsedUser, technology).size() > 0) {
+      throw new BadRequestException("You already endorsed this user for this technology");
     }
     // create endorsement and save it
     Endorsement entity = new Endorsement();
@@ -186,6 +187,15 @@ public class EndorsementServiceImpl implements EndorsementService {
     }
   }
 
+  /**
+   * GET for getting one endorsement.
+   * @throws InternalServerErrorException 
+   */
+  @Override
+  public Response getEndorsementsByTech(String techId) throws InternalServerErrorException {
+    throw new InternalServerErrorException("Not yet implemented!");
+  }
+  
   @Override
   public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
       List<Endorsement> endorsements) {

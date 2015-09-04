@@ -62,6 +62,15 @@ public interface EndorsementService {
   public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
       List<Endorsement> endorsements);
 
+  /**
+   * Service for getting all endorsements of a Technology.
+   * 
+   * @param techId technology entity id.
+   * @return
+   * @throws InternalServerErrorException 
+   */
+  public Response getEndorsementsByTech(final String techId) throws InternalServerErrorException;
+  
   // TODO felipegc remove it
   public Response addEndorsementTest();
 

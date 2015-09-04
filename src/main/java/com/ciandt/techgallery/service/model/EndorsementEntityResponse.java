@@ -5,6 +5,12 @@ import java.util.Date;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 
+/**
+ * Response with an endorsement Entity
+ * 
+ * @author felipers
+ *
+ */
 public class EndorsementEntityResponse implements Response {
 
   private Long id;
