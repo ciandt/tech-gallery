@@ -28,10 +28,10 @@ public class Skill extends BaseEntity<Long> {
 
   @Index
   @Load
-  private Ref<TechGalleryUser> user;
+  private Ref<TechGalleryUser> techGalleryUser;
 
-  @Unindex
-  private Boolean inactive;
+  @Index
+  private Boolean active;
 
   @Override
   public Long getId() {
@@ -59,25 +59,34 @@ public class Skill extends BaseEntity<Long> {
     this.value = value;
   }
 
-  public Ref<TechGalleryUser> getUser() {
-    return user;
+  public Ref<TechGalleryUser> getTechGalleryUser() {
+    return techGalleryUser;
   }
 
-  public void setUser(Ref<TechGalleryUser> user) {
-    this.user = user;
+  public void setTechGalleryUser(Ref<TechGalleryUser> techGalleryUser) {
+    this.techGalleryUser = techGalleryUser;
   }
 
-  public Boolean getInactive() {
-    return inactive;
+  public Boolean getActive() {
+    return active;
   }
 
-  public void setInactive(Boolean inactive) {
-    this.inactive = inactive;
+  public void setActive(Boolean active) {
+    this.active = active;
   }
+
+  public Technology getTechnologyEntity() {
+    if (technology != null) {
+      technology.get();
+    }
+
+    return null;
+  }
+
 
   public TechGalleryUser getUserEntity() {
-    if (user != null) {
-      user.get();
+    if (techGalleryUser != null) {
+      techGalleryUser.get();
     }
 
     return null;
