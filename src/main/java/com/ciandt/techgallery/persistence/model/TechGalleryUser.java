@@ -18,9 +18,6 @@ public class TechGalleryUser extends BaseEntity<Long> {
   Long id;
 
   @Index
-  private String gplusId;
-
-  @Index
   private String name;
 
   @Index
@@ -40,14 +37,6 @@ public class TechGalleryUser extends BaseEntity<Long> {
   @Override
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public String getGplusId() {
-    return gplusId;
-  }
-
-  public void setGplusId(String gplusId) {
-    this.gplusId = gplusId;
   }
 
   public String getName() {

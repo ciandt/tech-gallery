@@ -101,6 +101,11 @@ public class EndorsementServiceImpl implements EndorsementService {
       }
     }
 
+    // endorsers can't endorse themselves.
+    if (tgEndorserUser.equals(tgEndorsedUser)) {
+      throw new BadRequestException("Endorsers must not endorse themselves!");
+    }
+
     // technology id can't be null and must exists on datastore
     technologyId = endorsement.getTechnology();
     if (technologyId == null || technologyId.equals("")) {
