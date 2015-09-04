@@ -1,6 +1,7 @@
 package com.ciandt.techgallery.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,9 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
-
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -285,11 +284,15 @@ public class UserServiceTGImpl implements UserServiceTG {
     String fullRequest = PEOPLE_ENDPOINT + userLogin + "?format=json";
     UserResponse uResp = new UserResponse();
     try {
+      InputStream resourceStream = UserServiceTGImpl.class.getClassLoader().getResourceAsStream("people_basic_auth.txt");
+
+      String auth = convertStreamToString(resourceStream);
+      
       URL url = new URL(fullRequest);
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setDoOutput(true);
       conn.setRequestMethod("GET");
-      conn.setRequestProperty("Authorization", PROVIDER_AUTH);
+      conn.setRequestProperty("Authorization", auth);
       ObjectMapper mapper = new ObjectMapper();
 
       if (conn.getResponseCode() == 200) {
@@ -316,6 +319,11 @@ public class UserServiceTGImpl implements UserServiceTG {
 
     }
     return uResp;
+  }
+
+  private static String convertStreamToString(java.io.InputStream is) {
+    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+    return s.hasNext() ? s.next() : "";
   }
 
   /**
