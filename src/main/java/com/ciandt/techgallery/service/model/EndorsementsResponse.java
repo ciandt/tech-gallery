@@ -11,13 +11,13 @@ import java.util.List;
 public class EndorsementsResponse implements Response {
 
   /** list with all endorsements. */
-  List<EndorsementResponse> endorsements;
+  List<EndorsementEntityResponse> endorsements;
 
-  public List<EndorsementResponse> getEndorsements() {
+  public List<EndorsementEntityResponse> getEndorsements() {
     return endorsements;
   }
 
-  public void setEndorsements(List<EndorsementResponse> endorsements) {
+  public void setEndorsements(List<EndorsementEntityResponse> endorsements) {
     this.endorsements = endorsements;
   }
 
