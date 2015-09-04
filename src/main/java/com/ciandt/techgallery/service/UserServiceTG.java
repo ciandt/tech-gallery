@@ -1,11 +1,17 @@
 package com.ciandt.techgallery.service;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
 
 /**
  * Services for Users.
@@ -82,7 +88,10 @@ public interface UserServiceTG {
   public TechGalleryUser getUserByNameAndEmail(String name, String email) throws NotFoundException,
       BadRequestException, InternalServerErrorException;
 
-  TechGalleryUser getUserSyncedWithProvider(String userLogin) throws NotFoundException,
+  public TechGalleryUser getUserSyncedWithProvider(String userLogin) throws NotFoundException,
       BadRequestException, InternalServerErrorException;
+
+  public Response handleLogin(User user, HttpServletRequest req) throws NotFoundException, BadRequestException,
+      InternalServerErrorException, IOException, OAuthRequestException;
 
 }
