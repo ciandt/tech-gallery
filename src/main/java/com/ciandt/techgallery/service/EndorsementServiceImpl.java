@@ -4,10 +4,10 @@ import java.util.Date;
 
 import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
 import com.ciandt.techgallery.persistence.dao.EndorsementDAOImpl;
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
-import com.ciandt.techgallery.persistence.dao.UserDAO;
-import com.ciandt.techgallery.persistence.dao.UserDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
@@ -31,7 +31,7 @@ public class EndorsementServiceImpl implements EndorsementService {
   /** endorsement dao. */
   EndorsementDAO endorsementDAO = new EndorsementDAOImpl();
   /** user dao for getting users. */
-  UserDAO userDAO = new UserDAOImpl();
+  TechGalleryUserDAO userDAO = new TechGalleryUserDAOImpl();
   /** technology dao for getting technologies. */
   TechnologyDAO techDAO = new TechnologyDAOImpl();
   /** tech gallery user service for getting PEOPLE API user. */

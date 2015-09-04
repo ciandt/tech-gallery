@@ -8,15 +8,6 @@
         <servlet-class>com.ciandt.techgallery.servlets.ViewTech</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Authorize</servlet-name>
-        <servlet-class>com.ciandt.techgallery.authorization.AuthorizeServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet>
-        <servlet-name>oauth2Callback</servlet-name>
-        <servlet-class>com.ciandt.techgallery.authorization.OAuth2Callback</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>SystemServiceServlet</servlet-name>
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
@@ -31,14 +22,6 @@
     <servlet-mapping>
         <servlet-name>viewTech</servlet-name>
         <url-pattern>/viewTech</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Authorize</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>oauth2Callback</servlet-name>
-        <url-pattern>/oauth2callback/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SystemServiceServlet</servlet-name>

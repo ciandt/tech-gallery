@@ -82,4 +82,12 @@ public class TechGalleryUser extends BaseEntity<Long> {
     this.googleId = googleId;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof TechGalleryUser))
+      return false;
+    else
+      return (this.getId() == ((TechGalleryUser) obj).getId());
+  }
+  
 }
