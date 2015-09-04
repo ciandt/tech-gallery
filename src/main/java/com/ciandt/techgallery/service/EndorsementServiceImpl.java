@@ -187,6 +187,15 @@ public class EndorsementServiceImpl implements EndorsementService {
     }
   }
 
+  /**
+   * GET for getting one endorsement.
+   * @throws InternalServerErrorException 
+   */
+  @Override
+  public Response getEndorsementsByTech(String techId) throws InternalServerErrorException {
+    throw new InternalServerErrorException("Not yet implemented!");
+  }
+  
   @Override
   public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
       List<Endorsement> endorsements) {
