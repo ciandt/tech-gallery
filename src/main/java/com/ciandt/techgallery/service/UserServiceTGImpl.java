@@ -38,7 +38,6 @@ public class UserServiceTGImpl implements UserServiceTG {
   private static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
 
   private static final String OPERATION_FAILED = "Operation failed";
-  private static final String PROVIDER_AUTH = "";
 
   /**
    * GET for getting all users.
@@ -284,10 +283,11 @@ public class UserServiceTGImpl implements UserServiceTG {
     String fullRequest = PEOPLE_ENDPOINT + userLogin + "?format=json";
     UserResponse uResp = new UserResponse();
     try {
-      InputStream resourceStream = UserServiceTGImpl.class.getClassLoader().getResourceAsStream("people_basic_auth.txt");
+      InputStream resourceStream =
+          UserServiceTGImpl.class.getClassLoader().getResourceAsStream("people_basic_auth.txt");
 
       String auth = convertStreamToString(resourceStream);
-      
+
       URL url = new URL(fullRequest);
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setDoOutput(true);
