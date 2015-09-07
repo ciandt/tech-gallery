@@ -4,6 +4,7 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.SkillResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.appengine.api.users.User;
 
 /**
  * Services for Skills.
@@ -21,7 +22,7 @@ public interface SkillService {
    * @throws InternalServerErrorException
    * @throws BadRequestException
    */
-  public Response createOrUpdateSkill(SkillResponse skill) throws InternalServerErrorException,
-      BadRequestException;
+  public Response addOrUpdateSkill(SkillResponse skill, User user)
+      throws InternalServerErrorException, BadRequestException;
 
 }

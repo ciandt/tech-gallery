@@ -9,6 +9,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.appengine.api.users.User;
 
 /**
  * Endpoint controller class for Skill requests.
@@ -30,9 +31,9 @@ public class SkillEndpoint {
    * @throws BadRequestException
    */
   @ApiMethod(name = "addSkill", path = "skill", httpMethod = "post")
-  public Response addSkill(SkillResponse skill) throws InternalServerErrorException,
+  public Response addSkill(SkillResponse skill, User user) throws InternalServerErrorException,
       BadRequestException {
-    return service.createOrUpdateSkill(skill);
+    return service.addOrUpdateSkill(skill, user);
   }
 
 }

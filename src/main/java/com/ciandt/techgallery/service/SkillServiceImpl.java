@@ -18,6 +18,7 @@ import com.ciandt.techgallery.service.model.SkillResponse;
 import com.ciandt.techgallery.service.util.SkillConverter;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 
@@ -37,15 +38,16 @@ public class SkillServiceImpl implements SkillService {
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
 
   @Override
-  public Response createOrUpdateSkill(SkillResponse skill) throws InternalServerErrorException,
-      BadRequestException {
+  public Response addOrUpdateSkill(SkillResponse skill, User user)
+      throws InternalServerErrorException, BadRequestException {
 
     log.info("Starting creating or updating skill");
 
-    validateInputs(skill);
+    validateInputs(skill, user);
 
     Technology technology = technologyDAO.findById(skill.getTechnology().getId());
-    TechGalleryUser techUser = techGalleryUserDAO.findById(skill.getUser().getId());
+    // TechGalleryUser techUser = techGalleryUserDAO.findById(skill.getUser().getId());
+    TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
     Skill skillEntity = skillDAO.findByUserAndTechnology(techUser, technology);
 
     // if there is a skillEntity, it is needed to inactivate it and create a new one
@@ -66,16 +68,22 @@ public class SkillServiceImpl implements SkillService {
    * Validate inputs of SkillResponse.
    * 
    * @param skill inputs to be validate
-   * @param techUser
-   * @technology if technology exists, it will be validated and loaded from datastore
+   * @param user info about user from google
    * @throws BadRequestException
    */
-  private void validateInputs(SkillResponse skill) throws BadRequestException {
+  private void validateInputs(SkillResponse skill, User user) throws BadRequestException {
 
     log.info("Validating inputs of skill");
 
-    // TODO felipegc utilizar o servico do eduardo de buscar o usuario no people e trazer o
-    // techgallery
+    if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
+      throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
+    }
+
+    TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
+    if (techUser == null) {
+      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
+    }
+
     if (skill == null) {
       throw new BadRequestException(ValidationMessageEnums.SKILL_CANNOT_BLANK.message());
     }
@@ -84,7 +92,8 @@ public class SkillServiceImpl implements SkillService {
       throw new BadRequestException(ValidationMessageEnums.SKILL_RANGE.message());
     }
 
-    if (skill.getTechnology() == null || "".equals(skill.getTechnology().getId())) {
+    if (skill.getTechnology() == null || skill.getTechnology().getId() == null
+        || skill.getTechnology().getId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     }
 
@@ -93,14 +102,13 @@ public class SkillServiceImpl implements SkillService {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     }
 
-    if (skill.getUser() == null || skill.getUser().getId() == null) {
-      throw new BadRequestException(ValidationMessageEnums.USER_CANNOT_BLANK.message());
-    }
-
-    TechGalleryUser techUser = techGalleryUserDAO.findById(skill.getUser().getId());
-    if (techUser == null) {
-      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
-    }
+    /*
+     * if (skill.getUser() == null || skill.getUser().getId() == null) { throw new
+     * BadRequestException(ValidationMessageEnums.USER_CANNOT_BLANK.message()); }
+     * 
+     * TechGalleryUser techUser = techGalleryUserDAO.findById(skill.getUser().getId()); if (techUser
+     * == null) { throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message()); }
+     */
 
   }
 

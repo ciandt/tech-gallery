@@ -12,11 +12,12 @@ public enum ValidationMessageEnums {
   SKILL_CANNOT_BLANK("Skill cannot be null."), 
   SKILL_RANGE("Skill's value must be between 1 and 5"),
   // Message for technologies
-  TECHNOLOGY_ID_CANNOT_BLANK("Technology(id) cannot be null or blank."), 
+  TECHNOLOGY_ID_CANNOT_BLANK("Technology or technology's id cannot be null or blank."), 
   TECHNOLOGY_NOT_EXIST("Technology doesn't exist."),
   // Message for users
-  USER_CANNOT_BLANK("User(id) cannot be null or blank."), 
-  USER_NOT_EXIST("User doesn't exist.");
+  USER_CANNOT_BLANK("User or user's id cannot be null or blank."),
+  USER_NOT_EXIST("User doesn't exist."), 
+  USER_GOOGLE_ENDPOINT_NULL("An user must be sent to endpoints.");
 
   private String message;
 
