@@ -154,7 +154,7 @@ public class SkillServiceImpl implements SkillService {
     } else {
       // get the TechGalleryUser from datastore or PEOPLE API
       tgUser = techGalleryUserDAO.findByGoogleId(googleId);
-          //userService.getUserSyncedWithProvider(userEmail.replace("@ciandt.com", ""));
+      // userService.getUserSyncedWithProvider(userEmail.replace("@ciandt.com", ""));
       if (tgUser == null) {
         throw new BadRequestException("Endorser user do not exists on datastore!");
       }

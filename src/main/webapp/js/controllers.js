@@ -203,6 +203,16 @@ angular.module('techGallery').controller('techDetailsController',
         if (newValue !== oldValue) {
           $scope.skillLevel = returnSkillLevel(newValue);
           //Make API call to save the skill
+          
+          var idTech = $scope.idTechnology;
+          var req = {
+            technology : idTech,
+            value : newValue
+          };
+          gapi.client.rest.addSkill(req).execute(function(data) {
+        	  console.log(data);
+          });
+          
         }
       })
 
