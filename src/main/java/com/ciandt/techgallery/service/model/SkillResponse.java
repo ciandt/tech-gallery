@@ -1,7 +1,6 @@
 package com.ciandt.techgallery.service.model;
 
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.persistence.model.Technology;
 
 /**
  * SkillResponse.
@@ -12,7 +11,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 public class SkillResponse implements Response {
 
   private Long id;
-  private Technology technology;
+  private String technology;
   private Integer value;
   private TechGalleryUser user;
 
@@ -24,11 +23,11 @@ public class SkillResponse implements Response {
     this.id = id;
   }
 
-  public Technology getTechnology() {
+  public String getTechnology() {
     return technology;
   }
 
-  public void setTechnology(Technology technology) {
+  public void setTechnology(String technology) {
     this.technology = technology;
   }
 
