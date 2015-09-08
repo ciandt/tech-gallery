@@ -71,6 +71,7 @@ angular.module('techGallery').controller('techDetailsController',
     function($scope, $timeout, $modal) {
 
       $scope.idTechnology = jsUtils.getParameterByName('id');
+      $scope.loadEndorsements = true;
 
       //Fill this property with the domain of your choice
       $scope.domain = "@ciandt.com";
@@ -98,6 +99,7 @@ angular.module('techGallery').controller('techDetailsController',
         };
         gapi.client.rest.getTechnology(req).execute(function(data) {
           fillTechnology(data);
+          showEndorsementsByTech();
           $scope.$apply();
         });
       }
@@ -153,8 +155,20 @@ angular.module('techGallery').controller('techDetailsController',
       $scope.showAllEndorsers = function(endorsers) {
         return (endorsers.length > 0)
       }
+      
+      
+      function showEndorsementsByTech() {
+        var idTech = $scope.idTechnology;
+        var req = {
+          id : idTech
+        };
+        gapi.client.rest.getEndorsementsByTech(req).execute(function(data) {
+          $scope.showEndorsementResponse = data.result.endorsements;
+          $scope.loadEndorsements = false;
+          $scope.$apply();
+        });
+      }
 
-      $scope.showEndorsementResponse = jsUtils.mockShowEndorsementResponse();
 
       $scope.open = function(endorsers, size) {
         var modalInstance = $modal.open({
