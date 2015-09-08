@@ -2,7 +2,7 @@ package com.ciandt.techgallery.persistence.model;
 
 import java.util.Date;
 
-import com.googlecode.objectify.annotation.Unindex;
+import com.googlecode.objectify.annotation.Index;
 
 /**
  * BaseEntity entity.
@@ -12,7 +12,7 @@ import com.googlecode.objectify.annotation.Unindex;
  */
 public abstract class BaseEntity<ID> {
 
-  @Unindex
+  @Index
   Date inactivatedDate;
 
   public abstract ID getId();
