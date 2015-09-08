@@ -50,7 +50,6 @@ public class SkillServiceImpl implements SkillService {
     validateInputs(skill, user);
 
     Technology technology = technologyDAO.findById(skill.getTechnology());
-    // TechGalleryUser techUser = techGalleryUserDAO.findById(skill.getUser().getId());
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
     Skill skillEntity = skillDAO.findByUserAndTechnology(techUser, technology);
 
@@ -104,14 +103,6 @@ public class SkillServiceImpl implements SkillService {
     if (technology == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     }
-
-    /*
-     * if (skill.getUser() == null || skill.getUser().getId() == null) { throw new
-     * BadRequestException(ValidationMessageEnums.USER_CANNOT_BLANK.message()); }
-     * 
-     * TechGalleryUser techUser = techGalleryUserDAO.findById(skill.getUser().getId()); if (techUser
-     * == null) { throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message()); }
-     */
 
   }
 
