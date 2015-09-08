@@ -20,7 +20,8 @@ import com.google.appengine.api.users.User;
  * @author Felipe Goncalves de Castro
  *
  */
-@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID})
+@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
+    Constants.API_EXPLORER_CLIENT_ID})
 public class SkillEndpoint {
 
   private SkillService service = new SkillServiceImpl();
@@ -39,7 +40,7 @@ public class SkillEndpoint {
       BadRequestException {
     return service.addOrUpdateSkill(skill, user);
   }
-  
+
   /**
    * Endpoint for getting an User Skill.
    * 
@@ -48,12 +49,13 @@ public class SkillEndpoint {
    * @return
    * @throws InternalServerErrorException
    * @throws BadRequestException
-   * @throws OAuthRequestException 
-   * @throws NotFoundException 
+   * @throws OAuthRequestException
+   * @throws NotFoundException
    */
   @ApiMethod(name = "getUserSkill", path = "skill", httpMethod = "get")
   public Response getUserSkill(@Named("id") String id, User user)
-      throws InternalServerErrorException, BadRequestException, OAuthRequestException, NotFoundException {
+      throws InternalServerErrorException, BadRequestException, OAuthRequestException,
+      NotFoundException {
     return service.getUserSkill(id, user);
   }
 

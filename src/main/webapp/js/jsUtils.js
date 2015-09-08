@@ -75,13 +75,49 @@ var mockTechnology = function() {
     return technology;
 }
 
+var mockEndorsements = function(){
+    var endorsements = [];
+    var endorsement = {};
+    for(var i = 0; i < 10; i++){
+        endorsement.endorser = "";
+        endorsement.endorsed = "";
+        endorsement.timestamp = "";
+        endorsement.inactive = "";
+        endorsement.tech = "";
+    }
+}
+
+var mockShowEndorsementResponse = function(){
+    var endorsementResponse = [];
+    var names = ["Mussum", "Naruto", "Linkin Park", "Crítico", "Goku"];
+    for(var i = 1; i < 6; i++){
+        var response = {};
+        response.endorsed = {};
+        
+        response.endorsers = [];
+        
+        response.endorsed.name = names[i-1];
+        response.endorsed.photo = "https://storage.googleapis.com/tech-gallery-assets/userPhotos/user" + i + ".jpg";
+        
+        for(var j = 1; j < i; j++){
+            var endorser = {};
+            endorser.name = "endorser "+j;
+            endorser.photo = "dasdsa"+j;
+            response.endorsers.push(endorser);
+        }
+        
+        endorsementResponse.push(response);
+    }
+    return endorsementResponse;
+}
+
 var alerts = {
         success : {
             type : 'success',
-            msg : 'Indicação efetuada!'
+            msg : 'Endorsement successfull!'
         },
         failure : {
-            type : 'error',
+            type : 'danger',
             msg : 'Usuário não encontrado!'
         },
         caution : {
@@ -104,5 +140,6 @@ var jsUtils = {};
 jsUtils.checkAuth = checkAuth;
 jsUtils.mockTechList = mockTechList;
 jsUtils.mockTechnology = mockTechnology;
+jsUtils.mockShowEndorsementResponse = mockShowEndorsementResponse;
 jsUtils.getParameterByName = getParameterByName;
 jsUtils.alerts = alerts;

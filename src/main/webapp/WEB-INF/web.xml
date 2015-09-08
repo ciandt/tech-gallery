@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
-        <servlet-name>daoExample</servlet-name>
-        <servlet-class>com.ciandt.techgallery.sample.service.servlet.DAOExample</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>viewTech</servlet-name>
         <servlet-class>com.ciandt.techgallery.servlets.ViewTech</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Authorize</servlet-name>
-        <servlet-class>com.ciandt.techgallery.authorization.AuthorizeServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet>
-        <servlet-name>oauth2Callback</servlet-name>
-        <servlet-class>com.ciandt.techgallery.authorization.OAuth2Callback</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SystemServiceServlet</servlet-name>
@@ -25,20 +12,8 @@
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>daoExample</servlet-name>
-        <url-pattern>/daoExample</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>viewTech</servlet-name>
         <url-pattern>/viewTech</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Authorize</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>oauth2Callback</servlet-name>
-        <url-pattern>/oauth2callback/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SystemServiceServlet</servlet-name>

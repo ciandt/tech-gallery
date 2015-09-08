@@ -5,9 +5,17 @@
 	width: 100%;
 	display: block;
 }
+.img-tech-view{
+	height: 355px !important;
+	width: 355px !important;
+}
 
-.spacingtop{
-	margin-top: 2%;	
+.thumbnail{
+	height: 380px;
+}
+
+.spacingtop {
+	margin-top: 2%;
 }
 
 body, html {
@@ -21,6 +29,40 @@ body, html {
 }
 
 .login-Button {
+	width: 50%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.modal-footer {
+	border-top: none !important;
+}
+
+.modal-header {
+	border-bottom: none !important;
+}
+
+.endorsed-image {
+	width: 64px;
+	height: 64px;
+}
+
+.endorsers-image {
+	width: 30px;
+	height: 30px;
+	float: left;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 10px;
+}
+
+.endorse-input {
+	width: 30%;
+	float: left;
+	margin-right: 10%;
+}
+
+.endorse-alerts {
 	width: 50%;
 	text-align: center;
 	margin: 0 auto;
