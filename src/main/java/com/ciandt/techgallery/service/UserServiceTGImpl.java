@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -287,7 +287,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     UserResponse uResp = new UserResponse();
     try {
       InputStream resourceStream =
-          ServletContext.class.getClassLoader().getResourceAsStream("people_basic_auth.txt");
+          UserServiceTGImpl.class.getClassLoader().getResourceAsStream("people_basic_auth.txt");
 
       String auth = convertStreamToString(resourceStream);
 
