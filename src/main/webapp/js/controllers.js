@@ -31,7 +31,7 @@ angular.module('techGallery').controller('techListController',
         executeAuth();
       }
 
-      var successFunction = function() {
+      var successFunction = function(data) {
         getTechList();
         $scope.showLogin = false;
       }
@@ -78,7 +78,8 @@ angular.module('techGallery').controller('techDetailsController',
 
       var alerts = jsUtils.alerts;
 
-      var successFunction = function() {
+      var successFunction = function(data) {
+        $scope.clientId = data.client_id;
         var protocol = location.protocol + '//';
         var host = location.host;
         var complement = '/_ah/api/';
@@ -115,6 +116,8 @@ angular.module('techGallery').controller('techDetailsController',
         $scope.alert = undefined;
       }
 
+      
+      
       /*
        * 
        * Início da parte de recommend 
@@ -142,6 +145,8 @@ angular.module('techGallery').controller('techDetailsController',
         }
       }
 
+      
+      
       /*
        * 
        * Início da parte de show Endorsement 
@@ -178,6 +183,40 @@ angular.module('techGallery').controller('techDetailsController',
           }
         });
       };
+
+      
+      
+      /*
+       * 
+       * Início da parte de +1 
+       * 
+       */
+      $scope.showPlusOne = function(id){
+        if($scope.clientId == id){
+          return false;
+        }
+        return true;
+      }
+      
+      $scope.generateId = function(index) {
+        return 'plusOne' + index;
+      }
+
+      $scope.addEndorse = function(endorsed, id) {
+        var elementClassIncrease = 'btn btn-primary';
+        var elementClassDecrease = 'btn btn-danger';
+        var elementClass = document.getElementById(id).className;
+        if (elementClass.indexOf('btn-danger') < 0) {
+          document.getElementById(id).className = elementClassDecrease;
+        } else {
+          document.getElementById(id).className = elementClassIncrease;
+        }
+        var completeEmail = endorsed.email;
+        completeEmail = completeEmail.split('@');
+        var email = completeEmail[0];
+        $scope.endorsed = email;
+        $scope.endorse(false);
+      }
     });
 
 angular.module('techGallery').controller('modalController',

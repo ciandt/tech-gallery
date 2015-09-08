@@ -44,10 +44,10 @@
           placeholder="(usuário)" aria-describedby="basic-addon2">
         <span class="input-group-addon" id="basic-addon2">{{domain}}</span>
       </div>
-      <a href="#" ng-click="endorse(true)" class="btn btn-primary"
+      <a href="#" ng-click="endorse()" class="btn btn-primary"
         role="button">Indicar</a>
     </div>
-    <div class="endorse-alerts">
+    <div class="endorse-alerts spacingtop">
       <alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
     </div>
 
@@ -73,6 +73,10 @@
 
           <div id="div_image_recomendations" class="container">
             <div class="col-xs-6">
+              <button ng-show="showPlusOne(response.endorsed.clientId)" type="button" id={{generateId($index)}}
+                style="float: left"
+                ng-click="addEndorse(response.endorsed, generateId($index))"
+                class="btn btn-primary">+1</button>
               <div
                 ng-repeat="endorser in response.endorsers track by $index">
                 <img class="media-object endorsers-image"
