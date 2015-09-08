@@ -23,6 +23,8 @@ public class EndorsementEntityResponse implements Response {
 
   private Technology technology;
 
+  private boolean active;
+
   public Long getId() {
     return id;
   }
@@ -61,6 +63,14 @@ public class EndorsementEntityResponse implements Response {
 
   public void setTechnology(Technology technology) {
     this.technology = technology;
+  }
+
+  public boolean getActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
   }
 
 }

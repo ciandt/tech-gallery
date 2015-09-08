@@ -45,7 +45,7 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long> implem
     Objectify objectify = OfyService.ofy();
     List<Endorsement> entities =
         objectify.load().type(Endorsement.class).filter("technology", Ref.create(tech))
-            .filter("inactivatedDate", "").list();
+            .filter("active", true).list();
 
     if (entities == null || entities.size() <= 0) {
       return new ArrayList<Endorsement>();
@@ -78,7 +78,7 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long> implem
     List<Endorsement> entities =
         objectify.load().type(Endorsement.class).filter("technology", Ref.create(technology))
             .filter("endorser", Ref.create(endorser)).filter("endorsed", Ref.create(endorsed))
-            .filter("inactivatedDate", "").list();
+            .filter("active", true).list();
 
     return entities;
   }
