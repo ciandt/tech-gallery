@@ -9,8 +9,8 @@ import com.ciandt.techgallery.service.model.SkillResponse;
  * @author Felipe Goncalves de Castro
  *
  */
-public class SkillConverter  {
-  
+public class SkillConverter {
+
   /**
    * Transform entity from datastore into response entity which is transient.
    * 
@@ -19,14 +19,14 @@ public class SkillConverter  {
    */
   public static SkillResponse fromEntityToTransient(Skill entity) {
     SkillResponse skillResponse = new SkillResponse();
-    
+
     skillResponse.setId(entity.getId());
     skillResponse.setValue(entity.getValue());
-    skillResponse.setTechnology(entity.getTechnologyEntity());
-    
+    skillResponse.setTechnology(entity.getTechnologyEntity().getId());
+
     return skillResponse;
   }
-  
+
   /**
    * Transform entity from response which is transient into datastore entity which can be persisted.
    * 
