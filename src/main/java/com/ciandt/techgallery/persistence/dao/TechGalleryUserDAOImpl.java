@@ -49,6 +49,18 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
 
     return entity;
   }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public TechGalleryUser findByEmail(String email) {
+    Objectify objectify = OfyService.ofy();
+    TechGalleryUser entity = null;
+    entity = objectify.load().type(TechGalleryUser.class).filter("email", email).first().now();
+
+    return entity;
+  }
 
   /**
    * {@inheritDoc}

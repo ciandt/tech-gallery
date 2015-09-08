@@ -11,6 +11,7 @@ import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 /**
@@ -19,7 +20,7 @@ import com.google.appengine.api.users.User;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID})
+@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID})
 public class EndorsementEndpoint {
 
   private EndorsementService service = new EndorsementServiceImpl();
@@ -30,12 +31,13 @@ public class EndorsementEndpoint {
    * @param endorsement json with endorsement info.
    * @return
    * @throws InternalServerErrorException
-   * @throws BadRequestException 
-   * @throws NotFoundException 
+   * @throws BadRequestException
+   * @throws NotFoundException
+   * @throws OAuthRequestException 
    */
   @ApiMethod(name = "addEndorsement", path = "endorsement", httpMethod = "post")
   public Response addEndorsement(EndorsementResponse endorsement, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     return service.addOrUpdateEndorsement(endorsement, user);
   }
 
@@ -63,4 +65,15 @@ public class EndorsementEndpoint {
     return service.getEndorsement(id);
   }
 
+  /**
+   * Endpoint for getting all endorsements of a Technology.
+   * @param id technology id.
+   * @return
+   * @throws NotFoundException
+   * @throws InternalServerErrorException 
+   */
+  @ApiMethod(name = "getEndorsementsByTech", path = "endorsement/tech/{id}", httpMethod = "get")
+  public Response getEndorsementsByTech(@Named("id") String id, User user) throws NotFoundException, InternalServerErrorException {
+    return service.getEndorsementsByTech(id, user);
+  } 
 }
