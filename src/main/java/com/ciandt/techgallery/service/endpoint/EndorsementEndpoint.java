@@ -76,18 +76,4 @@ public class EndorsementEndpoint {
   public Response getEndorsementsByTech(@Named("id") String id, User user) throws NotFoundException, InternalServerErrorException {
     return service.getEndorsementsByTech(id, user);
   } 
-  
-  @ApiMethod(name = "addEndorsementTest", path = "endorsementTest", httpMethod = "post")
-  public Response addEndorsementTest() throws InternalServerErrorException, BadRequestException,
-      NotFoundException {
-    // TODO felipegc remove it
-    return service.addEndorsementTest();
-  }
-
-  @ApiMethod(name = "getEndorsementTest", path = "getEndorsementTest", httpMethod = "post")
-  public Response getEndorsementTest() throws InternalServerErrorException, BadRequestException,
-      NotFoundException {
-    // TODO felipegc remove it
-    return service.getEndorsementTest();
-  }
 }
