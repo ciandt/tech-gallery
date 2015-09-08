@@ -5,6 +5,12 @@
 	width: 100%;
 	display: block;
 }
+
+.loading{
+	display: block;
+	margin: 0 auto;
+}
+
 .img-tech-view{
 	height: 355px !important;
 	width: 355px !important;
