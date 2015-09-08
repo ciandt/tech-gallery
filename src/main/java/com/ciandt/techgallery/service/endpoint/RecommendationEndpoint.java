@@ -13,7 +13,8 @@ import com.google.api.server.spi.response.InternalServerErrorException;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID})
+@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
+    Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class RecommendationEndpoint {
 
   @ApiMethod(name = "addRecommendation", path = "recommendation", httpMethod = "post")

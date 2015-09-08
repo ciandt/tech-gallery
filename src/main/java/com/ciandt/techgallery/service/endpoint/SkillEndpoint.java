@@ -21,7 +21,7 @@ import com.google.appengine.api.users.User;
  *
  */
 @Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
-    Constants.API_EXPLORER_CLIENT_ID})
+    Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class SkillEndpoint {
 
   private SkillService service = new SkillServiceImpl();
