@@ -38,6 +38,8 @@ public class SkillServiceImpl implements SkillService {
   SkillDAO skillDAO = new SkillDAOImpl();
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
+  /** tech gallery user service for getting PEOPLE API user. */
+  UserServiceTG userService = new UserServiceTGImpl();
 
   @Override
   public Response addOrUpdateSkill(SkillResponse skill, User user)
@@ -150,20 +152,24 @@ public class SkillServiceImpl implements SkillService {
       throw new NotFoundException("Current user was not found!");
     } else {
       // get the TechGalleryUser from datastore or PEOPLE API
-      // tgUser =
-      // null;//techGalleryUserDAO.getUserSyncedWithProvider(endorserEmail.replace("@ciandt.com",
-      // ""));
-      // if (tgUser == null) {
-      // throw new BadRequestException("Endorser user do not exists on datastore!");
-      // }
+      tgUser = techGalleryUserDAO.findByGoogleId(googleId);
+          //userService.getUserSyncedWithProvider(userEmail.replace("@ciandt.com", ""));
+      if (tgUser == null) {
+        throw new BadRequestException("Endorser user do not exists on datastore!");
+      }
     }
-    
-    
+
+    // Technology can't be null
     Technology technology = technologyDAO.findById(techId);
     if (technology == null) {
-      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
+      throw new BadRequestException("Technology do not exists!");
     }
-    throw new InternalServerErrorException("Not yet implemented!");
+    Skill userSkill = skillDAO.findByUserAndTechnology(tgUser, technology);
+    if (userSkill == null) {
+      throw new NotFoundException("User skill do not exist!");
+    } else {
+      return SkillConverter.fromEntityToTransient(userSkill);
+    }
   }
 
 }
