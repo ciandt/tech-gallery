@@ -68,4 +68,18 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long> implem
     return entities;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Endorsement> findActivesByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
+      Technology technology) {
+    Objectify objectify = OfyService.ofy();
+    List<Endorsement> entities =
+        objectify.load().type(Endorsement.class).filter("technology", Ref.create(technology))
+            .filter("endorser", Ref.create(endorser)).filter("endorsed", Ref.create(endorsed))
+            .filter("inactivatedDate", "").list();
+
+    return entities;
+  }
 }

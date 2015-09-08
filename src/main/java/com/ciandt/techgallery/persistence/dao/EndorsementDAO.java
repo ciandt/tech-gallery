@@ -41,4 +41,15 @@ public interface EndorsementDAO extends GenericDAO<Endorsement, Long> {
   public List<Endorsement> findByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
       Technology technology);
 
+  /**
+   * Method that return an active endorsement by its users and technology
+   * 
+   * @param endorser
+   * @param endorsed
+   * @param technology
+   * @return
+   */
+  public List<Endorsement> findActivesByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
+      Technology technology);
+
 }
