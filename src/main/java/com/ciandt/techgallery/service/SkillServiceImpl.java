@@ -132,7 +132,8 @@ public class SkillServiceImpl implements SkillService {
   }
 
   @Override
-  public Response getUserSkill(String techId, User user) throws BadRequestException, OAuthRequestException, NotFoundException, InternalServerErrorException {
+  public Response getUserSkill(String techId, User user) throws BadRequestException,
+      OAuthRequestException, NotFoundException, InternalServerErrorException {
     // user google id
     String googleId;
     // user email

@@ -77,7 +77,7 @@ public class Skill extends BaseEntity<Long> {
 
   public Technology getTechnologyEntity() {
     if (technology != null) {
-      technology.get();
+      return technology.get();
     }
 
     return null;
@@ -86,7 +86,7 @@ public class Skill extends BaseEntity<Long> {
 
   public TechGalleryUser getUserEntity() {
     if (techGalleryUser != null) {
-      techGalleryUser.get();
+      return techGalleryUser.get();
     }
 
     return null;

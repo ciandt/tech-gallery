@@ -16,6 +16,8 @@ public class UserResponse implements Response {
   private String email;
   /** user photo url. */
   private String photo;
+  /** user google id. */
+  private String googleId;
 
   public Long getId() {
     return id;
@@ -47,6 +49,14 @@ public class UserResponse implements Response {
 
   public void setPhoto(String photo) {
     this.photo = photo;
+  }
+
+  public String getGoogleId() {
+    return googleId;
+  }
+
+  public void setGoogleId(String googleId) {
+    this.googleId = googleId;
   }
 
 }
