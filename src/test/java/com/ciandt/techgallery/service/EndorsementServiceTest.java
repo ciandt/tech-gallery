@@ -1,22 +1,28 @@
 package com.ciandt.techgallery.service;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
+import com.ciandt.techgallery.persistence.dao.EndorsementDAOImpl;
+import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
+import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
+import com.ciandt.techgallery.persistence.dao.UserDAO;
+import com.ciandt.techgallery.persistence.dao.UserDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.sample.service.model.SampleResponse;
+import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
+import com.ciandt.techgallery.service.model.Response;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Ref;
 
@@ -26,7 +32,18 @@ import com.googlecode.objectify.Ref;
  * 
  * @author Daniel Eduardo 
  */
-public class EndorsementServiceImplTest {
+public class EndorsementServiceTest {
+  
+  private static final Logger log = Logger.getLogger(EndorsementServiceTest.class.getName());
+  
+  /** user dao for getting users. */
+  UserDAO userDAO = new UserDAOImpl();
+  
+  /** technology dao for getting technologies. */
+  TechnologyDAO techDAO = new TechnologyDAOImpl();
+  
+  /** endorsement dao. */
+  EndorsementDAO endorsementDAO = new EndorsementDAOImpl();
   
   EndorsementServiceImpl service = new EndorsementServiceImpl();
   
@@ -75,7 +92,4 @@ public class EndorsementServiceImplTest {
     
     return list;
   }
-  
-
-
 }

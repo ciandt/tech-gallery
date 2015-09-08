@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
 import com.ciandt.techgallery.persistence.dao.EndorsementDAOImpl;
@@ -27,7 +26,6 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 
 /**
@@ -38,16 +36,12 @@ import com.googlecode.objectify.Ref;
  */
 public class EndorsementServiceImpl implements EndorsementService {
 
-  private static final Logger log = Logger.getLogger(EndorsementServiceImpl.class.getName());
-
-  /** endorsement dao. */
-  EndorsementDAO endorsementDAO = new EndorsementDAOImpl();
-  /** user dao for getting users. */
-  UserDAO userDAO = new UserDAOImpl();
   /** technology dao for getting technologies. */
   TechnologyDAO techDAO = new TechnologyDAOImpl();
   /** tech gallery user service for getting PEOPLE API user. */
   UserServiceTG userService = new UserServiceTGImpl();
+  /** endorsement dao. */
+  EndorsementDAO endorsementDAO = new EndorsementDAOImpl();
 
   /**
    * POST for adding a endorsement.
@@ -235,66 +229,5 @@ public class EndorsementServiceImpl implements EndorsementService {
       groupedList.add(grouped);
     }
     return groupedList;
-  }
-
-  @Override
-  public Response addEndorsementTest() {
-
-    log.info("addEndorsementTest: adding some endorsements for test");
-
-    for (int i = 1; i <= 10; i++) {
-
-      TechGalleryUser endorser = new TechGalleryUser();
-      endorser.setName("endorser name" + i);
-      Key<TechGalleryUser> keyEndorser = userDAO.add(endorser);
-      
-      TechGalleryUser endorser2 = new TechGalleryUser();
-      endorser.setName("endorser name" + i + "b");
-      Key<TechGalleryUser> keyEndorser2 = userDAO.add(endorser2);
-
-
-      TechGalleryUser endorsed = new TechGalleryUser();
-      endorsed.setName("endorsed name" + i);
-      Key<TechGalleryUser> keyEndorsed = userDAO.add(endorsed);
-
-      Technology tech = new Technology();
-      tech.setId("tech" + i);
-      tech.setName("tech name" + i);
-      Key<Technology> keyTech = techDAO.add(tech);
-
-      Endorsement endorsment = new Endorsement();
-      endorsment.setEndorser(Ref.create(keyEndorser));
-      endorsment.setEndorsed(Ref.create(keyEndorsed));
-      endorsment.setTechnology(Ref.create(keyTech));
-      
-      Endorsement endorsment2 = new Endorsement();
-      endorsment.setEndorser(Ref.create(keyEndorser2));
-      endorsment.setEndorsed(Ref.create(keyEndorsed));
-      endorsment.setTechnology(Ref.create(keyTech));
-
-      endorsementDAO.add(endorsment);
-      endorsementDAO.add(endorsment2);
-    }
-
-    return null;
-  }
-
-  @Override
-  public Response getEndorsementTest() {
-    log.info("entering in getEndorsementTest for test");
-
-    for (int i = 1; i <= 10; i++) {
-      log.info("Fetching endorsement list by technology");
-      String techId  = "tech" + i;
-      List<Endorsement> list = endorsementDAO.findAllByTechnology(techId);
-
-      for (Endorsement end : list) {
-        log.info("Endorsment id: " + end.getId());
-        log.info("EndorsedEntity name: " + end.getEndorsedEntity().getName());
-        log.info("EndorserEntity name: " + end.getEndorserEntity().getName());
-        log.info("EndorserEntity tech: " + end.getTechnologyEntity().getName());
-      }
-    }
-    return null;
   }
 }
