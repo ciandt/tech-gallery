@@ -214,6 +214,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     String userPhoto = user.getPhoto();
     tgUser.setName(userName);
     tgUser.setEmail(userEmail);
+    tgUser.setGoogleId(user.getGoogleId());
     if (userPhoto != null) {
       tgUser.setPhoto(userPhoto);
     }
