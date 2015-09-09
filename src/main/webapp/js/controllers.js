@@ -61,6 +61,7 @@ angular.module('techGallery').controller('techListController',
 
       function callBackLoaded() {
         gapi.client.rest.getTechnologies().execute(function(data) {
+          gapi.client.rest.handleLogin().execute();
           $scope.techList = data.technologies;
           $scope.$apply();
         });
