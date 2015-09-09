@@ -134,6 +134,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setEndorsed(Ref.create(tgEndorsedUser));
     entity.setTimestamp(new Date());
     entity.setTechnology(Ref.create(technology));
+    entity.setActive(true);
     endorsementDAO.add(entity);
     // return the added entity
     return getEndorsement(entity.getId());
@@ -238,7 +239,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setEndorsed(Ref.create(tgEndorsedUser));
     entity.setTimestamp(new Date());
     entity.setTechnology(Ref.create(technology));
-    entity.setActive(true);;
+    entity.setActive(true);
     endorsementDAO.add(entity);
     // return the added entity
     return getEndorsement(entity.getId());

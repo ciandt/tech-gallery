@@ -209,7 +209,8 @@ angular.module('techGallery').controller('techDetailsController',
         completeEmail = completeEmail.split('@');
         var email = completeEmail[0];
         $scope.endorsed = email;
-        $scope.endorse(false);      
+        $scope.endorse(false);
+      }
       
       /*
        * 
