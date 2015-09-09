@@ -26,7 +26,7 @@ public class TechGalleryUser extends BaseEntity<Long> {
   @Unindex
   private String photo;
 
-  @Unindex
+  @Index
   private String googleId;
 
   @Override

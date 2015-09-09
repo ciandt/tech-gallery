@@ -128,7 +128,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new BadRequestException("You cannot endorse yourself!");
     }
     // user cannot endorse the same people twice
-    if (endorsementDAO.findByUsers(tgEndorserUser, tgEndorsedUser, technology).size() > 0) {
+    if (endorsementDAO.findActivesByUsers(tgEndorserUser, tgEndorsedUser, technology).size() > 0) {
       throw new BadRequestException("You already endorsed this user for this technology");
     }
     // create endorsement and save it
