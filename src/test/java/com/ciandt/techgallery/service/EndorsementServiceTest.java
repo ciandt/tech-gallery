@@ -20,6 +20,10 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.Response;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.googlecode.objectify.Key;
@@ -65,10 +69,10 @@ public class EndorsementServiceTest {
   
   @Test
   @Ignore
-  public void executaAgrupamento() {
+  public void executaAgrupamento() throws BadRequestException, NotFoundException, InternalServerErrorException, OAuthRequestException {
     //TODO Fazer o teste funcionar com o objetify 
     List<Endorsement> endorsements = createEndorsementList();
-    List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed = service.groupEndorsementByEndorsed(endorsements);
+    List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed = service.groupEndorsementByEndorsed(endorsements, null);
     groupEndorsementByEndorsed.get(0);
   }
 

@@ -1,6 +1,5 @@
 package com.ciandt.techgallery.service.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -15,6 +14,8 @@ import com.ciandt.techgallery.sample.service.model.Response;
 public class EndorsementsGroupedByEndorsedTransient extends Response {
 
   TechGalleryUser endorsed;
+  
+  Integer endorsedSkill;
   
   List<TechGalleryUser> endorsers;
 
@@ -32,6 +33,14 @@ public class EndorsementsGroupedByEndorsedTransient extends Response {
 
   public void setEndorsers(List<TechGalleryUser> endorsers) {
     this.endorsers = endorsers;
+  }
+
+  public Integer getEndorsedSkill() {
+    return endorsedSkill;
+  }
+
+  public void setEndorsedSkill(Integer endorsedSkill) {
+    this.endorsedSkill = endorsedSkill;
   }
   
 }
