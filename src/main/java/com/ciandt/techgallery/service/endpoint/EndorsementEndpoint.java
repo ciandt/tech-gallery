@@ -74,10 +74,12 @@ public class EndorsementEndpoint {
    * @return
    * @throws NotFoundException
    * @throws InternalServerErrorException
+   * @throws OAuthRequestException 
+   * @throws BadRequestException 
    */
   @ApiMethod(name = "getEndorsementsByTech", path = "endorsement/tech/{id}", httpMethod = "get")
   public Response getEndorsementsByTech(@Named("id") String id, User user)
-      throws NotFoundException, InternalServerErrorException {
+      throws NotFoundException, InternalServerErrorException, BadRequestException, OAuthRequestException {
     return service.getEndorsementsByTech(id, user);
   }
 }

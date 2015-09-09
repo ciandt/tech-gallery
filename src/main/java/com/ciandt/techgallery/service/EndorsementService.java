@@ -56,11 +56,15 @@ public interface EndorsementService {
    * Service for getting a endorsement.
    * 
    * @param endorsements List of Endorsement.
-   * 
+   * @param techId technology id.
    * @return
+   * @throws OAuthRequestException 
+   * @throws InternalServerErrorException 
+   * @throws NotFoundException 
+   * @throws BadRequestException 
    */
   public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
-      List<Endorsement> endorsements);
+      List<Endorsement> endorsements, String techId) throws BadRequestException, NotFoundException, InternalServerErrorException, OAuthRequestException;
 
   /**
    * Service for getting all endorsements of a Technology.
@@ -68,8 +72,11 @@ public interface EndorsementService {
    * @param techId technology entity id.
    * @return
    * @throws InternalServerErrorException 
+   * @throws OAuthRequestException 
+   * @throws NotFoundException 
+   * @throws BadRequestException 
    */
-  public Response getEndorsementsByTech(final String techId, User user) throws InternalServerErrorException;
+  public Response getEndorsementsByTech(final String techId, User user) throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
   
 //  // TODO felipegc remove it
 //  public Response addEndorsementTest();

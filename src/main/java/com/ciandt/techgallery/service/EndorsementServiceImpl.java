@@ -8,6 +8,8 @@ import java.util.Map;
 
 import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
 import com.ciandt.techgallery.persistence.dao.EndorsementDAOImpl;
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.dao.UserDAO;
@@ -20,6 +22,7 @@ import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementsResponse;
 import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.SkillResponse;
 import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
@@ -40,8 +43,12 @@ public class EndorsementServiceImpl implements EndorsementService {
   TechnologyDAO techDAO = new TechnologyDAOImpl();
   /** tech gallery user service for getting PEOPLE API user. */
   UserServiceTG userService = new UserServiceTGImpl();
+  /** tech gallery user dao. */
+  TechGalleryUserDAO userDAO = new TechGalleryUserDAOImpl();
   /** endorsement dao. */
   EndorsementDAO endorsementDAO = new EndorsementDAOImpl();
+  /** skill service*/
+  SkillService skillService = new SkillServiceImpl();
 
   /**
    * POST for adding a endorsement.
@@ -82,8 +89,8 @@ public class EndorsementServiceImpl implements EndorsementService {
     if (googleId == null || googleId.equals("")) {
       throw new NotFoundException("Current user was not found!");
     } else {
-      // get the TechGalleryUser from datastore or PEOPLE API
-      tgEndorserUser = userService.getUserSyncedWithProvider(endorserEmail.replace("@ciandt.com", ""));
+      // get the TechGalleryUser from datastore
+      tgEndorserUser = userDAO.findByGoogleId(googleId);
       if (tgEndorserUser == null) {
         throw new BadRequestException("Endorser user do not exists on datastore!");
       }
@@ -185,11 +192,14 @@ public class EndorsementServiceImpl implements EndorsementService {
   /**
    * GET for getting one endorsement.
    * @throws InternalServerErrorException 
+   * @throws OAuthRequestException 
+   * @throws NotFoundException 
+   * @throws BadRequestException 
    */
   @Override
-  public Response getEndorsementsByTech(String techId, User user) throws InternalServerErrorException {
+  public Response getEndorsementsByTech(String techId, User user) throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     List<Endorsement> endorsementsByTech = endorsementDAO.findAllByTechnology(techId);
-    List<EndorsementsGroupedByEndorsedTransient> grouped = groupEndorsementByEndorsed(endorsementsByTech);
+    List<EndorsementsGroupedByEndorsedTransient> grouped = groupEndorsementByEndorsed(endorsementsByTech, techId);
     
     ShowEndorsementsResponse response = new ShowEndorsementsResponse();
     response.setEndorsements(grouped);
@@ -198,7 +208,7 @@ public class EndorsementServiceImpl implements EndorsementService {
   
   @Override
   public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
-      List<Endorsement> endorsements) {
+      List<Endorsement> endorsements, String techId) throws BadRequestException, NotFoundException, InternalServerErrorException, OAuthRequestException {
 
     Map<TechGalleryUser, List<TechGalleryUser>> mapUsersGrouped = new HashMap<TechGalleryUser, List<TechGalleryUser>>();
     
@@ -215,16 +225,22 @@ public class EndorsementServiceImpl implements EndorsementService {
         mapUsersGrouped.put(endorsed, endorsersList);
       }
     }
-    return transformGroupedUserMapIntoList(mapUsersGrouped);
+    return transformGroupedUserMapIntoList(mapUsersGrouped, techId);
   }
 
   private List<EndorsementsGroupedByEndorsedTransient> transformGroupedUserMapIntoList(
-      Map<TechGalleryUser, List<TechGalleryUser>> mapUsersGrouped) {
+      Map<TechGalleryUser, List<TechGalleryUser>> mapUsersGrouped, String techId) throws BadRequestException, NotFoundException, InternalServerErrorException, OAuthRequestException {
     List<EndorsementsGroupedByEndorsedTransient> groupedList = new ArrayList<EndorsementsGroupedByEndorsedTransient>();
     
     for(Map.Entry<TechGalleryUser, List<TechGalleryUser>> entry : mapUsersGrouped.entrySet()){
       EndorsementsGroupedByEndorsedTransient grouped = new EndorsementsGroupedByEndorsedTransient();
       grouped.setEndorsed(entry.getKey());
+      SkillResponse response = (SkillResponse) skillService.getUserSkill(techId, entry.getKey());
+      if (response != null) {
+        grouped.setEndorsedSkill(response.getValue());
+      }else{
+        grouped.setEndorsedSkill(0);
+      }
       grouped.setEndorsers(entry.getValue());
       groupedList.add(grouped);
     }
