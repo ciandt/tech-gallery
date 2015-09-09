@@ -177,7 +177,7 @@
                 <version>${appengine.version}</version>
                 <configuration>
                     <enableJarClasses>false</enableJarClasses>
-                    <version>felipegc</version>
+                    <version>${app.version}</version>
                     <!-- Comment in the below snippet to bind to all IPs 
                         instead of just localhost -->
                     <!-- address>0.0.0.0</address> <port>8080</port -->
