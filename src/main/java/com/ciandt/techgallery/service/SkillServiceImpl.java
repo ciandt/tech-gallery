@@ -32,7 +32,6 @@ import com.googlecode.objectify.Ref;
  */
 public class SkillServiceImpl implements SkillService {
 
-  @SuppressWarnings("unused")
   private static final Logger log = Logger.getLogger(SkillServiceImpl.class.getName());
 
   SkillDAO skillDAO = new SkillDAOImpl();
@@ -127,8 +126,6 @@ public class SkillServiceImpl implements SkillService {
       OAuthRequestException, NotFoundException, InternalServerErrorException {
     // user google id
     String googleId;
-    // user email
-    String userEmail;
     // user from techgallery datastore
     TechGalleryUser tgUser;
     // User from endpoint can't be null
@@ -136,7 +133,6 @@ public class SkillServiceImpl implements SkillService {
       throw new OAuthRequestException("OAuth error, null user reference!");
     } else {
       googleId = user.getUserId();
-      userEmail = user.getEmail();
     }
 
     // TechGalleryUser can't be null and must exists on datastore
@@ -159,6 +155,27 @@ public class SkillServiceImpl implements SkillService {
     Skill userSkill = skillDAO.findByUserAndTechnology(tgUser, technology);
     if (userSkill == null) {
       throw new NotFoundException("User skill do not exist!");
+    } else {
+      return SkillConverter.fromEntityToTransient(userSkill);
+    }
+  }
+
+  @Override
+  public Response getUserSkill(String techId, TechGalleryUser user) throws BadRequestException,
+      OAuthRequestException, NotFoundException, InternalServerErrorException {
+    // User can't be null
+    if (user == null) {
+      throw new OAuthRequestException("Null user reference!");
+    }
+
+    // Technology can't be null
+    Technology technology = technologyDAO.findById(techId);
+    if (technology == null) {
+      throw new BadRequestException("Technology do not exists!");
+    }
+    Skill userSkill = skillDAO.findByUserAndTechnology(user, technology);
+    if (userSkill == null) {
+      return null;
     } else {
       return SkillConverter.fromEntityToTransient(userSkill);
     }
