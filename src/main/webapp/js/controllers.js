@@ -116,8 +116,6 @@ angular.module('techGallery').controller('techDetailsController',
         $scope.alert = undefined;
       }
 
-      
-      
       /*
        * 
        * Início da parte de recommend 
@@ -145,8 +143,6 @@ angular.module('techGallery').controller('techDetailsController',
         }
       }
 
-      
-      
       /*
        * 
        * Início da parte de show Endorsement 
@@ -182,9 +178,7 @@ angular.module('techGallery').controller('techDetailsController',
             }
           }
         });
-      };
-
-      
+      };      
       
       /*
        * 
@@ -215,7 +209,64 @@ angular.module('techGallery').controller('techDetailsController',
         completeEmail = completeEmail.split('@');
         var email = completeEmail[0];
         $scope.endorsed = email;
-        $scope.endorse(false);
+        $scope.endorse(false);      
+      
+      /*
+       * 
+       * Início da parte de inform skill
+       * 
+       */
+
+      //Fill user's rate and skill in that tech
+      $scope.rate = 0;
+      $scope.skillLevel = undefined;
+
+      $scope.max = 5;
+      $scope.isReadonly = false;
+
+      $scope.hoveringOver = function(value) {
+        $scope.overStar = value;
+        $scope.percent = 100 * (value / $scope.max);
+        $scope.skillLbl = returnSkillLevel(value);
+      };
+
+      $scope.$watch('rate', function(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          $scope.skillLevel = returnSkillLevel(newValue);
+          //Make API call to save the skill
+          
+          var idTech = $scope.idTechnology;
+          var req = {
+            technology : idTech,
+            value : newValue
+          };
+          gapi.client.rest.addSkill(req).execute(function(data) {
+        	  console.log(data);
+          });
+          
+        }
+      })
+
+      function returnSkillLevel(rate) {
+        switch (rate) {
+        case 1:
+          return 'Newbie';
+          break;
+        case 2:
+          return 'Initiate';
+          break;
+        case 3:
+          return 'Padawan';
+          break;
+        case 4:
+          return 'Knight';
+          break;
+        case 5:
+          return 'Jedi';
+          break;
+        default:
+          return null;
+        }
       }
     });
 

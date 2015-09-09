@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import com.ciandt.techgallery.persistence.model.Endorsement;
+import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.sample.persistence.model.Card;
@@ -28,6 +29,7 @@ public class OfyService implements ServletContextListener {
     ObjectifyService.register(Technology.class);
     ObjectifyService.register(Endorsement.class);
     ObjectifyService.register(TechGalleryUser.class);
+    ObjectifyService.register(Skill.class);
     // @TODO improve how to separate the samples' registers from the production's registers
     // Samples of registers
     ObjectifyService.register(UserGroup.class);

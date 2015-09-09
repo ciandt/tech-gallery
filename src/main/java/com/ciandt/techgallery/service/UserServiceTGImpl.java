@@ -11,7 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
+
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -212,6 +214,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     String userPhoto = user.getPhoto();
     tgUser.setName(userName);
     tgUser.setEmail(userEmail);
+    tgUser.setGoogleId(user.getGoogleId());
     if (userPhoto != null) {
       tgUser.setPhoto(userPhoto);
     }
