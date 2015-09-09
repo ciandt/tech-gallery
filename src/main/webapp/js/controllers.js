@@ -80,11 +80,16 @@ angular.module('techGallery').controller('techDetailsController',
       var alerts = jsUtils.alerts;
 
       var successFunction = function(data) {
-        $scope.clientId = data.client_id;
         var protocol = location.protocol + '//';
         var host = location.host;
         var complement = '/_ah/api/';
         var rootUrl = protocol + host + complement;
+        gapi.client.load('oauth2', 'v2', function() {
+          gapi.client.oauth2.userinfo.get().execute(function(resp) {
+            $scope.userEmail = resp.email;
+            $scope.$apply();
+          })
+        });
         gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
         //                            fillTechnology(jsUtils.mockTechnology());
       }
@@ -124,7 +129,7 @@ angular.module('techGallery').controller('techDetailsController',
 
       /*
        * 
-       * Início da parte de recommend 
+       * Begin of the Recommend Features 
        * 
        */
       $scope.endorse = function(alertUser) {
@@ -151,7 +156,7 @@ angular.module('techGallery').controller('techDetailsController',
 
       /*
        * 
-       * Início da parte de show Endorsement 
+       * Begin of Show Endorsement Features
        * 
        */
       $scope.showAllEndorsers = function(endorsers) {
@@ -186,13 +191,24 @@ angular.module('techGallery').controller('techDetailsController',
         });
       };      
       
+      
       /*
        * 
-       * Início da parte de +1 
+       * Begin of +1 features
        * 
        */
-      $scope.showPlusOne = function(id){
-        if($scope.clientId == id){
+      $scope.setClassPlusOne = function(endorsers){
+        var classe = 'btn btn-primary';
+        for(var i in endorsers){
+          if(endorsers[i].email == $scope.userEmail){
+            classe = 'btn btn-danger';
+          }
+        }
+        return classe;
+      }
+      
+      $scope.showPlusOne = function(email){
+        if($scope.userEmail == email){
           return false;
         }
         return true;
@@ -203,6 +219,22 @@ angular.module('techGallery').controller('techDetailsController',
       }
 
       $scope.addEndorse = function(endorsed, id) {
+        setClassElement(id);
+        var completeEmail = endorsed.email;
+        completeEmail = completeEmail.split('@');
+        var email = completeEmail[0];
+        var req = {};
+        req.endorsed = email;
+        req.technology = $scope.idTechnology;
+        gapi.client.rest.addEndorsementPlusOne(req).execute(function(data){
+          if(data.hasOwnProperty('error')){
+            setClassElement(id);
+          }
+          callBackLoaded();
+        });
+      }
+      
+      function setClassElement(id){
         var elementClassIncrease = 'btn btn-primary';
         var elementClassDecrease = 'btn btn-danger';
         var elementClass = document.getElementById(id).className;
@@ -211,16 +243,11 @@ angular.module('techGallery').controller('techDetailsController',
         } else {
           document.getElementById(id).className = elementClassIncrease;
         }
-        var completeEmail = endorsed.email;
-        completeEmail = completeEmail.split('@');
-        var email = completeEmail[0];
-        $scope.endorsed = email;
-        $scope.endorse(false);
       }
       
       /*
        * 
-       * Início da parte de inform skill
+       * Begin of inform skill features
        * 
        */
 
