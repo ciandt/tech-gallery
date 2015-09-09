@@ -97,6 +97,11 @@ angular.module('techGallery').controller('techDetailsController',
           id : idTech
         };
         gapi.client.rest.getTechnology(req).execute(function(data) {
+            gapi.client.rest.getUserSkill(req).execute(function(dataSkill) {
+              $scope.rate = dataSkill.value;
+          	  $scope.skillLevel = returnSkillLevel(dataSkill.value);
+          });
+          
           fillTechnology(data);
           showEndorsementsByTech();
           $scope.$apply();
@@ -210,6 +215,7 @@ angular.module('techGallery').controller('techDetailsController',
             value : newValue
           };
           gapi.client.rest.addSkill(req).execute(function(data) {
+        	  
         	  console.log(data);
           });
           
