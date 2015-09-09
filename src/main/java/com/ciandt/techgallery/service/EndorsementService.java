@@ -85,9 +85,4 @@ public interface EndorsementService {
    */
   public Response getEndorsementsByTech(final String techId, User user) throws InternalServerErrorException;
   
-//  // TODO felipegc remove it
-//  public Response addEndorsementTest();
-//
-//  // TODO felipegc remove it
-//  public Response getEndorsementTest();
 }
