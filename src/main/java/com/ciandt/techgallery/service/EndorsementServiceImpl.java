@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
 import com.ciandt.techgallery.persistence.dao.EndorsementDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
@@ -21,8 +22,8 @@ import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementsResponse;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.SkillResponse;
 import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
+import com.ciandt.techgallery.service.model.SkillResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -66,8 +67,6 @@ public class EndorsementServiceImpl implements EndorsementService {
       OAuthRequestException {
     // endorser user google id
     String googleId;
-    // endorser user email
-    String endorserEmail;
     // endorser user from techgallery datastore
     TechGalleryUser tgEndorserUser;
     // endorsed user from techgallery datastore
@@ -84,7 +83,6 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new OAuthRequestException("OAuth error, null user reference!");
     } else {
       googleId = user.getUserId();
-      endorserEmail = user.getEmail();
     }
 
     // TechGalleryUser can't be null and must exists on datastore
@@ -158,8 +156,6 @@ public class EndorsementServiceImpl implements EndorsementService {
       OAuthRequestException {
     // endorser user google id
     String googleId;
-    // endorser user email
-    String endorserEmail;
     // endorser user from techgallery datastore
     TechGalleryUser tgEndorserUser;
     // endorsed user from techgallery datastore
@@ -176,16 +172,14 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new OAuthRequestException("OAuth error, null user reference!");
     } else {
       googleId = user.getUserId();
-      endorserEmail = user.getEmail();
     }
 
     // TechGalleryUser can't be null and must exists on datastore
     if (googleId == null || googleId.equals("")) {
       throw new NotFoundException("Current user was not found!");
     } else {
-      // get the TechGalleryUser from datastore or PEOPLE API
-      tgEndorserUser =
-          userService.getUserSyncedWithProvider(endorserEmail.replace("@ciandt.com", ""));
+      // get the TechGalleryUser from datastore
+      tgEndorserUser = userDAO.findByGoogleId(googleId);
       if (tgEndorserUser == null) {
         throw new BadRequestException("Endorser user do not exists on datastore!");
       }
