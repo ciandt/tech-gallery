@@ -18,7 +18,6 @@ import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
-import com.ciandt.techgallery.service.model.Response;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -67,15 +66,17 @@ public class EndorsementServiceTest {
 
   @Test
   @Ignore
-  public void executaAgrupamento() throws BadRequestException, NotFoundException, InternalServerErrorException, OAuthRequestException {
-    //TODO Fazer o teste funcionar com o objetify 
+  public void executaAgrupamento() throws BadRequestException, NotFoundException,
+      InternalServerErrorException, OAuthRequestException {
+    // TODO Make the test work with objetify
     List<Endorsement> endorsements = createEndorsementList();
-    List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed = service.groupEndorsementByEndorsed(endorsements, null);
+    List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed =
+        service.groupEndorsementByEndorsed(endorsements, null);
     groupEndorsementByEndorsed.get(0);
   }
 
   private List<Endorsement> createEndorsementList() {
-    // TODO incrementar para um cenário de teste mais completo
+    // TODO increase to a more complete test scenario
     TechGalleryUser endorsed = new TechGalleryUser();
     endorsed.setName("GOKU");
     endorsed.setId(1L);
