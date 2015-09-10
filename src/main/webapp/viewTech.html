@@ -89,7 +89,7 @@
                 ng-click="addEndorse(response.endorsed, generateId($index))"
                 ng-class="setClassPlusOne(response.endorsers)">+1</button>
               <div
-                ng-repeat="endorser in response.endorsers track by $index">
+                ng-repeat="endorser in response.endorsersFiltered track by $index">
                 <img class="media-object endorsers-image"
                   src={{endorser.photo}} tooltip={{endorser.name}}>
               </div>

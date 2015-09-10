@@ -170,7 +170,13 @@ angular.module('techGallery').controller('techDetailsController',
           id : idTech
         };
         gapi.client.rest.getEndorsementsByTech(req).execute(function(data) {
-          $scope.showEndorsementResponse = data.result.endorsements;
+          var response = data.result.endorsements;
+          for(var i in response){
+            var fullResponse = response[i].endorsers;
+            var endorsersFiltered = fullResponse.slice(0,5);
+            response[i].endorsersFiltered = endorsersFiltered;
+          }
+          $scope.showEndorsementResponse = response;
           $scope.loadEndorsements = false;
           $scope.$apply();
         });
@@ -200,7 +206,7 @@ angular.module('techGallery').controller('techDetailsController',
       $scope.setClassPlusOne = function(endorsers){
         var classe = 'btn btn-primary';
         for(var i in endorsers){
-          if(endorsers[i].email == $scope.userEmail){
+          if(endorsers[i] && endorsers[i].email == $scope.userEmail){
             classe = 'btn btn-danger';
           }
         }
