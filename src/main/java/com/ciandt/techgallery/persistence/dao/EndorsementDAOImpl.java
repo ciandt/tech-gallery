@@ -27,8 +27,25 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long> implem
     tech.setId(techId);
     Objectify objectify = OfyService.ofy();
     List<Endorsement> entities =
+        objectify.load().type(Endorsement.class).filter("technology", Ref.create(tech)).list();
+
+    if (entities == null || entities.size() <= 0) {
+      return new ArrayList<Endorsement>();
+    }
+    return entities;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Endorsement> findAllActivesByTechnology(String techId) {
+    Technology tech = new Technology();
+    tech.setId(techId);
+    Objectify objectify = OfyService.ofy();
+    List<Endorsement> entities =
         objectify.load().type(Endorsement.class).filter("technology", Ref.create(tech))
-            .list();
+            .filter("active", true).list();
 
     if (entities == null || entities.size() <= 0) {
       return new ArrayList<Endorsement>();
@@ -43,11 +60,26 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long> implem
   public List<Endorsement> findByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
       Technology technology) {
     Objectify objectify = OfyService.ofy();
-    List<Endorsement> entities = objectify.load().type(Endorsement.class)
-        .filter("technology", Ref.create(technology)).filter("endorser", Ref.create(endorser))
-        .filter("endorsed", Ref.create(endorsed)).list();
+    List<Endorsement> entities =
+        objectify.load().type(Endorsement.class).filter("technology", Ref.create(technology))
+            .filter("endorser", Ref.create(endorser)).filter("endorsed", Ref.create(endorsed))
+            .list();
 
     return entities;
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Endorsement> findActivesByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
+      Technology technology) {
+    Objectify objectify = OfyService.ofy();
+    List<Endorsement> entities =
+        objectify.load().type(Endorsement.class).filter("technology", Ref.create(technology))
+            .filter("endorser", Ref.create(endorser)).filter("endorsed", Ref.create(endorsed))
+            .filter("active", true).list();
+
+    return entities;
+  }
 }

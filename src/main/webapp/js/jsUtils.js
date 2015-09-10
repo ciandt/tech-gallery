@@ -18,7 +18,7 @@ function handleAuthResultTrue(authResult) {
     var authorizeButton = document
             .getElementById('authorize-button');
     if (authResult && !authResult.error) {
-        afterLogin();
+        afterLogin(authResult);
         afterLogin = '';
     } else {
         auth(false, handleAuthResultFalse);
@@ -26,7 +26,7 @@ function handleAuthResultTrue(authResult) {
 }
 
 function handleAuthResultFalse(authResult){
-    afterLogin();
+    afterLogin(authResult);
     afterLogin = '';
 }
 
@@ -98,6 +98,8 @@ var mockShowEndorsementResponse = function(){
         
         response.endorsed.name = names[i-1];
         response.endorsed.photo = "https://storage.googleapis.com/tech-gallery-assets/userPhotos/user" + i + ".jpg";
+        response.endorsed.clientId = i;
+        response.endorsed.email = response.endorsed.name+"@example.com";
         
         for(var j = 1; j < i; j++){
             var endorser = {};
@@ -108,6 +110,7 @@ var mockShowEndorsementResponse = function(){
         
         endorsementResponse.push(response);
     }
+    endorsementResponse[0].endorsed.clientId = "146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com";
     return endorsementResponse;
 }
 

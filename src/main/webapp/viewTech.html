@@ -47,7 +47,7 @@
       <a href="#" ng-click="endorse(true)" class="btn btn-primary"
         role="button">Indicar</a>
     </div>
-    <div class="endorse-alerts">
+    <div class="endorse-alerts spacingtop">
       <alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
     </div>
     
@@ -67,6 +67,11 @@
     </div>
     
     <div id="div_showRecommendation" class="container">
+      <h3>Quem é referência?</h3>
+      <div ng-show="!showEndorsementResponse">
+        <h5>Ainda não tem ninguém aqui. Indique um colega que saiba disso ali em cima!</h5>
+      </div>
+      
       <div class="row">
 
         <div class="spacingtop"
@@ -84,6 +89,10 @@
 
           <div id="div_image_recomendations" class="container">
             <div class="col-xs-6">
+              <button ng-show="showPlusOne(response.endorsed.email)" type="button" id={{generateId($index)}}
+                style="float: left"
+                ng-click="addEndorse(response.endorsed, generateId($index))"
+                ng-class="setClassPlusOne(response.endorsers)">+1</button>
               <div
                 ng-repeat="endorser in response.endorsers track by $index">
                 <img class="media-object endorsers-image"

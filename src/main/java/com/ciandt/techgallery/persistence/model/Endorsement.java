@@ -33,6 +33,9 @@ public class Endorsement extends BaseEntity<Long> {
   private Date timestamp;
 
   @Index
+  private boolean active;
+
+  @Index
   @Load
   private Ref<Technology> technology;
 
@@ -101,5 +104,13 @@ public class Endorsement extends BaseEntity<Long> {
     }
 
     return null;
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
   }
 }

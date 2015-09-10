@@ -33,6 +33,20 @@ public interface EndorsementService {
    */
   public Response addOrUpdateEndorsement(final EndorsementResponse endorsement, final User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
+  
+  /**
+   * Service for adding a endorsement in +1 button.
+   * 
+   * @param endorsement json with endorsement info.
+   * @param user current user logged.
+   * @return endorsement info or message error.
+   * @throws InternalServerErrorException
+   * @throws BadRequestException
+   * @throws NotFoundException
+   * @throws OAuthRequestException 
+   */
+  public Response addOrUpdateEndorsementPlusOne(final EndorsementResponse endorsement, final User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
 
   /**
    * Service for getting all endorsements.
@@ -78,9 +92,4 @@ public interface EndorsementService {
    */
   public Response getEndorsementsByTech(final String techId, User user) throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
   
-//  // TODO felipegc remove it
-//  public Response addEndorsementTest();
-//
-//  // TODO felipegc remove it
-//  public Response getEndorsementTest();
 }

@@ -10,8 +10,6 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
  */
 public interface TechGalleryUserDAO extends GenericDAO<TechGalleryUser, Long> {
 
-  public TechGalleryUser findByGplusId(final String gplusId);
-
   /**
    * Method that searches user by its email(used to authenticate into the app)
    */

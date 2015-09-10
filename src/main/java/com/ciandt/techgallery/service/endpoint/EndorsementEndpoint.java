@@ -44,6 +44,23 @@ public class EndorsementEndpoint {
   }
 
   /**
+   * Endpoint for adding or updating an Endorsement through Plus One button.
+   * 
+   * @param endorsement json with endorsement info.
+   * @return
+   * @throws InternalServerErrorException
+   * @throws BadRequestException
+   * @throws NotFoundException
+   * @throws OAuthRequestException
+   */
+  @ApiMethod(name = "addEndorsementPlusOne", path = "endorsementPlusOne", httpMethod = "post")
+  public Response addEndorsementPlusOne(EndorsementResponse endorsement, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException {
+    return service.addOrUpdateEndorsementPlusOne(endorsement, user);
+  }
+
+  /**
    * Endpoint for getting a list of Endorsements.
    * 
    * @return
@@ -82,4 +99,5 @@ public class EndorsementEndpoint {
       throws NotFoundException, InternalServerErrorException, BadRequestException, OAuthRequestException {
     return service.getEndorsementsByTech(id, user);
   }
+  
 }
