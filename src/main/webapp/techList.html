@@ -19,30 +19,33 @@
 <script src="js/directives.js"></script>
 </head>
 <body ng-controller="techListController">
-    <div class="page-header">
-        <h1>
-            Technology Gallery <small> - Confira as principais
-                tecnologias do momento</small>
-        </h1>
+  <div class="page-header">
+    <h1>
+      Technology Gallery <small> - Confira as principais
+        tecnologias do momento</small>
+    </h1>
+  </div>
+  <div>
+    <div ng-show="showLoading" class="loading">
+      <img src="/images/loading.gif">
     </div>
     <div>
-        <div>
-            <div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
-                <div class="thumbnail">
-                    <img src={{tech.image}} data-holder-rendered="true"
-                        class="thumbnail-Image">
-                    <div class="caption">
-                        <a href={{redirectUrl(tech.id)}}>
-                            <h3>{{tech.name}}</h3>
-                        </a>
-                        <p class='technologydescription'>{{tech.shortDescription}}</p>
-                    </div>
-                </div>
-            </div>
+      <div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
+        <div class="thumbnail">
+          <img src={{tech.image}} data-holder-rendered="true"
+            class="thumbnail-Image">
+          <div class="caption">
+            <a href={{redirectUrl(tech.id)}}>
+              <h3>{{tech.name}}</h3>
+            </a>
+            <p class='technologydescription'>{{tech.shortDescription}}</p>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="login-Button">
-        <a ng-show="showLogin" href="#" ng-click="login()"
-            class="btn btn-primary" role="button">Login</a>
-    </div>
+  </div>
+  <div class="login-Button">
+    <a ng-show="showLogin" href="#" ng-click="login()"
+      class="btn btn-primary" role="button">Login</a>
+  </div>
 </body>

@@ -1,9 +1,9 @@
 var clientId = '146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com';
 var scopes = 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email';
 
-var checkAuth = function(successFunction){
+var checkAuth = function(successFunction, immediate){
     afterLogin = successFunction;
-    auth(true, handleAuthResultTrue);
+    auth(immediate, handleAuthResultTrue);
 }
 
 function auth(immediate, callBackFunction){
@@ -20,14 +20,9 @@ function handleAuthResultTrue(authResult) {
     if (authResult && !authResult.error) {
         afterLogin(authResult);
         afterLogin = '';
-    } else {
-        auth(false, handleAuthResultFalse);
+    }else{
+      return afterLogin(false);
     }
-}
-
-function handleAuthResultFalse(authResult){
-    afterLogin(authResult);
-    afterLogin = '';
 }
 
 var mockTechList = function(){
