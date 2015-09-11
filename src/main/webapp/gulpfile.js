@@ -9,7 +9,7 @@ gulp.task('lint', ['jshint', 'csslint']);
 gulp.task('jshint', function() {
   return gulp.src('./js/*.js')
     .pipe(jshint())
-    .pipe(jshint.reporter('checkstyle'));
+    .pipe(jshint.reporter('jshint-stylish'));
 });
 
 gulp.task('csslint', function() {
