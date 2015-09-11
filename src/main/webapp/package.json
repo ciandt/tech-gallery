@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A living Technology Gallery.",
   "devDependencies": {
-    "bower": "1.5.2"
+    "bower": "1.5.2",
+    "gulp": "^3.9.0"
   }
 }
