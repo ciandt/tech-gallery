@@ -50,7 +50,7 @@
     <div class="endorse-alerts spacingtop">
       <alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
     </div>
-    
+
     <div id="informSkill" class="container spacingtop">
       <h3>Em uma escala de Newbie a Jedi, como você se avalia nesta tecnologia?</h3>
       <rating ng-model="rate" max="max" readonly="false"
@@ -65,13 +65,13 @@
     <div>
       <img ng-show="loadEndorsements" src="/images/loading.gif" class="loading">
     </div>
-    
+
     <div id="div_showRecommendation" class="container">
       <h3>Quem é referência?</h3>
       <div ng-show="!showEndorsementResponse">
         <h5>Ainda não tem ninguém aqui. Indique um colega que saiba disso ali em cima!</h5>
       </div>
-      
+
       <div class="row">
 
         <div class="spacingtop"

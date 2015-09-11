@@ -108,7 +108,7 @@ angular.module('techGallery').controller('techDetailsController',
               $scope.rate = dataSkill.value;
           	  $scope.skillLevel = returnSkillLevel(dataSkill.value);
           });
-          
+
           fillTechnology(data);
           showEndorsementsByTech();
           $scope.$apply();
@@ -128,9 +128,9 @@ angular.module('techGallery').controller('techDetailsController',
       }
 
       /*
-       * 
-       * Begin of the Recommend Features 
-       * 
+       *
+       * Begin of the Recommend Features
+       *
        */
       $scope.endorse = function(alertUser) {
         var req = {};
@@ -155,15 +155,15 @@ angular.module('techGallery').controller('techDetailsController',
       }
 
       /*
-       * 
+       *
        * Begin of Show Endorsement Features
-       * 
+       *
        */
       $scope.showAllEndorsers = function(endorsers) {
         return (endorsers.length > 0)
       }
-      
-      
+
+
       function showEndorsementsByTech() {
         var idTech = $scope.idTechnology;
         var req = {
@@ -189,13 +189,13 @@ angular.module('techGallery').controller('techDetailsController',
             }
           }
         });
-      };      
-      
-      
+      };
+
+
       /*
-       * 
+       *
        * Begin of +1 features
-       * 
+       *
        */
       $scope.setClassPlusOne = function(endorsers){
         var classe = 'btn btn-primary';
@@ -206,14 +206,14 @@ angular.module('techGallery').controller('techDetailsController',
         }
         return classe;
       }
-      
+
       $scope.showPlusOne = function(email){
         if($scope.userEmail == email){
           return false;
         }
         return true;
       }
-      
+
       $scope.generateId = function(index) {
         return 'plusOne' + index;
       }
@@ -233,7 +233,7 @@ angular.module('techGallery').controller('techDetailsController',
           callBackLoaded();
         });
       }
-      
+
       function setClassElement(id){
         var elementClassIncrease = 'btn btn-primary';
         var elementClassDecrease = 'btn btn-danger';
@@ -244,11 +244,11 @@ angular.module('techGallery').controller('techDetailsController',
           document.getElementById(id).className = elementClassIncrease;
         }
       }
-      
+
       /*
-       * 
+       *
        * Begin of inform skill features
-       * 
+       *
        */
 
       //Fill user's rate and skill in that tech
@@ -268,17 +268,17 @@ angular.module('techGallery').controller('techDetailsController',
         if (newValue !== oldValue) {
           $scope.skillLevel = returnSkillLevel(newValue);
           //Make API call to save the skill
-          
+
           var idTech = $scope.idTechnology;
           var req = {
             technology : idTech,
             value : newValue
           };
           gapi.client.rest.addSkill(req).execute(function(data) {
-        	  
+
         	  console.log(data);
           });
-          
+
         }
       })
 
