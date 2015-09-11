@@ -1,3 +1,4 @@
+// jshint ignore:start
 'use strict';
 
 var gulp = require('gulp');
@@ -9,7 +10,7 @@ gulp.task('lint', ['jshint', 'csslint']);
 gulp.task('jshint', function() {
   return gulp.src('./js/*.js')
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'));
+    .pipe(jshint.reporter('checkstyle'));
 });
 
 gulp.task('csslint', function() {
