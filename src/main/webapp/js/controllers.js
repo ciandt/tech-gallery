@@ -19,24 +19,30 @@ angular.module('techGallery').controller(
   function($scope, $location, $timeout) {
     'use strict';
 
-    $scope.showLogin = true;
-
-    var executeAuth = function() {
+    var executeAuth = function(immediate) {
       $timeout(function() {
-        jsUtils.checkAuth(successFunction);
+        jsUtils.checkAuth(successFunction, immediate);
       }, 200);
-    };
+    }
 
     $scope.login = function() {
-      executeAuth();
-    };
+      executeAuth(false);
+    }
 
     var successFunction = function(data) {
-      getTechList();
-      $scope.showLogin = false;
-    };
+      if(data !== false){
+        $scope.showLogin = false;
+        $scope.showLoading = true;
+        $scope.$apply();
+        getTechList();
+      }else{
+        $scope.showLogin = true;
+        $scope.showLoading = false;
+        $scope.$apply();
+      }
+    }
 
-    executeAuth();
+    executeAuth(true);
 
     $scope.redirectUrl = function(techId) {
       var protocol = location.protocol + '//';
@@ -56,13 +62,13 @@ angular.module('techGallery').controller(
       var complement = '/_ah/api/';
       var rootUrl = protocol + host + complement;
       gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
-      //                        $scope.techList = jsUtils.mockTechList();
     }
 
     function callBackLoaded() {
       gapi.client.rest.getTechnologies().execute(function(data) {
         gapi.client.rest.handleLogin().execute();
         $scope.techList = data.technologies;
+        $scope.showLoading = false;
         $scope.$apply();
       });
     }
@@ -82,23 +88,38 @@ angular.module('techGallery').controller(
 
     var alerts = jsUtils.alerts;
 
-    var successFunction = function() {
-      var protocol = location.protocol + '//';
-      var host = location.host;
-      var complement = '/_ah/api/';
-      var rootUrl = protocol + host + complement;
-      gapi.client.load('oauth2', 'v2', function() {
-        gapi.client.oauth2.userinfo.get().execute(function(resp) {
-          $scope.userEmail = resp.email;
-          $scope.$apply();
+    var successFunction = function(data) {
+      if(data!==false){
+        $scope.showContent = true;
+        var protocol = location.protocol + '//';
+        var host = location.host;
+        var complement = '/_ah/api/';
+        var rootUrl = protocol + host + complement;
+        gapi.client.load('oauth2', 'v2', function() {
+          gapi.client.oauth2.userinfo.get().execute(function(resp) {
+            $scope.userEmail = resp.email;
+            $scope.$apply();
+          })
         });
-      });
-      gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
-    };
+        gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
+      }else{
+        $scope.showContent = false;
+        $scope.showLogin = true;
+        $scope.$apply();
+      }
+    }
+    
+    function checkLogin(immediate){
+      $timeout(function() {
+        jsUtils.checkAuth(successFunction, immediate);
+      }, 200);
+    }
+    
+    checkLogin(true);
 
-    $timeout(function() {
-      jsUtils.checkAuth(successFunction);
-    }, 200);
+    $scope.login = function(){
+      checkLogin(false);
+    };
 
     function callBackLoaded() {
       var idTech = $scope.idTechnology;
@@ -167,7 +188,13 @@ angular.module('techGallery').controller(
         id : idTech
       };
       gapi.client.rest.getEndorsementsByTech(req).execute(function(data) {
-        $scope.showEndorsementResponse = data.result.endorsements;
+        var response = data.result.endorsements;
+        for(var i in response){
+          var fullResponse = response[i].endorsers;
+          var endorsersFiltered = fullResponse.slice(0,5);
+          response[i].endorsersFiltered = endorsersFiltered;
+        }
+        $scope.showEndorsementResponse = response;
         $scope.loadEndorsements = false;
         $scope.$apply();
       });

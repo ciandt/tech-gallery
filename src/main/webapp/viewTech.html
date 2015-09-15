@@ -21,7 +21,15 @@
   <script src="js/directives.js"></script>
 </head>
 <body ng-controller="techDetailsController">
-  <div class="page-header">
+
+  <div class="login-Button" ng-show="showLogin">
+    <h3>Para ter acesso ao conteúdo realize seu login através do
+      botão abaixo...</h3>
+    <a href="#" ng-click="login()"
+      class="btn btn-primary row spacingtop" role="button">Login</a>
+  </div>
+
+  <div ng-show="showContent" class="page-header">
     <div id="div_container" class="container">
       <div class="row">
         <div id="div_image" class="col-xs-6">
@@ -53,7 +61,8 @@
     </div>
 
     <div id="informSkill" class="container spacingtop">
-      <h3>Em uma escala de Newbie a Jedi, como você se avalia nesta tecnologia?</h3>
+      <h3>Em uma escala de Newbie a Jedi, como você se avalia nesta
+        tecnologia?</h3>
       <rating ng-model="rate" max="max" readonly="false"
         on-hover="hoveringOver(value)" on-leave="overStar = null"
         ng-click="selecSkill()"></rating>
@@ -64,13 +73,15 @@
     </div>
 
     <div>
-      <img ng-show="loadEndorsements" src="/images/loading.gif" class="loading">
+      <img ng-show="loadEndorsements" src="/images/loading.gif"
+        class="loading">
     </div>
 
     <div id="div_showRecommendation" class="container">
       <h3>Quem é referência?</h3>
       <div ng-show="!showEndorsementResponse">
-        <h5>Ainda não tem ninguém aqui. Indique um colega que saiba disso ali em cima!</h5>
+        <h5>Ainda não tem ninguém aqui. Indique um colega que saiba
+          disso ali em cima!</h5>
       </div>
 
       <div class="row">
@@ -84,18 +95,20 @@
             </div>
             <div class="media-body">
               <h4 class="media-heading">{{response.endorsed.name}}</h4>
-              <rating ng-model="response.endorsed.skill" max="5" readonly="true"></rating>
+              <rating ng-model="response.endorsed.skill" max="5"
+                readonly="true"></rating>
             </div>
           </div>
 
           <div id="div_image_recomendations" class="container">
             <div class="col-xs-6">
-              <button ng-show="showPlusOne(response.endorsed.email)" type="button" id={{generateId($index)}}
+              <button ng-show="showPlusOne(response.endorsed.email)"
+                type="button" id={{generateId($index)}}
                 style="float: left"
                 ng-click="addEndorse(response.endorsed, generateId($index))"
                 ng-class="setClassPlusOne(response.endorsers)">+1</button>
               <div
-                ng-repeat="endorser in response.endorsers track by $index">
+                ng-repeat="endorser in response.endorsersFiltered track by $index">
                 <img class="media-object endorsers-image"
                   src={{endorser.photo}} tooltip={{endorser.name}}>
               </div>
