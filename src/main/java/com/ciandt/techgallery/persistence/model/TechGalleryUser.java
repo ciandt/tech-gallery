@@ -18,9 +18,6 @@ public class TechGalleryUser extends BaseEntity<Long> {
   Long id;
 
   @Index
-  private String gplusId;
-  
-  @Index
   private String name;
 
   @Index
@@ -28,7 +25,10 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   @Unindex
   private String photo;
-  
+
+  @Index
+  private String googleId;
+
   @Override
   public Long getId() {
     return id;
@@ -37,14 +37,6 @@ public class TechGalleryUser extends BaseEntity<Long> {
   @Override
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public String getGplusId() {
-    return gplusId;
-  }
-
-  public void setGplusId(String gplusId) {
-    this.gplusId = gplusId;
   }
 
   public String getName() {
@@ -71,4 +63,20 @@ public class TechGalleryUser extends BaseEntity<Long> {
     this.photo = photo;
   }
 
+  public String getGoogleId() {
+    return googleId;
+  }
+
+  public void setGoogleId(String googleId) {
+    this.googleId = googleId;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof TechGalleryUser))
+      return false;
+    else
+      return (this.getId() == ((TechGalleryUser) obj).getId());
+  }
+  
 }

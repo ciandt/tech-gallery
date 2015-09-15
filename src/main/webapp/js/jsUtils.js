@@ -1,5 +1,5 @@
 var clientId = '146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com';
-var scopes = 'https://www.googleapis.com/auth/plus.me';
+var scopes = 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email';
 
 var checkAuth = function(successFunction){
     afterLogin = successFunction;
@@ -18,7 +18,7 @@ function handleAuthResultTrue(authResult) {
     var authorizeButton = document
             .getElementById('authorize-button');
     if (authResult && !authResult.error) {
-        afterLogin();
+        afterLogin(authResult);
         afterLogin = '';
     } else {
         auth(false, handleAuthResultFalse);
@@ -26,7 +26,7 @@ function handleAuthResultTrue(authResult) {
 }
 
 function handleAuthResultFalse(authResult){
-    afterLogin();
+    afterLogin(authResult);
     afterLogin = '';
 }
 
@@ -75,13 +75,52 @@ var mockTechnology = function() {
     return technology;
 }
 
+var mockEndorsements = function(){
+    var endorsements = [];
+    var endorsement = {};
+    for(var i = 0; i < 10; i++){
+        endorsement.endorser = "";
+        endorsement.endorsed = "";
+        endorsement.timestamp = "";
+        endorsement.inactive = "";
+        endorsement.tech = "";
+    }
+}
+
+var mockShowEndorsementResponse = function(){
+    var endorsementResponse = [];
+    var names = ["Mussum", "Naruto", "Linkin Park", "Crítico", "Goku"];
+    for(var i = 1; i < 6; i++){
+        var response = {};
+        response.endorsed = {};
+        
+        response.endorsers = [];
+        
+        response.endorsed.name = names[i-1];
+        response.endorsed.photo = "https://storage.googleapis.com/tech-gallery-assets/userPhotos/user" + i + ".jpg";
+        response.endorsed.clientId = i;
+        response.endorsed.email = response.endorsed.name+"@example.com";
+        
+        for(var j = 1; j < i; j++){
+            var endorser = {};
+            endorser.name = "endorser "+j;
+            endorser.photo = "dasdsa"+j;
+            response.endorsers.push(endorser);
+        }
+        
+        endorsementResponse.push(response);
+    }
+    endorsementResponse[0].endorsed.clientId = "146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com";
+    return endorsementResponse;
+}
+
 var alerts = {
         success : {
             type : 'success',
-            msg : 'Indicação efetuada!'
+            msg : 'Endorsement successfull!'
         },
         failure : {
-            type : 'error',
+            type : 'danger',
             msg : 'Usuário não encontrado!'
         },
         caution : {
@@ -104,5 +143,6 @@ var jsUtils = {};
 jsUtils.checkAuth = checkAuth;
 jsUtils.mockTechList = mockTechList;
 jsUtils.mockTechnology = mockTechnology;
+jsUtils.mockShowEndorsementResponse = mockShowEndorsementResponse;
 jsUtils.getParameterByName = getParameterByName;
 jsUtils.alerts = alerts;

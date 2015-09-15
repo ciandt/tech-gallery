@@ -11,6 +11,8 @@ import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
 
 /**
  * Endpoint controller class for Endorsements requests. Endorsements are used only for users.
@@ -18,7 +20,8 @@ import com.google.api.server.spi.response.NotFoundException;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID})
+@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
+    Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class EndorsementEndpoint {
 
   private EndorsementService service = new EndorsementServiceImpl();
@@ -29,12 +32,32 @@ public class EndorsementEndpoint {
    * @param endorsement json with endorsement info.
    * @return
    * @throws InternalServerErrorException
-   * @throws BadRequestException 
+   * @throws BadRequestException
+   * @throws NotFoundException
+   * @throws OAuthRequestException
    */
   @ApiMethod(name = "addEndorsement", path = "endorsement", httpMethod = "post")
-  public Response addEndorsement(EndorsementResponse endorsement)
-      throws InternalServerErrorException, BadRequestException {
-    return service.addOrUpdateEndorsement(endorsement);
+  public Response addEndorsement(EndorsementResponse endorsement, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException {
+    return service.addOrUpdateEndorsement(endorsement, user);
+  }
+
+  /**
+   * Endpoint for adding or updating an Endorsement through Plus One button.
+   * 
+   * @param endorsement json with endorsement info.
+   * @return
+   * @throws InternalServerErrorException
+   * @throws BadRequestException
+   * @throws NotFoundException
+   * @throws OAuthRequestException
+   */
+  @ApiMethod(name = "addEndorsementPlusOne", path = "endorsementPlusOne", httpMethod = "post")
+  public Response addEndorsementPlusOne(EndorsementResponse endorsement, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException {
+    return service.addOrUpdateEndorsementPlusOne(endorsement, user);
   }
 
   /**
@@ -61,4 +84,20 @@ public class EndorsementEndpoint {
     return service.getEndorsement(id);
   }
 
+  /**
+   * Endpoint for getting all endorsements of a Technology.
+   * 
+   * @param id technology id.
+   * @return
+   * @throws NotFoundException
+   * @throws InternalServerErrorException
+   * @throws OAuthRequestException 
+   * @throws BadRequestException 
+   */
+  @ApiMethod(name = "getEndorsementsByTech", path = "endorsement/tech/{id}", httpMethod = "get")
+  public Response getEndorsementsByTech(@Named("id") String id, User user)
+      throws NotFoundException, InternalServerErrorException, BadRequestException, OAuthRequestException {
+    return service.getEndorsementsByTech(id, user);
+  }
+  
 }

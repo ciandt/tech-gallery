@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h3 class="modal-title">Pessoas que recomendaram...</h3>
+</div>
+<div id="div_image_recomendations" class="container">
+    <div class="col-xs-6">
+        <div ng-repeat="endorser in endorsers">
+            <div class="media-left media-middle">
+                <img class="media-object endorsers-image"
+                    src={{endorser.photo}} tooltip={{endorser.name}}>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">{{endorser.name}}</h4>
+            </div>
+        </div>
+    </div>
+</div>

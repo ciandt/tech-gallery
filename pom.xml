@@ -14,6 +14,7 @@
         <app.version>1</app.version>
         <appengine.version>1.9.25</appengine.version>
         <gcloud.plugin.version>0.9.58.v20150505</gcloud.plugin.version>
+        <jackson.databind-version>2.2.3</jackson.databind-version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
@@ -82,6 +83,13 @@
             <artifactId>google-oauth-client</artifactId>
             <version>1.18.0-rc</version>
         </dependency>
+
+        <!-- Jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.databind-version}</version>
+        </dependency>
         <!-- Test Dependencies -->
         <dependency>
             <groupId>junit</groupId>
@@ -139,6 +147,8 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                    <fork>true</fork>
+                    <executable>${JAVA_HOME}\bin\javac</executable>
                 </configuration>
             </plugin>
             <plugin>
@@ -146,7 +156,8 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
-                    <packagingExcludes>node/,node_modules/</packagingExcludes>
+                    <warSourceExcludes>node/**,node_modules/**</warSourceExcludes>
+                    <useCache>true</useCache>
                     <webXml>${project.build.directory}/generated-sources/appengine-endpoints/WEB-INF/web.xml</webXml>
                     <webResources>
                         <resource>

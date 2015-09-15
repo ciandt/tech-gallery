@@ -18,7 +18,8 @@ import com.google.api.server.spi.response.NotFoundException;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID})
+@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
+    Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class TechnologyEndpoint {
 
   private TechnologyService service = new TechnologyServiceImpl();
@@ -32,8 +33,8 @@ public class TechnologyEndpoint {
    * @throws BadRequestException
    */
   @ApiMethod(name = "addTechnology", path = "technology", httpMethod = "post")
-  public Response addTechnology(TechnologyResponse technology)
-      throws InternalServerErrorException, BadRequestException {
+  public Response addTechnology(TechnologyResponse technology) throws InternalServerErrorException,
+      BadRequestException {
     return service.addTechnology(technology);
   }
 
@@ -62,4 +63,3 @@ public class TechnologyEndpoint {
   }
 
 }
-
