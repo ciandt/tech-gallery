@@ -1,4 +1,4 @@
-(function(undefined){
+(function(window, undefined){
   'use strict';
 
   var clientId = '146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com';
@@ -19,6 +19,8 @@
   }
 
   function handleAuthResultTrue(authResult) {
+    var authorizeButton = document
+    .getElementById('authorize-button');
     if (authResult && !authResult.error) {
         afterLogin(authResult);
         afterLogin = '';
@@ -139,7 +141,7 @@
     return '';
   };
 
-  var jsUtils = {
+  window.jsUtils = {
     checkAuth: checkAuth,
     mockTechList: mockTechList,
     mockTechnology: mockTechnology,
@@ -148,5 +150,4 @@
     alerts: alerts
   };
 
-  return jsUtils;
-})();
+})(window);

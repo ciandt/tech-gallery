@@ -33,9 +33,11 @@ angular.module('techGallery').controller(
       if(data !== false){
         $scope.showLogin = false;
         $scope.showLoading = true;
+        $scope.$apply();
         getTechList();
       }else{
         $scope.showLogin = true;
+        $scope.showLoading = false;
         $scope.$apply();
       }
     }
