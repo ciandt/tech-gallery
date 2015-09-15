@@ -264,7 +264,6 @@ public class UserServiceTGImpl implements UserServiceTG {
         tgUser.setName(userResp.getName());
         Key<TechGalleryUser> key = userDAO.add(tgUser);
         tgUser.setId(key.getId());
-        //fillTGUserData((UserResponse) addUser(uResp), tgUser);
       }
     } catch (BadRequestException e) {
       // User not found on provider
