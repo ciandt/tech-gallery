@@ -1,75 +1,75 @@
 /* Tech Gallery css stylesheet */
 .technologydescription {
-	text-align: justify;
-	height: 80px;
-	width: 100%;
-	display: block;
+  text-align: justify;
+  height: 80px;
+  width: 100%;
+  display: block;
 }
 
 .loading{
-	display: block;
-	margin: 0 auto;
+  display: block;
+  margin: 0 auto;
 }
 
 .img-tech-view{
-	height: 355px !important;
-	width: 355px !important;
+  height: 355px;
+  width: 355px;
 }
 
 .thumbnail{
-	height: 380px;
+  height: 380px;
 }
 
 .spacingtop {
-	margin-top: 2%;
+  margin-top: 2%;
 }
 
 body, html {
-	background-color: #ddd !important;
+  background-color: #ddd;
 }
 
 .thumbnail-Image {
-	height: 200px !important;
-	width: 100%;
-	display: block;
+  height: 200px;
+  width: 100%;
+  display: block;
 }
 
 .login-Button {
-	width: 50%;
-	text-align: center;
-	margin: 0 auto;
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .modal-footer {
-	border-top: none !important;
+  border-top: none;
 }
 
 .modal-header {
-	border-bottom: none !important;
+  border-bottom: none;
 }
 
 .endorsed-image {
-	width: 64px;
-	height: 64px;
+  width: 64px;
+  height: 64px;
 }
 
 .endorsers-image {
-	width: 30px;
-	height: 30px;
-	float: left;
-	margin-left: 5px;
-	margin-right: 5px;
-	margin-bottom: 10px;
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
 }
 
 .endorse-input {
-	width: 30%;
-	float: left;
-	margin-right: 10%;
+  width: 30%;
+  float: left;
+  margin-right: 10%;
 }
 
 .endorse-alerts {
-	width: 50%;
-	text-align: center;
-	margin: 0 auto;
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
 }

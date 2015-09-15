@@ -1,0 +1,30 @@
+{
+  // Number of spaces to use for indentation
+  "indent" : 2,
+
+  //  Quotation mark consistency:
+  //    false : do nothing (default)
+  //    true : ensure whatever is used is consistent
+  //    "single" : require single quotes
+  //    "double" : require double quotes
+  "quotmark" : "single",
+
+  // {bool} Allow ES.next (ES6) syntax (ex: `const`), default: false
+  "esnext" : true,
+
+  // Web Browser (window, document, etc)
+  "browser" : true,
+
+  // Development/debugging (alert, confirm, etc)
+  "devel" : true,
+
+  // jQuery
+  "jquery" : true,
+
+  // Custom Globals
+  "globals" : {
+    "angular" : true,
+    "gapi" : true,
+    "jsUtils": true
+  }
+}
