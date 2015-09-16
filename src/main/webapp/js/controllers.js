@@ -193,6 +193,9 @@ angular.module('techGallery').controller(
           var fullResponse = response[i].endorsers;
           var endorsersFiltered = fullResponse.slice(0,5);
           response[i].endorsersFiltered = endorsersFiltered;
+          if(!response[i].photo) {
+        	  response[i].photo = "/images/default-user-image.jpg";
+          }
         }
         $scope.showEndorsementResponse = response;
         $scope.loadEndorsements = false;
