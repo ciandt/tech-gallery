@@ -170,6 +170,7 @@ angular.module('techGallery').controller(
             $scope.alert = alert;
           }
           $scope.endorsed = '';
+          callBackLoaded();
           $scope.$apply();
         });
       }
