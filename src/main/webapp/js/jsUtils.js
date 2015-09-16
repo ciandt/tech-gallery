@@ -1,14 +1,14 @@
-(function(undefined){
+(function(window, undefined){
   'use strict';
 
   var clientId = '146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com';
   var scopes = 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email';
   var afterLogin;
 
-  var checkAuth = function(successFunction){
+  var checkAuth = function(successFunction, immediate){
     afterLogin = successFunction;
-    auth(true, handleAuthResultTrue);
-  };
+    auth(immediate, handleAuthResultTrue);
+  }
 
   function auth(immediate, callBackFunction){
     gapi.auth.authorize({
@@ -19,18 +19,14 @@
   }
 
   function handleAuthResultTrue(authResult) {
-    var authorizeButton = document.getElementById('authorize-button');
+    var authorizeButton = document
+    .getElementById('authorize-button');
     if (authResult && !authResult.error) {
-      afterLogin(authResult);
-      afterLogin = '';
-    } else {
-      auth(false, handleAuthResultFalse);
+        afterLogin(authResult);
+        afterLogin = '';
+    }else{
+      return afterLogin(false);
     }
-  }
-
-  function handleAuthResultFalse(authResult){
-    afterLogin(authResult);
-    afterLogin = '';
   }
 
   var mockTechList = function(){
@@ -145,7 +141,7 @@
     return '';
   };
 
-  var jsUtils = {
+  window.jsUtils = {
     checkAuth: checkAuth,
     mockTechList: mockTechList,
     mockTechnology: mockTechnology,
@@ -154,5 +150,4 @@
     alerts: alerts
   };
 
-  return jsUtils;
-})();
+})(window);
