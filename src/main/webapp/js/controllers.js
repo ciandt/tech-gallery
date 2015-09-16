@@ -188,7 +188,7 @@ angular.module('techGallery').controller(
         id : idTech
       };
       gapi.client.rest.getEndorsementsByTech(req).execute(function(data) {
-        if(data.result && dara.result.endorsements){
+        if(data.result && data.result.endorsements){
           var response = data.result.endorsements;
           for(var i in response){
             var fullResponse = response[i].endorsers;
