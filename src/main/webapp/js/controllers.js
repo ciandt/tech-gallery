@@ -79,7 +79,6 @@ angular.module('techGallery').controller(
   'techDetailsController',
   function($scope, $timeout, $modal) {
     'use strict';
-
     $scope.idTechnology = jsUtils.getParameterByName('id');
     $scope.loadEndorsements = true;
 
@@ -134,6 +133,7 @@ angular.module('techGallery').controller(
 
         fillTechnology(data);
         showEndorsementsByTech();
+        $scope.disablePlusOne = false;
         $scope.$apply();
       });
     }
@@ -198,6 +198,7 @@ angular.module('techGallery').controller(
           }
           $scope.showEndorsementResponse = response;
         }
+        $scope.showEndorsementResponse = jsUtils.mockShowEndorsementResponse();
         $scope.loadEndorsements = false;
         $scope.$apply();
       });
@@ -248,6 +249,8 @@ angular.module('techGallery').controller(
     };
 
     $scope.addEndorse = function(endorsed, id) {
+      $scope.disablePlusOne = true;
+      $scope.processingEndorse = true;
       setClassElement(id);
       var completeEmail = endorsed.email;
       completeEmail = completeEmail.split('@');
@@ -259,6 +262,7 @@ angular.module('techGallery').controller(
         if(data.hasOwnProperty('error')){
           setClassElement(id);
         }
+        $scope.processingEndorse = false;
         callBackLoaded();
       });
     };
