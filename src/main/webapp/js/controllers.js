@@ -198,7 +198,6 @@ angular.module('techGallery').controller(
           }
           $scope.showEndorsementResponse = response;
         }
-        $scope.showEndorsementResponse = jsUtils.mockShowEndorsementResponse();
         $scope.loadEndorsements = false;
         $scope.$apply();
       });
