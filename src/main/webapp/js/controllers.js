@@ -188,13 +188,15 @@ angular.module('techGallery').controller(
         id : idTech
       };
       gapi.client.rest.getEndorsementsByTech(req).execute(function(data) {
-        var response = data.result.endorsements;
-        for(var i in response){
-          var fullResponse = response[i].endorsers;
-          var endorsersFiltered = fullResponse.slice(0,5);
-          response[i].endorsersFiltered = endorsersFiltered;
+        if(data.result && dara.result.endorsements){
+          var response = data.result.endorsements;
+          for(var i in response){
+            var fullResponse = response[i].endorsers;
+            var endorsersFiltered = fullResponse.slice(0,5);
+            response[i].endorsersFiltered = endorsersFiltered;
+          }
+          $scope.showEndorsementResponse = response;
         }
-        $scope.showEndorsementResponse = response;
         $scope.loadEndorsements = false;
         $scope.$apply();
       });
