@@ -79,7 +79,6 @@ angular.module('techGallery').controller(
   'techDetailsController',
   function($scope, $timeout, $modal) {
     'use strict';
-
     $scope.idTechnology = jsUtils.getParameterByName('id');
     $scope.loadEndorsements = true;
 
@@ -134,6 +133,7 @@ angular.module('techGallery').controller(
 
         fillTechnology(data);
         showEndorsementsByTech();
+        $scope.disablePlusOne = false;
         $scope.$apply();
       });
     }
@@ -170,6 +170,7 @@ angular.module('techGallery').controller(
             $scope.alert = alert;
           }
           $scope.endorsed = '';
+          callBackLoaded();
           $scope.$apply();
         });
       }
@@ -188,16 +189,19 @@ angular.module('techGallery').controller(
         id : idTech
       };
       gapi.client.rest.getEndorsementsByTech(req).execute(function(data) {
-        var response = data.result.endorsements;
-        for(var i in response){
-          var fullResponse = response[i].endorsers;
-          var endorsersFiltered = fullResponse.slice(0,5);
-          response[i].endorsersFiltered = endorsersFiltered;
+        if(data.result && data.result.endorsements){
+          var response = data.result.endorsements;
+          for(var i in response){
+            var fullResponse = response[i].endorsers;
+            var endorsersFiltered = fullResponse.slice(0,5);
+            response[i].endorsersFiltered = endorsersFiltered;
+          }
           if(!response[i].endorsed.photo) {
         	  response[i].endorsed.photo = "/images/default-user-image.jpg";
           }
         }
         $scope.showEndorsementResponse = response;
+        $scope.processingEndorse = false;
         $scope.loadEndorsements = false;
         $scope.$apply();
       });
@@ -248,6 +252,8 @@ angular.module('techGallery').controller(
     };
 
     $scope.addEndorse = function(endorsed, id) {
+      $scope.disablePlusOne = true;
+      $scope.processingEndorse = true;
       setClassElement(id);
       var completeEmail = endorsed.email;
       completeEmail = completeEmail.split('@');

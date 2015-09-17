@@ -85,7 +85,10 @@
       </div>
 
       <div class="row">
-
+        <div class="overLayer" ng-show="processingEndorse">
+          <img src="/images/loading.gif"
+          class="loading">
+        </div>
         <div class="spacingtop"
           ng-repeat="response in showEndorsementResponse track by $index">
           <div class="media col-xs-6">
@@ -95,7 +98,7 @@
             </div>
             <div class="media-body">
               <h4 class="media-heading">{{response.endorsed.name}}</h4>
-              <rating ng-model="response.endorsed.skill" max="5"
+              <rating ng-model="response.endorsedSkill" max="5"
                 readonly="true"></rating>
             </div>
           </div>
@@ -104,7 +107,7 @@
             <div class="col-xs-6">
               <button ng-show="showPlusOne(response.endorsed.email)"
                 type="button" id={{generateId($index)}}
-                style="float: left"
+                style="float: left" ng-disabled=disablePlusOne
                 ng-click="addEndorse(response.endorsed, generateId($index))"
                 ng-class="setClassPlusOne(response.endorsers)">+1</button>
               <div

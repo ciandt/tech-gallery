@@ -6,6 +6,13 @@
   display: block;
 }
 
+.overLayer{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+
 .loading{
   display: block;
   margin: 0 auto;

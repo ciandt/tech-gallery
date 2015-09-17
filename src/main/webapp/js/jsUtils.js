@@ -134,7 +134,7 @@
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
     var results = regex.exec(location.search);
 
-    if (results === null) {
+    if (results !== null) {
       return decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
 
