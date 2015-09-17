@@ -134,7 +134,6 @@ angular.module('techGallery').controller(
         fillTechnology(data);
         showEndorsementsByTech();
         $scope.disablePlusOne = false;
-        $scope.processingEndorse = false;
         $scope.$apply();
       });
     }
@@ -199,6 +198,7 @@ angular.module('techGallery').controller(
           }
           $scope.showEndorsementResponse = response;
         }
+        $scope.processingEndorse = false;
         $scope.loadEndorsements = false;
         $scope.$apply();
       });
