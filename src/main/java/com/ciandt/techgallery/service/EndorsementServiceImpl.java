@@ -311,7 +311,6 @@ public class EndorsementServiceImpl implements EndorsementService {
     List<EndorsementsGroupedByEndorsedTransient> grouped =
         groupEndorsementByEndorsed(endorsementsByTech, techId);
     Collections.sort(grouped, new EndorsementsGroupedByEndorsedTransient());
-    Collections.reverse(grouped);
     ShowEndorsementsResponse response = new ShowEndorsementsResponse();
     response.setEndorsements(grouped);
     return response;

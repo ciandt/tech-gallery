@@ -49,7 +49,7 @@ public class EndorsementsGroupedByEndorsedTransient extends Response
   public int compare(EndorsementsGroupedByEndorsedTransient o1,
       EndorsementsGroupedByEndorsedTransient o2) {
     if (o1.getEndorsers().size() != o2.getEndorsers().size()) {
-      return Integer.compare(o1.getEndorsers().size(), o2.getEndorsers().size());
+      return Integer.compare(o2.getEndorsers().size(), o1.getEndorsers().size());
     } else {
       return o1.getEndorsed().getName().compareTo(o2.getEndorsed().getName());
     }
