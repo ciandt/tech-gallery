@@ -32,6 +32,7 @@ import com.google.api.services.plus.Plus;
 import com.google.api.services.plus.model.Person;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+import com.googlecode.objectify.Key;
 
 public class UserServiceTGImpl implements UserServiceTG {
 
@@ -255,11 +256,14 @@ public class UserServiceTGImpl implements UserServiceTG {
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     TechGalleryUser tgUser = null;
     try {
-      UserResponse uResp = (UserResponse) getUserFromProvider(userLogin);
-      tgUser = getUserByNameAndEmail(uResp.getName(), uResp.getEmail());
+      UserResponse userResp = (UserResponse) getUserFromProvider(userLogin);
+      tgUser = getUserByNameAndEmail(userResp.getName(), userResp.getEmail());
       if (tgUser == null) {
         tgUser = new TechGalleryUser();
-        fillTGUserData((UserResponse) addUser(uResp), tgUser);
+        tgUser.setEmail(userResp.getEmail());
+        tgUser.setName(userResp.getName());
+        Key<TechGalleryUser> key = userDAO.add(tgUser);
+        tgUser.setId(key.getId());
       }
     } catch (BadRequestException e) {
       // User not found on provider
