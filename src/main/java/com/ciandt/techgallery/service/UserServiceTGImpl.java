@@ -1,5 +1,27 @@
 package com.ciandt.techgallery.service;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.api.services.plus.Plus;
+import com.google.api.services.plus.model.Person;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
+
+import com.googlecode.objectify.Key;
+
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.UserResponse;
+import com.ciandt.techgallery.service.model.UsersResponse;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -13,26 +35,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.UserResponse;
-import com.ciandt.techgallery.service.model.UsersResponse;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.api.services.plus.Plus;
-import com.google.api.services.plus.model.Person;
-import com.google.appengine.api.oauth.OAuthRequestException;
-import com.google.appengine.api.users.User;
-import com.googlecode.objectify.Key;
 
 public class UserServiceTGImpl implements UserServiceTG {
 
@@ -245,7 +247,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists, adds to
    * TG's datastore (if not there). Returns the user.
    * 
-   * @param userLogin
+   * @param userLogin userLogin
    * @return
    * @throws NotFoundException
    * @throws BadRequestException
@@ -257,7 +259,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     TechGalleryUser tgUser = null;
     try {
       UserResponse userResp = (UserResponse) getUserFromProvider(userLogin);
-      tgUser = getUserByNameAndEmail(userResp.getName(), userResp.getEmail());
+      tgUser = userDAO.findByEmail(userResp.getEmail());
       if (tgUser == null) {
         tgUser = new TechGalleryUser();
         tgUser.setEmail(userResp.getEmail());
