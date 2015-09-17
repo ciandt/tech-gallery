@@ -1,6 +1,7 @@
 package com.ciandt.techgallery.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -304,7 +305,7 @@ public class EndorsementServiceImpl implements EndorsementService {
   public Response getEndorsementsByTech(String techId, User user) throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     List<Endorsement> endorsementsByTech = endorsementDAO.findAllActivesByTechnology(techId);
     List<EndorsementsGroupedByEndorsedTransient> grouped = groupEndorsementByEndorsed(endorsementsByTech, techId);
-    
+//    Collections.sort(grouped);
     ShowEndorsementsResponse response = new ShowEndorsementsResponse();
     response.setEndorsements(grouped);
     return response;
