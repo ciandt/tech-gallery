@@ -4,6 +4,23 @@
   var clientId = '146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com';
   var scopes = 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email';
   var afterLogin;
+  var userEmail;
+  var userDomain;
+  
+  var getUserEmail = function(callBackFunction, authResult){
+    setTimeout(function(){
+      gapi.client.load('oauth2', 'v2', function() {
+        gapi.client.oauth2.userinfo.get().execute(function(resp) {
+          userEmail = resp.email;
+          if(callBackFunction){
+            callBackFunction(authResult);
+          }
+        })
+      });
+    },200);
+  }
+  
+  getUserEmail();
 
   var checkAuth = function(successFunction, immediate){
     afterLogin = successFunction;
@@ -22,10 +39,35 @@
     var authorizeButton = document
     .getElementById('authorize-button');
     if (authResult && !authResult.error) {
-        afterLogin(authResult);
-        afterLogin = '';
+      if(!userEmail){
+        getUserEmail(handleDomain, authResult)
+      }else{
+        handleDomain(authResult, verifyDomainGroup());
+      }
     }else{
       return afterLogin(false);
+    }
+  }
+  
+  var verifyDomainGroup = function(){
+    var domain = userEmail.split('@');
+    userDomain = domain[1];
+    if(userDomain == 'ciandt.com'){
+      return true;
+    }
+    return false;
+  }
+  
+  var handleDomain = function(authResult){
+    if(verifyDomainGroup()){
+      authResult.userEmail = userEmail;
+      afterLogin(authResult);
+      afterLogin = '';
+    }else{
+      var responseError = {error: true,
+          message: 'Seu domínio "' + userDomain + '" não é suportado nesta aplicação, favor logar com o domínio correto!'};
+      afterLogin(responseError);
+      afterLogin = '';
     }
   }
 

@@ -46,6 +46,7 @@
         </div>
     </div>
     <div class="login-Button">
+        <h3 ng-show="domainError">{{domainError}}</h3>
         <a ng-show="showLogin" href="#" ng-click="login()"
             class="btn btn-primary" role="button">Login</a>
     </div>

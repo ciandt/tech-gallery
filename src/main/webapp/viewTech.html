@@ -23,8 +23,9 @@
 <body ng-controller="techDetailsController">
 
   <div class="login-Button" ng-show="showLogin">
-    <h3>Para ter acesso ao conteúdo realize seu login através do
+    <h3 ng-show="!domainError">Para ter acesso ao conteúdo realize seu login através do
       botão abaixo...</h3>
+    <h3 ng-show="domainError">{{domainError}}</h3>
     <a href="#" ng-click="login()"
       class="btn btn-primary row spacingtop" role="button">Login</a>
   </div>

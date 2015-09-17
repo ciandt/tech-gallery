@@ -30,12 +30,16 @@ angular.module('techGallery').controller(
     }
 
     var successFunction = function(data) {
-      if(data !== false){
+      if(data !== false && !data.error){
         $scope.showLogin = false;
         $scope.showLoading = true;
+        $scope.domainError = undefined;
         $scope.$apply();
         getTechList();
       }else{
+        if(data.error){
+          $scope.domainError = data.message;
+        }
         $scope.showLogin = true;
         $scope.showLoading = false;
         $scope.$apply();
@@ -88,20 +92,20 @@ angular.module('techGallery').controller(
     var alerts = jsUtils.alerts;
 
     var successFunction = function(data) {
-      if(data!==false){
+      if(data!==false && !data.error){
         $scope.showContent = true;
+        $scope.showLogin = false;
+        $scope.domainError = undefined;
         var protocol = location.protocol + '//';
         var host = location.host;
         var complement = '/_ah/api/';
         var rootUrl = protocol + host + complement;
-        gapi.client.load('oauth2', 'v2', function() {
-          gapi.client.oauth2.userinfo.get().execute(function(resp) {
-            $scope.userEmail = resp.email;
-            $scope.$apply();
-          })
-        });
+        $scope.userEmail = data.userEmail;
         gapi.client.load('rest', 'v1', callBackLoaded, rootUrl);
       }else{
+        if(data.error){
+          $scope.domainError = data.message;
+        }
         $scope.showContent = false;
         $scope.showLogin = true;
         $scope.$apply();
