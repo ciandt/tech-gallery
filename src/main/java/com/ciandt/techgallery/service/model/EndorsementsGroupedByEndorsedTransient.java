@@ -1,22 +1,24 @@
 package com.ciandt.techgallery.service.model;
 
-import java.util.List;
-
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.sample.service.model.Response;
+
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * TechnologyResponse entity.
  * 
- * @author Daniel Eduardo 
+ * @author Daniel Eduardo
  *
  */
-public class EndorsementsGroupedByEndorsedTransient extends Response {
+public class EndorsementsGroupedByEndorsedTransient extends Response
+    implements Comparator<EndorsementsGroupedByEndorsedTransient> {
 
   TechGalleryUser endorsed;
-  
+
   Integer endorsedSkill;
-  
+
   List<TechGalleryUser> endorsers;
 
   public TechGalleryUser getEndorsed() {
@@ -42,5 +44,17 @@ public class EndorsementsGroupedByEndorsedTransient extends Response {
   public void setEndorsedSkill(Integer endorsedSkill) {
     this.endorsedSkill = endorsedSkill;
   }
-  
+
+  @Override
+  public int compare(EndorsementsGroupedByEndorsedTransient o1,
+      EndorsementsGroupedByEndorsedTransient o2) {
+    if (o1.getEndorsers().size() > o2.getEndorsers().size()) {
+      return 1;
+    } else if (o1.getEndorsers().size() < o2.getEndorsers().size()) {
+      return -1;
+    } else {
+      return o1.getEndorsed().getName().compareTo(o2.getEndorsed().getName());
+    }
+  }
+
 }
