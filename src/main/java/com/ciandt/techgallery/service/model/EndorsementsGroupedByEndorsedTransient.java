@@ -48,13 +48,10 @@ public class EndorsementsGroupedByEndorsedTransient extends Response
   @Override
   public int compare(EndorsementsGroupedByEndorsedTransient o1,
       EndorsementsGroupedByEndorsedTransient o2) {
-    if (o1.getEndorsers().size() > o2.getEndorsers().size()) {
-      return 1;
-    } else if (o1.getEndorsers().size() < o2.getEndorsers().size()) {
-      return -1;
+    if (o1.getEndorsers().size() != o2.getEndorsers().size()) {
+      return Integer.compare(o1.getEndorsers().size(), o2.getEndorsers().size());
     } else {
       return o1.getEndorsed().getName().compareTo(o2.getEndorsed().getName());
     }
   }
-
 }
