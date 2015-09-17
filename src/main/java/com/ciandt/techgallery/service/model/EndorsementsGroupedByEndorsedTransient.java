@@ -56,5 +56,4 @@ public class EndorsementsGroupedByEndorsedTransient extends Response
       return o1.getEndorsed().getName().compareTo(o2.getEndorsed().getName());
     }
   }
-
 }
