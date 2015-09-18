@@ -19,6 +19,20 @@ angular.module('techGallery').controller(
   function($scope, $location, $timeout) {
     'use strict';
 
+    $scope.domainError = false;
+    $scope.userLogged = false;
+    
+    $scope.indexPage = function(){
+      var indexPage = location.protocol;
+      indexPage += '//';
+      indexPage += location.hostname;
+      return indexPage;
+    }
+    
+    $scope.logoutRedirect = function(){
+      return jsUtils.logoutRedirect();
+    }
+    
     var executeAuth = function(immediate) {
       $timeout(function() {
         jsUtils.checkAuth(successFunction, immediate);
@@ -34,12 +48,14 @@ angular.module('techGallery').controller(
         $scope.showLogin = false;
         $scope.showLoading = true;
         $scope.domainError = undefined;
+        $scope.userLogged = true;
         $scope.$apply();
         getTechList();
       }else{
         if(data.error){
           $scope.domainError = data.message;
         }
+        $scope.userLogged = false;
         $scope.showLogin = true;
         $scope.showLoading = false;
         $scope.$apply();
@@ -88,6 +104,17 @@ angular.module('techGallery').controller(
 
     //Fill this property with the domain of your choice
     $scope.domain = '@ciandt.com';
+    
+    $scope.logoutRedirect = function(){
+      return jsUtils.logoutRedirect();
+    }
+    
+    $scope.indexPage = function(){
+      var indexPage = location.protocol;
+      indexPage += '//';
+      indexPage += location.hostname;
+      return indexPage;
+    }
 
     var alerts = jsUtils.alerts;
 
@@ -96,6 +123,7 @@ angular.module('techGallery').controller(
         $scope.showContent = true;
         $scope.showLogin = false;
         $scope.domainError = undefined;
+        $scope.userLogged = true;
         var protocol = location.protocol + '//';
         var host = location.host;
         var complement = '/_ah/api/';
@@ -106,6 +134,7 @@ angular.module('techGallery').controller(
         if(data.error){
           $scope.domainError = data.message;
         }
+        $scope.userLogged = false;
         $scope.showContent = false;
         $scope.showLogin = true;
         $scope.$apply();
@@ -199,9 +228,9 @@ angular.module('techGallery').controller(
             var fullResponse = response[i].endorsers;
             var endorsersFiltered = fullResponse.slice(0,5);
             response[i].endorsersFiltered = endorsersFiltered;
-          }
-          if(!response[i].endorsed.photo) {
-        	  response[i].endorsed.photo = "/images/default-user-image.jpg";
+            if(!response[i].endorsed.photo) {
+              response[i].endorsed.photo = "/images/default-user-image.jpg";
+            }
           }
         }
         $scope.showEndorsementResponse = response;

@@ -31,7 +31,8 @@
     gapi.auth.authorize({
       client_id : clientId,
       scope : scopes,
-      immediate : immediate
+      immediate : immediate,
+      cookie_policy: 'single_host_origin'
     }, callBackFunction);
   }
 
@@ -65,10 +66,20 @@
       afterLogin = '';
     }else{
       var responseError = {error: true,
-          message: 'Seu domínio "' + userDomain + '" não é suportado nesta aplicação, favor logar com o domínio correto!'};
+          message: 'Este conteúdo é restrito a usuários autorizados, favor logar com seu domínio CI&T'};
       afterLogin(responseError);
       afterLogin = '';
     }
+  }
+  
+  var logoutRedirect = function(){
+    var logoutRedirect = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue='
+    logoutRedirect += location.protocol;
+    logoutRedirect += '//';
+    logoutRedirect += location.hostname;
+    logoutRedirect += location.pathname;
+    logoutRedirect += location.search;
+    return logoutRedirect;
   }
 
   var mockTechList = function(){
@@ -189,7 +200,8 @@
     mockTechnology: mockTechnology,
     mockShowEndorsementResponse: mockShowEndorsementResponse,
     getParameterByName: getParameterByName,
-    alerts: alerts
+    alerts: alerts,
+    logoutRedirect: logoutRedirect
   };
 
 })(window);
