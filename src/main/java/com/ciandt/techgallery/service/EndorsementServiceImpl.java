@@ -26,18 +26,11 @@ import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
 import com.ciandt.techgallery.service.model.SkillResponse;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashMap;
 import java.util.List;
-import java.util.List;
 import java.util.Map;
-import java.util.Map;
-import java.util.logging.Logger;
 import java.util.logging.Logger;
 
 /**
