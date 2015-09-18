@@ -24,7 +24,7 @@
 }
 
 .thumbnail{
-  height: 380px;
+  min-height: 380px;
 }
 
 .spacingtop {
@@ -36,9 +36,11 @@ body, html {
 }
 
 .thumbnail-Image {
-  height: 200px !important;
-  width: 100%;
+  width: 200px;
   display: block !important;
+  max-height: 355px;
+  max-width: 355px;
+  margin: 0 auto;
 }
 
 .login-Button {
