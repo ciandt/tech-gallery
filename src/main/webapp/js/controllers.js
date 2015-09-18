@@ -341,8 +341,9 @@ angular.module('techGallery').controller(
           value : newValue
         };
         gapi.client.rest.addSkill(req).execute(function(data) {
-
-          console.log(data);
+          $scope.processingEndorse = true;
+          callBackLoaded();
+//          console.log(data);
         });
 
       }
