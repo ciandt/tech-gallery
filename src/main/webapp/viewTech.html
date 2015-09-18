@@ -70,8 +70,12 @@
           placeholder="(usuário)" aria-describedby="basic-addon2">
         <span class="input-group-addon" id="basic-addon2">{{domain}}</span>
       </div>
-      <a href="#" ng-click="endorse(true)" class="btn btn-primary"
-        role="button">Indicar</a>
+      <button ng-click="endorse(true)" class="btn btn-primary"
+        role="button">Indicar</button>
+    </div>
+    <div>
+      <img ng-show="processEndorse" src="/images/loading.gif"
+        class="loading">
     </div>
     <div class="endorse-alerts spacingtop">
       <alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
