@@ -4,6 +4,23 @@
   var clientId = '146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com';
   var scopes = 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email';
   var afterLogin;
+  var userEmail;
+  var userDomain;
+  
+  var getUserEmail = function(callBackFunction, authResult){
+    setTimeout(function(){
+      gapi.client.load('oauth2', 'v2', function() {
+        gapi.client.oauth2.userinfo.get().execute(function(resp) {
+          userEmail = resp.email;
+          if(callBackFunction){
+            callBackFunction(authResult);
+          }
+        })
+      });
+    },200);
+  }
+  
+  getUserEmail();
 
   var checkAuth = function(successFunction, immediate){
     afterLogin = successFunction;
@@ -14,7 +31,8 @@
     gapi.auth.authorize({
       client_id : clientId,
       scope : scopes,
-      immediate : immediate
+      immediate : immediate,
+      cookie_policy: 'single_host_origin'
     }, callBackFunction);
   }
 
@@ -22,11 +40,46 @@
     var authorizeButton = document
     .getElementById('authorize-button');
     if (authResult && !authResult.error) {
-        afterLogin(authResult);
-        afterLogin = '';
+      if(!userEmail){
+        getUserEmail(handleDomain, authResult)
+      }else{
+        handleDomain(authResult, verifyDomainGroup());
+      }
     }else{
       return afterLogin(false);
     }
+  }
+  
+  var verifyDomainGroup = function(){
+    var domain = userEmail.split('@');
+    userDomain = domain[1];
+    if(userDomain == 'ciandt.com'){
+      return true;
+    }
+    return false;
+  }
+  
+  var handleDomain = function(authResult){
+    if(verifyDomainGroup()){
+      authResult.userEmail = userEmail;
+      afterLogin(authResult);
+      afterLogin = '';
+    }else{
+      var responseError = {error: true,
+          message: 'Este conteúdo é restrito a usuários autorizados, favor logar com seu domínio CI&T'};
+      afterLogin(responseError);
+      afterLogin = '';
+    }
+  }
+  
+  var logoutRedirect = function(){
+    var logoutRedirect = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue='
+    logoutRedirect += location.protocol;
+    logoutRedirect += '//';
+    logoutRedirect += location.hostname;
+    logoutRedirect += location.pathname;
+    logoutRedirect += location.search;
+    return logoutRedirect;
   }
 
   var mockTechList = function(){
@@ -147,7 +200,8 @@
     mockTechnology: mockTechnology,
     mockShowEndorsementResponse: mockShowEndorsementResponse,
     getParameterByName: getParameterByName,
-    alerts: alerts
+    alerts: alerts,
+    logoutRedirect: logoutRedirect
   };
 
 })(window);

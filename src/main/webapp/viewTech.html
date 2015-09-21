@@ -22,11 +22,28 @@
 </head>
 <body ng-controller="techDetailsController">
 
+  <nav class="navbar navbar-fixed-top techGalleryFixedBar">
+    <div class="container">
+      <div class="navbar-header alignBar">
+        <a class="navbar-brand" href={{indexPage()}}>
+          <img class="logoBar" src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png">
+          <h3 class="headerBar">Tech Gallery</h3>
+        </a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse rightSideBar">
+        <div class="navbar-form navbar-right">
+          <a ng-show="showLogin && !domainError" href="#" ng-click="login()" class="whiteText">Login <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
+          <a ng-show="domainError || userLogged" href={{logoutRedirect()}} class="whiteText">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="page-header"></div>
+
   <div class="login-Button" ng-show="showLogin">
-    <h3>Para ter acesso ao conteúdo realize seu login através do
-      botão abaixo...</h3>
-    <a href="#" ng-click="login()"
-      class="btn btn-primary row spacingtop" role="button">Login</a>
+    <h3 ng-show="!domainError">Para ter acesso ao conteúdo realize seu login...</h3>
+    <h3 ng-show="domainError">{{domainError}}</h3>
   </div>
 
   <div ng-show="showContent" class="page-header">

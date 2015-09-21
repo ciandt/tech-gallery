@@ -6,6 +6,35 @@
   display: block;
 }
 
+.techGalleryFixedBar{
+	background-color:#FF6666;
+	opacity:0.8
+}
+
+.alignBar{
+	margin-top:-20px
+}
+
+.logoBar{
+	width:30px;
+	float:left;
+	margin-top:15px;
+	margin-right:10px	
+}
+
+.headerBar{
+	float:right;
+	color:white
+}
+
+.rightSideBar{
+	margin-top:8px
+}
+
+.whiteText{
+	color:white
+}
+
 .overLayer{
 	position: absolute;
     width: 100%;
@@ -24,7 +53,7 @@
 }
 
 .thumbnail{
-  height: 380px;
+  min-height: 380px;
 }
 
 .spacingtop {
@@ -36,9 +65,11 @@ body, html {
 }
 
 .thumbnail-Image {
-  height: 200px !important;
-  width: 100%;
+  width: 200px;
   display: block !important;
+  max-height: 355px;
+  max-width: 355px;
+  margin: 0 auto;
 }
 
 .login-Button {
