@@ -24,6 +24,8 @@ import com.ciandt.techgallery.service.model.EndorsementsResponse;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
 import com.ciandt.techgallery.service.model.SkillResponse;
+import com.ciandt.techgallery.utils.i18n.I18n;
+
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -40,7 +42,8 @@ import com.googlecode.objectify.Ref;
 public class EndorsementServiceImpl implements EndorsementService {
 
   private static final Logger log = Logger.getLogger(EndorsementServiceImpl.class.getName());
-
+  private static final I18n i18n = I18n.getInstance();
+  
  
   /** technology dao for getting technologies. */
   TechnologyDAO techDAO = new TechnologyDAOImpl();
@@ -80,19 +83,19 @@ public class EndorsementServiceImpl implements EndorsementService {
 
     // User from endpoint (endorser) can't be null
     if (user == null) {
-      throw new OAuthRequestException("OAuth error, null user reference!");
+      throw new OAuthRequestException(i18n.t("OAuth error, null user reference!"));
     } else {
       googleId = user.getUserId();
     }
 
     // TechGalleryUser can't be null and must exists on datastore
     if (googleId == null || googleId.equals("")) {
-      throw new NotFoundException("Current user was not found!");
+      throw new NotFoundException(i18n.t("Current user was not found!"));
     } else {
       // get the TechGalleryUser from datastore
       tgEndorserUser = userDAO.findByGoogleId(googleId);
       if (tgEndorserUser == null) {
-        throw new BadRequestException("Endorser user do not exists on datastore!");
+        throw new BadRequestException(i18n.t("Endorser user do not exists on datastore!"));
       }
       tgEndorserUser.setGoogleId(googleId);
     }
@@ -100,34 +103,34 @@ public class EndorsementServiceImpl implements EndorsementService {
     // endorsed email can't be null.
     endorsedEmail = endorsement.getEndorsed();
     if (endorsedEmail == null || endorsedEmail.equals("")) {
-      throw new BadRequestException("Endorsed email was not especified!");
+      throw new BadRequestException(i18n.t("Endorsed email was not especified!"));
     } else {
       // get user from PEOPLE
       tgEndorsedUser = userService.getUserSyncedWithProvider(endorsedEmail);
       if (tgEndorsedUser == null) {
-        throw new BadRequestException("Endorsed email was not found on PEOPLE!");
+        throw new BadRequestException(i18n.t("Endorsed email was not found on PEOPLE!"));
       }
     }
 
     // technology id can't be null and must exists on datastore
     technologyId = endorsement.getTechnology();
     if (technologyId == null || technologyId.equals("")) {
-      throw new BadRequestException("Technology was not especified!");
+      throw new BadRequestException(i18n.t("Technology was not especified!"));
     } else {
       technology = techDAO.findById(technologyId);
       if (technology == null) {
-        throw new BadRequestException("Technology do not exists!");
+        throw new BadRequestException(i18n.t("Technology do not exists!"));
       }
     }
 
     // final checks and persist
     // user cannot endorse itself
     if (tgEndorserUser.getId() == tgEndorsedUser.getId()) {
-      throw new BadRequestException("You cannot endorse yourself!");
+      throw new BadRequestException(i18n.t("You cannot endorse yourself!"));
     }
     // user cannot endorse the same people twice
     if (endorsementDAO.findActivesByUsers(tgEndorserUser, tgEndorsedUser, technology).size() > 0) {
-      throw new BadRequestException("You already endorsed this user for this technology");
+      throw new BadRequestException(i18n.t("You already endorsed this user for this technology"));
     }
     // create endorsement and save it
     Endorsement entity = new Endorsement();
@@ -169,19 +172,19 @@ public class EndorsementServiceImpl implements EndorsementService {
 
     // User from endpoint (endorser) can't be null
     if (user == null) {
-      throw new OAuthRequestException("OAuth error, null user reference!");
+      throw new OAuthRequestException(i18n.t("OAuth error, null user reference!"));
     } else {
       googleId = user.getUserId();
     }
 
     // TechGalleryUser can't be null and must exists on datastore
     if (googleId == null || googleId.equals("")) {
-      throw new NotFoundException("Current user was not found!");
+      throw new NotFoundException(i18n.t("Current user was not found!"));
     } else {
       // get the TechGalleryUser from datastore
       tgEndorserUser = userDAO.findByGoogleId(googleId);
       if (tgEndorserUser == null) {
-        throw new BadRequestException("Endorser user do not exists on datastore!");
+        throw new BadRequestException(i18n.t("Endorser user do not exists on datastore!"));
       }
       tgEndorserUser.setGoogleId(googleId);
     }
@@ -189,30 +192,30 @@ public class EndorsementServiceImpl implements EndorsementService {
     // endorsed email can't be null.
     endorsedEmail = endorsement.getEndorsed();
     if (endorsedEmail == null || endorsedEmail.equals("")) {
-      throw new BadRequestException("Endorsed email was not especified!");
+      throw new BadRequestException(i18n.t("Endorsed email was not especified!"));
     } else {
       // get user from PEOPLE
       tgEndorsedUser = userService.getUserSyncedWithProvider(endorsedEmail);
       if (tgEndorsedUser == null) {
-        throw new BadRequestException("Endorsed email was not found on PEOPLE!");
+        throw new BadRequestException(i18n.t("Endorsed email was not found on PEOPLE!"));
       }
     }
 
     // technology id can't be null and must exists on datastore
     technologyId = endorsement.getTechnology();
     if (technologyId == null || technologyId.equals("")) {
-      throw new BadRequestException("Technology was not especified!");
+      throw new BadRequestException(i18n.t("Technology was not especified!"));
     } else {
       technology = techDAO.findById(technologyId);
       if (technology == null) {
-        throw new BadRequestException("Technology do not exists!");
+        throw new BadRequestException(i18n.t("Technology do not exists!"));
       }
     }
 
     // final checks and persist
     // user cannot endorse itself
     if (tgEndorserUser.getId() == tgEndorsedUser.getId()) {
-      throw new BadRequestException("You cannot endorse yourself!");
+      throw new BadRequestException(i18n.t("You cannot endorse yourself!"));
     }
 
     // should exist only one active endorsement per endorser/endorsed/technology. the others are
@@ -227,7 +230,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       return getEndorsement(endorsements.get(0).getId());
     } else if (endorsements.size() > 1) {
       throw new BadRequestException(
-          "More than one active endorserment for the same endorser/endorsed/technology!");
+          i18n.t("More than one active endorserment for the same endorser/endorsed/technology!"));
     }
 
     // create endorsement and save it
@@ -250,7 +253,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     List<Endorsement> endrsEntities = endorsementDAO.findAll();
     // if list is null, return a not found exception
     if (endrsEntities == null) {
-      throw new NotFoundException("No endorsement was found.");
+      throw new NotFoundException(i18n.t("No endorsement was found."));
     } else {
       EndorsementsResponse response = new EndorsementsResponse();
       List<EndorsementEntityResponse> internList = new ArrayList<EndorsementEntityResponse>();
@@ -279,7 +282,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     Endorsement endorseEntity = endorsementDAO.findById(id);
     // if technology is null, return a not found exception
     if (endorseEntity == null) {
-      throw new NotFoundException("No endorsement was found.");
+      throw new NotFoundException(i18n.t("No endorsement was found."));
     } else {
       EndorsementEntityResponse response = new EndorsementEntityResponse();
       response.setId(endorseEntity.getId());
