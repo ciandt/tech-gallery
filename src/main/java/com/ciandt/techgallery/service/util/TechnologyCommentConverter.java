@@ -24,6 +24,7 @@ public class TechnologyCommentConverter {
     commentTO.setComment(entity.getComment());
     commentTO.setTechnologyId(entity.getTechnology().get().getId());
     commentTO.setCreation(entity.getTimestamp());
+    commentTO.setUser(entity.getAuthor().get());
 
     return commentTO;
   }

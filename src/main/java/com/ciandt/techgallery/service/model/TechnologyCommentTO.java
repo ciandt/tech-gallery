@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+
 import java.util.Date;
 
 /**
@@ -14,6 +16,15 @@ public class TechnologyCommentTO implements Response {
   private String comment;
   private Date creation;
   private String technologyId;
+  private TechGalleryUser user;
+
+  public TechGalleryUser getUser() {
+    return user;
+  }
+
+  public void setUser(TechGalleryUser user) {
+    this.user = user;
+  }
 
   public Long getId() {
     return id;

@@ -365,6 +365,15 @@ angular.module('techGallery').controller(
         return null;
       }
     }
+    
+    /**
+     * Begin of show comments features
+     */
+    $scope.techComments=jsUtils.mockTechComment();
+//TODOgapi.client.rest.addSkill(req).execute(function(data) {
+//    $scope.processingEndorse = true;
+//    callBackLoaded();
+//  });
   }
 );
 

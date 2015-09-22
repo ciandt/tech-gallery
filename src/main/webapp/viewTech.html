@@ -138,8 +138,12 @@
             </div>
           </div>
 
-		  <div id="div_comments" class="container">
+		  <div id="div_show_comments" class="container">
 		  	<div class="col-xs-6">
+		  		<div ng-repeat="comment in techComments track by $index">
+		  			<h3>{{comment.user.name}}</h3><h5> em </h5><h4>{{comment.creation}}</h4><h5> disse:</h5>
+		  			<h5>{{comment.comment}}</h5>
+		  		</div>
 		  	</div>
 		  </div>
         </div>
