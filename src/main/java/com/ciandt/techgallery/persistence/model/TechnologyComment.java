@@ -34,7 +34,7 @@ public class TechnologyComment extends BaseEntity<Long> {
 
   @Unindex
   @Load
-  private TechGalleryUser techGalleryUser;
+  private TechGalleryUser author;
 
   @Index
   private Date timestamp;
@@ -45,12 +45,12 @@ public class TechnologyComment extends BaseEntity<Long> {
   /*
    * Constructors -----------------------------------------
    */
-  public TechnologyComment(String comment, Ref<Technology> technologies,
-      TechGalleryUser techGalleryUser, Date timestamp, Boolean active) {
+  public TechnologyComment(String comment, Ref<Technology> technologies, TechGalleryUser author,
+      Date timestamp, Boolean active) {
     super();
     setComment(comment);
     setTechnologies(technologies);
-    setTechGalleryUser(techGalleryUser);
+    setAuthor(author);
     setTimestamp(timestamp);
     setActive(active);
   }
@@ -84,12 +84,12 @@ public class TechnologyComment extends BaseEntity<Long> {
     this.technologies = technologies;
   }
 
-  public TechGalleryUser getTechGalleryUser() {
-    return techGalleryUser;
+  public TechGalleryUser getAuthor() {
+    return author;
   }
 
-  public void setTechGalleryUser(TechGalleryUser techGalleryUser) {
-    this.techGalleryUser = techGalleryUser;
+  public void setAuthor(TechGalleryUser author) {
+    this.author = author;
   }
 
   public Date getTimestamp() {
