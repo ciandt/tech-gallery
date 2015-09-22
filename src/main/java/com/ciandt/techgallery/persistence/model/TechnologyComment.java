@@ -43,7 +43,7 @@ public class TechnologyComment extends BaseEntity<Long> {
   private Boolean active;
 
   /*
-   * Constructors ----------------------------------
+   * Constructors -----------------------------------------
    */
   public TechnologyComment(String comment, Ref<Technology> technologies,
       Ref<TechGalleryUser> techGalleryUsers, Date creation, Boolean active) {
