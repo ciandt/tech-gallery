@@ -3,6 +3,8 @@ package com.ciandt.techgallery.persistence.dao;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 
+import java.util.List;
+
 /**
  * Interface of TechnologyComment
  *
@@ -11,7 +13,5 @@ import com.ciandt.techgallery.persistence.model.TechnologyComment;
  *
  */
 public interface TechnologyCommentDAO extends GenericDAO<TechnologyComment, Long> {
-
-  TechnologyComment findAllActiviesByTechnology(Technology technology);
-
+  List<TechnologyComment> findAllActiviesByTechnology(Technology technology);
 }
