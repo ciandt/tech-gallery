@@ -34,10 +34,10 @@ public class TechnologyComment extends BaseEntity<Long> {
 
   @Unindex
   @Load
-  private Ref<TechGalleryUser> techGalleryUsers;
+  private TechGalleryUser techGalleryUser;
 
   @Index
-  private Date creation;
+  private Date timestamp;
 
   @Index
   private Boolean active;
@@ -46,12 +46,12 @@ public class TechnologyComment extends BaseEntity<Long> {
    * Constructors -----------------------------------------
    */
   public TechnologyComment(String comment, Ref<Technology> technologies,
-      Ref<TechGalleryUser> techGalleryUsers, Date creation, Boolean active) {
+      TechGalleryUser techGalleryUser, Date timestamp, Boolean active) {
     super();
     setComment(comment);
     setTechnologies(technologies);
-    setTechGalleryUsers(techGalleryUsers);
-    setCreation(creation);
+    setTechGalleryUser(techGalleryUser);
+    setTimestamp(timestamp);
     setActive(active);
   }
 
@@ -84,20 +84,20 @@ public class TechnologyComment extends BaseEntity<Long> {
     this.technologies = technologies;
   }
 
-  public Ref<TechGalleryUser> getTechGalleryUsers() {
-    return techGalleryUsers;
+  public TechGalleryUser getTechGalleryUser() {
+    return techGalleryUser;
   }
 
-  public void setTechGalleryUsers(Ref<TechGalleryUser> techGalleryUsers) {
-    this.techGalleryUsers = techGalleryUsers;
+  public void setTechGalleryUser(TechGalleryUser techGalleryUser) {
+    this.techGalleryUser = techGalleryUser;
   }
 
-  public Date getCreation() {
-    return creation;
+  public Date getTimestamp() {
+    return timestamp;
   }
 
-  public void setCreation(Date creation) {
-    this.creation = creation;
+  public void setTimestamp(Date timestamp) {
+    this.timestamp = timestamp;
   }
 
   public Boolean getActive() {
