@@ -367,13 +367,38 @@ angular.module('techGallery').controller(
     }
     
     /**
+     * Begin of create comments features
+     */
+    $scope.clearComment = function(){
+    	$scope.comment = '';
+    }
+    
+    $scope.addComment = function(){
+    	if($scope.comment && $scope.comment.length <= 500){
+    		//Call API to add a comment
+    		var req = {
+    				technologyId : $scope.idTechnology,
+    				comment : $scope.comment
+    		};
+    		gapi.client.rest.addComment(req).execute(function(data) {
+    			$scope.processingComment = true;
+    			//TODO TECG-24 Call API to show comments and put $scope.processingComment = true;
+    			$scope.processingComment = false;
+    			$scope.comment = '';
+    		});
+    	}
+    }
+    
+    /**
      * Begin of show comments features
      */
     $scope.techComments=jsUtils.mockTechComment();
-//TODOgapi.client.rest.addSkill(req).execute(function(data) {
-//    $scope.processingEndorse = true;
-//    callBackLoaded();
-//  });
+//    function loadComments() {
+//    	ver rec = {technologyId: $scope.idTechnology};
+//    	gapi.client.rest.getCommentsByTech(rec).execute(function(data){
+//    		$scope.techComments = data;
+//    	});
+//    }
   }
 );
 
