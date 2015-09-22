@@ -7,6 +7,8 @@ import com.ciandt.techgallery.ofy.OfyService;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 
+import java.util.List;
+
 /**
  * Class that implements DAO of TechnologyComment
  *
@@ -18,11 +20,11 @@ public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, 
     implements TechnologyCommentDAO {
 
   @Override
-  public TechnologyComment findAllActiviesByTechnology(Technology technology) {
+  public List<TechnologyComment> findAllActiviesByTechnology(Technology technology) {
     Objectify objectify = OfyService.ofy();
-    TechnologyComment entity = objectify.load().type(TechnologyComment.class)
-        .filter("technology", Ref.create(technology)).filter("active", Boolean.TRUE).first().now();
+    List<TechnologyComment> entities = objectify.load().type(TechnologyComment.class)
+        .filter("technology", Ref.create(technology)).filter("active", Boolean.TRUE).list();
 
-    return entity; 
+    return entities;
   }
 }
