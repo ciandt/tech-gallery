@@ -15,6 +15,7 @@ public class I18n {
   
   public String t(String string) {
     Locale locale = new Locale(language, country);
+    ResourceBundle.clearCache();
     ResourceBundle translation = ResourceBundle.getBundle("i18n/Tech_Gallery", locale);
     return translation.getString(string);
   }
