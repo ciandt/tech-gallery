@@ -1,19 +1,19 @@
 package com.ciandt.techgallery.persistence.model;
 
-import java.util.Date;
-
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
 
+import java.util.Date;
+
 /**
  * Entity of Comments
  *
  * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
  * @since 22/09/2015
- *
+ * 
  */
 @Entity
 public class TechnologyComment extends BaseEntity<Long> {
@@ -44,6 +44,10 @@ public class TechnologyComment extends BaseEntity<Long> {
   /*
    * Constructors -----------------------------------------
    */
+  public TechnologyComment() {
+
+  }
+
   public TechnologyComment(String comment, Technology technology, TechGalleryUser author,
       Date timestamp, Boolean active) {
     super();
