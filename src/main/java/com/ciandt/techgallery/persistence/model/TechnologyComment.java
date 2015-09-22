@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.persistence.model;
 
+import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -29,11 +30,11 @@ public class TechnologyComment extends BaseEntity<Long> {
 
   @Index
   @Load
-  private Technology technology;
+  private Ref<Technology> technology;
 
   @Unindex
   @Load
-  private TechGalleryUser author;
+  private Ref<TechGalleryUser> author;
 
   @Index
   private Date timestamp;
@@ -52,8 +53,8 @@ public class TechnologyComment extends BaseEntity<Long> {
       Date timestamp, Boolean active) {
     super();
     setComment(comment);
-    setTechnology(technology);
-    setAuthor(author);
+    setTechnology(Ref.create(technology));
+    setAuthor(Ref.create(author));
     setTimestamp(timestamp);
     setActive(active);
   }
@@ -79,19 +80,19 @@ public class TechnologyComment extends BaseEntity<Long> {
     this.comment = comment;
   }
 
-  public Technology getTechnology() {
+  public Ref<Technology> getTechnology() {
     return technology;
   }
 
-  public void setTechnology(Technology technology) {
+  public void setTechnology(Ref<Technology> technology) {
     this.technology = technology;
   }
 
-  public TechGalleryUser getAuthor() {
+  public Ref<TechGalleryUser> getAuthor() {
     return author;
   }
 
-  public void setAuthor(TechGalleryUser author) {
+  public void setAuthor(Ref<TechGalleryUser> author) {
     this.author = author;
   }
 

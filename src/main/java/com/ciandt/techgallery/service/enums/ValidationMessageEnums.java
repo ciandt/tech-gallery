@@ -9,13 +9,18 @@ package com.ciandt.techgallery.service.enums;
 public enum ValidationMessageEnums {
 
   // Message for skills
-  SKILL_CANNOT_BLANK("Skill cannot be null."), SKILL_RANGE("Skill's value must be between 1 and 5"),
+  SKILL_CANNOT_BLANK("Skill cannot be null."),
+  SKILL_RANGE("Skill's value must be between 1 and 5"),
   // Message for technologies
-  TECHNOLOGY_ID_CANNOT_BLANK("Technology or technology's id cannot be null or blank."), TECHNOLOGY_NOT_EXIST(
-      "Technology doesn't exist."),
+  TECHNOLOGY_ID_CANNOT_BLANK("Technology or technology's id cannot be null or blank."),
+  TECHNOLOGY_NOT_EXIST("Technology doesn't exist."),
   // Message for users
-  USER_CANNOT_BLANK("User or user's id cannot be null or blank."), USER_NOT_EXIST(
-      "User doesn't exist."), USER_GOOGLE_ENDPOINT_NULL("A user must be sent to endpoints.");
+  USER_CANNOT_BLANK("User or user's id cannot be null or blank."),
+  USER_NOT_EXIST("User doesn't exist."),
+  USER_GOOGLE_ENDPOINT_NULL("A user must be sent to endpoints."), 
+  // Message for Comments
+  COMMENT_CANNOT_BLANK("Comment cannot be null or blank."),
+  COMMENT_MUST_BE_LESSER("Comment must have less than 500 characters.");
 
   private String message;
 

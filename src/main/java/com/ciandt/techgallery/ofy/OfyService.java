@@ -1,20 +1,22 @@
 package com.ciandt.techgallery.ofy;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyFactory;
+import com.googlecode.objectify.ObjectifyService;
 
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.sample.persistence.model.Card;
 import com.ciandt.techgallery.sample.persistence.model.RecommendationSample;
 import com.ciandt.techgallery.sample.persistence.model.Sample;
 import com.ciandt.techgallery.sample.persistence.model.TechnologySample;
 import com.ciandt.techgallery.sample.persistence.model.UserGroup;
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyFactory;
-import com.googlecode.objectify.ObjectifyService;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 /**
  * Service class for Objectify settings.
@@ -37,6 +39,7 @@ public class OfyService implements ServletContextListener {
     ObjectifyService.register(TechnologySample.class);
     ObjectifyService.register(RecommendationSample.class);
     ObjectifyService.register(Sample.class);
+    ObjectifyService.register(TechnologyComment.class);
   }
 
   /**
