@@ -18,11 +18,11 @@ public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, 
     implements TechnologyCommentDAO {
 
   @Override
-  public TechnologyComment findByTechnology(Technology technology) {
+  public TechnologyComment findAllActiviesByTechnology(Technology technology) {
     Objectify objectify = OfyService.ofy();
     TechnologyComment entity = objectify.load().type(TechnologyComment.class)
         .filter("technology", Ref.create(technology)).filter("active", Boolean.TRUE).first().now();
 
-    return entity;
+    return entity; 
   }
 }

@@ -12,6 +12,6 @@ import com.ciandt.techgallery.persistence.model.TechnologyComment;
  */
 public interface TechnologyCommentDAO extends GenericDAO<TechnologyComment, Long> {
 
-  TechnologyComment findByTechnology(Technology technology);
+  TechnologyComment findAllActiviesByTechnology(Technology technology);
 
 }
