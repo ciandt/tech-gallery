@@ -89,7 +89,7 @@
 	      comment : descr,
 	      creation : '01/01/2015',
 	      technologyId : 'localtest',
-	      user : {name : 'Thulio'}
+	      user : {name : 'Thulio', photo: 'http://f.i.uol.com.br/fotografia/2014/07/04/414885-400x600-1.jpeg'}
 	    }, {
 	      id : 2,
 	      comment : descr,
@@ -241,10 +241,10 @@
     mockTechList: mockTechList,
     mockTechnology: mockTechnology,
     mockShowEndorsementResponse: mockShowEndorsementResponse,
+    mockTechComment: mockTechComment,
     getParameterByName: getParameterByName,
     alerts: alerts,
-    logoutRedirect: logoutRedirect,
-    mockTechComment: mockTechComment
+    logoutRedirect: logoutRedirect
   };
 
 })(window);
