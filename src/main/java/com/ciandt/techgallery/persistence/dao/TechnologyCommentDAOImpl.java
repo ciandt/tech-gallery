@@ -1,5 +1,10 @@
 package com.ciandt.techgallery.persistence.dao;
 
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.Ref;
+
+import com.ciandt.techgallery.ofy.OfyService;
+import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 
 /**
@@ -12,4 +17,12 @@ import com.ciandt.techgallery.persistence.model.TechnologyComment;
 public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, Long>
     implements TechnologyCommentDAO {
 
+  @Override
+  public TechnologyComment findAllActiviesByTechnology(Technology technology) {
+    Objectify objectify = OfyService.ofy();
+    TechnologyComment entity = objectify.load().type(TechnologyComment.class)
+        .filter("technology", Ref.create(technology)).filter("active", Boolean.TRUE).first().now();
+
+    return entity; 
+  }
 }
