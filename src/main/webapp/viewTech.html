@@ -141,6 +141,23 @@
         </div>
       </div>
     </div>
+    
+    
+    <div id="add_comments" class="container">
+    	<div>
+	    	<h3>Comentários</h3>
+	    	<div id="comment_area" class="col-md-9 text-right">
+		    	<textarea id="txta_comment" ng-model="comment" class="form-control textarea" maxlength="500"></textarea>
+		    	<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearComment()">Limpar</button>
+		    	<button id="btn_add_comment" type="button" class="btn btn-primary" ng-click="addComment()">Comentar</button>
+	    	</div>
+    	</div>
+    </div>
+    <div id="show_comments">
+	    <div class="overLayer" ng-show="processingComment">
+	      <img src="/images/loading.gif" class="loading">
+	    </div>
+    </div>
 
   </div>
 </body>

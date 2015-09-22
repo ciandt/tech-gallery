@@ -365,6 +365,27 @@ angular.module('techGallery').controller(
         return null;
       }
     }
+    
+    //Comment start
+    $scope.clearComment = function(){
+    	$scope.comment = '';
+    }
+    
+    $scope.addComment = function(){
+    	if($scope.comment && $scope.comment.length <= 500){
+    		//Call API to add a comment
+    		var req = {
+    				technologyId : $scope.idTechnology,
+    				comment : $scope.comment
+    		};
+    		gapi.client.rest.addComment(req).execute(function(data) {
+    			$scope.processingComment = true;
+    			//TODO TECG-24 Call API to show comments and put $scope.processingComment = true;
+    			$scope.processingComment = false;
+    			$scope.comment = '';
+    		});
+    	}
+    }
   }
 );
 
