@@ -56,14 +56,14 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
   private TechnologyComment addNewComment(TechnologyCommentTO comment, TechGalleryUser techUser,
       Technology technology) {
-    log.info("Adding new skill...");
+    log.info("Adding new Comment...");
 
     TechnologyComment newComment =
         new TechnologyComment(comment.getComment(), technology, techUser, new Date(), Boolean.TRUE);
     Key<TechnologyComment> newCommentKey = technologyCommentDAO.add(newComment);
     newComment.setId(newCommentKey.getId());
 
-    log.info("New skill added: " + newComment.getId());
+    log.info("New Comment added: " + newComment.getId());
 
     return newComment;
   }
