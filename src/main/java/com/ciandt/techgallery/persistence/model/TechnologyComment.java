@@ -13,7 +13,7 @@ import com.googlecode.objectify.annotation.Unindex;
  * Entity of Comments
  *
  * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
- * @since 22 sept. of 2015
+ * @since 22/09/2015
  *
  */
 @Entity
