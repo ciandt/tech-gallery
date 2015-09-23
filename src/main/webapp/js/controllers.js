@@ -394,8 +394,8 @@ angular.module('techGallery').controller(
      */
 //    $scope.techComments=jsUtils.mockTechComment();
     function loadComments() {
-    	ver rec = {technologyId: $scope.idTechnology};
-    	gapi.client.rest.getCommentsByTech(rec).execute(function(data){
+    	var req = {technologyId: $scope.idTechnology};
+    	gapi.client.rest.getCommentsByTech(req).execute(function(data){
     		$scope.techComments = data;
     	});
     }
