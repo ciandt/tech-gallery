@@ -58,27 +58,28 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     return ret;
   }
-  
+
   @Override
-  public Response getCommentsByTech(String techId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
-    
+  public Response getCommentsByTech(String techId, User user) throws InternalServerErrorException,
+      BadRequestException, NotFoundException, OAuthRequestException {
+
     validateUser(user);
     validateTechnology(techId);
-    
+
     Technology technology = technologyDAO.findById(techId);
-    List<TechnologyComment> commentsByTech = technologyCommentDAO.findAllActiviesByTechnology(technology);
+    List<TechnologyComment> commentsByTech =
+        technologyCommentDAO.findAllActivesByTechnology(technology);
     TechnologyCommentsTO response = new TechnologyCommentsTO();
     response.setComments(TechnologyCommentConverter.fromEntityToTransient(commentsByTech));
     return response;
   }
-  
+
   @Override
-  public Response deleteComment(Long commentId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
-   
+  public Response deleteComment(Long commentId, User user) throws InternalServerErrorException,
+      BadRequestException, NotFoundException, OAuthRequestException {
+
     validateDeletion(commentId, user);
-    
+
     TechnologyComment comment = technologyCommentDAO.findById(commentId);
     comment.setActive(false);
     technologyCommentDAO.update(comment);
@@ -99,7 +100,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     return newComment;
   }
-  
+
   /**
    * Validate comment of TechnologyCommentTO.
    * 
@@ -113,12 +114,12 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     if (comment == null || comment.getComment() == null || comment.getComment().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_CANNOT_BLANK.message());
     }
-    
+
     if (comment.getComment().length() > 500) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_MUST_BE_LESSER.message());
     }
   }
-  
+
   /**
    * Validate comment of TechnologyCommentTO.
    * 
@@ -132,13 +133,13 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     if (commentId == null) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_ID_CANNOT_BLANK.message());
     }
-    
+
     TechnologyComment comment = technologyCommentDAO.findById(commentId);
     if (comment == null) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_NOT_EXIST.message());
     }
   }
-  
+
   /**
    * Validate technology.
    * 
@@ -148,7 +149,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   private void validateTechnology(String idTechnology) throws BadRequestException {
 
     log.info("Validating the technology");
-    
+
     if (idTechnology == null || idTechnology.isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     }
@@ -158,7 +159,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     }
   }
-  
+
   /**
    * Validate the user logged in.
    * 
@@ -178,7 +179,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
-  
+
   /**
    * Validate comment of TechnologyCommentTO.
    * 
@@ -191,10 +192,10 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     validateComment(commentId);
     validateUser(user);
-    
+
     TechnologyComment comment = technologyCommentDAO.findById(commentId);
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
-    if(!comment.getAuthor().get().equals(techUser)){
+    if (!comment.getAuthor().get().equals(techUser)) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_AUTHOR_ERROR.message());
     }
   }
