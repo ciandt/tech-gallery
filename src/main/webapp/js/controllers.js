@@ -187,6 +187,7 @@ angular.module('techGallery').controller(
      * Begin of the Recommend Features
      */
     $scope.endorse = function(alertUser) {
+      $scope.processEndorse = true;
       var req = {};
       req.endorsed = $scope.endorsed;
       req.technology = $scope.idTechnology;
@@ -204,6 +205,7 @@ angular.module('techGallery').controller(
           }
           $scope.endorsed = '';
           callBackLoaded();
+          $scope.processEndorse = false;
           $scope.$apply();
         });
       }
