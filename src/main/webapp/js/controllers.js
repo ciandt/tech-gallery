@@ -284,7 +284,7 @@ angular.module('techGallery').controller(
       return "Remover sua indicação +1 para o usuário"
     }
 
-    $scope.showPlusOne = function(email){
+    $scope.showSelfInformations = function(email){
       if($scope.userEmail == email){
         return false;
       }
@@ -409,6 +409,13 @@ angular.module('techGallery').controller(
     	var req = {technologyId: $scope.idTechnology};
     	gapi.client.rest.getCommentsByTech(req).execute(function(data){
     		$scope.techComments = data;
+    		$scope.$apply();
+    	});
+    }
+    
+    $scope.deleteComment = function(id) {
+    	gapi.client.rest.deleteComment(id).execute(function(data){
+    		loadComments();
     	});
     }
   }

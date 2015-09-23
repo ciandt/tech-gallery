@@ -13,5 +13,7 @@ import java.util.List;
  *
  */
 public interface TechnologyCommentDAO extends GenericDAO<TechnologyComment, Long> {
+
   List<TechnologyComment> findAllActiviesByTechnology(Technology technology);
+
 }
