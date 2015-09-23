@@ -1,0 +1,42 @@
+package com.ciandt.techgallery.service.endpoint;
+
+import com.google.api.server.spi.config.Api;
+import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.service.TechnologyCommentService;
+import com.ciandt.techgallery.service.TechnologyCommentServiceImpl;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.TechnologyCommentTO;
+
+/**
+ * Endpoint controller class for Technology Comment requests.
+ * 
+ * @author Felipe Ibrahim
+ *
+ */
+@Api(name = "rest", version = "v1",
+    clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
+    scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
+public class TechnologyCommentEndpoint {
+
+  private TechnologyCommentService service = new TechnologyCommentServiceImpl();
+
+  /**
+   * Endpoint for adding a Comment.
+   * 
+   * @param json with Comment info.
+   * @param user oauth user.
+   * @return .
+   * @throws InternalServerErrorException .
+   * @throws BadRequestException .
+   */
+  @ApiMethod(name = "addComment", path = "technology-comment", httpMethod = "post")
+  public Response addComment(TechnologyCommentTO comment, User user)
+      throws InternalServerErrorException, BadRequestException {
+    return service.addComment(comment, user);
+  }
+}

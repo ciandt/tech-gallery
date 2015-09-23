@@ -126,3 +126,8 @@ body, html {
   text-align: center;
   margin: 0 auto;
 }
+
+.textarea {
+  height: 108px !important;
+  margin-bottom: 5px;
+}

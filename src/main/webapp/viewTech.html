@@ -141,9 +141,33 @@
                 ng-click="open(response.endorsers)"></a>
             </div>
           </div>
-
         </div>
       </div>
+    </div>
+    
+    
+    <div id="add_comments" class="container">
+    	<div>
+	    	<h3>Comentários</h3>
+	    	<div id="comment_area" class="col-md-9 text-right">
+		    	<textarea id="txta_comment" ng-model="comment" class="form-control textarea" maxlength="500"></textarea>
+		    	<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearComment()">Limpar</button>
+		    	<button id="btn_add_comment" type="button" class="btn btn-primary" ng-click="addComment()">Comentar</button>
+	    	</div>
+    	</div>
+    </div>
+    <div id="show_comments" class="container">
+	    <div class="overLayer" ng-show="processingComment">
+	      <img src="/images/loading.gif" class="loading">
+	    </div>
+	    <div class="col-xs-9">
+	  		<div ng-repeat="comment in techComments track by $index">
+				<img class="media-object endorsed-image" src="{{comment.user.photo}}" style="display: inline;"/>
+	  			<b><span style="font-size: large;">{{comment.user.name}}</span><span style="font-size: small;"> em </span>
+	  			<span style="font-size: medium;">{{comment.creation}}</span><span style="font-size: small;"> disse:</span></b>
+	  			<h5>{{comment.comment}}</h5>
+	  		</div>
+	  	</div>
     </div>
 
   </div>
