@@ -19,6 +19,7 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
 import com.ciandt.techgallery.service.model.UsersResponse;
+import com.ciandt.techgallery.utils.i18n.I18n;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -38,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class UserServiceTGImpl implements UserServiceTG {
 
+  private static final I18n i18n = I18n.getInstance();
   private static final Logger log = Logger.getLogger(UserServiceTGImpl.class.getName());
   TechGalleryUserDAO userDAO = new TechGalleryUserDAOImpl();
   private static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
@@ -80,7 +82,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     TechGalleryUser userEntity = userDAO.findById(id);
     // if user is null, return a not found exception
     if (userEntity == null) {
-      throw new NotFoundException("No user was found.");
+      throw new NotFoundException(i18n.t("No user was found."));
     } else {
       return createUserResponse(userEntity);
     }
@@ -94,7 +96,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   @Override
   public Response addUser(final UserResponse user) throws BadRequestException {
     if (!userDataIsValid(user)) {
-      throw new BadRequestException("User's email cannot be blank.");
+      throw new BadRequestException(i18n.t("User's email cannot be blank."));
     } else {
       TechGalleryUser userEntity = new TechGalleryUser();
       fillTGUserData(user, userEntity);
@@ -122,16 +124,15 @@ public class UserServiceTGImpl implements UserServiceTG {
   public Response handleLogin(final User user, HttpServletRequest req) throws NotFoundException,
       BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
     if (user == null) {
-      throw new OAuthRequestException("Authorization error");
+      throw new OAuthRequestException(i18n.t("Authorization error"));
     }
     String userEmail = user.getEmail();
     String header = req.getHeader("Authorization");
     String accesstoken = header.substring(header.indexOf(' ')).trim(); // "Bearer ".length
 
     GoogleCredential credential = new GoogleCredential().setAccessToken(accesstoken);
-    Plus plus =
-        new Plus.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
-            .setApplicationName("Tech Gallery").build();
+    Plus plus = new Plus.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
+        .setApplicationName(i18n.t("Tech Gallery")).build();
     Person p = plus.people().get("me").execute();
     TechGalleryUser tgUser = userDAO.findByGoogleId(user.getUserId());
     // Couldn't find by googleID. Try email
@@ -202,7 +203,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   @Override
   public Response updateUser(final UserResponse user) throws BadRequestException {
     if (!userDataIsValid(user) && user.getId() != null) {
-      throw new BadRequestException("User's email cannot be blank.");
+      throw new BadRequestException(i18n.t("User's email cannot be blank."));
     } else {
       TechGalleryUser tgCurrentUser = userDAO.findById(user.getId());
       fillTGUserData(user, tgCurrentUser);
@@ -286,8 +287,8 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public Response getUserFromProvider(final String userLogin) throws NotFoundException,
-      BadRequestException, InternalServerErrorException {
+  public Response getUserFromProvider(final String userLogin)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
 
     String fullRequest = PEOPLE_ENDPOINT + userLogin + "?format=json";
     UserResponse uResp = new UserResponse();
@@ -312,7 +313,7 @@ public class UserServiceTGImpl implements UserServiceTG {
         uResp.setEmail((String) userData.get("email"));
         uResp.setName((String) userData.get("name"));
       } else {
-        throw new NotFoundException("User not found");
+        throw new NotFoundException(i18n.t("User not found"));
       }
 
     } catch (JsonParseException e) {
@@ -324,7 +325,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     } catch (IOException e) {
       System.err.println("An internal server error ocurred!");
       System.err.println(e.getMessage());
-      throw new InternalServerErrorException("An internal server error ocurred.");
+      throw new InternalServerErrorException(i18n.t("An internal server error ocurred."));
 
     }
     return uResp;
