@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.enums;
 
+import com.ciandt.techgallery.utils.i18n.I18n;
+
 /**
  * Enum for mapping messages.
  * 
@@ -7,7 +9,7 @@ package com.ciandt.techgallery.service.enums;
  *
  */
 public enum ValidationMessageEnums {
-
+  
   // Message for skills
   SKILL_CANNOT_BLANK("Skill cannot be null."),
   SKILL_RANGE("Skill's value must be between 1 and 5"),
@@ -23,9 +25,10 @@ public enum ValidationMessageEnums {
   COMMENT_MUST_BE_LESSER("Comment must have less than 500 characters.");
 
   private String message;
-
+  private I18n i18n  = I18n.getInstance();
+  
   ValidationMessageEnums(String message) {
-    this.message = message;
+    this.message = i18n.t(message);
   }
 
   public String message() {
