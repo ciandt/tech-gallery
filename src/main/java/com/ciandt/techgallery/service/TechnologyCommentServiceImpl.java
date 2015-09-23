@@ -7,7 +7,6 @@ import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.ObjectifyService;
 
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
@@ -15,19 +14,15 @@ import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
-import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
-import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 import com.ciandt.techgallery.service.model.TechnologyCommentsTO;
 import com.ciandt.techgallery.service.util.TechnologyCommentConverter;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -51,7 +46,9 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
       throws InternalServerErrorException, BadRequestException {
     log.info("Starting creating Technology Comment.");
 
-    validateInputs(comment, user);
+    validateUser(user);
+    validateComment(comment);
+    validateTechnology(comment.getTechnologyId());
 
     Technology technology = technologyDAO.findById(comment.getTechnologyId());
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
@@ -65,10 +62,27 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   @Override
   public Response getCommentsByTech(String techId, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+    
+    validateUser(user);
+    validateTechnology(techId);
+    
     Technology technology = technologyDAO.findById(techId);
     List<TechnologyComment> commentsByTech = technologyCommentDAO.findAllActiviesByTechnology(technology);
     TechnologyCommentsTO response = new TechnologyCommentsTO();
     response.setComments(TechnologyCommentConverter.fromEntityToTransient(commentsByTech));
+    return response;
+  }
+  
+  @Override
+  public Response deleteComment(Long commentId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+   
+    validateDeletion(commentId, user);
+    
+    TechnologyComment comment = technologyCommentDAO.findById(commentId);
+    comment.setActive(false);
+    technologyCommentDAO.update(comment);
+    TechnologyCommentTO response = TechnologyCommentConverter.fromEntityToTransient(comment);
     return response;
   }
 
@@ -87,15 +101,73 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   }
   
   /**
-   * Validate inputs of TechnologyCommentTO.
+   * Validate comment of TechnologyCommentTO.
    * 
    * @param comment inputs to be validate
+   * @throws BadRequestException .
+   */
+  private void validateComment(TechnologyCommentTO comment) throws BadRequestException {
+
+    log.info("Validating the comment");
+
+    if (comment == null || comment.getComment() == null || comment.getComment().isEmpty()) {
+      throw new BadRequestException(ValidationMessageEnums.COMMENT_CANNOT_BLANK.message());
+    }
+    
+    if (comment.getComment().length() > 500) {
+      throw new BadRequestException(ValidationMessageEnums.COMMENT_MUST_BE_LESSER.message());
+    }
+  }
+  
+  /**
+   * Validate comment of TechnologyCommentTO.
+   * 
+   * @param comment id to be validate
+   * @throws BadRequestException .
+   */
+  private void validateComment(Long commentId) throws BadRequestException {
+
+    log.info("Validating the comment");
+
+    if (commentId == null) {
+      throw new BadRequestException(ValidationMessageEnums.COMMENT_ID_CANNOT_BLANK.message());
+    }
+    
+    TechnologyComment comment = technologyCommentDAO.findById(commentId);
+    if (comment == null) {
+      throw new BadRequestException(ValidationMessageEnums.COMMENT_NOT_EXIST.message());
+    }
+  }
+  
+  /**
+   * Validate technology.
+   * 
+   * @param id of technology
+   * @throws BadRequestException .
+   */
+  private void validateTechnology(String idTechnology) throws BadRequestException {
+
+    log.info("Validating the technology");
+    
+    if (idTechnology == null || idTechnology.isEmpty()) {
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
+    }
+
+    Technology technology = technologyDAO.findById(idTechnology);
+    if (technology == null) {
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
+    }
+  }
+  
+  /**
+   * Validate the user logged in.
+   * 
    * @param user info about user from google
    * @throws BadRequestException .
    */
-  private void validateInputs(TechnologyCommentTO comment, User user) throws BadRequestException {
+  private void validateUser(User user) throws BadRequestException {
 
-    log.info("Validating inputs of comment");
+    log.info("Validating user to comment");
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
@@ -105,23 +177,27 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
+  }
+  
+  /**
+   * Validate comment of TechnologyCommentTO.
+   * 
+   * @param comment inputs to be validate
+   * @throws BadRequestException .
+   */
+  private void validateDeletion(Long commentId, User user) throws BadRequestException {
 
-    if (comment == null || comment.getComment() == null || comment.getComment().isEmpty()) {
-      throw new BadRequestException(ValidationMessageEnums.COMMENT_CANNOT_BLANK.message());
-    }
+    log.info("Validating the deletion");
+
+    validateComment(commentId);
+    validateUser(user);
     
-    if (comment.getComment().length() > 500) {
-      throw new BadRequestException(ValidationMessageEnums.COMMENT_MUST_BE_LESSER.message());
-    }
-
-    if (comment.getTechnologyId() == null || comment.getTechnologyId().isEmpty()) {
-      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
-    }
-
-    Technology technology = technologyDAO.findById(comment.getTechnologyId());
-    if (technology == null) {
-      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
+    TechnologyComment comment = technologyCommentDAO.findById(commentId);
+    TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
+    if(!comment.getAuthor().get().equals(techUser)){
+      throw new BadRequestException(ValidationMessageEnums.COMMENT_AUTHOR_ERROR.message());
     }
   }
+
 
 }
