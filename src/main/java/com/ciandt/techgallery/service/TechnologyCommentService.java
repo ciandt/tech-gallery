@@ -2,7 +2,11 @@ package com.ciandt.techgallery.service;
 
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import java.util.List;
 
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
@@ -25,5 +29,16 @@ public interface TechnologyCommentService {
    */
   public Response addComment(TechnologyCommentTO comment, User user)
       throws InternalServerErrorException, BadRequestException;
+  
+  /**
+   * Service to show all active comments for a technology.
+   * 
+   * @param techId technology entity id.
+   * @return comment or message error.
+   * @throws InternalServerErrorException .
+   * @throws BadRequestException .
+   */
+  public Response getCommentsByTech(final String techId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
 
 }

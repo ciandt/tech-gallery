@@ -1,8 +1,8 @@
 package com.ciandt.techgallery.service.model;
 
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-
 import java.util.Date;
+
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 
 /**
  * TechnologyCommentTO.
@@ -16,15 +16,7 @@ public class TechnologyCommentTO implements Response {
   private String comment;
   private Date creation;
   private String technologyId;
-  private TechGalleryUser user;
-
-  public TechGalleryUser getUser() {
-    return user;
-  }
-
-  public void setUser(TechGalleryUser user) {
-    this.user = user;
-  }
+  private TechGalleryUser author;
 
   public Long getId() {
     return id;
@@ -32,6 +24,14 @@ public class TechnologyCommentTO implements Response {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public TechGalleryUser getAuthor() {
+    return author;
+  }
+
+  public void setAuthor(TechGalleryUser author) {
+    this.author = author;
   }
 
   public String getComment() {

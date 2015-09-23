@@ -2,8 +2,11 @@ package com.ciandt.techgallery.service.endpoint;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
@@ -38,5 +41,22 @@ public class TechnologyCommentEndpoint {
   public Response addComment(TechnologyCommentTO comment, User user)
       throws InternalServerErrorException, BadRequestException {
     return service.addComment(comment, user);
+  }
+  
+  /**
+   * Endpoint for show  Active Comments.
+   * 
+   * @param json with Comment info.
+   * @param user oauth user.
+   * @return .
+   * @throws OAuthRequestException 
+   * @throws NotFoundException 
+   * @throws InternalServerErrorException .
+   * @throws BadRequestException .
+   */
+  @ApiMethod(name = "getCommentsByTech", path = "technology-comment-show", httpMethod = "post")
+  public Response getCommentsByTech(@Named("technologyId") String technologyId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+    return service.getCommentsByTech(technologyId, user);
   }
 }
