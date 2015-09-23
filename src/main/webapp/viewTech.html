@@ -70,8 +70,12 @@
           placeholder="(usuário)" aria-describedby="basic-addon2">
         <span class="input-group-addon" id="basic-addon2">{{domain}}</span>
       </div>
-      <a href="#" ng-click="endorse(true)" class="btn btn-primary"
-        role="button">Indicar</a>
+      <button ng-click="endorse(true)" class="btn btn-primary"
+        role="button">Indicar</button>
+    </div>
+    <div>
+      <img ng-show="processEndorse" src="/images/loading.gif"
+        class="loading">
     </div>
     <div class="endorse-alerts spacingtop">
       <alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
@@ -82,7 +86,7 @@
         tecnologia?</h3>
       <rating ng-model="rate" max="max" readonly="false"
         on-hover="hoveringOver(value)" on-leave="overStar = null"
-        ng-click="selecSkill()"></rating>
+        ng-click="selecSkill()" titles="['','','','','']"></rating>
       <span class="label"
         ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}"
         ng-show="overStar">{{skillLbl}}</span>
@@ -116,17 +120,17 @@
             <div class="media-body">
               <h4 class="media-heading">{{response.endorsed.name}}</h4>
               <rating ng-model="response.endorsedSkill" max="5"
-                readonly="true"></rating>
+                readonly="true" titles="['','','','','']"></rating>
             </div>
           </div>
 
           <div id="div_image_recomendations" class="container">
             <div class="col-xs-6">
               <button ng-show="showPlusOne(response.endorsed.email)"
-                type="button" id={{generateId($index)}}
+                type="button" id={{generateId($index,response.endorsed.email)}}
                 style="float: left" ng-disabled=disablePlusOne
-                ng-click="addEndorse(response.endorsed, generateId($index))"
-                ng-class="setClassPlusOne(response.endorsers)">+1</button>
+                ng-click="addEndorse(response.endorsed, generateId($index,response.endorsed.email))" tooltip={{setToolTipPlusOne($index,response.endorsed.email)}}
+                ng-class="setClassPlusOne(response.endorsers)">+{{response.endorsers.length}}</button>
               <div
                 ng-repeat="endorser in response.endorsersFiltered track by $index">
                 <img class="media-object endorsers-image"
@@ -137,11 +141,6 @@
                 ng-click="open(response.endorsers)"></a>
             </div>
           </div>
-
-		  <div id="div_comments" class="container">
-		  	<div class="col-xs-6">
-		  	</div>
-		  </div>
         </div>
       </div>
     </div>
@@ -157,10 +156,18 @@
 	    	</div>
     	</div>
     </div>
-    <div id="show_comments">
+    <div id="show_comments" class="container">
 	    <div class="overLayer" ng-show="processingComment">
 	      <img src="/images/loading.gif" class="loading">
 	    </div>
+	    <div class="col-xs-9">
+	  		<div ng-repeat="comment in techComments track by $index">
+				<img class="media-object endorsed-image" src="{{comment.user.photo}}" style="display: inline;"/>
+	  			<b><span style="font-size: large;">{{comment.user.name}}</span><span style="font-size: small;"> em </span>
+	  			<span style="font-size: medium;">{{comment.creation}}</span><span style="font-size: small;"> disse:</span></b>
+	  			<h5>{{comment.comment}}</h5>
+	  		</div>
+	  	</div>
     </div>
 
   </div>

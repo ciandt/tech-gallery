@@ -187,6 +187,7 @@ angular.module('techGallery').controller(
      * Begin of the Recommend Features
      */
     $scope.endorse = function(alertUser) {
+      $scope.processEndorse = true;
       var req = {};
       req.endorsed = $scope.endorsed;
       req.technology = $scope.idTechnology;
@@ -204,6 +205,7 @@ angular.module('techGallery').controller(
           }
           $scope.endorsed = '';
           callBackLoaded();
+          $scope.processEndorse = false;
           $scope.$apply();
         });
       }
@@ -261,16 +263,26 @@ angular.module('techGallery').controller(
      *
      */
     $scope.setClassPlusOne = function(endorsers){
-      var classe = 'btn btn-primary';
+      var classe = 'btn GPlusDefault';
 
       for(var i in endorsers){
         if(endorsers[i].email == $scope.userEmail){
-          classe = 'btn btn-danger';
+          classe = 'btn GPlusAdded';
+          return classe;
         }
       }
 
       return classe;
     };
+    
+    $scope.setToolTipPlusOne = function(index, email){
+      var id = $scope.generateId(index, email);
+      var element = document.getElementById(id);
+      if(element && element.className.indexOf('GPlusDefault') !== -1){
+        return "+1 indicação para o usuário";
+      }
+      return "Remover sua indicação +1 para o usuário"
+    }
 
     $scope.showPlusOne = function(email){
       if($scope.userEmail == email){
@@ -280,8 +292,8 @@ angular.module('techGallery').controller(
       return true;
     };
 
-    $scope.generateId = function(index) {
-      return 'plusOne' + index;
+    $scope.generateId = function(index, email) {
+      return 'plusOne' + index + email;
     };
 
     $scope.addEndorse = function(endorsed, id) {
@@ -303,10 +315,10 @@ angular.module('techGallery').controller(
     };
 
     function setClassElement(id){
-      var elementClassIncrease = 'btn btn-primary';
-      var elementClassDecrease = 'btn btn-danger';
+      var elementClassIncrease = 'btn GPlusDefault';
+      var elementClassDecrease = 'btn GPlusAdded';
       var elementClass = document.getElementById(id).className;
-      if (elementClass.indexOf('btn-danger') < 0) {
+      if (elementClass.indexOf('GPlusAdded') < 0) {
         document.getElementById(id).className = elementClassDecrease;
       } else {
         document.getElementById(id).className = elementClassIncrease;
@@ -366,7 +378,9 @@ angular.module('techGallery').controller(
       }
     }
     
-    //Comment start
+    /**
+     * Begin of create comments features
+     */
     $scope.clearComment = function(){
     	$scope.comment = '';
     }
@@ -385,6 +399,17 @@ angular.module('techGallery').controller(
     			$scope.comment = '';
     		});
     	}
+    }
+    
+    /**
+     * Begin of show comments features
+     */
+//    $scope.techComments=jsUtils.mockTechComment();
+    function loadComments() {
+    	var req = {technologyId: $scope.idTechnology};
+    	gapi.client.rest.getCommentsByTech(req).execute(function(data){
+    		$scope.techComments = data;
+    	});
     }
   }
 );

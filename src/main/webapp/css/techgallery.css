@@ -11,6 +11,20 @@
 	opacity:0.8
 }
 
+.GPlusDefault{
+	color: #262626 !important;
+    font-weight: bold;
+    background-color: #fff;
+    box-shadow: 1px 1px 1px black;
+}
+
+.GPlusAdded{
+	color: white !important;
+	font-weight: bold;
+    background-color: #dd4b39;
+    box-shadow: 1px 1px 1px black;
+}
+
 .alignBar{
 	margin-top:-20px
 }
@@ -54,6 +68,7 @@
 
 .thumbnail{
   min-height: 380px;
+  box-shadow: 5px 5px 5px
 }
 
 .spacingtop {

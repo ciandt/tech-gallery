@@ -16,6 +16,8 @@ import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.SkillResponse;
 import com.ciandt.techgallery.service.util.SkillConverter;
+import com.ciandt.techgallery.utils.i18n.I18n;
+
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -33,6 +35,7 @@ import com.googlecode.objectify.Ref;
 public class SkillServiceImpl implements SkillService {
 
   private static final Logger log = Logger.getLogger(SkillServiceImpl.class.getName());
+  private static final I18n i18n = I18n.getInstance();
 
   SkillDAO skillDAO = new SkillDAOImpl();
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
@@ -130,31 +133,31 @@ public class SkillServiceImpl implements SkillService {
     TechGalleryUser tgUser;
     // User from endpoint can't be null
     if (user == null) {
-      throw new OAuthRequestException("OAuth error, null user reference!");
+      throw new OAuthRequestException(i18n.t("OAuth error, null user reference!"));
     } else {
       googleId = user.getUserId();
     }
 
     // TechGalleryUser can't be null and must exists on datastore
     if (googleId == null || googleId.equals("")) {
-      throw new NotFoundException("Current user was not found!");
+      throw new NotFoundException(i18n.t("Current user was not found!"));
     } else {
       // get the TechGalleryUser from datastore or PEOPLE API
       tgUser = techGalleryUserDAO.findByGoogleId(googleId);
       // userService.getUserSyncedWithProvider(userEmail.replace("@ciandt.com", ""));
       if (tgUser == null) {
-        throw new BadRequestException("Endorser user do not exists on datastore!");
+        throw new BadRequestException(i18n.t("Endorser user do not exists on datastore!"));
       }
     }
 
     // Technology can't be null
     Technology technology = technologyDAO.findById(techId);
     if (technology == null) {
-      throw new BadRequestException("Technology do not exists!");
+      throw new BadRequestException(i18n.t("Technology do not exists!"));
     }
     Skill userSkill = skillDAO.findByUserAndTechnology(tgUser, technology);
     if (userSkill == null) {
-      throw new NotFoundException("User skill do not exist!");
+      throw new NotFoundException(i18n.t("User skill do not exist!"));
     } else {
       return SkillConverter.fromEntityToTransient(userSkill);
     }
@@ -165,13 +168,13 @@ public class SkillServiceImpl implements SkillService {
       OAuthRequestException, NotFoundException, InternalServerErrorException {
     // User can't be null
     if (user == null) {
-      throw new OAuthRequestException("Null user reference!");
+      throw new OAuthRequestException(i18n.t("Null user reference!"));
     }
 
     // Technology can't be null
     Technology technology = technologyDAO.findById(techId);
     if (technology == null) {
-      throw new BadRequestException("Technology do not exists!");
+      throw new BadRequestException(i18n.t("Technology do not exists!"));
     }
     Skill userSkill = skillDAO.findByUserAndTechnology(user, technology);
     if (userSkill == null) {
