@@ -82,6 +82,48 @@
     return logoutRedirect;
   }
 
+  var mockTechComment = function(){
+	    var descr = 'Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá, depois divoltis porris, paradis. Paisis, filhis, espiritis santis.';
+	    var list = [ {
+	      id : 1,
+	      comment : descr,
+	      creation : '01/01/2015',
+	      technologyId : 'localtest',
+	      user : {name : 'Thulio', photo: 'http://f.i.uol.com.br/fotografia/2014/07/04/414885-400x600-1.jpeg'}
+	    }, {
+	      id : 2,
+	      comment : descr,
+	      creation : '01/01/2015',
+	      technologyId : 'localtest',
+	      user : {name : 'Felipe'}
+	    }, {
+	      id : 3,
+	      comment : descr,
+	      creation : '01/01/2015',
+	      technologyId : 'localtest',
+	      user : {name : 'Eduardo'}
+	    }, {
+	      id : 4,
+	      comment : descr,
+	      creation : '01/01/2015',
+	      technologyId : 'localtest',
+	      user : {name : 'João'}
+	    }, {
+	      id : 5,
+	      comment : descr,
+	      creation : '01/01/2015',
+	      technologyId : 'localtest',
+	      user : {name : 'Thulio'}
+	    }, {
+	      id : 6,
+	      comment : descr,
+	      creation : '01/01/2015',
+	      technologyId : 'localtest',
+	      user : {name : 'Felipe'}
+	    } ];
+	    return list;
+	  };
+  
   var mockTechList = function(){
     var descr = 'Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá, depois divoltis porris, paradis. Paisis, filhis, espiritis santis.';
     var list = [ {
@@ -199,6 +241,7 @@
     mockTechList: mockTechList,
     mockTechnology: mockTechnology,
     mockShowEndorsementResponse: mockShowEndorsementResponse,
+    mockTechComment: mockTechComment,
     getParameterByName: getParameterByName,
     alerts: alerts,
     logoutRedirect: logoutRedirect
