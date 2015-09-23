@@ -20,7 +20,7 @@ public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, 
     implements TechnologyCommentDAO {
 
   @Override
-  public List<TechnologyComment> findAllActiviesByTechnology(Technology technology) {
+  public List<TechnologyComment> findAllActivesByTechnology(Technology technology) {
     Objectify objectify = OfyService.ofy();
     List<TechnologyComment> entities = objectify.load().type(TechnologyComment.class).order("-timestamp")
         .filter("technology", Ref.create(technology)).filter("active", Boolean.TRUE).list();
