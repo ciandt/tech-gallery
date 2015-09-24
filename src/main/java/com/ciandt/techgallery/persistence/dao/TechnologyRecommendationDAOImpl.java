@@ -1,11 +1,14 @@
 package com.ciandt.techgallery.persistence.dao;
 
+import com.google.api.server.spi.response.NotFoundException;
+
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.ofy.OfyService;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 
 import java.util.List;
@@ -34,11 +37,26 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
   public TechnologyRecommendation findActiveByRecommenderAndTechnology(TechGalleryUser tgUser,
       Technology technology) {
     Objectify objectify = OfyService.ofy();
-    TechnologyRecommendation recommendation = objectify.load()
+    List<TechnologyRecommendation> recommendations = objectify.load()
         .type(TechnologyRecommendation.class).filter("technology", Ref.create(technology))
-        .filter("active", Boolean.TRUE).filter("recommender", Ref.create(tgUser)).list().get(0);
+        .filter("active", Boolean.TRUE).filter("recommender", Ref.create(tgUser)).list();
+    if (recommendations == null || recommendations.isEmpty()) {
+      return null;
+    } else {
+      return recommendations.get(0);
+    }
+  }
 
-    return recommendation;
+  @Override
+  public TechnologyRecommendation findByComment(TechnologyComment comment) {
+    Objectify objectify = OfyService.ofy();
+    List<TechnologyRecommendation> recommendations = objectify.load()
+        .type(TechnologyRecommendation.class).filter("comment", Ref.create(comment)).list();
+    if (recommendations == null || recommendations.isEmpty()) {
+      return null;
+    } else {
+      return recommendations.get(0);
+    }
   }
 
 }

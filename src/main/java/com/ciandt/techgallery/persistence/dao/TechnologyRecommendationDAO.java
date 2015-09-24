@@ -1,7 +1,10 @@
 package com.ciandt.techgallery.persistence.dao;
 
+import com.google.api.server.spi.response.NotFoundException;
+
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 
 import java.util.List;
@@ -35,4 +38,10 @@ public interface TechnologyRecommendationDAO extends GenericDAO<TechnologyRecomm
    */
   public TechnologyRecommendation findActiveByRecommenderAndTechnology(TechGalleryUser tgUser,
       Technology technology);
+
+  /**
+   * Finds a recommendation by a comment
+   * @param comment comment
+   */
+  public TechnologyRecommendation findByComment(TechnologyComment comment);
 }

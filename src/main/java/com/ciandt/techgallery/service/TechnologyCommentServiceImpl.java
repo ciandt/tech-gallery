@@ -7,7 +7,6 @@ import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.ObjectifyService;
 
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
@@ -15,19 +14,17 @@ import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
-import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
+import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
-import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 import com.ciandt.techgallery.service.model.TechnologyCommentsTO;
+import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
 import com.ciandt.techgallery.service.util.TechnologyCommentConverter;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -45,6 +42,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   TechnologyCommentDAO technologyCommentDAO = new TechnologyCommentDAOImpl();
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
+  TechnologyRecommendationService recommendationService = new TechnologyRecommendationServiceImpl();
 
   @Override
   public Response addComment(TechnologyCommentTO comment, User user)
@@ -61,14 +59,18 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     return ret;
   }
-  
+
   @Override
-  public Response getCommentsByTech(String techId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+  public Response getCommentsByTech(String techId, User user) throws InternalServerErrorException,
+      BadRequestException, NotFoundException, OAuthRequestException {
     Technology technology = technologyDAO.findById(techId);
-    List<TechnologyComment> commentsByTech = technologyCommentDAO.findAllActiviesByTechnology(technology);
+    List<TechnologyComment> commentsByTech =
+        technologyCommentDAO.findAllActiviesByTechnology(technology);
     TechnologyCommentsTO response = new TechnologyCommentsTO();
     response.setComments(TechnologyCommentConverter.fromEntityToTransient(commentsByTech));
+    for (TechnologyCommentTO commentTO : response.getComments()) {
+      setCommentRecommendation(commentTO);
+    }
     return response;
   }
 
@@ -85,7 +87,26 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     return newComment;
   }
-  
+
+  /**
+   * If the comment referenced by commentTO was created because of a recommendation, sets the
+   * recommendation score
+   * 
+   * @param commentTO the comment
+   */
+  private void setCommentRecommendation(TechnologyCommentTO commentTO) {
+    TechnologyComment comment = technologyCommentDAO.findById(commentTO.getId());
+    TechnologyRecommendation techRecommendation;
+    techRecommendation = recommendationService.getRecommendationByComment(comment);
+
+    if (techRecommendation != null) {
+      commentTO.setRecommendationScore(techRecommendation.getScore());
+    } else {
+      commentTO.setRecommendationScore(null);
+    }
+
+  }
+
   /**
    * Validate inputs of TechnologyCommentTO.
    * 
@@ -109,7 +130,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     if (comment == null || comment.getComment() == null || comment.getComment().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_CANNOT_BLANK.message());
     }
-    
+
     if (comment.getComment().length() > 500) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_MUST_BE_LESSER.message());
     }

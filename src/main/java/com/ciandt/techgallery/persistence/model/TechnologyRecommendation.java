@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.persistence.model;
 
+import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -25,9 +26,9 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
   @Unindex
   private Boolean score;
 
-  @Unindex
+  @Index
   @Load
-  private TechnologyComment comment;
+  private Ref<TechnologyComment> comment;
 
   @Index
   private Boolean active;
@@ -38,7 +39,7 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
 
   @Index
   @Load
-  private Technology technology;
+  private Ref<Technology> technology;
 
   /*
    * Constructors -----------------------------------------
@@ -51,10 +52,10 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
       TechGalleryUser recommender, Technology technology) {
     super();
     this.score = score;
-    this.comment = comment;
+    this.comment = Ref.create(comment);
     this.active = active;
     this.recommender = recommender;
-    this.technology = technology;
+    this.technology = Ref.create(technology);
   }
 
   /*
@@ -78,11 +79,11 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
     this.score = score;
   }
 
-  public TechnologyComment getComment() {
+  public Ref<TechnologyComment> getComment() {
     return comment;
   }
 
-  public void setComment(TechnologyComment comment) {
+  public void setComment(Ref<TechnologyComment> comment) {
     this.comment = comment;
   }
 
@@ -102,11 +103,11 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
     this.recommender = recommender;
   }
 
-  public Technology getTechnology() {
+  public Ref<Technology> getTechnology() {
     return technology;
   }
 
-  public void setTechnology(Technology technology) {
+  public void setTechnology(Ref<Technology> technology) {
     this.technology = technology;
   }
 }
