@@ -1,6 +1,5 @@
 package com.ciandt.techgallery.service.model;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,7 +9,7 @@ import java.util.List;
  *
  */
 public class TechnologyCommentsTO implements Response {
-  
+
   List<TechnologyCommentTO> comments;
 
   public List<TechnologyCommentTO> getComments() {
@@ -20,5 +19,5 @@ public class TechnologyCommentsTO implements Response {
   public void setComments(List<TechnologyCommentTO> comments) {
     this.comments = comments;
   }
-  
+
 }
