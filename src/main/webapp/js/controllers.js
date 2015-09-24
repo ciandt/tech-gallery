@@ -416,7 +416,8 @@ angular.module('techGallery').controller(
     }
     
     $scope.deleteComment = function(id) {
-    	gapi.client.rest.deleteComment(id).execute(function(data){
+    	var req = {commentId: id};
+    	gapi.client.rest.deleteComment(req).execute(function(data){
     		loadComments();
     	});
     }
