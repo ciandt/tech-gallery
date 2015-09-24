@@ -12,6 +12,19 @@ import com.ciandt.techgallery.service.model.TechnologyResponse;
 
 public interface TechnologyRecommendationCommentService {
 
+  /**
+   * Receives a wrapper which encapsulates a recommendation and a comment for a technology,
+   * verifies if the comment is valid and saves them associated
+   * associated.
+   * @param recommendationTO the recommendation
+   * @param commentTO the comment
+   * @param technology the technology
+   * @param user the logged in user
+   * @return
+   * @throws BadRequestException
+   * @throws InternalServerErrorException
+   * @throws NotFoundException
+   */
   public Response addRecommendationComment(TechnologyRecommendationTO recommendationTO,
       TechnologyCommentTO commentTO, TechnologyResponse technology, User user)
           throws BadRequestException, InternalServerErrorException, NotFoundException;
