@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.persistence.dao;
 
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 
@@ -25,4 +26,13 @@ public interface TechnologyRecommendationDAO extends GenericDAO<TechnologyRecomm
    * @return List<TechnologyRecommendation>
    */
   public List<TechnologyRecommendation> findAllActivesByTechnology(Technology technology);
+
+  /**
+   * Finds the active recommendations by a user in a technology 
+   * @param tgUser Recommender
+   * @param technology Technology
+   * @return a recommendation, if exists
+   */
+  public TechnologyRecommendation findActiveByRecommenderAndTechnology(TechGalleryUser tgUser,
+      Technology technology);
 }

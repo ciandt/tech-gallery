@@ -4,6 +4,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.ofy.OfyService;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 
@@ -24,9 +25,20 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
     Objectify objectify = OfyService.ofy();
     List<TechnologyRecommendation> recommendations =
         objectify.load().type(TechnologyRecommendation.class)
-        .filter("technology", Ref.create(technology)).filter("active", Boolean.TRUE).list();
+            .filter("technology", Ref.create(technology)).filter("active", Boolean.TRUE).list();
 
     return recommendations;
+  }
+
+  @Override
+  public TechnologyRecommendation findActiveByRecommenderAndTechnology(TechGalleryUser tgUser,
+      Technology technology) {
+    Objectify objectify = OfyService.ofy();
+    TechnologyRecommendation recommendation = objectify.load()
+        .type(TechnologyRecommendation.class).filter("technology", Ref.create(technology))
+        .filter("active", Boolean.TRUE).filter("recommender", Ref.create(tgUser)).list().get(0);
+
+    return recommendation;
   }
 
 }
