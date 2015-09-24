@@ -2,31 +2,31 @@ package com.ciandt.techgallery.service.model;
 
 public class TechnologyRecommendationCommentTO implements Response {
 
-  private TechnologyRecommendationTO recommendationTO;
-  private TechnologyCommentTO commentTO;
-  private TechnologyResponse technologyTO;
+  private TechnologyRecommendationTO recommendation;
+  private TechnologyCommentTO comment;
+  private TechnologyResponse technology;
 
-  public TechnologyRecommendationTO getRecommendationTO() {
-    return recommendationTO;
+  public TechnologyRecommendationTO getRecommendation() {
+    return recommendation;
   }
 
-  public void setRecommendationTO(TechnologyRecommendationTO recommendationTO) {
-    this.recommendationTO = recommendationTO;
+  public void setRecommendation(TechnologyRecommendationTO recommendationTO) {
+    this.recommendation = recommendationTO;
   }
 
-  public TechnologyCommentTO getCommentTO() {
-    return commentTO;
+  public TechnologyCommentTO getComment() {
+    return comment;
   }
 
-  public void setCommentTO(TechnologyCommentTO commentTO) {
-    this.commentTO = commentTO;
+  public void setComment(TechnologyCommentTO commentTO) {
+    this.comment = commentTO;
   }
 
-  public TechnologyResponse getTechnologyTO() {
-    return technologyTO;
+  public TechnologyResponse getTechnology() {
+    return technology;
   }
 
-  public void setTechnologyTO(TechnologyResponse technologyTO) {
-    this.technologyTO = technologyTO;
+  public void setTechnology(TechnologyResponse technologyTO) {
+    this.technology = technologyTO;
   }
 }

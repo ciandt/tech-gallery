@@ -30,7 +30,7 @@ public class TechnologyRecommendationCommentEndpoint {
   public Response addRecommendationComment(TechnologyRecommendationCommentTO recCommentTO,
       User user) throws InternalServerErrorException, BadRequestException, NotFoundException,
           OAuthRequestException {
-    return service.addRecommendationComment(recCommentTO.getRecommendationTO(),
-        recCommentTO.getCommentTO(), recCommentTO.getTechnologyTO(), user);
+    return service.addRecommendationComment(recCommentTO.getRecommendation(),
+        recCommentTO.getComment(), recCommentTO.getTechnology(), user);
   }
 }
