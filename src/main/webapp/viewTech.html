@@ -161,11 +161,11 @@
 	      <img src="/images/loading.gif" class="loading">
 	    </div>
 	    <div class="col-xs-9">
-	  		<div ng-repeat="comment in techComments track by $index">
+	  		<div class="commentBlock" ng-repeat="comment in techComments track by $index">
 	  			<div class="commentHeader">
-					<img class="media-object endorsed-image commentImage" src="{{comment.user.photo}}"/>
+					<img class="media-object endorsed-image commentImage img-circle" src="{{comment.user.photo}}"/>
 	  				<b class="flex1">
-	  				<span class="largeFont">{{comment.user.name}}</span><span class="smallFont"> em </span>
+	  				<span class="commentName">{{comment.user.name}}</span><span class="smallFont"> em </span>
 	  				<span class="mediumFont">{{comment.creation}}</span><span class="smallFont"> disse:</span>
 	  				</b>
 	  				<a ng-show="showSelfInformations(comment.user.email)" ng-click="deleteComment(comment.id)" 
