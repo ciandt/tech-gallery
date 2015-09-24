@@ -287,10 +287,10 @@ angular.module('techGallery').controller(
 
     $scope.showSelfInformations = function(email){
       if($scope.userEmail == email){
-        return false;
+        return true;
       }
 
-      return true;
+      return false;
     };
 
     $scope.generateId = function(index, email) {
