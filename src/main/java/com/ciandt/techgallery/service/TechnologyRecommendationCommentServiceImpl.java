@@ -52,8 +52,8 @@ public class TechnologyRecommendationCommentServiceImpl
       TechnologyResponse technology) {
     UserResponse recommender = recommendationTO.getRecommender();
     UserResponse commenter = commentTO.getAuthor();
-    return user.getUserId() == recommender.getGoogleId()
-        && user.getUserId() == commenter.getGoogleId();
+    return user.getUserId().equals(recommender.getGoogleId())
+        && user.getUserId().equals(commenter.getGoogleId());
   }
 
 }
