@@ -287,10 +287,10 @@ angular.module('techGallery').controller(
 
     $scope.showSelfInformations = function(email){
       if($scope.userEmail == email){
-        return false;
+        return true;
       }
 
-      return true;
+      return false;
     };
 
     $scope.generateId = function(index, email) {
@@ -416,7 +416,8 @@ angular.module('techGallery').controller(
     }
     
     $scope.deleteComment = function(id) {
-    	gapi.client.rest.deleteComment(id).execute(function(data){
+    	var req = {commentId: id};
+    	gapi.client.rest.deleteComment(req).execute(function(data){
     		loadComments();
     	});
     }
