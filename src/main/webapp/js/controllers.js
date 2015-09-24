@@ -166,6 +166,7 @@ angular.module('techGallery').controller(
 
         fillTechnology(data);
         showEndorsementsByTech();
+        loadComments();
         $scope.disablePlusOne = false;
         $scope.$apply();
       });
@@ -396,7 +397,6 @@ angular.module('techGallery').controller(
     			gapi.client.rest.addComment(req).execute(function(data) {
     				$scope.processingComment = true;
     				//TODO TECG-24 Call API to show comments and put $scope.processingComment = true;
-    				loadComments();
     				$scope.processingComment = false;
     				$scope.comment = '';
     			});
@@ -410,7 +410,6 @@ angular.module('techGallery').controller(
     			gapi.client.rest.addCommentAndRecommend(req).execute(function(data) {
     				$scope.processingComment = true;
     				//TODO TECG-24 Call API to show comments and put $scope.processingComment = true;
-    				loadComments();
     				$scope.processingComment = false;
     				$scope.comment = '';
     			});
