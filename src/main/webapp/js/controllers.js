@@ -387,7 +387,7 @@ angular.module('techGallery').controller(
     }
     
     $scope.addComment = function(){
-    	if($scope.comment && $scope.comment.length <= 500){
+    	if($scope.comment && $scope.comment.trim().length <= 500){
     		if($scope.score == undefined){
     			//Call API to add a comment
     			var req = {
@@ -415,8 +415,10 @@ angular.module('techGallery').controller(
     			});
     		}
     	}else{
-    		$scope.alertComment = true;
-    		$scope.alertMsgComment = 'Você deve informar um comentário sobre sua recomendação.';
+    		if($scope.score !== undefined){
+    			$scope.alertComment = true;
+    			$scope.alertMsgComment = 'Você deve informar um comentário sobre sua recomendação.';
+    		}
     	}
     }
     
