@@ -389,7 +389,7 @@ angular.module('techGallery').controller(
     	if($scope.comment && $scope.comment.length <= 500){
     		//Call API to add a comment
     		var req = {
-    				technology['id'] : $scope.idTechnology,
+    				technologyId : $scope.idTechnology,
     				comment : $scope.comment,
     				recommend : $scope.score
     		};
