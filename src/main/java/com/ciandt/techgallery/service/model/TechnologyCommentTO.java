@@ -11,6 +11,7 @@ import java.util.Date;
 public class TechnologyCommentTO implements Response {
 
   private Long id;
+  private Boolean recommendationScore;
   private String comment;
   private Date creation;
   private String technologyId;
@@ -23,6 +24,15 @@ public class TechnologyCommentTO implements Response {
   public void setId(Long id) {
     this.id = id;
   }
+  
+  public Boolean isRecommendationScore() {
+    return recommendationScore;
+  }
+
+  public void setRecommendationScore(Boolean recommendationScore) {
+    this.recommendationScore = recommendationScore;
+  }
+
 
   public UserResponse getAuthor() {
     return author;
