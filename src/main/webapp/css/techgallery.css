@@ -131,3 +131,19 @@ body, html {
   height: 108px !important;
   margin-bottom: 5px;
 }
+
+.selectedThumbUp {
+	color: green !important;
+}
+
+.selectedThumbDown {
+	color: red !important;
+}
+
+.thumbsFont {
+	font-size: 40px;
+}
+
+.recommendations-link {
+	font-size: 20px;
+}
