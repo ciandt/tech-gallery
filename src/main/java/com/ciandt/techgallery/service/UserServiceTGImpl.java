@@ -238,9 +238,9 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   @Override
-  public TechGalleryUser getUserByNameAndEmail(final String name, final String email)
+  public TechGalleryUser getUserByEmail(final String email)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
-    return userDAO.findByNameAndEmail(name, email);
+    return userDAO.findByEmail(email);
   }
 
   /**
