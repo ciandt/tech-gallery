@@ -1,10 +1,13 @@
 package com.ciandt.techgallery.service.util;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.googlecode.objectify.Ref;
 
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TechnologyCommentConverter methods.
@@ -14,6 +17,7 @@ import com.ciandt.techgallery.service.model.TechnologyCommentTO;
  */
 public class TechnologyCommentConverter {
 
+  private TechGalleryUserTransformer tgUserTransformer = new TechGalleryUserTransformer();
   /**
    * Transform entity from datastore into response entity which is transient.
    * 
@@ -22,12 +26,12 @@ public class TechnologyCommentConverter {
    */
   public static TechnologyCommentTO fromEntityToTransient(TechnologyComment entity) {
     TechnologyCommentTO commentTO = new TechnologyCommentTO();
-
+    TechGalleryUserTransformer userTransformer = new TechGalleryUserTransformer();
     commentTO.setId(entity.getId());
     commentTO.setComment(entity.getComment());
     commentTO.setTechnologyId(entity.getTechnology().get().getId());
     commentTO.setCreation(entity.getTimestamp());
-    commentTO.setAuthor(entity.getAuthor().get());
+    commentTO.setAuthor(userTransformer.transformTo(entity.getAuthor().get()));
 
     return commentTO;
   }
@@ -55,7 +59,13 @@ public class TechnologyCommentConverter {
    * @return entity from datastore
    */
   public TechnologyComment fromTransientToEntity(TechnologyCommentTO tranzient) {
-    // TODO Auto-generated method stub
-    return null;
+    TechnologyComment commentEntity = new TechnologyComment();
+    commentEntity.setId(tranzient.getId());
+    commentEntity.setComment(tranzient.getComment());
+    //commentEntity.setTechnology(tranzient.getTechnologyId());
+    TechGalleryUser author = tgUserTransformer.transformFrom(tranzient.getAuthor());
+    Ref<TechGalleryUser> ref = Ref.create(author);
+    commentEntity.setAuthor(ref);
+    return commentEntity;
   }
 }
