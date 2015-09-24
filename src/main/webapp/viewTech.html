@@ -145,10 +145,26 @@
       </div>
     </div>
     
-    
+    <div id="choose_recommendation" class="container">
+    	<div>
+    		<h3>Recomenda esta tecnologia?</h3>
+    		<div id="recommend_area" class="col-md-9 text-left">
+    			<button id="btn_up" type="button" ng-click="changeThumbs('up')" ng-class="setClassThumbs('up')" 
+    					class="btn glyphicon glyphicon-thumbs-up thumbsFont"></button>
+    					
+    			<a href="#" class="recommendations-link">{{showAllRecommenders()}}</a>
+    			
+    			<button id="btn_down" type="button" ng-click="changeThumbs('down')" ng-class="setClassThumbs('down')" 
+    					class="btn glyphicon glyphicon-thumbs-down thumbsFont"></button>
+    					
+    			<a href="#" class="recommendations-link">{{showAllNotRecommenders()}}</a>
+    		</div>
+    	</div>
+    </div>
     <div id="add_comments" class="container">
     	<div>
 	    	<h3>Comentários</h3>
+	    	<h5 ng-show="recommend_message">Para completar a recomendação desta tecnologia, faça um comentário:</h5>
 	    	<div id="comment_area" class="col-md-9 text-right">
 		    	<textarea id="txta_comment" ng-model="comment" class="form-control textarea" maxlength="500"></textarea>
 		    	<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearComment()">Limpar</button>

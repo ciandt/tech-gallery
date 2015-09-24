@@ -390,7 +390,8 @@ angular.module('techGallery').controller(
     		//Call API to add a comment
     		var req = {
     				technologyId : $scope.idTechnology,
-    				comment : $scope.comment
+    				comment : $scope.comment,
+    				recommend : $scope.score
     		};
     		gapi.client.rest.addComment(req).execute(function(data) {
     			$scope.processingComment = true;
@@ -410,6 +411,51 @@ angular.module('techGallery').controller(
     	gapi.client.rest.getCommentsByTech(req).execute(function(data){
     		$scope.techComments = data;
     	});
+    }
+    
+    $scope.changeThumbs = function(thumbs){
+    	if(thumbs == 'up'){
+    		if($scope.score == undefined || $scope.score == false){
+    			$scope.score = true;
+    			$scope.recommend_message = true;
+    		}else {
+    			$scope.score = undefined;
+    			$scope.recommend_message = false;
+    		}
+    	}else if(thumbs == 'down'){
+    		if($scope.score == undefined || $scope.score == true){
+    			$scope.score = false;
+    			$scope.recommend_message = true;
+    		}else {
+    			$scope.score = undefined;
+    			$scope.recommend_message = false;
+    		}
+    	}
+    	document.getElementById("txta_comment").focus();
+    }
+    
+    $scope.setClassThumbs = function(thumbs){
+    	if($scope.score == undefined){
+    		return '';
+    	}else if($scope.score == true && thumbs == 'up'){
+    		return 'selectedThumbUp';
+    	}else if($scope.score == false && thumbs == 'down'){
+    		return 'selectedThumbDown';
+    	}
+    }
+    
+    $scope.showAllRecommenders = function(){
+    	return 15;
+//    	gapi.client.rest.getRecommendationsByTechnology(req).execute(function(data){
+//    		return data.length;
+//    	});
+    }
+    
+    $scope.showAllNotRecommenders = function(){
+    	return 3;
+//    	gapi.client.rest.getNotRecommendationsByTechnology(req).execute(function(data){
+//    		return data.length;
+//    	});
     }
   }
 );
