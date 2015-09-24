@@ -166,6 +166,7 @@ angular.module('techGallery').controller(
 
         fillTechnology(data);
         showEndorsementsByTech();
+        loadComments();
         $scope.disablePlusOne = false;
         $scope.$apply();
       });
@@ -397,6 +398,7 @@ angular.module('techGallery').controller(
     			//TODO TECG-24 Call API to show comments and put $scope.processingComment = true;
     			$scope.processingComment = false;
     			$scope.comment = '';
+    			$scope.$apply();
     		});
     	}
     }
