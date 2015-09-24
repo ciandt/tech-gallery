@@ -33,4 +33,5 @@ public class TechnologyRecommendationCommentEndpoint {
     return service.addRecommendationComment(recCommentTO.getRecommendation(),
         recCommentTO.getComment(), recCommentTO.getTechnology(), user);
   }
+  
 }

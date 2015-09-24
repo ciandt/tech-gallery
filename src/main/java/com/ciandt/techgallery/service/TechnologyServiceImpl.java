@@ -6,6 +6,7 @@ import java.util.List;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
@@ -111,6 +112,17 @@ public class TechnologyServiceImpl implements TechnologyService {
       response.setRecommendation(techEntity.getRecommendation());
       return response;
     }
+  }
+
+  @Override
+  public Technology getTechnologyById(String id) throws NotFoundException {
+    Technology tech = technologyDAO.findById(id);
+    if (tech == null) {
+      throw new NotFoundException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
+    } else {
+      return tech;
+    }
+
   }
 
 }
