@@ -396,8 +396,7 @@ angular.module('techGallery').controller(
     			};
     			gapi.client.rest.addComment(req).execute(function(data) {
     				$scope.processingComment = true;
-    				//TODO TECG-24 Call API to show comments and put $scope.processingComment = true;
-    				$scope.processingComment = false;
+    				callBackLoaded();
     				$scope.comment = '';
     			});
     		}else {
@@ -409,8 +408,7 @@ angular.module('techGallery').controller(
     			};
     			gapi.client.rest.addCommentAndRecommend(req).execute(function(data) {
     				$scope.processingComment = true;
-    				//TODO TECG-24 Call API to show comments and put $scope.processingComment = true;
-    				$scope.processingComment = false;
+    				callBackLoaded();
     				$scope.comment = '';
     			});
     		}
@@ -434,6 +432,7 @@ angular.module('techGallery').controller(
     	var req = {technologyId: $scope.idTechnology};
     	gapi.client.rest.getCommentsByTech(req).execute(function(data){
     		$scope.techComments = data;
+    		$scope.processingComment = false;
     	});
     }
     
