@@ -1,10 +1,10 @@
 package com.ciandt.techgallery.service.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TechnologyCommentConverter methods.
@@ -31,7 +31,7 @@ public class TechnologyCommentConverter {
 
     return commentTO;
   }
-  
+
   /**
    * Transform a list of entity from datastore into list of response entity which is transient.
    * 
@@ -39,7 +39,7 @@ public class TechnologyCommentConverter {
    * @return list transient entity
    */
   public static List<TechnologyCommentTO> fromEntityToTransient(List<TechnologyComment> entities) {
-    
+
     List<TechnologyCommentTO> commentsTO = new ArrayList<TechnologyCommentTO>();
     for (TechnologyComment entity : entities) {
       commentsTO.add(fromEntityToTransient(entity));

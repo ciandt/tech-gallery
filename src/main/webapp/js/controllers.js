@@ -410,7 +410,7 @@ angular.module('techGallery').controller(
     function loadComments() {
     	var req = {technologyId: $scope.idTechnology};
     	gapi.client.rest.getCommentsByTech(req).execute(function(data){
-    		$scope.techComments = data;
+    		$scope.techComments = data.comments;
     	});
     }
   }
