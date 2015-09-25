@@ -234,6 +234,7 @@ angular.module('techGallery').controller(
             if(!response[i].endorsed.photo) {
               response[i].endorsed.photo = "/images/default-user-image.jpg";
             }
+            response[i].endorsers = setPlusOneClass(response[i].endorsers);
           }
         }
         $scope.showEndorsementResponse = response;
@@ -263,17 +264,15 @@ angular.module('techGallery').controller(
      * Begin of +1 features
      *
      */
-    $scope.setClassPlusOne = function(endorsers){
-      var classe = 'btn GPlusDefault';
-
+    function setPlusOneClass(endorsers){
       for(var i in endorsers){
         if(endorsers[i].email == $scope.userEmail){
-          classe = 'btn GPlusAdded';
-          return classe;
+          endorsers.plusOneClass = 'btn GPlusAdded';
+          return endorsers;
         }
       }
-
-      return classe;
+      endorsers.plusOneClass = 'btn GPlusDefault';
+      return endorsers;
     };
     
     $scope.setToolTipPlusOne = function(index, email){
@@ -300,7 +299,6 @@ angular.module('techGallery').controller(
     $scope.addEndorse = function(endorsed, id) {
       $scope.disablePlusOne = true;
       $scope.processingEndorse = true;
-      setClassElement(id);
       var completeEmail = endorsed.email;
       completeEmail = completeEmail.split('@');
       var email = completeEmail[0];
@@ -308,9 +306,6 @@ angular.module('techGallery').controller(
       req.endorsed = email;
       req.technology = $scope.idTechnology;
       gapi.client.rest.addEndorsementPlusOne(req).execute(function(data){
-        if(data.hasOwnProperty('error')){
-          setClassElement(id);
-        }
         callBackLoaded();
       });
     };
@@ -356,7 +351,6 @@ angular.module('techGallery').controller(
         gapi.client.rest.addSkill(req).execute(function(data) {
           $scope.processingEndorse = true;
           callBackLoaded();
-//          console.log(data);
         });
 
       }
@@ -410,8 +404,7 @@ angular.module('techGallery').controller(
     function loadComments() {
     	var req = {technologyId: $scope.idTechnology};
     	gapi.client.rest.getCommentsByTech(req).execute(function(data){
-    		$scope.techComments = data;
-    		$scope.$apply();
+    		$scope.techComments = data.comments;
     	});
     }
     
