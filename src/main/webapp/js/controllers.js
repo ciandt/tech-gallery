@@ -167,6 +167,8 @@ angular.module('techGallery').controller(
         fillTechnology(data);
         showEndorsementsByTech();
         loadComments();
+        showAllRecommenders();
+        showAllNotRecommenders();
         $scope.disablePlusOne = false;
         $scope.$apply();
       });
@@ -206,10 +208,10 @@ angular.module('techGallery').controller(
           }
           $scope.endorsed = '';
           callBackLoaded();
-          $scope.processEndorse = false;
-          $scope.$apply();
         });
       }
+      $scope.processEndorse = false;
+      $scope.$apply();
     };
 
     /**
@@ -427,6 +429,7 @@ angular.module('techGallery').controller(
     	gapi.client.rest.getCommentsByTech(req).execute(function(data){
     		$scope.techComments = data.comments;
     		$scope.processingComment = false;
+    		$scope.$apply();
     	});
     }
     
