@@ -22,8 +22,12 @@ public enum ValidationMessageEnums {
   USER_GOOGLE_ENDPOINT_NULL("A user must be sent to endpoints."), 
   // Message for Comments
   COMMENT_CANNOT_BLANK("Comment cannot be null or blank."),
-  COMMENT_MUST_BE_LESSER("Comment must have less than 500 characters."), 
+  COMMENT_MUST_BE_LESSER("Comment must have less than 500 characters."),
+  COMMENT_NOT_EXIST("Comment doesn't exist."),
+  COMMENT_ID_CANNOT_BLANK("Comment or comment's id cannot be null or blank."),
+  COMMENT_AUTHOR_ERROR("This comment doesn't belong to this user."),
   TO_INACTIVE("Inactive transient object is not allowed.");
+
 
   private String message;
   private I18n i18n  = I18n.getInstance();

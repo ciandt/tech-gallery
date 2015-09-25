@@ -126,11 +126,11 @@
 
           <div id="div_image_recomendations" class="container">
             <div class="col-xs-6">
-              <button ng-show="showPlusOne(response.endorsed.email)"
+              <button ng-show="!showSelfInformations(response.endorsed.email)"
                 type="button" id={{generateId($index,response.endorsed.email)}}
-                style="float: left" ng-disabled=disablePlusOne
-                ng-click="addEndorse(response.endorsed, generateId($index,response.endorsed.email))" tooltip={{setToolTipPlusOne($index,response.endorsed.email)}}
-                ng-class="setClassPlusOne(response.endorsers)">+{{response.endorsers.length}}</button>
+                ng-disabled=disablePlusOne
+                ng-click="addEndorse(response.endorsed, generateId($index,response.endorsed.email))" class="plusOneButton" tooltip={{setToolTipPlusOne($index,response.endorsed.email)}}
+                ng-class="response.endorsers.plusOneClass">+{{response.endorsers.length}}</button>
               <div
                 ng-repeat="endorser in response.endorsersFiltered track by $index">
                 <img class="media-object endorsers-image"
@@ -180,10 +180,16 @@
 	      <img src="/images/loading.gif" class="loading">
 	    </div>
 	    <div class="col-xs-9">
-	  		<div ng-repeat="comment in techComments track by $index">
-				<img class="media-object endorsed-image" src="{{comment.user.photo}}" style="display: inline;"/>
-	  			<b><span style="font-size: large;">{{comment.user.name}}</span><span style="font-size: small;"> em </span>
-	  			<span style="font-size: medium;">{{comment.creation}}</span><span style="font-size: small;"> disse:</span></b>
+	  		<div class="commentBlock" ng-repeat="comment in techComments track by $index">
+	  			<div class="commentHeader">
+					<img class="media-object endorsed-image commentImage img-circle" src="{{comment.author.photo}}"/>
+	  				<b class="flex1">
+	  				<span class="commentName">{{comment.author.name}}</span><span class="smallFont"> em </span>
+	  				<span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}</span><span class="smallFont"> disse:</span>
+	  				</b>
+	  				<a ng-show="showSelfInformations(comment.author.email)" ng-click="deleteComment(comment.id)" 
+	  					ref="#" id="btn_delete" type="button" class="btn glyphicon glyphicon-remove-circle"></a>
+	  			</div>
 	  			<h5>{{comment.comment}}</h5>
 	  		</div>
 	  	</div>
