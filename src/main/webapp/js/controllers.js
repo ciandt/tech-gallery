@@ -264,7 +264,6 @@ angular.module('techGallery').controller(
      * Begin of +1 features
      *
      */
-   
     function setPlusOneClass(endorsers){
       for(var i in endorsers){
         if(endorsers[i].email == $scope.userEmail){
@@ -285,12 +284,12 @@ angular.module('techGallery').controller(
       return "Remover sua indicação +1 para o usuário"
     }
 
-    $scope.showPlusOne = function(email){
+    $scope.showSelfInformations = function(email){
       if($scope.userEmail == email){
-        return false;
+        return true;
       }
 
-      return true;
+      return false;
     };
 
     $scope.generateId = function(index, email) {
@@ -300,7 +299,6 @@ angular.module('techGallery').controller(
     $scope.addEndorse = function(endorsed, id) {
       $scope.disablePlusOne = true;
       $scope.processingEndorse = true;
-//      setClassElement(id);
       var completeEmail = endorsed.email;
       completeEmail = completeEmail.split('@');
       var email = completeEmail[0];
@@ -308,9 +306,6 @@ angular.module('techGallery').controller(
       req.endorsed = email;
       req.technology = $scope.idTechnology;
       gapi.client.rest.addEndorsementPlusOne(req).execute(function(data){
-//        if(data.hasOwnProperty('error')){
-//          setClassElement(id);
-//        }
         callBackLoaded();
       });
     };
@@ -356,7 +351,6 @@ angular.module('techGallery').controller(
         gapi.client.rest.addSkill(req).execute(function(data) {
           $scope.processingEndorse = true;
           callBackLoaded();
-//          console.log(data);
         });
 
       }
@@ -411,6 +405,13 @@ angular.module('techGallery').controller(
     	var req = {technologyId: $scope.idTechnology};
     	gapi.client.rest.getCommentsByTech(req).execute(function(data){
     		$scope.techComments = data.comments;
+    	});
+    }
+    
+    $scope.deleteComment = function(id) {
+    	var req = {commentId: id};
+    	gapi.client.rest.deleteComment(req).execute(function(data){
+    		loadComments();
     	});
     }
   }

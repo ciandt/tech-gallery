@@ -41,4 +41,14 @@ public interface TechnologyCommentService {
   public Response getCommentsByTech(final String techId, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
 
+  /**
+   * Service to delete a comment.
+   * 
+   * @param commentId comment entity id.
+   * @return comment or message error.
+   * @throws InternalServerErrorException .
+   * @throws BadRequestException .
+   */
+  public Response deleteComment(final Long commentId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
 }
