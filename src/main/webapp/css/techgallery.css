@@ -25,6 +25,10 @@
     box-shadow: 1px 1px 1px black;
 }
 
+.plusOneButton{
+	float: left
+}
+
 .alignBar{
 	margin-top:-20px
 }
@@ -130,4 +134,34 @@ body, html {
 .textarea {
   height: 108px !important;
   margin-bottom: 5px;
+}
+
+.smallFont{
+	font-size: small
+}
+
+.mediumFont{
+	font-size: medium
+}
+
+.commentName{
+	font-size: large;
+	margin-left: 15px;
+}
+
+.commentHeader{
+	display: flex;
+	align-items: center;
+}
+
+.flex1{
+	flex: 1;
+}
+
+.commentImage{
+	display: inline;
+}
+
+.commentBlock{
+	margin-bottom: 30px;
 }

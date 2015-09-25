@@ -6,6 +6,7 @@ import java.util.List;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.enums.TechnologyOrderOptionEnum;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
@@ -69,9 +70,11 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (techEntities == null) {
       throw new NotFoundException(i18n.t("No technology was found."));
     } else {
+      TechnologyOrderOptionEnum orderBy = TechnologyOrderOptionEnum.COMENTARY_QUANTITY;
+      sortTechnologies(techEntities, orderBy);
+      
       TechnologiesResponse response = new TechnologiesResponse();
       List<TechnologyResponse> internList = new ArrayList<TechnologyResponse>();
-
       for (int i = 0; i < techEntities.size(); i++) {
         Technology tech = techEntities.get(i);
         TechnologyResponse techResponseItem = new TechnologyResponse();
@@ -87,6 +90,25 @@ public class TechnologyServiceImpl implements TechnologyService {
       }
       response.setTechnologies(internList);
       return response;
+    }
+  }
+
+  private void sortTechnologies(List<Technology> techEntities, TechnologyOrderOptionEnum orderBy) {
+    switch (orderBy) {
+      case POSITIVE_RECOMENDATION_QUANTITY:
+
+        break;
+      case NEGATIVE_RECOMENDATION_QUANTITY:
+
+        break;
+      case COMENTARY_QUANTITY:
+
+        break;
+      case ENDORSEMENT_QUANTITY:
+
+        break;
+      default:
+        break;
     }
   }
 
