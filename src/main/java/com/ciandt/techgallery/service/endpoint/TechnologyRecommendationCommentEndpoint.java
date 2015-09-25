@@ -12,10 +12,7 @@ import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.TechnologyRecommendationCommentService;
 import com.ciandt.techgallery.service.TechnologyRecommendationCommentServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationCommentTO;
-import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
-import com.ciandt.techgallery.service.model.TechnologyResponse;
 
 @Api(name = "rest", version = "v1",
     clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},

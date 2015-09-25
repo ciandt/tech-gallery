@@ -152,12 +152,12 @@
     			<button id="btn_up" type="button" ng-click="changeThumbs('up')" ng-class="setClassThumbs('up')" 
     					class="btn glyphicon glyphicon-thumbs-up thumbsFont"></button>
     					
-    			<a href="#" class="recommendations-link">{{showAllRecommenders()}}</a>
+    			<a href="#" ng-model="showAllRecommenders()" class="recommendations-link">{{up}}</a>
     			
     			<button id="btn_down" type="button" ng-click="changeThumbs('down')" ng-class="setClassThumbs('down')" 
     					class="btn glyphicon glyphicon-thumbs-down thumbsFont"></button>
     					
-    			<a href="#" class="recommendations-link">{{showAllNotRecommenders()}}</a>
+    			<a href="#" ng-model="showAllNotRecommenders()" class="recommendations-link">{{down}}</a>
     		</div>
     	</div>
     </div>

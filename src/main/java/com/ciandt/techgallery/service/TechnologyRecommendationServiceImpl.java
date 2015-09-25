@@ -19,7 +19,6 @@ import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
 import com.ciandt.techgallery.service.model.UserResponse;
 import com.ciandt.techgallery.service.util.TechGalleryUserTransformer;
 import com.ciandt.techgallery.service.util.TechnologyRecommendationTransformer;
-import com.ciandt.techgallery.service.util.TechnologyTransformer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -100,4 +99,38 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     return dao.findByComment(comment);
   }
 
+  @Override
+  public List<Response> getRecommendationsUpByTechnologyAndUser(String technologyId, User user) {
+    return getRecommendationsByTechnologyUserAndScore(technologyId, user, true);
+  }
+
+
+  @Override
+  public List<Response> getRecommendationsDownByTechnologyAndUser(String technologyId, User user) {
+    return getRecommendationsByTechnologyUserAndScore(technologyId, user, false);
+  }
+
+  /**
+   * Method to search for recommendations that has the technology, user and score passed.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 25/09/2015
+   *
+   * @param technologyId
+   * @param user
+   * @param score
+   * 
+   * @return List<Response>
+   */
+  private List<Response> getRecommendationsByTechnologyUserAndScore(String technologyId, User user,
+      Boolean score) {
+    List<Response> recommendationsUpTO = new ArrayList<Response>();
+    for (Response recommendation : getRecommendations(technologyId, user)) {
+      TechnologyRecommendationTO recommendationTO = (TechnologyRecommendationTO) recommendation;
+      if (recommendationTO.getScore() == score) {
+        recommendationsUpTO.add(recommendationTO);
+      }
+    }
+    return recommendationsUpTO;
+  }
 }

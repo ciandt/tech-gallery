@@ -406,7 +406,7 @@ angular.module('techGallery').controller(
     					comment : {comment : $scope.comment},
     					recommendation : {score : $scope.score}
     			};
-    			gapi.client.rest.addCommentAndRecommend(req).execute(function(data) {
+    			gapi.client.rest.addRecommendationComment(req).execute(function(data) {
     				$scope.processingComment = true;
     				callBackLoaded();
     				$scope.comment = '';
@@ -468,17 +468,23 @@ angular.module('techGallery').controller(
     }
     
     $scope.showAllRecommenders = function(){
-    	return 15;
-//    	gapi.client.rest.getRecommendationsByTechnology(req).execute(function(data){
-//    		return data.length;
-//    	});
+    	var req = {id : $scope.idTechnology};
+    	gapi.client.rest.getRecommendationsUp(req).execute(function(data){
+    		$scope.up = 0;
+    		if(data.items !== undefined){
+    			$scope.up = data.items.length;
+    		}
+    	});
     }
     
     $scope.showAllNotRecommenders = function(){
-    	return 3;
-//    	gapi.client.rest.getNotRecommendationsByTechnology(req).execute(function(data){
-//    		return data.length;
-//    	});
+    	var req = {id : $scope.idTechnology};
+    	gapi.client.rest.getRecommendationsDown(req).execute(function(data){
+    		$scope.down = 0;
+    		if(data.items !== undefined){
+    			$scope.down = data.items.length;
+    		}
+    	});
     }
   }
 );

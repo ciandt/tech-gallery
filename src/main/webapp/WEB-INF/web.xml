@@ -8,7 +8,7 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl,com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.SkillEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationCommentEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint</param-value>
+            <param-value>com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl,com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.SkillEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
