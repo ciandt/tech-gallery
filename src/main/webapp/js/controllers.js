@@ -166,6 +166,7 @@ angular.module('techGallery').controller(
 
         fillTechnology(data);
         showEndorsementsByTech();
+        loadComments();
         $scope.disablePlusOne = false;
         $scope.$apply();
       });
@@ -386,21 +387,42 @@ angular.module('techGallery').controller(
     }
     
     $scope.addComment = function(){
-    	if($scope.comment && $scope.comment.length <= 500){
-    		//Call API to add a comment
-    		var req = {
-    				technologyId : $scope.idTechnology,
-    				comment : $scope.comment,
-    				recommend : $scope.score
-    		};
-    		gapi.client.rest.addComment(req).execute(function(data) {
-    			$scope.processingComment = true;
-    			//TODO TECG-24 Call API to show comments and put $scope.processingComment = true;
-    			$scope.processingComment = false;
-    			$scope.comment = '';
-    		});
+    	if($scope.comment && $scope.comment.trim().length <= 500){
+    		if($scope.score == undefined){
+    			//Call API to add a comment
+    			var req = {
+    					technologyId : $scope.idTechnology,
+    					comment : $scope.comment
+    			};
+    			gapi.client.rest.addComment(req).execute(function(data) {
+    				$scope.processingComment = true;
+    				callBackLoaded();
+    				$scope.comment = '';
+    			});
+    		}else {
+    			//Call API to add a comment and a recommendation
+    			var req = {
+    					technology : {id : $scope.idTechnology},
+    					comment : {comment : $scope.comment},
+    					recommendation : {score : $scope.score}
+    			};
+    			gapi.client.rest.addCommentAndRecommend(req).execute(function(data) {
+    				$scope.processingComment = true;
+    				callBackLoaded();
+    				$scope.comment = '';
+    			});
+    		}
+    	}else{
+    		if($scope.score !== undefined){
+    			$scope.alertComment = true;
+    			$scope.alertMsgComment = 'Você deve informar um comentário sobre sua recomendação.';
+    		}
     	}
     }
+    
+    $scope.closeAlertComment = function() {
+	    $scope.alertComment = undefined;
+    };
     
     /**
      * Begin of show comments features
@@ -410,6 +432,7 @@ angular.module('techGallery').controller(
     	var req = {technologyId: $scope.idTechnology};
     	gapi.client.rest.getCommentsByTech(req).execute(function(data){
     		$scope.techComments = data;
+    		$scope.processingComment = false;
     	});
     }
     

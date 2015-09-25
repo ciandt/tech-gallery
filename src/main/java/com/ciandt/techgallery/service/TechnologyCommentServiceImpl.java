@@ -65,7 +65,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
       BadRequestException, NotFoundException, OAuthRequestException {
     Technology technology = technologyDAO.findById(techId);
     List<TechnologyComment> commentsByTech =
-        technologyCommentDAO.findAllActiviesByTechnology(technology);
+        technologyCommentDAO.findAllActivesByTechnology(technology);
     TechnologyCommentsTO response = new TechnologyCommentsTO();
     response.setComments(TechnologyCommentConverter.fromEntityToTransient(commentsByTech));
     for (TechnologyCommentTO commentTO : response.getComments()) {

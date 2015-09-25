@@ -162,6 +162,9 @@
     	</div>
     </div>
     <div id="add_comments" class="container">
+    	<div class="endorse-alerts spacingtop">
+	      <alert ng-show="alertComment" type="danger" close="closeAlertComment()">{{alertMsgComment}}</alert>
+	    </div>
     	<div>
 	    	<h3>Comentários</h3>
 	    	<h5 ng-show="recommend_message">Para completar a recomendação desta tecnologia, faça um comentário:</h5>
