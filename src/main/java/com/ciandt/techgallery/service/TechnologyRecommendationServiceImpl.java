@@ -141,7 +141,8 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     return recommendationsUpTO;
   }
 
-  public void deleteRecommendById(Long recommendId, User user)
+  @Override
+  public Response deleteRecommendById(Long recommendId, User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
     TechnologyRecommendation recommendation = technologyRecommendationDAO.findById(recommendId);
     TechGalleryUser techUser = userService.getUserByEmail(user.getEmail());
@@ -150,6 +151,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
 
     recommendation.setActive(false);
     technologyRecommendationDAO.update(recommendation);
+    return techRecTransformer.transformTo(recommendation);
   }
 
   /**

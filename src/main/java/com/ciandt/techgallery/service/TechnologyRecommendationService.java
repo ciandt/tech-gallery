@@ -58,7 +58,9 @@ public interface TechnologyRecommendationService {
    * @throws BadRequestException
    * @throws NotFoundException
    * @throws InternalServerErrorException
+   * 
+   * @return Response
    */
-  public void deleteRecommendById(Long recommendId, User user)
+  public Response deleteRecommendById(Long recommendId, User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException;
 }
