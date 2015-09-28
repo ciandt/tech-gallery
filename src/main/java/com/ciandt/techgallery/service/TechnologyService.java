@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.service;
 
+import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
@@ -37,7 +38,7 @@ public interface TechnologyService {
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException;
 
   /**
-   * Service for getting a technology.
+   * Service for getting a technology response.
    * 
    * @param id entity id.
    * @return
@@ -55,4 +56,12 @@ public interface TechnologyService {
    */
   public Response findTechnologiesByFilter(final TechnologyFilter techFilter, User user) throws InternalServerErrorException, NotFoundException, BadRequestException;
  
+  /**
+   * Service for getting a technology
+   * @param id entity id
+   * @return 
+   * @throws NotFoundException when entity is not found
+   */
+  public Technology getTechnologyById(String id) throws NotFoundException;
+
 }

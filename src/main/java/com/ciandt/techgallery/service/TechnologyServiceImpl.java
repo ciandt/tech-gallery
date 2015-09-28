@@ -132,4 +132,15 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
+  @Override
+  public Technology getTechnologyById(String id) throws NotFoundException {
+    Technology tech = technologyDAO.findById(id);
+    if (tech == null) {
+      throw new NotFoundException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
+    } else {
+      return tech;
+    }
+
+  }
+
 }

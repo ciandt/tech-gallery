@@ -145,10 +145,29 @@
       </div>
     </div>
     
-    
+    <div id="choose_recommendation" class="container">
+    	<div>
+    		<h3>Recomenda esta tecnologia?</h3>
+    		<div id="recommend_area" class="col-md-9 text-left">
+    			<button id="btn_up" type="button" ng-click="changeThumbs('up')" ng-class="setClassThumbs('up')" 
+    					class="btn glyphicon glyphicon-thumbs-up thumbsFont"></button>
+    					
+    			<a href="#" ng-model="showAllRecommenders()" class="recommendations-link">{{up}}</a>
+    			
+    			<button id="btn_down" type="button" ng-click="changeThumbs('down')" ng-class="setClassThumbs('down')" 
+    					class="btn glyphicon glyphicon-thumbs-down thumbsFont"></button>
+    					
+    			<a href="#" ng-model="showAllNotRecommenders()" class="recommendations-link">{{down}}</a>
+    		</div>
+    	</div>
+    </div>
     <div id="add_comments" class="container">
+    	<div class="endorse-alerts spacingtop">
+	      <alert ng-show="alertComment" type="danger" close="closeAlertComment()">{{alertMsgComment}}</alert>
+	    </div>
     	<div>
 	    	<h3>Comentários</h3>
+	    	<h5 ng-show="recommend_message">Para completar a recomendação desta tecnologia, faça um comentário:</h5>
 	    	<div id="comment_area" class="col-md-9 text-right">
 		    	<textarea id="txta_comment" ng-model="comment" class="form-control textarea" maxlength="500"></textarea>
 		    	<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearComment()">Limpar</button>
@@ -168,7 +187,7 @@
 	  				<span class="commentName">{{comment.author.name}}</span><span class="smallFont"> em </span>
 	  				<span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}</span><span class="smallFont"> disse:</span>
 	  				</b>
-	  				<a ng-show="showSelfInformations(comment.user.email)" ng-click="deleteComment(comment.id)" 
+	  				<a ng-show="showSelfInformations(comment.author.email)" ng-click="deleteComment(comment.id)" 
 	  					ref="#" id="btn_delete" type="button" class="btn glyphicon glyphicon-remove-circle"></a>
 	  			</div>
 	  			<h5>{{comment.comment}}</h5>
