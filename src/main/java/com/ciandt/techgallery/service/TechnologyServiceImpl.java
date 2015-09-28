@@ -84,19 +84,8 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (techEntities == null) {
       throw new NotFoundException(i18n.t("No technology was found."));
     } else {
-      // TODO - move this code to findByFilter when ready
-      TechnologyOrderOptionEnum orderBy = TechnologyOrderOptionEnum.COMENTARY_QUANTITY;
-      List<TechnologyDetailsCounter> technologiesDetailList =
-          sortTechnologies(techEntities, orderBy);
-      List<Technology> sortedTechnologies = new ArrayList<Technology>();
-      for (TechnologyDetailsCounter detail : technologiesDetailList) {
-        sortedTechnologies.add(detail.getTechnology().get());
-      }
-      // end TODO
-
       TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList =
-          TechnologyConverter.fromEntityToTransient(sortedTechnologies);
+      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(techEntities);
       response.setTechnologies(internList);
       return response;
     }
@@ -177,8 +166,18 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (filteredList.isEmpty()) {
       return new TechnologiesResponse();
     } else {
+      // TODO - pegar valor do front-end
+      TechnologyOrderOptionEnum orderBy = TechnologyOrderOptionEnum.COMENTARY_QUANTITY;
+      List<TechnologyDetailsCounter> technologiesDetailList =
+          sortTechnologies(filteredList, orderBy);
+      List<Technology> sortedTechnologies = new ArrayList<Technology>();
+      for (TechnologyDetailsCounter detail : technologiesDetailList) {
+        sortedTechnologies.add(detail.getTechnology().get());
+      }
+
       TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
+      List<TechnologyResponse> internList =
+          TechnologyConverter.fromEntityToTransient(sortedTechnologies);
       response.setTechnologies(internList);
       return response;
     }
