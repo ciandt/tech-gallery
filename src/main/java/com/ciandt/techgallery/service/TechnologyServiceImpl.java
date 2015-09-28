@@ -113,7 +113,18 @@ public class TechnologyServiceImpl implements TechnologyService {
       return response;
     }
   }
-  
+
+  @Override
+  public Technology getTechnologyById(String id) throws NotFoundException {
+    Technology tech = technologyDAO.findById(id);
+    if (tech == null) {
+      throw new NotFoundException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
+    } else {
+      return tech;
+    }
+
+  }
+
   /**
    * Validate the user logged in.
    * 
@@ -121,15 +132,14 @@ public class TechnologyServiceImpl implements TechnologyService {
    * @throws BadRequestException .
    */
   private void validateUser(User user) throws BadRequestException {
-
+    
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
-
+    
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
-
 }

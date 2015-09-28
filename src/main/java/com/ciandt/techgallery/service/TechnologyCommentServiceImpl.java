@@ -17,6 +17,7 @@ import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
+import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
@@ -40,6 +41,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   TechnologyCommentDAO technologyCommentDAO = new TechnologyCommentDAOImpl();
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
+  TechnologyRecommendationService recommendationService = new TechnologyRecommendationServiceImpl();
 
   @Override
   public Response addComment(TechnologyCommentTO comment, User user)
@@ -71,6 +73,9 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
         technologyCommentDAO.findAllActivesByTechnology(technology);
     TechnologyCommentsTO response = new TechnologyCommentsTO();
     response.setComments(TechnologyCommentConverter.fromEntityToTransient(commentsByTech));
+    for (TechnologyCommentTO commentTO : response.getComments()) {
+      setCommentRecommendation(commentTO);
+    }
     return response;
   }
 
@@ -102,7 +107,26 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   }
 
   /**
-   * Validate comment of TechnologyCommentTO.
+   * If the comment referenced by commentTO was created because of a recommendation, sets the
+   * recommendation score
+   * 
+   * @param commentTO the comment
+   */
+  private void setCommentRecommendation(TechnologyCommentTO commentTO) {
+    TechnologyComment comment = technologyCommentDAO.findById(commentTO.getId());
+    TechnologyRecommendation techRecommendation;
+    techRecommendation = recommendationService.getRecommendationByComment(comment);
+
+    if (techRecommendation != null) {
+      commentTO.setRecommendationScore(techRecommendation.getScore());
+    } else {
+      commentTO.setRecommendationScore(null);
+    }
+
+  }
+
+  /**
+   * Validate inputs of TechnologyCommentTO.
    * 
    * @param comment inputs to be validate
    * @throws BadRequestException .
@@ -172,7 +196,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
-    }
+}
 
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
     if (techUser == null) {

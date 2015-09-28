@@ -174,3 +174,19 @@ body, html {
 	box-shadow: 2px 2px 2px black;
 	margin-right: 5px
 }
+
+.selectedThumbUp {
+	color: green !important;
+}
+
+.selectedThumbDown {
+	color: red !important;
+}
+
+.thumbsFont {
+	font-size: 40px;
+}
+
+.recommendations-link {
+	font-size: 20px;
+}
