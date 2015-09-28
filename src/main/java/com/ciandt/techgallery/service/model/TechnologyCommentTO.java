@@ -1,7 +1,5 @@
 package com.ciandt.techgallery.service.model;
 
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-
 import java.util.Date;
 
 /**
@@ -13,10 +11,11 @@ import java.util.Date;
 public class TechnologyCommentTO implements Response {
 
   private Long id;
+  private Boolean recommendationScore;
   private String comment;
   private Date creation;
   private String technologyId;
-  private TechGalleryUser author;
+  private UserResponse author;
 
   public Long getId() {
     return id;
@@ -25,12 +24,21 @@ public class TechnologyCommentTO implements Response {
   public void setId(Long id) {
     this.id = id;
   }
+  
+  public Boolean isRecommendationScore() {
+    return recommendationScore;
+  }
 
-  public TechGalleryUser getAuthor() {
+  public void setRecommendationScore(Boolean recommendationScore) {
+    this.recommendationScore = recommendationScore;
+  }
+
+
+  public UserResponse getAuthor() {
     return author;
   }
 
-  public void setAuthor(TechGalleryUser author) {
+  public void setAuthor(UserResponse author) {
     this.author = author;
   }
 
