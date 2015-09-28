@@ -46,4 +46,19 @@ public interface TechnologyRecommendationService {
    * @return List<Response>
    */
   public List<Response> getRecommendationsDownByTechnologyAndUser(String technologyId, User user);
+
+  /**
+   * Method to set the recommendation as inactive.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 28/09/2015
+   *
+   * @param recommendId
+   * @param user
+   * @throws BadRequestException
+   * @throws NotFoundException
+   * @throws InternalServerErrorException
+   */
+  public void deleteRecommendById(Long recommendId, User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException;
 }

@@ -196,7 +196,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
-}
+    }
 
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
     if (techUser == null) {
