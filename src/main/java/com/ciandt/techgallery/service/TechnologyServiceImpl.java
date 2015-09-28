@@ -5,12 +5,19 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
+import com.googlecode.objectify.Ref;
+
+// github.com/ciandt-dev/tech-gallery.git
+
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
+import com.ciandt.techgallery.persistence.dao.TechnologyDetailsCounterDAO;
+import com.ciandt.techgallery.persistence.dao.TechnologyDetailsCounterDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.counter.TechnologyDetailsCounter;
 import com.ciandt.techgallery.service.enums.TechnologyOrderOptionEnum;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
@@ -21,6 +28,8 @@ import com.ciandt.techgallery.service.util.TechnologyConverter;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -34,6 +43,7 @@ public class TechnologyServiceImpl implements TechnologyService {
   private static final I18n i18n = I18n.getInstance();
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
+  TechnologyDetailsCounterDAO technologyDetailsCounterDAO = new TechnologyDetailsCounterDAOImpl();
 
   /**
    * POST for adding a technology.
@@ -54,6 +64,10 @@ public class TechnologyServiceImpl implements TechnologyService {
     } else {
       Technology entity = TechnologyConverter.fromTransientToEntity(technology);
       technologyDAO.add(entity);
+      TechnologyDetailsCounter techDetails = new TechnologyDetailsCounter();
+      techDetails.setTechnology(Ref.create(technologyDAO.findById(entity.getId())));
+      technologyDetailsCounterDAO.add(techDetails);
+
       // set the id and return it
       technology.setId(entity.getId());
       return technology;
@@ -70,33 +84,65 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (techEntities == null) {
       throw new NotFoundException(i18n.t("No technology was found."));
     } else {
+      // TODO - move this code to findByFilter when ready
       TechnologyOrderOptionEnum orderBy = TechnologyOrderOptionEnum.COMENTARY_QUANTITY;
-      sortTechnologies(techEntities, orderBy);
+      List<TechnologyDetailsCounter> technologiesDetailList =
+          sortTechnologies(techEntities, orderBy);
+      List<Technology> sortedTechnologies = new ArrayList<Technology>();
+      for (TechnologyDetailsCounter detail : technologiesDetailList) {
+        sortedTechnologies.add(detail.getTechnology().get());
+      }
+      // end TODO
 
       TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(techEntities);
+      List<TechnologyResponse> internList =
+          TechnologyConverter.fromEntityToTransient(sortedTechnologies);
       response.setTechnologies(internList);
       return response;
     }
   }
 
-  private void sortTechnologies(List<Technology> techEntities, TechnologyOrderOptionEnum orderBy) {
+  private List<TechnologyDetailsCounter> sortTechnologies(List<Technology> techEntities,
+      TechnologyOrderOptionEnum orderBy) {
+    List<TechnologyDetailsCounter> counterList = new ArrayList<TechnologyDetailsCounter>();
+    for (Technology technology : techEntities) {
+      counterList.add(technologyDetailsCounterDAO.findByTechnology(technology));
+    }
     switch (orderBy) {
       case POSITIVE_RECOMENDATION_QUANTITY:
-
+        Collections.sort(counterList, new Comparator<TechnologyDetailsCounter>() {
+          @Override
+          public int compare(TechnologyDetailsCounter counter1, TechnologyDetailsCounter counter2) {
+            return Integer.compare(counter2.getPositiveRecomendationsCounter(),
+                counter1.getPositiveRecomendationsCounter());
+          }
+        });
         break;
       case NEGATIVE_RECOMENDATION_QUANTITY:
-
+        Collections.sort(counterList, new Comparator<TechnologyDetailsCounter>() {
+          @Override
+          public int compare(TechnologyDetailsCounter counter1, TechnologyDetailsCounter counter2) {
+            return Integer.compare(counter2.getNegativeRecomendationsCounter(),
+                counter1.getNegativeRecomendationsCounter());
+          }
+        });
         break;
       case COMENTARY_QUANTITY:
-
+        Collections.sort(counterList, new Comparator<TechnologyDetailsCounter>() {
+          @Override
+          public int compare(TechnologyDetailsCounter counter1, TechnologyDetailsCounter counter2) {
+            return Integer.compare(counter2.getCommentariesCounter(),
+                counter1.getCommentariesCounter());
+          }
+        });
         break;
       case ENDORSEMENT_QUANTITY:
-
+        // TODO - Implement endorseds counter
         break;
       default:
         break;
     }
+    return counterList;
   }
 
   /**

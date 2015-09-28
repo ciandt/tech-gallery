@@ -28,6 +28,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
 
   private TechnologyRecommendationDAO dao = new TechnologyRecommendationDAOImpl();
   private TechnologyService technologyService = new TechnologyServiceImpl();
+  TechnologyDetailsCounterService counterService = new TechnologyDetailsCounterServiceImpl();
   private TechnologyRecommendationTransformer techRecTransformer =
       new TechnologyRecommendationTransformer();
   private UserServiceTG userService = new UserServiceTGImpl();
@@ -72,8 +73,10 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
       previousRec.setActive(false);
       previousRec.setInactivatedDate(new Date());
       dao.update(previousRec);
+      counterService.removeRecomendationCounter(technology, previousRec.getScore());
     }
     recommendation.setId(dao.add(recommendation).getId());
+    counterService.addRecomendationCounter(technology, recommendation.getScore());
     return recommendation;
   }
 
@@ -95,7 +98,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   }
 
   @Override
-  public TechnologyRecommendation getRecommendationByComment(TechnologyComment comment){
+  public TechnologyRecommendation getRecommendationByComment(TechnologyComment comment) {
     return dao.findByComment(comment);
   }
 

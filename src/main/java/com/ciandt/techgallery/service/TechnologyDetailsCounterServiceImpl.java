@@ -1,0 +1,75 @@
+package com.ciandt.techgallery.service;
+
+import com.google.api.server.spi.response.NotFoundException;
+
+import com.ciandt.techgallery.persistence.dao.TechnologyDetailsCounterDAO;
+import com.ciandt.techgallery.persistence.dao.TechnologyDetailsCounterDAOImpl;
+import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.counter.TechnologyDetailsCounter;
+import com.ciandt.techgallery.utils.i18n.I18n;
+
+/**
+ * Services for TechnologyDetailsCounter Endpoint requests.
+ * 
+ * @author ibrahim
+ *
+ */
+public class TechnologyDetailsCounterServiceImpl implements TechnologyDetailsCounterService {
+
+  private static final I18n i18n = I18n.getInstance();
+  TechnologyDetailsCounterDAO technologyDetailsCounterDao = new TechnologyDetailsCounterDAOImpl();
+
+  @Override
+  public TechnologyDetailsCounter getTechnologyDetailByTechnology(Technology technology)
+      throws NotFoundException {
+    TechnologyDetailsCounter entity = technologyDetailsCounterDao.findByTechnology(technology);
+    return entity;
+  }
+
+  @Override
+  public void addCommentariesCounter(Technology technology) {
+    TechnologyDetailsCounter entity = technologyDetailsCounterDao.findByTechnology(technology);
+    if (entity != null) {
+      entity.addCommentariesCounter();
+    }
+    technologyDetailsCounterDao.update(entity);
+  }
+
+  @Override
+  public void removeCommentariesCounter(Technology technology) {
+    TechnologyDetailsCounter entity = technologyDetailsCounterDao.findByTechnology(technology);
+    if (entity != null) {
+      entity.removeCommentariesCounter();
+    }
+    technologyDetailsCounterDao.update(entity);
+
+  }
+
+  @Override
+  public void addRecomendationCounter(Technology technology, Boolean score) {
+    TechnologyDetailsCounter entity = technologyDetailsCounterDao.findByTechnology(technology);
+    if (entity == null) {
+      return;
+    }
+    if (score) {
+      entity.addPositiveRecomendationsCounter();
+    } else {
+      entity.addNegativeRecomendationsCounter();
+    }
+    technologyDetailsCounterDao.update(entity);
+  }
+
+  @Override
+  public void removeRecomendationCounter(Technology technology, Boolean score) {
+    TechnologyDetailsCounter entity = technologyDetailsCounterDao.findByTechnology(technology);
+    if (entity == null) {
+      return;
+    }
+    if (score) {
+      entity.removePositiveRecomendationsCounter();
+    } else {
+      entity.removeNegativeRecomendationsCounter();
+    }
+    technologyDetailsCounterDao.update(entity);
+  }
+}

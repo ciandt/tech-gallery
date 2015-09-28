@@ -42,6 +42,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
   TechnologyRecommendationService recommendationService = new TechnologyRecommendationServiceImpl();
+  TechnologyDetailsCounterService counterService = new TechnologyDetailsCounterServiceImpl();
 
   @Override
   public Response addComment(TechnologyCommentTO comment, User user)
@@ -56,6 +57,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
 
     TechnologyComment newComment = addNewComment(comment, techUser, technology);
+    counterService.addCommentariesCounter(technology);
     TechnologyCommentTO ret = TechnologyCommentConverter.fromEntityToTransient(newComment);
 
     return ret;
@@ -88,6 +90,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     TechnologyComment comment = technologyCommentDAO.findById(commentId);
     comment.setActive(false);
     technologyCommentDAO.update(comment);
+    counterService.removeCommentariesCounter(comment.getTechnology().get());
     TechnologyCommentTO response = TechnologyCommentConverter.fromEntityToTransient(comment);
     return response;
   }
@@ -196,7 +199,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
-}
+    }
 
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
     if (techUser == null) {
