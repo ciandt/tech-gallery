@@ -31,4 +31,6 @@ public interface TechnologyDetailsCounterService {
 
   public void removeRecomendationCounter(Technology technology, Boolean score);
 
+  public void updateEdorsedsCounter(Technology technology, Integer size);
+
 }

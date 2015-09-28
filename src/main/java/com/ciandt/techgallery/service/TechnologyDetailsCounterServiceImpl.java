@@ -72,4 +72,14 @@ public class TechnologyDetailsCounterServiceImpl implements TechnologyDetailsCou
     }
     technologyDetailsCounterDao.update(entity);
   }
+
+  @Override
+  public void updateEdorsedsCounter(Technology technology, Integer size) {
+    TechnologyDetailsCounter entity = technologyDetailsCounterDao.findByTechnology(technology);
+    if (entity == null) {
+      return;
+    }
+    entity.setEndorsedsCounter(size);
+    technologyDetailsCounterDao.update(entity);
+  }
 }

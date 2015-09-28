@@ -9,8 +9,6 @@ import com.googlecode.objectify.annotation.Load;
 import com.ciandt.techgallery.persistence.model.BaseEntity;
 import com.ciandt.techgallery.persistence.model.Technology;
 
-import java.util.Set;
-
 /**
  * Entity for TechnologyDetailsCounter.
  * 
@@ -37,7 +35,7 @@ public class TechnologyDetailsCounter extends BaseEntity<Long> {
   private Integer commentariesCounter = 0;
 
   @Index
-  private Set<Long> endorsedSet;
+  private Integer endorsedsCounter = 0;
 
   /**
    * Add 1 to the positive recomndations counter.
@@ -103,12 +101,12 @@ public class TechnologyDetailsCounter extends BaseEntity<Long> {
     this.id = id;
   }
 
-  public Set<Long> getEndorsedSet() {
-    return endorsedSet;
+  public Integer getEndorsedsCounter() {
+    return endorsedsCounter;
   }
 
-  public void setEndorsedSet(Set<Long> endorsedSet) {
-    this.endorsedSet = endorsedSet;
+  public void setEndorsedsCounter(Integer endorsedsCounter) {
+    this.endorsedsCounter = endorsedsCounter;
   }
 
   public Ref<Technology> getTechnology() {

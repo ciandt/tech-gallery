@@ -84,19 +84,8 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (techEntities == null) {
       throw new NotFoundException(i18n.t("No technology was found."));
     } else {
-      // TODO - move this code to findByFilter when ready
-      TechnologyOrderOptionEnum orderBy = TechnologyOrderOptionEnum.COMENTARY_QUANTITY;
-      List<TechnologyDetailsCounter> technologiesDetailList =
-          sortTechnologies(techEntities, orderBy);
-      List<Technology> sortedTechnologies = new ArrayList<Technology>();
-      for (TechnologyDetailsCounter detail : technologiesDetailList) {
-        sortedTechnologies.add(detail.getTechnology().get());
-      }
-      // end TODO
-
       TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList =
-          TechnologyConverter.fromEntityToTransient(sortedTechnologies);
+      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(techEntities);
       response.setTechnologies(internList);
       return response;
     }
@@ -137,7 +126,12 @@ public class TechnologyServiceImpl implements TechnologyService {
         });
         break;
       case ENDORSEMENT_QUANTITY:
-        // TODO - Implement endorseds counter
+        Collections.sort(counterList, new Comparator<TechnologyDetailsCounter>() {
+          @Override
+          public int compare(TechnologyDetailsCounter counter1, TechnologyDetailsCounter counter2) {
+            return Integer.compare(counter2.getEndorsedsCounter(), counter1.getEndorsedsCounter());
+          }
+        });
         break;
       default:
         break;
@@ -177,8 +171,18 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (filteredList.isEmpty()) {
       return new TechnologiesResponse();
     } else {
+      // TODO - pegar valor do front-end
+      TechnologyOrderOptionEnum orderBy = TechnologyOrderOptionEnum.ENDORSEMENT_QUANTITY;
+      List<TechnologyDetailsCounter> technologiesDetailList =
+          sortTechnologies(filteredList, orderBy);
+      List<Technology> sortedTechnologies = new ArrayList<Technology>();
+      for (TechnologyDetailsCounter detail : technologiesDetailList) {
+        sortedTechnologies.add(detail.getTechnology().get());
+      }
+
       TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
+      List<TechnologyResponse> internList =
+          TechnologyConverter.fromEntityToTransient(sortedTechnologies);
       response.setTechnologies(internList);
       return response;
     }
