@@ -27,6 +27,7 @@ import com.ciandt.techgallery.service.model.SkillResponse;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -311,7 +312,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     List<Endorsement> endorsementsByTech = endorsementDAO.findAllActivesByTechnology(techId);
     List<EndorsementsGroupedByEndorsedTransient> grouped =
         groupEndorsementByEndorsed(endorsementsByTech, techId);
-
+    Collections.sort(grouped, new EndorsementsGroupedByEndorsedTransient());
     ShowEndorsementsResponse response = new ShowEndorsementsResponse();
     response.setEndorsements(grouped);
     return response;

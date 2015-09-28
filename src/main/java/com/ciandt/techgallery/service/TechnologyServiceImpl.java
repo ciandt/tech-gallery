@@ -1,20 +1,21 @@
 package com.ciandt.techgallery.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
 
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.enums.TechnologyOrderOptionEnum;
+import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Services for Technology Endpoint requests.
@@ -72,7 +73,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     } else {
       TechnologyOrderOptionEnum orderBy = TechnologyOrderOptionEnum.COMENTARY_QUANTITY;
       sortTechnologies(techEntities, orderBy);
-      
+
       TechnologiesResponse response = new TechnologiesResponse();
       List<TechnologyResponse> internList = new ArrayList<TechnologyResponse>();
       for (int i = 0; i < techEntities.size(); i++) {
@@ -135,4 +136,13 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
+  @Override
+  public Technology getTechnologyById(String id) throws NotFoundException {
+    Technology tech = technologyDAO.findById(id);
+    if (tech == null) {
+      throw new NotFoundException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
+    } else {
+      return tech;
+    }
+  }
 }
