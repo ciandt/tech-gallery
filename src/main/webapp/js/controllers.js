@@ -92,6 +92,29 @@ angular.module('techGallery').controller(
         $scope.$apply();
       });
     }
+    
+    $scope.searchTechnology = function (){
+      if($scope.textSearch){
+        $scope.techList = '';
+        $scope.showLoading = true;
+        var req = {
+            titleContains: $scope.textSearch,
+            shortDescriptionContains: $scope.textSearch
+        }
+        gapi.client.rest.findByFilter(req).execute(function(data){
+          $scope.techList = data.technologies;
+          $scope.showLoading = false;
+          $scope.$apply();
+        });
+      }
+    }
+    
+    $scope.searchClear = function (){
+      $scope.techList = '';
+      $scope.textSearch = '';
+      $scope.showLoading = true;
+      callBackLoaded();
+    }
   }
 );
 
@@ -284,7 +307,7 @@ angular.module('techGallery').controller(
         return "+1 indicação para o usuário";
       }
       return "Remover sua indicação +1 para o usuário"
-    }
+    };
 
     $scope.showSelfInformations = function(email){
       if($scope.userEmail == email){
@@ -485,11 +508,13 @@ angular.module('techGallery').controller(
     }
     
     $scope.deleteComment = function(id) {
-    	var req = {commentId: id};
-    	gapi.client.rest.deleteComment(req).execute(function(data){
-    		loadComments();
-    	});
-    }
+    	if(confirm('Você realmente quer apagar o comentário?')) {
+    		var req = {commentId: id};
+    		gapi.client.rest.deleteComment(req).execute(function(data){
+    			loadComments();
+    		});
+    	}
+    };
   }
 );
 
