@@ -166,6 +166,15 @@ body, html {
 	margin-bottom: 30px;
 }
 
+.techSearch{
+	margin-right: 50px;
+}
+
+.searchButton{
+	box-shadow: 2px 2px 2px black;
+	margin-right: 5px
+}
+
 .selectedThumbUp {
 	color: green !important;
 }

@@ -29,8 +29,13 @@
             <h3 class="headerBar">Tech Gallery</h3>
           </a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse rightSideBar">
+        <div id="navbar" class="rightSideBar">
           <div class="navbar-form navbar-right">
+            <div class="form-group techSearch">
+              <input ng-disabled=showLogin type="text" ng-model="textSearch" class="form-control" placeholder="Digite sua busca...">
+              <button ng-disabled=showLogin type="button" ng-click="searchTechnology()" class="btn btn-default glyphicon glyphicon-search searchButton"/>
+              <button ng-disabled=showLogin ng-click="searchClear()" class="btn btn-danger glyphicon glyphicon-remove searchButton" ng-show="textSearch"/>
+            </div>
             <a ng-show="showLogin && !domainError" href="#" ng-click="login()" class="whiteText">Login <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
             <a ng-show="domainError || userLogged" href={{logoutRedirect()}} class="whiteText">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
           </div>
