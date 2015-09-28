@@ -1,10 +1,12 @@
 package com.ciandt.techgallery.service;
 
 import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 /**
  * Services for Technologies.
@@ -42,5 +44,15 @@ public interface TechnologyService {
    * @throws NotFoundException
    */
   public Response getTechnology(final String id) throws NotFoundException;
-
+  
+  /**
+   * Service for getting all technologies according a filter.
+   * 
+   * @param filter entity filter.
+   * @return technologies info or message error.
+   * @throws InternalServerErrorException
+   * @throws NotFoundException
+   */
+  public Response findTechnologiesByFilter(final TechnologyFilter techFilter, User user) throws InternalServerErrorException, NotFoundException, BadRequestException;
+ 
 }
