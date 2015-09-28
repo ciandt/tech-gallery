@@ -432,10 +432,12 @@ angular.module('techGallery').controller(
     }
     
     $scope.deleteComment = function(id) {
-    	var req = {commentId: id};
-    	gapi.client.rest.deleteComment(req).execute(function(data){
-    		loadComments();
-    	});
+    	if(confirm('Você realmente quer apagar o comentário?')) {
+    		var req = {commentId: id};
+    		gapi.client.rest.deleteComment(req).execute(function(data){
+    			loadComments();
+    		});
+    	}
     };
   }
 );
