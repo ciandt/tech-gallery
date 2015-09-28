@@ -4,6 +4,7 @@ import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -11,6 +12,7 @@ import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 /**
  * Endpoint controller class for Technology requests.
@@ -61,5 +63,10 @@ public class TechnologyEndpoint {
   public Response getTechnology(@Named("id") String id) throws NotFoundException {
     return service.getTechnology(id);
   }
+  
+  @ApiMethod(name = "findByFilter", path = "technology-filter", httpMethod = "post")
+  public Response findTechnologyByFilter(TechnologyFilter techFilter, User user) throws InternalServerErrorException, NotFoundException,  BadRequestException{
+    return service.findTechnologiesByFilter(techFilter, user);
+  }
 
-}
+} 
