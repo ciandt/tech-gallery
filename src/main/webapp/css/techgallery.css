@@ -190,3 +190,22 @@ body, html {
 .recommendations-link {
 	font-size: 20px;
 }
+
+.caption {
+	height: 80px;
+}
+
+.recommendationInComment {
+	float: left;
+    margin-top: 20px;
+    right: 20px;
+    font-size: 31px;
+}
+
+.recommendQuestion {
+	padding-left: 0px !important;
+}
+
+.removeFilter {
+	float: right;
+}
