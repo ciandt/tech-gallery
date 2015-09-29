@@ -1,6 +1,9 @@
 package com.ciandt.techgallery.service;
 
+import java.util.List;
+
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.model.RecommendationEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
@@ -63,5 +66,12 @@ public interface TechnologyService {
    * @throws NotFoundException when entity is not found
    */
   public Technology getTechnologyById(String id) throws NotFoundException;
-
+  
+  /**
+   * Service for getting a list of possibles recommendations
+   * @return 
+   * @throws NotFoundException when entity is not found
+   */
+  public List<String> getRecommendations(User user) throws NotFoundException;
+  
 }

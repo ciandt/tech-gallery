@@ -13,11 +13,22 @@ public class TechnologyFilter implements Response {
   /** string for search in title */
   private String titleContains;
   
-  /** string for search in title */
+  /** string for search in shortDescription */
   private String shortDescriptionContains;
+  
+  /** string for search in recommendation */
+  private String recommendationIs;
 
   public String getTitleContains() {
     return titleContains;
+  }
+
+  public String getRecommendationIs() {
+    return recommendationIs;
+  }
+
+  public void setRecommendationIs(String recommendationIs) {
+    this.recommendationIs = recommendationIs;
   }
 
   public void setTitleContains(String titleContains) {
