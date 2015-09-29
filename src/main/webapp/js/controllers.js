@@ -458,24 +458,30 @@ angular.module('techGallery').controller(
     }
     
     $scope.filterRecommenders = function(){
-    	if($scope.techCommentsFull){
+    	if($scope.up > 0 && $scope.techCommentsFull){
     		$scope.techComments = [];
     		for (var i = 0; i < $scope.techCommentsFull.length; i++) {
     			if($scope.techCommentsFull[i].recommendationScore != null && $scope.techCommentsFull[i].recommendationScore){
     				$scope.techComments.push($scope.techCommentsFull[i]);
     			}
     		}
+    	}else{
+    		$scope.alertComment = true;
+    		$scope.alertMsgComment = 'Ninguém recomendou esta tecnologia ainda.';
     	}
     }
     
     $scope.filterNoRecommenders = function(){
-    	if($scope.techCommentsFull){
+    	if($scope.down > 0 && $scope.techCommentsFull){
     		$scope.techComments = [];
     		for (var i = 0; i < $scope.techCommentsFull.length; i++) {
     			if($scope.techCommentsFull[i].recommendationScore != null && !$scope.techCommentsFull[i].recommendationScore){
     				$scope.techComments.push($scope.techCommentsFull[i]);
     			}
     		}
+    	}else{
+    		$scope.alertComment = true;
+    		$scope.alertMsgComment = 'Ninguém não recomendou esta tecnologia ainda.';
     	}
     }
     
