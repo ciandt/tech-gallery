@@ -12,7 +12,9 @@
   <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
   <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
   <script src="lib/angular-route/angular-route.min.js"></script>
+  <script src="lib/angular-translate/angular-translate.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/config.js"></script>
   <script src="js/jsUtils.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
@@ -26,7 +28,7 @@
         <div class="navbar-header alignBar">
           <a class="navbar-brand" href={{indexPage()}}>
             <img class="logoBar" src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png">
-            <h3 class="headerBar">Tech Gallery</h3>
+            <h3 class="headerBar">{{ 'TITLE' | translate }}</h3>
           </a>
         </div>
         <div id="navbar" class="rightSideBar">
