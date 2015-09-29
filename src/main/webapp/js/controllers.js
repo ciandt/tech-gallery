@@ -21,6 +21,7 @@ angular.module('techGallery').controller(
 
     $scope.domainError = false;
     $scope.userLogged = false;
+//    $scope.selectedRecommendation = 'Selecione';
     
     $scope.indexPage = function(){
       var indexPage = location.protocol;
@@ -87,6 +88,10 @@ angular.module('techGallery').controller(
     function callBackLoaded() {
       gapi.client.rest.getTechnologies().execute(function(data) {
         gapi.client.rest.handleLogin().execute();
+        gapi.client.rest.getRecommendationList().execute(function(data){
+          $scope.dropDownRecommendation = data.items;
+          $scope.$apply();
+        });
         $scope.techList = data.technologies;
         $scope.showLoading = false;
         $scope.$apply();
@@ -94,12 +99,13 @@ angular.module('techGallery').controller(
     }
     
     $scope.searchTechnology = function (){
-      if($scope.textSearch){
+      if($scope.textSearch || $scope.selectedRecommendation){
         $scope.techList = '';
         $scope.showLoading = true;
         var req = {
             titleContains: $scope.textSearch,
-            shortDescriptionContains: $scope.textSearch
+            shortDescriptionContains: $scope.textSearch,
+            recommendationIs: $scope.selectedRecommendation
         }
         gapi.client.rest.findByFilter(req).execute(function(data){
           $scope.techList = data.technologies;
@@ -112,9 +118,14 @@ angular.module('techGallery').controller(
     $scope.searchClear = function (){
       $scope.techList = '';
       $scope.textSearch = '';
+      $scope.selectedRecommendation = undefined;
       $scope.showLoading = true;
       callBackLoaded();
     }
+    
+    $scope.selectRecommendation = function(selected){
+      $scope.selectedRecommendation = selected;
+    };
   }
 );
 
