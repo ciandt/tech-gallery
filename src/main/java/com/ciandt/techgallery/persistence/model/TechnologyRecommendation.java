@@ -33,7 +33,7 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
   @Index
   private Boolean active;
 
-  @Unindex
+  @Index
   @Load
   private TechGalleryUser recommender;
 
