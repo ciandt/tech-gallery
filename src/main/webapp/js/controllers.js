@@ -87,19 +87,27 @@ angular.module('techGallery').controller(
     function callBackLoaded() {
       gapi.client.rest.getTechnologies().execute(function(data) {
         gapi.client.rest.handleLogin().execute();
+        gapi.client.rest.getOrderOptions().execute(function(data) {
+        	$scope.orderOptions = data.items;
+        });
         $scope.techList = data.technologies;
         $scope.showLoading = false;
         $scope.$apply();
       });
     }
     
+    $scope.selectOrderOption = function(orderOption) {
+    	$scope.selectedOrderOption = orderOption;
+    }
+    
     $scope.searchTechnology = function (){
-      if($scope.textSearch){
+      if($scope.textSearch || $scope.selectedOrderOption){
         $scope.techList = '';
         $scope.showLoading = true;
         var req = {
             titleContains: $scope.textSearch,
-            shortDescriptionContains: $scope.textSearch
+            shortDescriptionContains: $scope.textSearch,
+            orderOption: $scope.selectedOrderOption
         }
         gapi.client.rest.findByFilter(req).execute(function(data){
           $scope.techList = data.technologies;
@@ -112,6 +120,7 @@ angular.module('techGallery').controller(
     $scope.searchClear = function (){
       $scope.techList = '';
       $scope.textSearch = '';
+      $scope.selectedOrderOption = '';
       $scope.showLoading = true;
       callBackLoaded();
     }

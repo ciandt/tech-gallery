@@ -161,18 +161,22 @@ public class TechnologyServiceImpl implements TechnologyService {
     validateUser(user);
     List<Technology> completeList = technologyDAO.findAll();
     List<Technology> filteredList = new ArrayList<>();
-    for (Technology technology : completeList) {
-      if (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase())
-          || technology.getShortDescription().toLowerCase()
-              .contains(techFilter.getShortDescriptionContains().toLowerCase())) {
-        filteredList.add(technology);
+    if (techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty()) {
+      filteredList.addAll(completeList);
+    } else {
+      for (Technology technology : completeList) {
+        if (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase())
+            || technology.getShortDescription().toLowerCase()
+                .contains(techFilter.getShortDescriptionContains().toLowerCase())) {
+          filteredList.add(technology);
+        }
       }
     }
-    if (filteredList.isEmpty()) {
-      return new TechnologiesResponse();
-    } else {
-      // TODO - pegar valor do front-end
-      TechnologyOrderOptionEnum orderBy = TechnologyOrderOptionEnum.ENDORSEMENT_QUANTITY;
+    List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
+    if (!filteredList.isEmpty() && techFilter.getOrderOption() != null
+        && !techFilter.getOrderOption().isEmpty()) {
+      TechnologyOrderOptionEnum orderBy =
+          TechnologyOrderOptionEnum.fromString(techFilter.getOrderOption());
       List<TechnologyDetailsCounter> technologiesDetailList =
           sortTechnologies(filteredList, orderBy);
       List<Technology> sortedTechnologies = new ArrayList<Technology>();
@@ -180,12 +184,11 @@ public class TechnologyServiceImpl implements TechnologyService {
         sortedTechnologies.add(detail.getTechnology().get());
       }
 
-      TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList =
-          TechnologyConverter.fromEntityToTransient(sortedTechnologies);
-      response.setTechnologies(internList);
-      return response;
+      internList = TechnologyConverter.fromEntityToTransient(sortedTechnologies);
     }
+    TechnologiesResponse response = new TechnologiesResponse();
+    response.setTechnologies(internList);
+    return response;
   }
 
   @Override
@@ -215,5 +218,14 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
+  }
+
+  @Override
+  public List<String> getOrderOptions(User user) {
+    List<String> orderOptions = new ArrayList<String>();
+    for (TechnologyOrderOptionEnum item : TechnologyOrderOptionEnum.values()) {
+      orderOptions.add(item.option());
+    }
+    return orderOptions;
   }
 }

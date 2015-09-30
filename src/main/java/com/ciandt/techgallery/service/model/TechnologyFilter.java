@@ -1,7 +1,5 @@
 package com.ciandt.techgallery.service.model;
 
-import java.util.List;
-
 /**
  * Response with all technology entities.
  * 
@@ -16,6 +14,9 @@ public class TechnologyFilter implements Response {
   /** string for search in title */
   private String shortDescriptionContains;
 
+  /** string for order option */
+  private String orderOption;
+  
   public String getTitleContains() {
     return titleContains;
   }
@@ -30,6 +31,14 @@ public class TechnologyFilter implements Response {
 
   public void setShortDescriptionContains(String shortDescriptionContains) {
     this.shortDescriptionContains = shortDescriptionContains;
+  }
+
+  public String getOrderOption() {
+    return orderOption;
+  }
+
+  public void setOrderOption(String orderOption) {
+    this.orderOption = orderOption;
   }
   
 }
