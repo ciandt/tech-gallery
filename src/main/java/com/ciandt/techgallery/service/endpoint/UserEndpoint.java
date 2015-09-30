@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.UserServiceTG;
-import com.ciandt.techgallery.service.UserServiceTGImpl;
+import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.config.Api;

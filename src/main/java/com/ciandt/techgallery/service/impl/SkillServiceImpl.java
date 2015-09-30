@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.service;
+package com.ciandt.techgallery.service.impl;
 
 import java.util.Date;
 import java.util.logging.Logger;
@@ -12,6 +12,8 @@ import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.SkillService;
+import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.SkillResponse;

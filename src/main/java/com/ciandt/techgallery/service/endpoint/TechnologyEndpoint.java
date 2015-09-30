@@ -2,7 +2,7 @@ package com.ciandt.techgallery.service.endpoint;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.TechnologyService;
-import com.ciandt.techgallery.service.TechnologyServiceImpl;
+import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.ciandt.techgallery.service.model.TechnologyResponse;

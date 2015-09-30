@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.service;
+package com.ciandt.techgallery.service.impl;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -16,6 +16,7 @@ import com.googlecode.objectify.Key;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
 import com.ciandt.techgallery.service.model.UsersResponse;

@@ -7,7 +7,7 @@ import com.googlecode.objectify.Ref;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.TechnologyService;
-import com.ciandt.techgallery.service.TechnologyServiceImpl;
+import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
 

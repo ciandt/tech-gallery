@@ -14,6 +14,8 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
+import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
 import com.ciandt.techgallery.service.model.UserResponse;

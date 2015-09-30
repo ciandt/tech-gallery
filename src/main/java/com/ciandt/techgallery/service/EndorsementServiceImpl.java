@@ -17,6 +17,8 @@ import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.impl.SkillServiceImpl;
+import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.ciandt.techgallery.service.model.EndorsementEntityResponse;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
