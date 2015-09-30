@@ -33,7 +33,8 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   private TechnologyRecommendationDAO technologyRecommendationDAO =
       new TechnologyRecommendationDAOImpl();
   private TechnologyService technologyService = new TechnologyServiceImpl();
-  TechnologyDetailsCounterService counterService = new TechnologyDetailsCounterServiceImpl();
+  TechnologyDetailsCounterService counterService =
+      TechnologyDetailsCounterServiceImpl.getInstance();
   private TechnologyRecommendationTransformer techRecTransformer =
       new TechnologyRecommendationTransformer();
   private UserServiceTG userService = new UserServiceTGImpl();

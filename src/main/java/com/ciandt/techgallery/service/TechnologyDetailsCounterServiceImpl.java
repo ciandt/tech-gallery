@@ -17,7 +17,19 @@ import com.ciandt.techgallery.utils.i18n.I18n;
 public class TechnologyDetailsCounterServiceImpl implements TechnologyDetailsCounterService {
 
   private static final I18n i18n = I18n.getInstance();
-  TechnologyDetailsCounterDAO technologyDetailsCounterDao = new TechnologyDetailsCounterDAOImpl();
+  private static TechnologyDetailsCounterServiceImpl instance;
+  TechnologyDetailsCounterDAO technologyDetailsCounterDao =
+      TechnologyDetailsCounterDAOImpl.getInstance();
+
+  /**
+   * Singleton TechnologyDetailsCounterServiceImpl.
+   */
+  public static TechnologyDetailsCounterServiceImpl getInstance() {
+    if (instance == null) {
+      return new TechnologyDetailsCounterServiceImpl();
+    }
+    return instance;
+  }
 
   @Override
   public TechnologyDetailsCounter getTechnologyDetailByTechnology(Technology technology)

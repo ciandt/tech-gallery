@@ -18,6 +18,18 @@ import java.util.List;
 public class TechnologyDetailsCounterDAOImpl extends GenericDAOImpl<TechnologyDetailsCounter, Long>
     implements TechnologyDetailsCounterDAO {
 
+  private static TechnologyDetailsCounterDAOImpl instance;
+  
+  /**
+   * Singleton TechnologyDetailsCounterDAOImpl.
+   */
+  public static TechnologyDetailsCounterDAOImpl getInstance() {
+    if (instance == null) {
+      return new TechnologyDetailsCounterDAOImpl();
+    }
+    return instance;
+  }
+  
   @Override
   public TechnologyDetailsCounter findByTechnology(Technology technology) {
     Objectify objectify = OfyService.ofy();

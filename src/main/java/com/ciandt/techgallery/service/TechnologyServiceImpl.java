@@ -40,10 +40,14 @@ import java.util.List;
  */
 public class TechnologyServiceImpl implements TechnologyService {
 
+  private static final String NO_TECHNOLOGY_WAS_FOUND = "No technology was found.";
+  private static final String TECHNOLOGY_ID_CANNOT_BE_BLANK = "Technology's id cannot be blank.";
+  
   private static final I18n i18n = I18n.getInstance();
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
-  TechnologyDetailsCounterDAO technologyDetailsCounterDAO = new TechnologyDetailsCounterDAOImpl();
+  TechnologyDetailsCounterDAO technologyDetailsCounterDao =
+      TechnologyDetailsCounterDAOImpl.getInstance();
 
   /**
    * POST for adding a technology.
@@ -56,17 +60,17 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     // technology id can't be null or empty
     if (techId == null || techId.equals("")) {
-      throw new BadRequestException(i18n.t("Technology's id cannot be blank."));
+      throw new BadRequestException(i18n.t(TECHNOLOGY_ID_CANNOT_BE_BLANK));
     }
     // technology name can't be null or empty
     if (techName == null || techName.equals("")) {
-      throw new BadRequestException(i18n.t("Technology's name cannot be blank."));
+      throw new BadRequestException(i18n.t(TECHNOLOGY_ID_CANNOT_BE_BLANK));
     } else {
       Technology entity = TechnologyConverter.fromTransientToEntity(technology);
       technologyDAO.add(entity);
       TechnologyDetailsCounter techDetails = new TechnologyDetailsCounter();
       techDetails.setTechnology(Ref.create(technologyDAO.findById(entity.getId())));
-      technologyDetailsCounterDAO.add(techDetails);
+      technologyDetailsCounterDao.add(techDetails);
 
       // set the id and return it
       technology.setId(entity.getId());
@@ -82,7 +86,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     List<Technology> techEntities = technologyDAO.findAll();
     // if list is null, return a not found exception
     if (techEntities == null) {
-      throw new NotFoundException(i18n.t("No technology was found."));
+      throw new NotFoundException(i18n.t(NO_TECHNOLOGY_WAS_FOUND));
     } else {
       TechnologiesResponse response = new TechnologiesResponse();
       List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(techEntities);
@@ -95,7 +99,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       TechnologyOrderOptionEnum orderBy) {
     List<TechnologyDetailsCounter> counterList = new ArrayList<TechnologyDetailsCounter>();
     for (Technology technology : techEntities) {
-      counterList.add(technologyDetailsCounterDAO.findByTechnology(technology));
+      counterList.add(technologyDetailsCounterDao.findByTechnology(technology));
     }
     switch (orderBy) {
       case POSITIVE_RECOMENDATION_QUANTITY:
@@ -147,7 +151,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     Technology techEntity = technologyDAO.findById(id);
     // if technology is null, return a not found exception
     if (techEntity == null) {
-      throw new NotFoundException(i18n.t("No technology was found."));
+      throw new NotFoundException(i18n.t(NO_TECHNOLOGY_WAS_FOUND));
     } else {
       TechnologyResponse response = TechnologyConverter.fromEntityToTransient(techEntity);
       return response;

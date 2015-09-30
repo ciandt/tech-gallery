@@ -57,7 +57,8 @@ public class EndorsementServiceImpl implements EndorsementService {
   /** skill service */
   SkillService skillService = new SkillServiceImpl();
   /** TechnologyDetailsCounter Service */
-  TechnologyDetailsCounterService counterService = new TechnologyDetailsCounterServiceImpl();
+  TechnologyDetailsCounterService counterService =
+      TechnologyDetailsCounterServiceImpl.getInstance();
 
   /**
    * POST for adding a endorsement. TODO: Refactor - Extract Method
@@ -318,7 +319,7 @@ public class EndorsementServiceImpl implements EndorsementService {
 
     Technology technology = techDAO.findById(techId);
     counterService.updateEdorsedsCounter(technology, grouped.size());
-    
+
     ShowEndorsementsResponse response = new ShowEndorsementsResponse();
     response.setEndorsements(grouped);
     return response;

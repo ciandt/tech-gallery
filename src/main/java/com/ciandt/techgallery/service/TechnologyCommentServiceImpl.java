@@ -42,7 +42,8 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
   TechnologyRecommendationService recommendationService = new TechnologyRecommendationServiceImpl();
-  TechnologyDetailsCounterService counterService = new TechnologyDetailsCounterServiceImpl();
+  TechnologyDetailsCounterService counterService =
+      TechnologyDetailsCounterServiceImpl.getInstance();
 
   @Override
   public Response addComment(TechnologyCommentTO comment, User user)
