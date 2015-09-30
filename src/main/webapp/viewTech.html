@@ -147,17 +147,20 @@
     
     <div id="choose_recommendation" class="container">
     	<div>
-    		<h3>Recomenda esta tecnologia?</h3>
+    		<h3 class="col-md-9 recommendQuestion">Recomenda esta tecnologia? 
+    			<button type="button" class="btn btn-link removeFilter" ng-click="removeFilter()">Remover filtro</button>
+    		</h3>
+    		
     		<div id="recommend_area" class="col-md-9 text-left">
     			<button id="btn_up" type="button" ng-click="changeThumbs('up')" ng-class="setClassThumbs('up')" 
     					class="btn glyphicon glyphicon-thumbs-up thumbsFont"></button>
     					
-    			<a href="#" ng-model="showAllRecommenders()" class="recommendations-link">{{up}}</a>
+    			<a href="#" ng-model="showAllRecommenders()" class="recommendations-link" ng-click="filterRecommenders()">{{up}}</a>
     			
     			<button id="btn_down" type="button" ng-click="changeThumbs('down')" ng-class="setClassThumbs('down')" 
     					class="btn glyphicon glyphicon-thumbs-down thumbsFont"></button>
     					
-    			<a href="#" ng-model="showAllNotRecommenders()" class="recommendations-link">{{down}}</a>
+    			<a href="#" ng-model="showAllNotRecommenders()" class="recommendations-link" ng-click="filterNoRecommenders()">{{down}}</a>
     		</div>
     	</div>
     </div>
@@ -181,16 +184,20 @@
 	    </div>
 	    <div class="col-xs-9">
 	  		<div class="commentBlock" ng-repeat="comment in techComments track by $index">
-	  			<div class="commentHeader">
-					<img class="media-object endorsed-image commentImage img-circle" src="{{comment.author.photo}}"/>
-	  				<b class="flex1">
-	  				<span class="commentName">{{comment.author.name}}</span><span class="smallFont"> em </span>
-	  				<span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}</span><span class="smallFont"> disse:</span>
-	  				</b>
-	  				<a ng-show="showSelfInformations(comment.author.email)" ng-click="deleteComment(comment.id)" 
-	  					ref="#" id="btn_delete" type="button" class="btn glyphicon glyphicon-remove-circle"></a>
+	    		<span class="glyphicon glyphicon-thumbs-up recommendationInComment" ng-show="comment.recommendationScore != null && comment.recommendationScore"></span>
+	    		<span class="glyphicon glyphicon-thumbs-down recommendationInComment" ng-show="comment.recommendationScore != null && !comment.recommendationScore"></span>
+	    		<div id="organize_comments" class="container">
+		  			<div class="commentHeader">
+						<img class="media-object endorsed-image commentImage img-circle" src="{{comment.author.photo}}"/>
+		  				<b class="flex1">
+		  				<span class="commentName">{{comment.author.name}}</span><span class="smallFont"> em </span>
+		  				<span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}</span><span class="smallFont"> disse:</span>
+		  				</b>
+		  				<a ng-show="showSelfInformations(comment.author.email)" ng-click="deleteComment(comment.id)" 
+		  					ref="#" id="btn_delete" type="button" class="btn glyphicon glyphicon-remove-circle"></a>
+		  			</div>
+		  			<h5>{{comment.comment}}</h5>
 	  			</div>
-	  			<h5>{{comment.comment}}</h5>
 	  		</div>
 	  	</div>
     </div>
