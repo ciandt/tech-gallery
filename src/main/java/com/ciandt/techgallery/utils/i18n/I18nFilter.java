@@ -34,6 +34,9 @@ public class I18nFilter implements Filter {
         i18n.setCountry(country);
         i18n.setLanguage(language);
       }
+      //Send lang to front-end
+      ((HttpServletRequest) response).setAttribute("lang",
+          i18n.getLanguage() + "-" + i18n.getCountry());
     }
 
     filterChain.doFilter(request, response);
