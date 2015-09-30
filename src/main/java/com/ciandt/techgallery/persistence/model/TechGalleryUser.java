@@ -85,7 +85,7 @@ public class TechGalleryUser extends BaseEntity<Long> {
     if (!(obj instanceof TechGalleryUser))
       return false;
     else
-      return (this.getId() == ((TechGalleryUser) obj).getId());
+      return (this.getId().equals(((TechGalleryUser) obj).getId()));
   }
   
 }

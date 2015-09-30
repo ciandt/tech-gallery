@@ -3,6 +3,7 @@ package com.ciandt.techgallery.service;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
@@ -45,6 +46,14 @@ public class TechnologyRecommendationCommentServiceImpl
   private boolean isValidComment(TechnologyCommentTO comment) {
     return comment != null && comment.getComment() != null
         && !comment.getComment().trim().equals("");
+  }
+
+  @Override
+  public void deleteCommentAndRecommendation(TechnologyRecommendationTO recommendationTO,
+      TechnologyCommentTO commentTO, User user) throws InternalServerErrorException,
+          BadRequestException, NotFoundException, OAuthRequestException {
+    comService.deleteComment(commentTO.getId(), user);
+    recService.deleteRecommendById(recommendationTO.getId(), user);
   }
 
 }

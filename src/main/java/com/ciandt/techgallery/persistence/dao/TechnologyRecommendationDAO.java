@@ -1,7 +1,5 @@
 package com.ciandt.techgallery.persistence.dao;
 
-import com.google.api.server.spi.response.NotFoundException;
-
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;

@@ -1,7 +1,5 @@
 package com.ciandt.techgallery.persistence.dao;
 
-import com.google.api.server.spi.response.NotFoundException;
-
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Ref;
 
