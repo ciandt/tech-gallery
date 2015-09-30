@@ -1,13 +1,13 @@
 package com.ciandt.techgallery.persistence.model;
 
-import java.util.Date;
-
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
+
+import java.util.Date;
 
 /**
  * Endorsement entity.
@@ -17,6 +17,16 @@ import com.googlecode.objectify.annotation.Unindex;
  */
 @Entity
 public class Endorsement extends BaseEntity<Long> {
+
+  /*
+   * Constants --------------------------------------------
+   */
+  public static final String ID = "id";
+  public static final String ENDORSER = "endorser";
+  public static final String ENDORSED = "endorsed";
+  public static final String TIMESTAMP = "timestamp";
+  public static final String ACTIVE = "active";
+  public static final String TECHNOLOGY = "technology";
 
   @Id
   private Long id;

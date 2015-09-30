@@ -16,6 +16,15 @@ import com.googlecode.objectify.annotation.Unindex;
 @Entity
 public class Skill extends BaseEntity<Long> {
 
+  /*
+   * Constants --------------------------------------------
+   */
+  public static final String ID = "id";
+  public static final String TECHNOLOGY = "technology";
+  public static final String VALUE = "value";
+  public static final String TECH_GALLERY_USER = "techGalleryUser";
+  public static final String ACTIVE = "active";
+
   @Id
   private Long id;
 

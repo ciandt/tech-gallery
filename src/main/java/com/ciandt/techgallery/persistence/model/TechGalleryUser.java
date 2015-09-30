@@ -14,6 +14,15 @@ import com.googlecode.objectify.annotation.Unindex;
 @Entity
 public class TechGalleryUser extends BaseEntity<Long> {
 
+  /*
+   * Constants --------------------------------------------
+   */
+  public static final String ID = "id";
+  public static final String NAME = "name";
+  public static final String EMAIL = "email";
+  public static final String PHOTO = "photo";
+  public static final String GOOGLE_ID = "googleId";
+
   @Id
   Long id;
 

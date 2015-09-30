@@ -1,9 +1,10 @@
 package com.ciandt.techgallery.persistence.dao.impl;
 
+import com.googlecode.objectify.Objectify;
+
 import com.ciandt.techgallery.ofy.OfyService;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.googlecode.objectify.Objectify;
 
 /**
  * UserDAOImpl methods implementation.
@@ -21,7 +22,8 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
   public TechGalleryUser findByLogin(String email) {
     Objectify objectify = OfyService.ofy();
     TechGalleryUser entity = null;
-    entity = objectify.load().type(TechGalleryUser.class).filter("email", email).first().now();
+    entity = objectify.load().type(TechGalleryUser.class).filter(TechGalleryUser.EMAIL, email)
+        .first().now();
 
     return entity;
   }
@@ -33,7 +35,8 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
   public TechGalleryUser findByGoogleId(String id) {
     Objectify objectify = OfyService.ofy();
     TechGalleryUser entity = null;
-    entity = objectify.load().type(TechGalleryUser.class).filter("googleId", id).first().now();
+    entity = objectify.load().type(TechGalleryUser.class).filter(TechGalleryUser.GOOGLE_ID, id)
+        .first().now();
 
     return entity;
   }
@@ -45,7 +48,8 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
   public TechGalleryUser findByEmail(String email) {
     Objectify objectify = OfyService.ofy();
     TechGalleryUser entity = null;
-    entity = objectify.load().type(TechGalleryUser.class).filter("email", email).first().now();
+    entity = objectify.load().type(TechGalleryUser.class).filter(TechGalleryUser.EMAIL, email)
+        .first().now();
 
     return entity;
   }
@@ -57,8 +61,8 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
   public TechGalleryUser findByNameAndEmail(String name, String email) {
     Objectify objectify = OfyService.ofy();
     TechGalleryUser entity = null;
-    entity =
-        objectify.load().type(TechGalleryUser.class).filter("email", email).filter("name", name)
+    entity = objectify.load().type(TechGalleryUser.class).filter(TechGalleryUser.EMAIL, email)
+        .filter(TechGalleryUser.NAME, name)
             .first().now();
 
     return entity;
