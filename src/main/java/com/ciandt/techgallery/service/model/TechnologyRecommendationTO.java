@@ -8,6 +8,8 @@ package com.ciandt.techgallery.service.model;
  */
 public class TechnologyRecommendationTO implements Response {
 
+  private Long id;
+
   private Boolean score;
 
   private TechnologyCommentTO comment;
@@ -56,6 +58,14 @@ public class TechnologyRecommendationTO implements Response {
 
   public void setTechnology(TechnologyResponse technology) {
     this.technology = technology;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
 }

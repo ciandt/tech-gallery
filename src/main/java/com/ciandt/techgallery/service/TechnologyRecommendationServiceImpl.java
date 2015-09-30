@@ -23,10 +23,15 @@ import com.ciandt.techgallery.service.util.TechnologyRecommendationTransformer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class TechnologyRecommendationServiceImpl implements TechnologyRecommendationService {
 
-  private TechnologyRecommendationDAO dao = new TechnologyRecommendationDAOImpl();
+  private static final Logger log =
+      Logger.getLogger(TechnologyRecommendationServiceImpl.class.getName());
+
+  private TechnologyRecommendationDAO technologyRecommendationDAO =
+      new TechnologyRecommendationDAOImpl();
   private TechnologyService technologyService = new TechnologyServiceImpl();
   private TechnologyRecommendationTransformer techRecTransformer =
       new TechnologyRecommendationTransformer();
@@ -65,15 +70,16 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     recommendation.setActive(true);
     recommendation.setRecommender(tgUser);
     TechnologyRecommendation previousRec =
-        dao.findActiveByRecommenderAndTechnology(tgUser, recommendation.getTechnology().get());
+ technologyRecommendationDAO
+        .findActiveByRecommenderAndTechnology(tgUser, recommendation.getTechnology().get());
 
     // Inactivate previous recommendation
     if (previousRec != null) {
       previousRec.setActive(false);
       previousRec.setInactivatedDate(new Date());
-      dao.update(previousRec);
+      technologyRecommendationDAO.update(previousRec);
     }
-    recommendation.setId(dao.add(recommendation).getId());
+    recommendation.setId(technologyRecommendationDAO.add(recommendation).getId());
     return recommendation;
   }
 
@@ -85,7 +91,8 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     } catch (NotFoundException e) {
       return null;
     }
-    List<TechnologyRecommendation> recommendations = dao.findAllActivesByTechnology(technology);
+    List<TechnologyRecommendation> recommendations =
+        technologyRecommendationDAO.findAllActivesByTechnology(technology);
     List<Response> recommendationTOs = new ArrayList<Response>();
     for (TechnologyRecommendation recommendation : recommendations) {
       recommendationTOs.add(techRecTransformer.transformTo(recommendation));
@@ -96,7 +103,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
 
   @Override
   public TechnologyRecommendation getRecommendationByComment(TechnologyComment comment){
-    return dao.findByComment(comment);
+    return technologyRecommendationDAO.findByComment(comment);
   }
 
   @Override
@@ -132,5 +139,94 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
       }
     }
     return recommendationsUpTO;
+  }
+
+  @Override
+  public Response deleteRecommendById(Long recommendId, User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
+    TechnologyRecommendation recommendation = technologyRecommendationDAO.findById(recommendId);
+    TechGalleryUser techUser = userService.getUserByEmail(user.getEmail());
+
+    validateDeletion(recommendId, recommendation, user, techUser);
+
+    recommendation.setActive(false);
+    technologyRecommendationDAO.update(recommendation);
+    return techRecTransformer.transformTo(recommendation);
+  }
+
+  /**
+   * Responsable for validade the informations about the deletion.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 28/09/2015
+   *
+   * @param recommendId
+   * @param recommendation
+   * @param user
+   * @param techUser
+   * 
+   * @throws BadRequestException
+   * @throws NotFoundException
+   * @throws InternalServerErrorException
+   */
+  private void validateDeletion(Long recommendId, TechnologyRecommendation recommendation,
+      User user, TechGalleryUser techUser)
+          throws BadRequestException, NotFoundException, InternalServerErrorException {
+    validateRecommend(recommendId, recommendation);
+    validateUser(user, techUser);
+    if (!recommendation.getRecommender().equals(techUser)) {
+      throw new BadRequestException(ValidationMessageEnums.RECOMMEND_RECOMMENDER_ERROR.message());
+    }
+  }
+
+  /**
+   * Validation for User.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 28/09/2015
+   *
+   * @param user
+   * @param techUser
+   * 
+   * @throws BadRequestException
+   * @throws NotFoundException
+   * @throws InternalServerErrorException
+   */
+  private void validateUser(User user, TechGalleryUser techUser)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
+    log.info("Validating user to recommend");
+
+    if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
+      throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
+    }
+
+    if (techUser == null) {
+      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
+    }
+  }
+
+  /**
+   * Validation for Recommend.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 28/09/2015
+   *
+   * @param recommendId
+   * @param recommendation
+   * 
+   * @throws BadRequestException
+   * @throws NotFoundException
+   */
+  private void validateRecommend(Long recommendId, TechnologyRecommendation recommendation)
+      throws BadRequestException, NotFoundException {
+    log.info("Validating the recommend");
+
+    if (recommendId == null) {
+      throw new BadRequestException(ValidationMessageEnums.RECOMMEND_ID_CANNOT_BLANK.message());
+    }
+
+    if (recommendation == null) {
+      throw new NotFoundException(ValidationMessageEnums.RECOMMEND_NOT_EXIST.message());
+    }
   }
 }

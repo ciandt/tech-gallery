@@ -47,4 +47,11 @@ public class TechnologyRecommendationEndpoint {
       OAuthRequestException {
     return service.getRecommendationsDownByTechnologyAndUser(technologyId, user);
   }
+
+  @ApiMethod(name = "deleteRecommendById", path = "technology-delete-recommendation",
+      httpMethod = "get")
+  public Response deleteRecommendById(@Named("recommendId") Long recommendId, User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
+    return service.deleteRecommendById(recommendId, user);
+  }
 }
