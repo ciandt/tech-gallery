@@ -137,75 +137,75 @@ body, html {
 }
 
 .smallFont{
-	font-size: small
+  font-size: small
 }
 
 .mediumFont{
-	font-size: medium
+  font-size: medium
 }
 
 .commentName{
-	font-size: large;
-	margin-left: 15px;
+  font-size: large;
+  margin-left: 15px;
 }
 
 .commentHeader{
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .flex1{
-	flex: 1;
+  flex: 1;
 }
 
 .commentImage{
-	display: inline;
+  display: inline;
 }
 
 .commentBlock{
-	margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .techSearch{
-	margin-right: 50px;
+  margin-right: 50px;
 }
 
 .searchButton{
-	box-shadow: 2px 2px 2px black;
-	margin-right: 5px
+  box-shadow: 2px 2px 2px black;
+  margin-right: 5px
 }
 
 .selectedThumbUp {
-	color: green !important;
+  color: green !important;
 }
 
 .selectedThumbDown {
-	color: red !important;
+  color: red !important;
 }
 
 .thumbsFont {
-	font-size: 40px;
+  font-size: 40px;
 }
 
 .recommendations-link {
-	font-size: 20px;
+  font-size: 20px;
 }
 
 .caption {
-	height: 80px;
+  height: 80px;
 }
 
 .recommendationInComment {
-	float: left;
-    margin-top: 20px;
-    right: 20px;
-    font-size: 31px;
+  float: left;
+  margin-top: 20px;
+  right: 20px;
+  font-size: 31px;
 }
 
 .recommendQuestion {
-	padding-left: 0px !important;
+  padding-left: 0px !important;
 }
 
 .removeFilter {
-	float: right;
+  float: right;
 }

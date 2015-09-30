@@ -28,8 +28,7 @@ public enum ValidationMessageEnums {
   COMMENT_AUTHOR_ERROR("This comment doesn't belong to this user."),
   RECOMMEND_ID_CANNOT_BLANK("Recommend or recommend's id cannot be null or blank."),
   RECOMMEND_NOT_EXIST("Recommend doesn't exist."),
- RECOMMEND_RECOMMENDER_ERROR(
-                                              "This recommend doesn't belong to this user."),
+  RECOMMEND_RECOMMENDER_ERROR("This recommend doesn't belong to this user."), 
   TO_INACTIVE("Inactive transient object is not allowed.");
 
 
