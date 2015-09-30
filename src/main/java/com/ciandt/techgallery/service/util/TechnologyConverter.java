@@ -1,8 +1,6 @@
 package com.ciandt.techgallery.service.util;
 
 import com.ciandt.techgallery.persistence.model.Technology;
-import com.ciandt.techgallery.persistence.model.TechnologyComment;
-import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
 
 import java.util.ArrayList;

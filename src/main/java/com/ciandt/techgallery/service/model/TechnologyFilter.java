@@ -1,7 +1,5 @@
 package com.ciandt.techgallery.service.model;
 
-import java.util.List;
-
 /**
  * Response with all technology entities.
  * 
