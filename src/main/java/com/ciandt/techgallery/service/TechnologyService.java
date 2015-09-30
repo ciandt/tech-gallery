@@ -38,7 +38,7 @@ public interface TechnologyService {
    * @throws InternalServerErrorException
    * @throws NotFoundException
    */
-  public Response getTechnologies() throws InternalServerErrorException, NotFoundException;
+  Response getTechnologies() throws InternalServerErrorException, NotFoundException;
 
   /**
    * Service for getting a technology response.
@@ -47,7 +47,7 @@ public interface TechnologyService {
    * @return .
    * @throws NotFoundException .
    */
-  public Response getTechnology(final String id) throws NotFoundException;
+  Response getTechnology(final String id) throws NotFoundException;
 
   /**
    * Service for getting all technologies according a filter.
@@ -57,7 +57,7 @@ public interface TechnologyService {
    * @throws InternalServerErrorException .
    * @throws NotFoundException .
    */
-  public Response findTechnologiesByFilter(final TechnologyFilter techFilter, User user)
+  Response findTechnologiesByFilter(final TechnologyFilter techFilter, User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException;
 
   /**
@@ -67,8 +67,8 @@ public interface TechnologyService {
    * @return .
    * @throws NotFoundException when entity is not found
    */
-  public Technology getTechnologyById(String id) throws NotFoundException;
+  Technology getTechnologyById(String id) throws NotFoundException;
 
-  public List<String> getOrderOptions(User user);
+  List<String> getOrderOptions(User user);
 
 }
