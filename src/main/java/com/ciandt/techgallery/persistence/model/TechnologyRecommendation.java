@@ -35,7 +35,7 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
 
   @Index
   @Load
-  private TechGalleryUser recommender;
+  private Ref<TechGalleryUser> recommender;
 
   @Index
   @Load
@@ -54,7 +54,7 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
     this.score = score;
     this.comment = Ref.create(comment);
     this.active = active;
-    this.recommender = recommender;
+    this.recommender = Ref.create(recommender);
     this.technology = Ref.create(technology);
   }
 
@@ -95,11 +95,11 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
     this.active = active;
   }
 
-  public TechGalleryUser getRecommender() {
+  public Ref<TechGalleryUser> getRecommender() {
     return recommender;
   }
 
-  public void setRecommender(TechGalleryUser recommender) {
+  public void setRecommender(Ref<TechGalleryUser> recommender) {
     this.recommender = recommender;
   }
 
