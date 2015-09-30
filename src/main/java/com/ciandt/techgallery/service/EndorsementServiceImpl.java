@@ -43,21 +43,42 @@ import java.util.Map;
  */
 public class EndorsementServiceImpl implements EndorsementService {
 
-  // private static final Logger log = Logger.getLogger(EndorsementServiceImpl.class.getName());
+  /*
+   * Constants --------------------------------------------
+   */
   private static final I18n i18n = I18n.getInstance();
 
+  /*
+   * Attributes --------------------------------------------
+   */
+  private static EndorsementServiceImpl instance;
 
   /** technology dao for getting technologies. */
-  TechnologyDAO techDAO = new TechnologyDAOImpl();
+  TechnologyDAO techDAO = TechnologyDAOImpl.getInstance();
   /** tech gallery user service for getting PEOPLE API user. */
-  UserServiceTG userService = new UserServiceTGImpl();
+  UserServiceTG userService = UserServiceTGImpl.getInstance();
   /** user dao for getting users. */
-  TechGalleryUserDAO userDAO = new TechGalleryUserDAOImpl();
+  TechGalleryUserDAO userDAO = TechGalleryUserDAOImpl.getInstance();
   /** endorsement dao. */
   EndorsementDAO endorsementDAO = new EndorsementDAOImpl();
   /** skill service */
-  SkillService skillService = new SkillServiceImpl();
+  SkillService skillService = SkillServiceImpl.getInstance();
 
+  /*
+   * Constructors --------------------------------------------
+   */
+  private EndorsementServiceImpl() {}
+
+  public static EndorsementServiceImpl getInstance() {
+    if (instance == null) {
+      instance = new EndorsementServiceImpl();
+    }
+    return instance;
+  }
+
+  /*
+   * Methods --------------------------------------------
+   */
   /**
    * POST for adding a endorsement. TODO: Refactor - Extract Method
    * 

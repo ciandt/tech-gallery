@@ -36,13 +36,37 @@ import java.util.logging.Logger;
  */
 public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
+  /*
+   * Constants --------------------------------------------
+   */
   private static final Logger log = Logger.getLogger(TechnologyCommentServiceImpl.class.getName());
 
-  TechnologyCommentDAO technologyCommentDAO = new TechnologyCommentDAOImpl();
-  TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
-  TechnologyDAO technologyDAO = new TechnologyDAOImpl();
-  TechnologyRecommendationService recommendationService = new TechnologyRecommendationServiceImpl();
+  /*
+   * Attributes --------------------------------------------
+   */
+  private static TechnologyCommentServiceImpl instance;
 
+  TechnologyCommentDAO technologyCommentDAO = new TechnologyCommentDAOImpl();
+  TechGalleryUserDAO techGalleryUserDAO = TechGalleryUserDAOImpl.getInstance();
+  TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
+  TechnologyRecommendationService recommendationService =
+      TechnologyRecommendationServiceImpl.getInstance();
+
+  /*
+   * Constructors --------------------------------------------
+   */
+  private TechnologyCommentServiceImpl() {}
+
+  public static TechnologyCommentServiceImpl getInstance() {
+    if (instance == null) {
+      instance = new TechnologyCommentServiceImpl();
+    }
+    return instance;
+  }
+
+  /*
+   * Methods --------------------------------------------
+   */
   @Override
   public Response addComment(TechnologyCommentTO comment, User user)
       throws InternalServerErrorException, BadRequestException {

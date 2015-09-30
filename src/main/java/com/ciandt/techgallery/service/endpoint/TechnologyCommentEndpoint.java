@@ -26,7 +26,7 @@ import com.ciandt.techgallery.service.model.TechnologyCommentTO;
     scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class TechnologyCommentEndpoint {
 
-  private TechnologyCommentService service = new TechnologyCommentServiceImpl();
+  private TechnologyCommentService service = TechnologyCommentServiceImpl.getInstance();
 
   /**
    * Endpoint for adding a Comment.

@@ -40,13 +40,38 @@ import javax.servlet.http.HttpServletRequest;
 
 public class UserServiceTGImpl implements UserServiceTG {
 
-  private static final I18n i18n = I18n.getInstance();
-  private static final Logger log = Logger.getLogger(UserServiceTGImpl.class.getName());
-  TechGalleryUserDAO userDAO = new TechGalleryUserDAOImpl();
+  /*
+   * Constants --------------------------------------------
+   */
   private static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
 
   private static final String OPERATION_FAILED = "Operation failed";
 
+  private static final Logger log = Logger.getLogger(UserServiceTGImpl.class.getName());
+  private static final I18n i18n = I18n.getInstance();
+
+  /*
+   * Attributes --------------------------------------------
+   */
+  private static UserServiceTGImpl instance;
+
+  TechGalleryUserDAO userDAO = TechGalleryUserDAOImpl.getInstance();
+
+  /*
+   * Constructors --------------------------------------------
+   */
+  private UserServiceTGImpl() {}
+
+  public static UserServiceTGImpl getInstance() {
+    if (instance == null) {
+      instance = new UserServiceTGImpl();
+    }
+    return instance;
+  }
+
+  /*
+   * Methods --------------------------------------------
+   */
   /**
    * GET for getting all users.
    */

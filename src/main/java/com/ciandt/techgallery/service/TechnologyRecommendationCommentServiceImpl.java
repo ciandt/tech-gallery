@@ -15,9 +15,29 @@ import com.ciandt.techgallery.service.model.TechnologyResponse;
 public class TechnologyRecommendationCommentServiceImpl
     implements TechnologyRecommendationCommentService {
 
-  private TechnologyRecommendationService recService = new TechnologyRecommendationServiceImpl();
-  private TechnologyCommentService comService = new TechnologyCommentServiceImpl();
+  /*
+   * Attributes --------------------------------------------
+   */
+  private static TechnologyRecommendationCommentServiceImpl instance;
+  private TechnologyRecommendationService recService =
+      TechnologyRecommendationServiceImpl.getInstance();
+  private TechnologyCommentService comService = TechnologyCommentServiceImpl.getInstance();
 
+  /*
+   * Constructors --------------------------------------------
+   */
+  private TechnologyRecommendationCommentServiceImpl() {}
+
+  public static TechnologyRecommendationCommentServiceImpl getInstance() {
+    if (instance == null) {
+      instance = new TechnologyRecommendationCommentServiceImpl();
+    }
+    return instance;
+  }
+
+  /*
+   * Methods --------------------------------------------
+   */
   @Override
   public Response addRecommendationComment(TechnologyRecommendationTO recommendationTO,
       TechnologyCommentTO commentTO, TechnologyResponse technology, User user)

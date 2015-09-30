@@ -1,14 +1,5 @@
 package com.ciandt.techgallery.service.endpoint;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.service.UserServiceTG;
-import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
@@ -17,6 +8,16 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.service.UserServiceTG;
+import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.UserResponse;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Endpoint controller class for User requests.
@@ -28,7 +29,7 @@ import com.google.appengine.api.users.User;
     Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class UserEndpoint {
 
-  private UserServiceTG service = new UserServiceTGImpl();
+  private UserServiceTG service = UserServiceTGImpl.getInstance();
 
   /**
    * Endpoint for adding a User.

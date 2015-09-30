@@ -15,6 +15,26 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long> implements
     TechGalleryUserDAO {
 
+  /*
+   * Attributes --------------------------------------------
+   */
+  private static TechGalleryUserDAOImpl instance;
+
+  /*
+   * Constructors --------------------------------------------
+   */
+  private TechGalleryUserDAOImpl() {}
+
+  public static TechGalleryUserDAOImpl getInstance() {
+    if (instance == null) {
+      instance = new TechGalleryUserDAOImpl();
+    }
+    return instance;
+  }
+
+  /*
+   * Methods --------------------------------------------
+   */
   /**
    * {@inheritDoc}
    */

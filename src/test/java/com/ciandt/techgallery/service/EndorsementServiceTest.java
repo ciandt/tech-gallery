@@ -39,15 +39,15 @@ public class EndorsementServiceTest {
   // private static final Logger log = Logger.getLogger(EndorsementServiceTest.class.getName());
 
   /** user dao for getting users. */
-  TechGalleryUserDAO userDAO = new TechGalleryUserDAOImpl();
+  TechGalleryUserDAO userDAO = TechGalleryUserDAOImpl.getInstance();
 
   /** technology dao for getting technologies. */
-  TechnologyDAO techDAO = new TechnologyDAOImpl();
+  TechnologyDAO techDAO = TechnologyDAOImpl.getInstance();
 
   /** endorsement dao. */
   EndorsementDAO endorsementDAO = new EndorsementDAOImpl();
 
-  EndorsementServiceImpl service = new EndorsementServiceImpl();
+  EndorsementServiceImpl service = EndorsementServiceImpl.getInstance();
 
   private final LocalServiceTestHelper helper = new LocalServiceTestHelper(
       new LocalDatastoreServiceTestConfig());

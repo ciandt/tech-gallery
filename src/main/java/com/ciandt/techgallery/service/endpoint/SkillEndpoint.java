@@ -1,10 +1,5 @@
 package com.ciandt.techgallery.service.endpoint;
 
-import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.service.SkillService;
-import com.ciandt.techgallery.service.impl.SkillServiceImpl;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.SkillResponse;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
@@ -13,6 +8,12 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.service.SkillService;
+import com.ciandt.techgallery.service.impl.SkillServiceImpl;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.SkillResponse;
 
 /**
  * Endpoint controller class for Skill requests.
@@ -24,7 +25,7 @@ import com.google.appengine.api.users.User;
     Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class SkillEndpoint {
 
-  private SkillService service = new SkillServiceImpl();
+  private SkillService service = SkillServiceImpl.getInstance();
 
   /**
    * Endpoint for adding a Skill.

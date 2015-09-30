@@ -29,17 +29,40 @@ import java.util.logging.Logger;
 
 public class TechnologyRecommendationServiceImpl implements TechnologyRecommendationService {
 
+  /*
+   * Constants --------------------------------------------
+   */
   private static final Logger log =
       Logger.getLogger(TechnologyRecommendationServiceImpl.class.getName());
 
+  /*
+   * Attributes --------------------------------------------
+   */
+  private static TechnologyRecommendationServiceImpl instance;
+
   private TechnologyRecommendationDAO technologyRecommendationDAO =
       new TechnologyRecommendationDAOImpl();
-  private TechnologyService technologyService = new TechnologyServiceImpl();
+  private TechnologyService technologyService = TechnologyServiceImpl.getInstance();
   private TechnologyRecommendationTransformer techRecTransformer =
       new TechnologyRecommendationTransformer();
-  private UserServiceTG userService = new UserServiceTGImpl();
+  private UserServiceTG userService = UserServiceTGImpl.getInstance();
   private TechGalleryUserTransformer userTransformer = new TechGalleryUserTransformer();
 
+  /*
+   * Constructors --------------------------------------------
+   */
+  private TechnologyRecommendationServiceImpl() {}
+
+  public static TechnologyRecommendationServiceImpl getInstance() {
+    if (instance == null) {
+      instance = new TechnologyRecommendationServiceImpl();
+    }
+    return instance;
+  }
+
+  /*
+   * Methods --------------------------------------------
+   */
   @Override
   public Response addRecommendation(TechnologyRecommendationTO recommendationTO, User user)
       throws NotFoundException, BadRequestException, InternalServerErrorException {

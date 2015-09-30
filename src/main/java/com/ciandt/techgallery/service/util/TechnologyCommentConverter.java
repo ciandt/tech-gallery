@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class TechnologyCommentConverter {
 
-  private TechnologyService techService = new TechnologyServiceImpl();
+  private TechnologyService techService = TechnologyServiceImpl.getInstance();
   private TechGalleryUserTransformer tgUserTransformer = new TechGalleryUserTransformer();
   private TechnologyTransformer techTransformer = new TechnologyTransformer();
 

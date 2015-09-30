@@ -1,7 +1,9 @@
 package com.ciandt.techgallery.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
@@ -18,10 +20,8 @@ import com.ciandt.techgallery.service.model.TechnologyResponse;
 import com.ciandt.techgallery.service.util.TechnologyConverter;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Services for Technology Endpoint requests.
@@ -31,10 +31,33 @@ import com.google.appengine.api.users.User;
  */
 public class TechnologyServiceImpl implements TechnologyService {
 
+  /*
+   * Constants --------------------------------------------
+   */
   private static final I18n i18n = I18n.getInstance();
-  TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
-  TechnologyDAO technologyDAO = new TechnologyDAOImpl();
 
+  /*
+   * Attributes --------------------------------------------
+   */
+  private static TechnologyServiceImpl instance;
+  TechGalleryUserDAO techGalleryUserDAO = TechGalleryUserDAOImpl.getInstance();
+  TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
+
+  /*
+   * Constructors --------------------------------------------
+   */
+  private TechnologyServiceImpl() {}
+
+  public static TechnologyServiceImpl getInstance() {
+    if (instance == null) {
+      instance = new TechnologyServiceImpl();
+    }
+    return instance;
+  }
+
+  /*
+   * Methods --------------------------------------------
+   */
   /**
    * POST for adding a technology.
    */

@@ -1,10 +1,5 @@
 package com.ciandt.techgallery.service.endpoint;
 
-import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.service.EndorsementService;
-import com.ciandt.techgallery.service.EndorsementServiceImpl;
-import com.ciandt.techgallery.service.model.EndorsementResponse;
-import com.ciandt.techgallery.service.model.Response;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
@@ -13,6 +8,12 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.service.EndorsementService;
+import com.ciandt.techgallery.service.EndorsementServiceImpl;
+import com.ciandt.techgallery.service.model.EndorsementResponse;
+import com.ciandt.techgallery.service.model.Response;
 
 /**
  * Endpoint controller class for Endorsements requests. Endorsements are used only for users.
@@ -24,7 +25,7 @@ import com.google.appengine.api.users.User;
     Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class EndorsementEndpoint {
 
-  private EndorsementService service = new EndorsementServiceImpl();
+  private EndorsementService service = EndorsementServiceImpl.getInstance();
 
   /**
    * Endpoint for adding or updating an Endorsement.

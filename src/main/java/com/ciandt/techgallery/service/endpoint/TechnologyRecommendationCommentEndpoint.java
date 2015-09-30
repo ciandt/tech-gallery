@@ -23,7 +23,7 @@ import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
 public class TechnologyRecommendationCommentEndpoint {
 
   private TechnologyRecommendationCommentService service =
-      new TechnologyRecommendationCommentServiceImpl();
+      TechnologyRecommendationCommentServiceImpl.getInstance();
 
   @ApiMethod(name = "addRecommendationComment", path = "recommendation-comment",
       httpMethod = "post")

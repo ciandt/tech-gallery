@@ -17,6 +17,26 @@ import com.ciandt.techgallery.persistence.model.Technology;
  */
 public class SkillDAOImpl extends GenericDAOImpl<Skill, Long> implements SkillDAO {
 
+  /*
+   * Attributes --------------------------------------------
+   */
+  private static SkillDAOImpl instance;
+
+  /*
+   * Constructors --------------------------------------------
+   */
+  private SkillDAOImpl() {}
+
+  public static SkillDAOImpl getInstance() {
+    if (instance == null) {
+      instance = new SkillDAOImpl();
+    }
+    return instance;
+  }
+
+  /*
+   * Methods --------------------------------------------
+   */
   @Override
   public Skill findByUserAndTechnology(TechGalleryUser user, Technology technology) {
     Objectify objectify = OfyService.ofy();

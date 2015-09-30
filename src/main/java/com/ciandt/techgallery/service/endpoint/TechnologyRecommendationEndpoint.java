@@ -21,7 +21,8 @@ import java.util.List;
     scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class TechnologyRecommendationEndpoint {
 
-  private TechnologyRecommendationService service = new TechnologyRecommendationServiceImpl();
+  private TechnologyRecommendationService service =
+      TechnologyRecommendationServiceImpl.getInstance();
 
   @ApiMethod(name = "getTechnologyRecommendations", path = "technology-recommendations",
       httpMethod = "get")

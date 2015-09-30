@@ -1,7 +1,13 @@
 package com.ciandt.techgallery.service.impl;
 
-import java.util.Date;
-import java.util.logging.Logger;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
+
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.persistence.dao.SkillDAO;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
@@ -20,13 +26,8 @@ import com.ciandt.techgallery.service.model.SkillResponse;
 import com.ciandt.techgallery.service.util.SkillConverter;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.oauth.OAuthRequestException;
-import com.google.appengine.api.users.User;
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
+import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * Services for Skill Endpoint requests.
@@ -36,15 +37,37 @@ import com.googlecode.objectify.Ref;
  */
 public class SkillServiceImpl implements SkillService {
 
+  /*
+   * Constants --------------------------------------------
+   */
   private static final Logger log = Logger.getLogger(SkillServiceImpl.class.getName());
   private static final I18n i18n = I18n.getInstance();
 
-  SkillDAO skillDAO = new SkillDAOImpl();
-  TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
-  TechnologyDAO technologyDAO = new TechnologyDAOImpl();
+  /*
+   * Attributes --------------------------------------------
+   */
+  private static SkillServiceImpl instance;
+  SkillDAO skillDAO = SkillDAOImpl.getInstance();
+  TechGalleryUserDAO techGalleryUserDAO = TechGalleryUserDAOImpl.getInstance();
+  TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
   /** tech gallery user service for getting PEOPLE API user. */
-  UserServiceTG userService = new UserServiceTGImpl();
+  UserServiceTG userService = UserServiceTGImpl.getInstance();
 
+  /*
+   * Constructors --------------------------------------------
+   */
+  private SkillServiceImpl() {}
+
+  public static SkillServiceImpl getInstance() {
+    if (instance == null) {
+      instance = new SkillServiceImpl();
+    }
+    return instance;
+  }
+
+  /*
+   * Methods --------------------------------------------
+   */
   @Override
   public Response addOrUpdateSkill(SkillResponse skill, User user)
       throws InternalServerErrorException, BadRequestException {
