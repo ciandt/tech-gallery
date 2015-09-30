@@ -14,6 +14,7 @@
   <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
   <script src="lib/angular-route/angular-route.min.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/config.js"></script>
   <script src="js/jsUtils.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
@@ -42,7 +43,7 @@
   <div class="page-header"></div>
 
   <div class="login-Button" ng-show="showLogin">
-    <h3 ng-show="!domainError">Para ter acesso ao conteúdo realize seu login...</h3>
+    <h3 ng-show="!domainError">{{ 'ACCESS_LOGIN' | translate }}</h3>
     <h3 ng-show="domainError">{{domainError}}</h3>
   </div>
 
@@ -64,14 +65,14 @@
     </div>
 
     <div class="container">
-      <h3>Quem manja muito desta tecnologia?</h3>
+      <h3>{{ 'WHO_KNOWS_ASK' | translate }}</h3>
       <div class="input-group endorse-input">
         <input ng-model="endorsed" type="text" class="form-control"
           placeholder="(usuário)" aria-describedby="basic-addon2">
         <span class="input-group-addon" id="basic-addon2">{{domain}}</span>
       </div>
       <button ng-click="endorse(true)" class="btn btn-primary"
-        role="button">Indicar</button>
+        role="button">{{ 'ENDORSE' | translate }}</button>
     </div>
     <div>
       <img ng-show="processEndorse" src="/images/loading.gif"
@@ -82,15 +83,14 @@
     </div>
 
     <div id="informSkill" class="container spacingtop">
-      <h3>Em uma escala de Newbie a Jedi, como você se avalia nesta
-        tecnologia?</h3>
+      <h3>{{ 'SKILL_LEVEL' | translate }}</h3>
       <rating ng-model="rate" max="max" readonly="false"
         on-hover="hoveringOver(value)" on-leave="overStar = null"
         ng-click="selecSkill()" titles="['','','','','']"></rating>
       <span class="label"
         ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}"
         ng-show="overStar">{{skillLbl}}</span>
-      <h4 ng-show="skillLevel">Sou um {{skillLevel}}!</h4>
+      <h4 ng-show="skillLevel">{{ 'I_AM' | translate }} {{skillLevel}}!</h4>
     </div>
 
     <div>
@@ -99,10 +99,9 @@
     </div>
 
     <div id="div_showRecommendation" class="container">
-      <h3>Quem é referência?</h3>
+      <h3>{{ 'WHO_IS_REFERENCE' | translate }}</h3>
       <div ng-show="!showEndorsementResponse">
-        <h5>Ainda não tem ninguém aqui. Indique um colega que saiba
-          disso ali em cima!</h5>
+        <h5>{{ 'NO_ONE_KNOWS_YET' | translate }}</h5>
       </div>
 
       <div class="row">
@@ -147,7 +146,7 @@
     
     <div id="choose_recommendation" class="container">
     	<div>
-    		<h3>Recomenda esta tecnologia?</h3>
+    		<h3>{{ 'YOU_RECOMMEND_ASK' | translate }}</h3>
     		<div id="recommend_area" class="col-md-9 text-left">
     			<button id="btn_up" type="button" ng-click="changeThumbs('up')" ng-class="setClassThumbs('up')" 
     					class="btn glyphicon glyphicon-thumbs-up thumbsFont"></button>
@@ -166,12 +165,12 @@
 	      <alert ng-show="alertComment" type="danger" close="closeAlertComment()">{{alertMsgComment}}</alert>
 	    </div>
     	<div>
-	    	<h3>Comentários</h3>
-	    	<h5 ng-show="recommend_message">Para completar a recomendação desta tecnologia, faça um comentário:</h5>
+	    	<h3>{{ 'COMMENTS' | translate }}</h3>
+	    	<h5 ng-show="recommend_message">{{ 'MAKE_COMMENT_TO_RECOMMEND' | translate }}</h5>
 	    	<div id="comment_area" class="col-md-9 text-right">
 		    	<textarea id="txta_comment" ng-model="comment" class="form-control textarea" maxlength="500"></textarea>
-		    	<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearComment()">Limpar</button>
-		    	<button id="btn_add_comment" type="button" class="btn btn-primary" ng-click="addComment()">Comentar</button>
+		    	<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearComment()">{{ 'CLEAR' | translate }}</button>
+		    	<button id="btn_add_comment" type="button" class="btn btn-primary" ng-click="addComment()">{{ 'MAKE_COMMENT' | translate }}</button>
 	    	</div>
     	</div>
     </div>
@@ -184,8 +183,8 @@
 	  			<div class="commentHeader">
 					<img class="media-object endorsed-image commentImage img-circle" src="{{comment.author.photo}}"/>
 	  				<b class="flex1">
-	  				<span class="commentName">{{comment.author.name}}</span><span class="smallFont"> em </span>
-	  				<span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}</span><span class="smallFont"> disse:</span>
+	  				<span class="commentName">{{comment.author.name}}</span><span class="smallFont"> {{ 'AT' | translate }} </span>
+	  				<span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}</span><span class="smallFont"> {{ 'SAID' | translate }}:</span>
 	  				</b>
 	  				<a ng-show="showSelfInformations(comment.author.email)" ng-click="deleteComment(comment.id)" 
 	  					ref="#" id="btn_delete" type="button" class="btn glyphicon glyphicon-remove-circle"></a>
