@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 import com.ciandt.techgallery.persistence.dao.SkillDAO;
-import com.ciandt.techgallery.persistence.dao.SkillDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
-import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
+import com.ciandt.techgallery.persistence.dao.impl.SkillDAOImpl;
+import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
+import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;

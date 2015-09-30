@@ -11,9 +11,9 @@ import com.googlecode.objectify.Ref;
 import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
 import com.ciandt.techgallery.persistence.dao.EndorsementDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
-import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
+import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
+import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
@@ -32,7 +32,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Services for Endorsement Endpoint requests.
@@ -42,7 +41,7 @@ import java.util.logging.Logger;
  */
 public class EndorsementServiceImpl implements EndorsementService {
 
-  private static final Logger log = Logger.getLogger(EndorsementServiceImpl.class.getName());
+  // private static final Logger log = Logger.getLogger(EndorsementServiceImpl.class.getName());
   private static final I18n i18n = I18n.getInstance();
 
 

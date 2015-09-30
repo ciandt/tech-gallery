@@ -1,10 +1,11 @@
-package com.ciandt.techgallery.persistence.dao;
+package com.ciandt.techgallery.persistence.dao.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import com.ciandt.techgallery.ofy.OfyService;
+import com.ciandt.techgallery.persistence.dao.GenericDAO;
 import com.ciandt.techgallery.persistence.model.BaseEntity;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;

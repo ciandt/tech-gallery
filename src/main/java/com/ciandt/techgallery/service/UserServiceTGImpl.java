@@ -14,7 +14,7 @@ import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
+import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
@@ -331,6 +331,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     return uResp;
   }
 
+  @SuppressWarnings("resource")
   private static String convertStreamToString(java.io.InputStream is) {
     java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
     return s.hasNext() ? s.next() : "";

@@ -1,6 +1,7 @@
-package com.ciandt.techgallery.persistence.dao;
+package com.ciandt.techgallery.persistence.dao.impl;
 
 import com.ciandt.techgallery.ofy.OfyService;
+import com.ciandt.techgallery.persistence.dao.SkillDAO;
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
