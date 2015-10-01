@@ -2,6 +2,12 @@ package com.ciandt.techgallery.service.enums;
 
 import com.ciandt.techgallery.utils.i18n.I18n;
 
+/**
+ * Enum for mapping Order Options.
+ * 
+ * @author Felipe Ibrahim
+ *
+ */
 public enum TechnologyOrderOptionEnum {
 
   POSITIVE_RECOMENDATION_QUANTITY("Positive Recomendations Quantity"),

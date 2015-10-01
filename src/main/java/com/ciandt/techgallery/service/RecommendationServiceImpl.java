@@ -1,8 +1,8 @@
 package com.ciandt.techgallery.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
@@ -11,9 +11,10 @@ import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.RecommendationEnums;
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Services for Recommendation Endpoint requests.
@@ -36,7 +37,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
     return recommendations;
   }
-  
+
   /**
    * Validate the user logged in.
    * 
@@ -44,11 +45,11 @@ public class RecommendationServiceImpl implements RecommendationService {
    * @throws BadRequestException .
    */
   private void validateUser(User user) throws BadRequestException {
-    
+
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
-    
+
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());

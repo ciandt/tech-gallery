@@ -96,10 +96,10 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
-  private List<TechnologyDetailsCounter> sortTechnologies(List<Technology> techEntities,
+  private List<TechnologyDetailsCounter> sortTechnologies(List<Technology> techList,
       TechnologyOrderOptionEnum orderBy) {
     List<TechnologyDetailsCounter> counterList = new ArrayList<TechnologyDetailsCounter>();
-    for (Technology technology : techEntities) {
+    for (Technology technology : techList) {
       counterList.add(technologyDetailsCounterDao.findByTechnology(technology));
     }
     switch (orderBy) {
@@ -162,9 +162,7 @@ public class TechnologyServiceImpl implements TechnologyService {
   @Override
   public Response findTechnologiesByFilter(TechnologyFilter techFilter, User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {
-
     validateUser(user);
-
     if (techFilter.getRecommendationIs() != null
         && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())) {
       techFilter.setRecommendationIs("");
@@ -172,7 +170,37 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     List<Technology> completeList = technologyDAO.findAll();
     List<Technology> filteredList = new ArrayList<>();
+    verifyFilters(techFilter, completeList, filteredList);
+    if ((techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty())
+        && (techFilter.getRecommendationIs() != null
+            || techFilter.getRecommendationIs().isEmpty())) {
+      filteredList.addAll(completeList);
+    }
 
+    if (filteredList.isEmpty()) {
+      return new TechnologiesResponse();
+    } else {
+      applyOrdination(techFilter, filteredList);
+      TechnologiesResponse response = new TechnologiesResponse();
+      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
+      response.setTechnologies(internList);
+      return response;
+    }
+  }
+
+  private void applyOrdination(TechnologyFilter techFilter, List<Technology> filteredList) {
+    if (techFilter.getOrderOptionIs() != null && !techFilter.getOrderOptionIs().isEmpty()) {
+      List<TechnologyDetailsCounter> sortedTechnologies = sortTechnologies(filteredList,
+          TechnologyOrderOptionEnum.fromString(techFilter.getOrderOptionIs()));
+      filteredList.clear();
+      for (TechnologyDetailsCounter detailsCounter : sortedTechnologies) {
+        filteredList.add(detailsCounter.getTechnology().get());
+      }
+    }
+  }
+
+  private void verifyFilters(TechnologyFilter techFilter, List<Technology> completeList,
+      List<Technology> filteredList) {
     for (Technology technology : completeList) {
       if (verifyTitleAndShortDescriptionFilter(techFilter, technology)) {
         if (techFilter.getRecommendationIs() != null) {
@@ -190,15 +218,6 @@ public class TechnologyServiceImpl implements TechnologyService {
         filteredList.add(technology);
         continue;
       }
-    }
-
-    if (filteredList.isEmpty()) {
-      return new TechnologiesResponse();
-    } else {
-      TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
-      response.setTechnologies(internList);
-      return response;
     }
   }
 
