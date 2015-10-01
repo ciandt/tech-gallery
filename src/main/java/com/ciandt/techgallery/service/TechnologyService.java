@@ -35,6 +35,7 @@ public interface TechnologyService {
    * Service for getting all technologies.
    * 
    * @return technologies info or message error.
+   * @throws NotFoundException .
    * @throws InternalServerErrorException .
    * @throws NotFoundException .
    */

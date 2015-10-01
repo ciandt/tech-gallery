@@ -7,8 +7,6 @@ import com.google.appengine.api.users.User;
 
 import com.googlecode.objectify.Ref;
 
-// github.com/ciandt-dev/tech-gallery.git
-
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
@@ -20,6 +18,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.counter.TechnologyDetailsCounter;
 import com.ciandt.techgallery.service.enums.TechnologyOrderOptionEnum;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciandt.techgallery.service.model.RecommendationEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
@@ -42,7 +41,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   private static final String NO_TECHNOLOGY_WAS_FOUND = "No technology was found.";
   private static final String TECHNOLOGY_ID_CANNOT_BE_BLANK = "Technology's id cannot be blank.";
-  
+
   private static final I18n i18n = I18n.getInstance();
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
@@ -80,6 +79,8 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   /**
    * GET for getting all technologies.
+   * 
+   * @throws NotFoundException .
    */
   @Override
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
@@ -163,36 +164,63 @@ public class TechnologyServiceImpl implements TechnologyService {
       throws InternalServerErrorException, NotFoundException, BadRequestException {
 
     validateUser(user);
+
+    if (techFilter.getRecommendationIs() != null
+        && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())) {
+      techFilter.setRecommendationIs("");
+    }
+
     List<Technology> completeList = technologyDAO.findAll();
     List<Technology> filteredList = new ArrayList<>();
-    if (techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty()) {
-      filteredList.addAll(completeList);
-    } else {
-      for (Technology technology : completeList) {
-        if (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase())
-            || technology.getShortDescription().toLowerCase()
-                .contains(techFilter.getShortDescriptionContains().toLowerCase())) {
-          filteredList.add(technology);
-        }
-      }
-    }
-    List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
-    if (!filteredList.isEmpty() && techFilter.getOrderOption() != null
-        && !techFilter.getOrderOption().isEmpty()) {
-      TechnologyOrderOptionEnum orderBy =
-          TechnologyOrderOptionEnum.fromString(techFilter.getOrderOption());
-      List<TechnologyDetailsCounter> technologiesDetailList =
-          sortTechnologies(filteredList, orderBy);
-      List<Technology> sortedTechnologies = new ArrayList<Technology>();
-      for (TechnologyDetailsCounter detail : technologiesDetailList) {
-        sortedTechnologies.add(detail.getTechnology().get());
-      }
 
-      internList = TechnologyConverter.fromEntityToTransient(sortedTechnologies);
+    for (Technology technology : completeList) {
+      if (verifyTitleAndShortDescriptionFilter(techFilter, technology)) {
+        if (techFilter.getRecommendationIs() != null) {
+          if (verifyRecommendationFilter(techFilter, technology)) {
+            filteredList.add(technology);
+          } else {
+            continue;
+          }
+        } else {
+          filteredList.add(technology);
+          continue;
+        }
+      } else if (verifyRecommendationFilter(techFilter, technology)
+          && techFilter.getTitleContains() == null) {
+        filteredList.add(technology);
+        continue;
+      }
     }
-    TechnologiesResponse response = new TechnologiesResponse();
-    response.setTechnologies(internList);
-    return response;
+
+    if (filteredList.isEmpty()) {
+      return new TechnologiesResponse();
+    } else {
+      TechnologiesResponse response = new TechnologiesResponse();
+      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
+      response.setTechnologies(internList);
+      return response;
+    }
+  }
+
+  private boolean verifyRecommendationFilter(TechnologyFilter techFilter, Technology technology) {
+    if (techFilter.getRecommendationIs() != null && (technology.getRecommendation().toLowerCase()
+        .equals(techFilter.getRecommendationIs().toLowerCase())
+        || techFilter.getRecommendationIs().toLowerCase()
+            .equals(RecommendationEnums.ANY.message().toLowerCase()))) {
+      return true;
+    }
+    return false;
+  }
+
+  private boolean verifyTitleAndShortDescriptionFilter(TechnologyFilter techFilter,
+      Technology technology) {
+    if (techFilter.getTitleContains() != null
+        && (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase())
+            || technology.getShortDescription().toLowerCase()
+                .contains(techFilter.getShortDescriptionContains().toLowerCase()))) {
+      return true;
+    }
+    return false;
   }
 
   @Override

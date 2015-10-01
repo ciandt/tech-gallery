@@ -3,22 +3,33 @@ package com.ciandt.techgallery.service.model;
 /**
  * Response with all technology entities.
  * 
- * @author felipers
+ * @author Thulio Ribeiro
  *
  */
 public class TechnologyFilter implements Response {
 
   /** string for search in title */
   private String titleContains;
-  
-  /** string for search in title */
+
+  /** string for search in shortDescription */
   private String shortDescriptionContains;
 
+  /** string for search in recommendation */
+  private String recommendationIs;
+
   /** string for order option */
-  private String orderOption;
-  
+  private String orderOptionIs;
+
   public String getTitleContains() {
     return titleContains;
+  }
+
+  public String getRecommendationIs() {
+    return recommendationIs;
+  }
+
+  public void setRecommendationIs(String recommendationIs) {
+    this.recommendationIs = recommendationIs;
   }
 
   public void setTitleContains(String titleContains) {
@@ -33,12 +44,22 @@ public class TechnologyFilter implements Response {
     this.shortDescriptionContains = shortDescriptionContains;
   }
 
-  public String getOrderOption() {
-    return orderOption;
+  public String getOrderOptionIs() {
+    return orderOptionIs;
   }
 
-  public void setOrderOption(String orderOption) {
-    this.orderOption = orderOption;
+  public void setOrderOptionIs(String orderOptionIs) {
+    this.orderOptionIs = orderOptionIs;
   }
-  
+
+  public TechnologyFilter() {}
+
+  public TechnologyFilter(String titleContains, String shortDescriptionContains,
+      String recommendationIs, String orderOptionIs) {
+    this.titleContains = titleContains;
+    this.shortDescriptionContains = shortDescriptionContains;
+    this.recommendationIs = recommendationIs;
+    this.orderOptionIs = orderOptionIs;
+  }
+
 }
