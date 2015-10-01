@@ -1,14 +1,12 @@
 package com.ciandt.techgallery.service.endpoint;
 
-import java.util.List;
-
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.TechnologyServiceImpl;
-import com.ciandt.techgallery.service.model.RecommendationEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
+import com.google.api.server.spi.ServiceException;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
@@ -67,14 +65,14 @@ public class TechnologyEndpoint {
     return service.getTechnology(id);
   }
   
-  @ApiMethod(name = "findByFilter", path = "technology-filter", httpMethod = "post")
-  public Response findTechnologyByFilter(TechnologyFilter techFilter, User user) throws InternalServerErrorException, NotFoundException,  BadRequestException{
-    return service.findTechnologiesByFilter(techFilter, user);
+  @ApiMethod(name = "findByFilter", path = "technology/search", httpMethod = "get")
+  public Response findTechnologyByFilter(User user,
+      @Named("titleContains") String titleContains,
+      @Named("shortDescriptionContains") String shortDescriptionContains,
+      @Named("recommendationIs") String recommendationIs)
+          throws ServiceException {
+    return service.findTechnologiesByFilter(
+        new TechnologyFilter(titleContains, shortDescriptionContains, recommendationIs), user);
   }
-  
-  @ApiMethod(name = "getRecommendationList", path = "technology-getRecommendations", httpMethod = "post")
-  public List<String> getRecommendations(User user) throws InternalServerErrorException, NotFoundException,  BadRequestException{
-    return service.getRecommendations(user);
-  }
-  
+
 } 

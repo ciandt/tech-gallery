@@ -67,11 +67,4 @@ public interface TechnologyService {
    */
   public Technology getTechnologyById(String id) throws NotFoundException;
   
-  /**
-   * Service for getting a list of possibles recommendations
-   * @return 
-   * @throws NotFoundException when entity is not found
-   */
-  public List<String> getRecommendations(User user) throws NotFoundException;
-  
 }

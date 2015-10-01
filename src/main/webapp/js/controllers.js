@@ -88,7 +88,7 @@ angular.module('techGallery').controller(
     function callBackLoaded() {
       gapi.client.rest.getTechnologies().execute(function(data) {
         gapi.client.rest.handleLogin().execute();
-        gapi.client.rest.getRecommendationList().execute(function(data){
+        gapi.client.rest.getRecommendations().execute(function(data){
           $scope.dropDownRecommendation = data.items;
           $scope.$apply();
         });

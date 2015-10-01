@@ -99,7 +99,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     
     validateUser(user);
     
-    if(techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())){
+    if(techFilter.getRecommendationIs()!=null && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())){
       techFilter.setRecommendationIs("");
     }
     
@@ -136,7 +136,8 @@ public class TechnologyServiceImpl implements TechnologyService {
   
   private boolean verifyRecommendationFilter(TechnologyFilter techFilter, Technology technology){
     if(techFilter.getRecommendationIs() != null &&
-        technology.getRecommendation().toLowerCase().contains(techFilter.getRecommendationIs().toLowerCase()) || techFilter.getRecommendationIs().toLowerCase().equals("any")){
+        (technology.getRecommendation().toLowerCase().equals(techFilter.getRecommendationIs().toLowerCase()) ||
+            techFilter.getRecommendationIs().toLowerCase().equals(RecommendationEnums.ANY.message().toLowerCase()))){
       return true;
     }
     return false;
@@ -160,16 +161,6 @@ public class TechnologyServiceImpl implements TechnologyService {
       return tech;
     }
 
-  }
-  
-  @Override
-  public List<String> getRecommendations(User user) throws NotFoundException {
-    List<RecommendationEnums> enumValues = Arrays.asList(RecommendationEnums.values());
-    List<String> recommendations = new ArrayList<>();
-    for (RecommendationEnums enumEntry : enumValues) {
-      recommendations.add(enumEntry.message());
-    }
-    return recommendations;
   }
   
   /**
