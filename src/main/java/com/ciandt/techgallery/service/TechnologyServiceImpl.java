@@ -39,9 +39,6 @@ import java.util.List;
  */
 public class TechnologyServiceImpl implements TechnologyService {
 
-  private static final String NO_TECHNOLOGY_WAS_FOUND = "No technology was found.";
-  private static final String TECHNOLOGY_ID_CANNOT_BE_BLANK = "Technology's id cannot be blank.";
-
   private static final I18n i18n = I18n.getInstance();
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
@@ -59,11 +56,11 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     // technology id can't be null or empty
     if (techId == null || techId.equals("")) {
-      throw new BadRequestException(i18n.t(TECHNOLOGY_ID_CANNOT_BE_BLANK));
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BE_BLANK.message());
     }
     // technology name can't be null or empty
     if (techName == null || techName.equals("")) {
-      throw new BadRequestException(i18n.t(TECHNOLOGY_ID_CANNOT_BE_BLANK));
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BE_BLANK.message());
     } else {
       Technology entity = TechnologyConverter.fromTransientToEntity(technology);
       technologyDAO.add(entity);
@@ -87,7 +84,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     List<Technology> techEntities = technologyDAO.findAll();
     // if list is null, return a not found exception
     if (techEntities == null) {
-      throw new NotFoundException(i18n.t(NO_TECHNOLOGY_WAS_FOUND));
+      throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
       TechnologiesResponse response = new TechnologiesResponse();
       List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(techEntities);
@@ -152,7 +149,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     Technology techEntity = technologyDAO.findById(id);
     // if technology is null, return a not found exception
     if (techEntity == null) {
-      throw new NotFoundException(i18n.t(NO_TECHNOLOGY_WAS_FOUND));
+      throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
       TechnologyResponse response = TechnologyConverter.fromEntityToTransient(techEntity);
       return response;
