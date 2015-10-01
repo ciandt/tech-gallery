@@ -27,7 +27,7 @@ public class TechnologyRecommendationTransformer
       product.setActive(arg0.getActive());
       product.setScore(arg0.getScore());
       product.setTechnology(Ref.create(techTransformer.transformFrom(arg0.getTechnology())));
-      product.setRecommender(tgUserTransformer.transformFrom(arg0.getRecommender()));
+      product.setRecommender(Ref.create(tgUserTransformer.transformFrom(arg0.getRecommender())));
       return product;
     } else {
       return null;
@@ -42,7 +42,7 @@ public class TechnologyRecommendationTransformer
       product.setActive(arg0.getActive());
       product.setScore(arg0.getScore());
       product.setTechnology(techTransformer.transformTo(arg0.getTechnology().get()));
-      product.setRecommender(tgUserTransformer.transformTo(arg0.getRecommender()));
+      product.setRecommender(tgUserTransformer.transformTo(arg0.getRecommender().get()));
       return product;
     } else {
       return null;
