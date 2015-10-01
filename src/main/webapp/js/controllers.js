@@ -199,8 +199,8 @@ angular.module('techGallery').controller(
         fillTechnology(data);
         showEndorsementsByTech();
         loadComments();
-        showAllRecommenders();
-        showAllNotRecommenders();
+        loadRecommends()
+        loadNotRecommends();
         $scope.disablePlusOne = false;
         $scope.$apply();
       });
@@ -530,14 +530,6 @@ angular.module('techGallery').controller(
     	}else if($scope.score == false && thumbs == 'down'){
     		return 'selectedThumbDown';
     	}
-    }
-    
-    $scope.showAllRecommenders = function(){
-    	loadRecommends();
-    }
-    
-    $scope.showAllNotRecommenders = function(){
-    	loadNotRecommends();
     }
     
     function loadRecommends() {

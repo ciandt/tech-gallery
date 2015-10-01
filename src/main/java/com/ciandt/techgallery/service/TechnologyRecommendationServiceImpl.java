@@ -70,7 +70,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
       Technology technology, TechGalleryUser tgUser) {
     recommendation.setTechnology(Ref.create(technology));
     recommendation.setActive(true);
-    recommendation.setRecommender(tgUser);
+    recommendation.setRecommender(Ref.create(tgUser));
     TechnologyRecommendation previousRec = technologyRecommendationDAO
         .findActiveByRecommenderAndTechnology(tgUser, recommendation.getTechnology().get());
 
