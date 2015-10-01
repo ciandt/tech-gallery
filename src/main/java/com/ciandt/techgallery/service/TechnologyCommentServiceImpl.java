@@ -117,7 +117,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     TechnologyRecommendation techRecommendation;
     techRecommendation = recommendationService.getRecommendationByComment(comment);
 
-    if (techRecommendation != null) {
+    if (techRecommendation != null && techRecommendation.getActive() == true) {
       commentTO.setRecommendationId(techRecommendation.getId());
       commentTO.setRecommendationScore(techRecommendation.getScore());
     } else {
