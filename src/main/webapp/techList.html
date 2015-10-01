@@ -38,20 +38,19 @@
               <button ng-disabled=showLogin type="button" ng-click="searchTechnology()" class="btn btn-default glyphicon glyphicon-search searchButton"/>
               <button ng-disabled=showLogin ng-click="searchClear()" class="btn btn-danger glyphicon glyphicon-remove searchButton" ng-show="textSearch"/>
             </div>
-            <div class="btn-group" dropdown is-open="status.isopen" style="margin-right:15px">
+            <div class="btn-group" dropdown style="margin-right:15px">
               <a href="#" id="langButton" dropdown-toggle>
-                <img src={{selectedLanguage}} style="height: 30px" ><span class="caret"></span>
+                <img src={{getLanguage()}} class="langImage"><span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
                 <li role="menuitem" ng-repeat="lang in dropDownLanguages">
-                  <img src={{lang.img}} style="height: 30px">
-                  <span>{{lang.text}}</span>
+                  <img src={{lang.img}} class="langImage" ng-click="setLanguage(lang)">
+                  <span class="langText" ng-click="setLanguage(lang)">{{lang.text}}</span>
                 </li>
               </ul>
             </div>
             <a ng-show="showLogin && !domainError" href="#" ng-click="login()" class="whiteText">Login <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
             <a ng-show="domainError || userLogged" href={{logoutRedirect()}} class="whiteText">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-          
           </div>
         </div>
       </div>

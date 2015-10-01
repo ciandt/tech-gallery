@@ -190,3 +190,12 @@ body, html {
 .recommendations-link {
 	font-size: 20px;
 }
+
+.langImage{
+	height: 30px;
+	cursor: pointer;
+}
+
+.langText{
+	cursor: pointer;
+}

@@ -24,4 +24,17 @@ angular.module('techGallery', [
  'ngRoute',
  'ui.bootstrap',
  'pascalprecht.translate'
-]);
+]).factory('appLanguage', function(){
+  var appLanguage = {};
+  function set(lang){
+    appLanguage = lang;
+  }
+  function get(){
+    return appLanguage;
+  }
+  
+  return{
+    set: set,
+    get:get
+  }
+});

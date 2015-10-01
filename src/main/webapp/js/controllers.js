@@ -16,11 +16,26 @@
 
 angular.module('techGallery').controller(
   'techListController',
-  function($scope, $location, $timeout) {
+  function($scope, $location, $timeout, $translate) {
     'use strict';
 
-    $scope.selectedLanguage = "https://storage.googleapis.com/tech-gallery-assets/imagesLogo/en-US.png";
-    $scope.dropDownLanguages = [{text:"Português" ,img:"https://storage.googleapis.com/tech-gallery-assets/imagesLogo/pt-BR.png"}, {text:"English" ,img:"https://storage.googleapis.com/tech-gallery-assets/imagesLogo/en-US.png"}];
+    $scope.dropDownLanguages = jsUtils.getLanguages();
+    
+    $scope.selectedLanguage = window.sessionStorage.getItem('appLang');
+    
+    if($scope.selectedLanguage){
+      $translate.use($scope.selectedLanguage);
+    }
+    
+    $scope.getLanguage = function(){
+      return jsUtils.getUrlImages($scope.selectedLanguage);
+    }
+    
+    $scope.setLanguage = function(item){
+      $scope.selectedLanguage = item.lang;
+      $translate.use(item.lang);
+      window.sessionStorage.setItem('appLang', item.lang);
+    }
     
     $scope.domainError = false;
     $scope.userLogged = false;
@@ -123,11 +138,29 @@ angular.module('techGallery').controller(
 
 angular.module('techGallery').controller(
   'techDetailsController',
-  function($scope, $timeout, $modal) {
+  function($scope, $timeout, $modal, $translate) {
     'use strict';
     $scope.idTechnology = jsUtils.getParameterByName('id');
     $scope.loadEndorsements = true;
 
+    $scope.dropDownLanguages = jsUtils.getLanguages();
+    
+    $scope.selectedLanguage = window.sessionStorage.getItem('appLang');
+    
+    if($scope.selectedLanguage){
+      $translate.use($scope.selectedLanguage);
+    }
+    
+    $scope.getLanguage = function(){
+      return jsUtils.getUrlImages($scope.selectedLanguage);
+    }
+    
+    $scope.setLanguage = function(item){
+      $scope.selectedLanguage = item.lang;
+      $translate.use(item.lang);
+      window.sessionStorage.setItem('appLang', item.lang);
+    }
+    
     //Fill this property with the domain of your choice
     $scope.domain = '@ciandt.com';
     

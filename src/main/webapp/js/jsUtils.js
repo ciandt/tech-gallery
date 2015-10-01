@@ -3,9 +3,34 @@
 
   var clientId = '146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com';
   var scopes = 'https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.email';
+  var applicationLanguage;
   var afterLogin;
   var userEmail;
   var userDomain;
+  
+  var getLanguages = function(){
+    var languages = [{text:"Português", img:"https://storage.googleapis.com/tech-gallery-assets/imagesLogo/pt-BR.png", lang:"pt-BR"},
+                     {text:"English", img:"https://storage.googleapis.com/tech-gallery-assets/imagesLogo/en-US.png", lang:"en-US"}];
+    return languages;
+  }
+  
+  var getUrlImages = function(selectedLang){
+    var lang;
+    if(selectedLang){
+      lang = selectedLang;
+    }else{
+      lang = defaultLanguage();
+    }
+    return "https://storage.googleapis.com/tech-gallery-assets/imagesLogo/" + lang + ".png";
+  }
+  
+  function defaultLanguage(){
+    var lang = navigator.language;
+    if(lang != 'pt-BR' && lang != 'en-US') {
+      lang = 'en-US';
+    }
+    return lang;
+  }
   
   var getUserEmail = function(callBackFunction, authResult){
     setTimeout(function(){
@@ -244,7 +269,9 @@
     mockTechComment: mockTechComment,
     getParameterByName: getParameterByName,
     alerts: alerts,
-    logoutRedirect: logoutRedirect
+    logoutRedirect: logoutRedirect,
+    getLanguages: getLanguages,
+    getUrlImages: getUrlImages
   };
 
 })(window);
