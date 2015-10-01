@@ -13,6 +13,7 @@
   <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
   <script src="lib/angular-route/angular-route.min.js"></script>
+  <script src="lib/angular-translate/angular-translate.js"></script>
   <script src="js/app.js"></script>
   <script src="js/config.js"></script>
   <script src="js/jsUtils.js"></script>
@@ -183,8 +184,8 @@
 	  			<div class="commentHeader">
 					<img class="media-object endorsed-image commentImage img-circle" src="{{comment.author.photo}}"/>
 	  				<b class="flex1">
-	  				<span class="commentName">{{comment.author.name}}</span><span class="smallFont"> {{ 'AT' | translate }} </span>
-	  				<span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}</span><span class="smallFont"> {{ 'SAID' | translate }}:</span>
+	  				<span class="commentName">{{comment.author.name}}</span><span class="smallFont"> {{ 'ON' | translate }} </span>
+	  				<span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy '-' H:mm"}}</span><span class="smallFont"> {{ 'SAID' | translate }}:</span>
 	  				</b>
 	  				<a ng-show="showSelfInformations(comment.author.email)" ng-click="deleteComment(comment.id)" 
 	  					ref="#" id="btn_delete" type="button" class="btn glyphicon glyphicon-remove-circle"></a>
