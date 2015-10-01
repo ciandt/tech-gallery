@@ -1,13 +1,14 @@
 package com.ciandt.techgallery.service;
 
-import com.ciandt.techgallery.persistence.model.Technology;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologyFilter;
-import com.ciandt.techgallery.service.model.TechnologyResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.TechnologyFilter;
+import com.ciandt.techgallery.service.model.TechnologyResponse;
 
 /**
  * Services for Technologies.
@@ -63,5 +64,5 @@ public interface TechnologyService {
    * @throws NotFoundException when entity is not found
    */
   public Technology getTechnologyById(String id) throws NotFoundException;
-
+  
 }

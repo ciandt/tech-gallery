@@ -13,6 +13,7 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciandt.techgallery.service.model.RecommendationEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
@@ -120,14 +121,32 @@ public class TechnologyServiceImpl implements TechnologyService {
       throws InternalServerErrorException, NotFoundException, BadRequestException {
     
     validateUser(user);
+    
+    if(techFilter.getRecommendationIs()!=null && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())){
+      techFilter.setRecommendationIs("");
+    }
+    
     List<Technology> completeList = technologyDAO.findAll();
     List<Technology> filteredList = new ArrayList<>();
+    
     for (Technology technology : completeList) {
-      if(technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase()) || 
-          technology.getShortDescription().toLowerCase().contains(techFilter.getShortDescriptionContains().toLowerCase())){
+      if(verifyTitleAndShortDescriptionFilter(techFilter, technology)){
+        if(techFilter.getRecommendationIs()!=null){
+          if(verifyRecommendationFilter(techFilter, technology)){
         filteredList.add(technology);
+          }else{
+            continue;
+      }
+        }else{
+          filteredList.add(technology);
+          continue;
+    }
+      }else if(verifyRecommendationFilter(techFilter, technology) && techFilter.getTitleContains() == null){
+        filteredList.add(technology);
+        continue;
       }
     }
+    
     if (filteredList.isEmpty()) {
       return new TechnologiesResponse();
     } else {
@@ -136,6 +155,24 @@ public class TechnologyServiceImpl implements TechnologyService {
       response.setTechnologies(internList);
       return response;
     }
+  }
+
+  private boolean verifyRecommendationFilter(TechnologyFilter techFilter, Technology technology){
+    if(techFilter.getRecommendationIs() != null &&
+        (technology.getRecommendation().toLowerCase().equals(techFilter.getRecommendationIs().toLowerCase()) ||
+            techFilter.getRecommendationIs().toLowerCase().equals(RecommendationEnums.ANY.message().toLowerCase()))){
+      return true;
+    }
+    return false;
+  }
+  
+  private boolean verifyTitleAndShortDescriptionFilter(TechnologyFilter techFilter, Technology technology){
+    if(techFilter.getTitleContains() != null &&
+        (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase()) || 
+        technology.getShortDescription().toLowerCase().contains(techFilter.getShortDescriptionContains().toLowerCase()))){
+      return true;
+    }
+    return false;
   }
 
   @Override
@@ -166,4 +203,5 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
+
 }

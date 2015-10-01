@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.service.endpoint;
 
+import com.google.api.server.spi.ServiceException;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
@@ -65,9 +66,14 @@ public class TechnologyEndpoint {
     return service.getTechnology(id);
   }
   
-  @ApiMethod(name = "findByFilter", path = "technology-filter", httpMethod = "post")
-  public Response findTechnologyByFilter(TechnologyFilter techFilter, User user) throws InternalServerErrorException, NotFoundException,  BadRequestException{
-    return service.findTechnologiesByFilter(techFilter, user);
+  @ApiMethod(name = "findByFilter", path = "technology/search", httpMethod = "get")
+  public Response findTechnologyByFilter(User user,
+      @Named("titleContains") String titleContains,
+      @Named("shortDescriptionContains") String shortDescriptionContains,
+      @Named("recommendationIs") String recommendationIs)
+          throws ServiceException {
+    return service.findTechnologiesByFilter(
+        new TechnologyFilter(titleContains, shortDescriptionContains, recommendationIs), user);
   }
 
 } 
