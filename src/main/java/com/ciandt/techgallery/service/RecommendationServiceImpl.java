@@ -11,7 +11,6 @@ import com.ciandt.techgallery.persistence.dao.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.RecommendationEnums;
-import com.ciandt.techgallery.utils.i18n.I18n;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
@@ -24,7 +23,6 @@ import com.google.appengine.api.users.User;
  */
 public class RecommendationServiceImpl implements RecommendationService {
 
-  private static final I18n i18n = I18n.getInstance();
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
 
