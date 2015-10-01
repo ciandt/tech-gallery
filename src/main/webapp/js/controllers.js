@@ -19,6 +19,9 @@ angular.module('techGallery').controller(
   function($scope, $location, $timeout) {
     'use strict';
 
+    $scope.selectedLanguage = "https://storage.googleapis.com/tech-gallery-assets/imagesLogo/en-US.png";
+    $scope.dropDownLanguages = [{text:"Português" ,img:"https://storage.googleapis.com/tech-gallery-assets/imagesLogo/pt-BR.png"}, {text:"English" ,img:"https://storage.googleapis.com/tech-gallery-assets/imagesLogo/en-US.png"}];
+    
     $scope.domainError = false;
     $scope.userLogged = false;
     
