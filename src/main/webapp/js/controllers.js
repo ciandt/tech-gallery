@@ -112,7 +112,7 @@ angular.module('techGallery').controller(
         var req = {
             titleContains: $scope.textSearch,
             shortDescriptionContains: $scope.textSearch,
-            orderOption: $scope.selectedOrderOption,
+            orderOptionIs: $scope.selectedOrderOption,
             recommendationIs: $scope.selectedRecommendation
         }
         gapi.client.rest.findByFilter(req).execute(function(data){

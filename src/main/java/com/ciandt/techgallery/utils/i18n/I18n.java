@@ -4,22 +4,21 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class I18n {
-  
+
   private static I18n instance = new I18n();
-  
+
   private String language = "en";
   private String country = "US";
-  
-  public I18n() {
-  }
-  
+
+  public I18n() {}
+
   public String t(String string) {
     Locale locale = new Locale(language, country);
     ResourceBundle.clearCache();
     ResourceBundle translation = ResourceBundle.getBundle("i18n/Tech_Gallery", locale);
     return translation.getString(string);
   }
-  
+
   public String getLanguage() {
     return language;
   }
