@@ -79,7 +79,7 @@ public class TechnologyEndpoint {
         shortDescriptionContains, recommendationIs, orderOptionIs), user);
   }
 
-  @ApiMethod(name = "getOrderOptions", path = "technology-order-options", httpMethod = "get")
+  @ApiMethod(name = "getOrderOptions", path = "technology/order-options", httpMethod = "get")
   public List<String> getOrderOptions(User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {
     return service.getOrderOptions(user);
