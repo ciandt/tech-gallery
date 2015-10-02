@@ -24,7 +24,6 @@ import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
 import com.ciandt.techgallery.service.util.TechnologyConverter;
-import com.ciandt.techgallery.utils.i18n.I18n;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +38,6 @@ import java.util.List;
  */
 public class TechnologyServiceImpl implements TechnologyService {
 
-  private static final I18n i18n = I18n.getInstance();
   TechGalleryUserDAO techGalleryUserDAO = new TechGalleryUserDAOImpl();
   TechnologyDAO technologyDAO = new TechnologyDAOImpl();
   TechnologyDetailsCounterDAO technologyDetailsCounterDao =
