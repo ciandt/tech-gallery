@@ -43,7 +43,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   private static TechnologyRecommendationServiceImpl instance;
 
   private TechnologyRecommendationDAO technologyRecommendationDAO =
-      new TechnologyRecommendationDAOImpl();
+      TechnologyRecommendationDAOImpl.getInstance();
   private TechnologyService technologyService = TechnologyServiceImpl.getInstance();
   TechnologyDetailsCounterService counterService =
       TechnologyDetailsCounterServiceImpl.getInstance();
@@ -132,7 +132,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   }
 
   @Override
-  public TechnologyRecommendation getRecommendationByComment(TechnologyComment comment){
+  public TechnologyRecommendation getRecommendationByComment(TechnologyComment comment) {
     return technologyRecommendationDAO.findByComment(comment);
   }
 

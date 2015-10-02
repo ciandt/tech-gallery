@@ -22,6 +22,20 @@ import java.util.List;
 public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRecommendation, Long>
     implements TechnologyRecommendationDAO {
 
+  private static TechnologyRecommendationDAOImpl instance;
+
+  /*
+   * Constructors --------------------------------------------
+   */
+  private TechnologyRecommendationDAOImpl() {}
+
+  public static TechnologyRecommendationDAOImpl getInstance() {
+    if (instance == null) {
+      instance = new TechnologyRecommendationDAOImpl();
+    }
+    return instance;
+  }
+
   @Override
   public List<TechnologyRecommendation> findAllActivesByTechnology(Technology technology) {
     Objectify objectify = OfyService.ofy();

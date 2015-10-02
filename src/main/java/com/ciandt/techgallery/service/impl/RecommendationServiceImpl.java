@@ -27,6 +27,16 @@ public class RecommendationServiceImpl implements RecommendationService {
 
   TechGalleryUserDAO techGalleryUserDAO = TechGalleryUserDAOImpl.getInstance();
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
+  private static RecommendationServiceImpl instance;
+
+  private RecommendationServiceImpl() {}
+
+  public static RecommendationServiceImpl getInstance() {
+    if (instance == null) {
+      instance = new RecommendationServiceImpl();
+    }
+    return instance;
+  }
 
   @Override
   public List<String> getRecommendations(User user) throws NotFoundException, BadRequestException {

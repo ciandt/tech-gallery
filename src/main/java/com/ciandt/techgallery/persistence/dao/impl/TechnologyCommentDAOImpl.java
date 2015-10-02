@@ -20,6 +20,20 @@ import java.util.List;
 public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, Long>
     implements TechnologyCommentDAO {
 
+  private static TechnologyCommentDAOImpl instance;
+
+  /*
+   * Constructor --------------------------------------------
+   */
+  private TechnologyCommentDAOImpl() {}
+
+  public static TechnologyCommentDAOImpl getInstance() {
+    if (instance == null) {
+      instance = new TechnologyCommentDAOImpl();
+    }
+    return instance;
+  }
+
   @Override
   public List<TechnologyComment> findAllActivesByTechnology(Technology technology) {
     Objectify objectify = OfyService.ofy();

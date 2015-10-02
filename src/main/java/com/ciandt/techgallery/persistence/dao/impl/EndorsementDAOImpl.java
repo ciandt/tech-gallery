@@ -20,6 +20,20 @@ import java.util.List;
  */
 public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>implements EndorsementDAO {
 
+  private static EndorsementDAOImpl instance;
+
+  /*
+   * Constructor --------------------------------------------
+   */
+  private EndorsementDAOImpl() {}
+
+  public static EndorsementDAOImpl getInstance() {
+    if (instance == null) {
+      instance = new EndorsementDAOImpl();
+    }
+    return instance;
+  }
+
   /**
    * {@inheritDoc}
    */

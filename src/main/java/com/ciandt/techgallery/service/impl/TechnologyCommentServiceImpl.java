@@ -49,7 +49,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
    */
   private static TechnologyCommentServiceImpl instance;
 
-  TechnologyCommentDAO technologyCommentDAO = new TechnologyCommentDAOImpl();
+  TechnologyCommentDAO technologyCommentDAO = TechnologyCommentDAOImpl.getInstance();
   TechGalleryUserDAO techGalleryUserDAO = TechGalleryUserDAOImpl.getInstance();
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
   TechnologyRecommendationService recommendationService =

@@ -46,12 +46,12 @@ public class EndorsementServiceTest {
   TechnologyDAO techDAO = TechnologyDAOImpl.getInstance();
 
   /** endorsement dao. */
-  EndorsementDAO endorsementDAO = new EndorsementDAOImpl();
+  EndorsementDAO endorsementDAO = EndorsementDAOImpl.getInstance();
 
   EndorsementServiceImpl service = EndorsementServiceImpl.getInstance();
 
-  private final LocalServiceTestHelper helper = new LocalServiceTestHelper(
-      new LocalDatastoreServiceTestConfig());
+  private final LocalServiceTestHelper helper =
+      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
   @Before
   public void setUp() {

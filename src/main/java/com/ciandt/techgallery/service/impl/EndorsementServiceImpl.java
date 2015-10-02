@@ -62,7 +62,7 @@ public class EndorsementServiceImpl implements EndorsementService {
   /** user dao for getting users. */
   TechGalleryUserDAO userDAO = TechGalleryUserDAOImpl.getInstance();
   /** endorsement dao. */
-  EndorsementDAO endorsementDAO = new EndorsementDAOImpl();
+  EndorsementDAO endorsementDAO = EndorsementDAOImpl.getInstance();
   /** skill service */
   SkillService skillService = SkillServiceImpl.getInstance();
   /** TechnologyDetailsCounter Service */
