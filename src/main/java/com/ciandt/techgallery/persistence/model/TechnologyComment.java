@@ -19,6 +19,13 @@ import java.util.Date;
 @Entity
 public class TechnologyComment extends BaseEntity<Long> {
 
+  public static final String ID = "";
+  public static final String COMMENT = "comment";
+  public static final String TECHNOLOGY = "technology";
+  public static final String AUTHOR = "author";
+  public static final String TIMESTAMP = "timestamp";
+  public static final String ACTIVE = "active";
+  
   /*
    * Attributes --------------------------------------------
    */

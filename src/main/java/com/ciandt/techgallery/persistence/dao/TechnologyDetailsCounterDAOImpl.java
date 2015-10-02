@@ -20,7 +20,7 @@ public class TechnologyDetailsCounterDAOImpl extends GenericDAOImpl<TechnologyDe
     implements TechnologyDetailsCounterDAO {
 
   private static TechnologyDetailsCounterDAOImpl instance;
-  
+
   /**
    * Singleton TechnologyDetailsCounterDAOImpl.
    */
@@ -30,12 +30,13 @@ public class TechnologyDetailsCounterDAOImpl extends GenericDAOImpl<TechnologyDe
     }
     return instance;
   }
-  
+
   @Override
   public TechnologyDetailsCounter findByTechnology(Technology technology) {
     Objectify objectify = OfyService.ofy();
-    List<TechnologyDetailsCounter> entityList = objectify.load()
-        .type(TechnologyDetailsCounter.class).filter("technology", Ref.create(technology)).list();
+    List<TechnologyDetailsCounter> entityList =
+        objectify.load().type(TechnologyDetailsCounter.class)
+            .filter(TechnologyDetailsCounter.TECHNOLOGY, Ref.create(technology)).list();
     if (entityList != null && !entityList.isEmpty()) {
       return entityList.get(0);
     }

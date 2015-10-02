@@ -17,6 +17,13 @@ import com.googlecode.objectify.annotation.Unindex;
 @Entity
 public class TechnologyRecommendation extends BaseEntity<Long> {
 
+  public static final String ID = "id";
+  public static final String SCORE = "score";
+  public static final String COMMENT = "comment";
+  public static final String ACTIVE = "active";
+  public static final String RECOMMENDER = "recommender";
+  public static final String TECHNOLOGY = "technology";
+  
   /*
    * Attributes --------------------------------------------
    */

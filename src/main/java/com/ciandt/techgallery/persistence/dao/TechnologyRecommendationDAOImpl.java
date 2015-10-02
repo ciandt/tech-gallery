@@ -27,7 +27,8 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
     Objectify objectify = OfyService.ofy();
     List<TechnologyRecommendation> recommendations =
         objectify.load().type(TechnologyRecommendation.class)
-            .filter("technology", Ref.create(technology)).filter("active", Boolean.TRUE).list();
+            .filter(TechnologyRecommendation.TECHNOLOGY, Ref.create(technology))
+            .filter(TechnologyRecommendation.ACTIVE, Boolean.TRUE).list();
 
     return recommendations;
   }
@@ -36,9 +37,11 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
   public TechnologyRecommendation findActiveByRecommenderAndTechnology(TechGalleryUser tgUser,
       Technology technology) {
     Objectify objectify = OfyService.ofy();
-    List<TechnologyRecommendation> recommendations = objectify.load()
-        .type(TechnologyRecommendation.class).filter("technology", Ref.create(technology))
-        .filter("active", Boolean.TRUE).filter("recommender", Ref.create(tgUser)).list();
+    List<TechnologyRecommendation> recommendations =
+        objectify.load().type(TechnologyRecommendation.class)
+            .filter(TechnologyRecommendation.TECHNOLOGY, Ref.create(technology))
+            .filter(TechnologyRecommendation.ACTIVE, Boolean.TRUE)
+            .filter(TechnologyRecommendation.RECOMMENDER, Ref.create(tgUser)).list();
     if (recommendations == null || recommendations.isEmpty()) {
       return null;
     } else {
@@ -49,8 +52,9 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
   @Override
   public TechnologyRecommendation findByComment(TechnologyComment comment) {
     Objectify objectify = OfyService.ofy();
-    List<TechnologyRecommendation> recommendations = objectify.load()
-        .type(TechnologyRecommendation.class).filter("comment", Ref.create(comment)).list();
+    List<TechnologyRecommendation> recommendations =
+        objectify.load().type(TechnologyRecommendation.class)
+            .filter(TechnologyRecommendation.COMMENT, Ref.create(comment)).list();
     if (recommendations == null || recommendations.isEmpty()) {
       return null;
     } else {

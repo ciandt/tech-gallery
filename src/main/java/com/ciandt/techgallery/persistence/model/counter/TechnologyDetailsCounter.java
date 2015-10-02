@@ -18,6 +18,13 @@ import com.ciandt.techgallery.persistence.model.Technology;
 @Entity
 public class TechnologyDetailsCounter extends BaseEntity<Long> {
 
+  public static final String ID = "ID";
+  public static final String TECHNOLOGY = "technology";
+  public static final String POSITIVE_RECOMENDATIONS_COUNTER = "positiveRecomendationsCounter";
+  public static final String NEGATIVE_RECOMENDATIONS_COUNTER = "negativeRecomendationsCounter";
+  public static final String COMMENTARIES_COUNTER = "commentariesCounter";
+  public static final String ENDORSEDS_COUNTER = "endorsedsCounter";
+  
   @Id
   private Long id;
 

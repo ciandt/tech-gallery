@@ -18,7 +18,7 @@ import java.util.List;
  * @author Felipe Goncalves de Castro
  *
  */
-public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long> implements EndorsementDAO {
+public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>implements EndorsementDAO {
 
   /**
    * {@inheritDoc}
@@ -46,8 +46,7 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long> implem
     tech.setId(techId);
     Objectify objectify = OfyService.ofy();
     List<Endorsement> entities = objectify.load().type(Endorsement.class)
-        .filter(Endorsement.TECHNOLOGY, Ref.create(tech))
-            .filter("active", true).list();
+        .filter(Endorsement.TECHNOLOGY, Ref.create(tech)).filter("active", true).list();
 
     if (entities == null || entities.size() <= 0) {
       return new ArrayList<Endorsement>();
@@ -65,7 +64,7 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long> implem
     List<Endorsement> entities = objectify.load().type(Endorsement.class)
         .filter(Endorsement.TECHNOLOGY, Ref.create(technology))
         .filter("endorser", Ref.create(endorser)).filter(Endorsement.ENDORSED, Ref.create(endorsed))
-            .list();
+        .list();
 
     return entities;
   }
@@ -80,7 +79,7 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long> implem
     List<Endorsement> entities = objectify.load().type(Endorsement.class)
         .filter(Endorsement.TECHNOLOGY, Ref.create(technology))
         .filter("endorser", Ref.create(endorser)).filter(Endorsement.ENDORSED, Ref.create(endorsed))
-            .filter("active", true).list();
+        .filter("active", true).list();
 
     return entities;
   }

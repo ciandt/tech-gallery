@@ -182,16 +182,11 @@ public class TechnologyServiceImpl implements TechnologyService {
         && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())) {
       techFilter.setRecommendationIs("");
     }
-    
+
     List<Technology> completeList = technologyDAO.findAll();
     List<Technology> filteredList = new ArrayList<>();
     verifyFilters(techFilter, completeList, filteredList);
-    if ((techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty())
-        && (techFilter.getRecommendationIs() == null
-            || techFilter.getRecommendationIs().isEmpty())) {
-      filteredList.addAll(completeList);
-    }
-    
+
     if (filteredList.isEmpty()) {
       return new TechnologiesResponse();
     } else {
@@ -217,30 +212,30 @@ public class TechnologyServiceImpl implements TechnologyService {
   private void verifyFilters(TechnologyFilter techFilter, List<Technology> completeList,
       List<Technology> filteredList) {
     for (Technology technology : completeList) {
-      if(verifyTitleAndShortDescriptionFilter(techFilter, technology)){
-        if(techFilter.getRecommendationIs()!=null){
-          if(verifyRecommendationFilter(techFilter, technology)){
-        filteredList.add(technology);
-          }else{
+      if (verifyTitleAndShortDescriptionFilter(techFilter, technology)) {
+        if (techFilter.getRecommendationIs() != null) {
+          if (verifyRecommendationFilter(techFilter, technology)) {
+            filteredList.add(technology);
+          } else {
             continue;
-      }
-        }else{
+          }
+        } else {
           filteredList.add(technology);
           continue;
-    }
+        }
       } else if (verifyRecommendationFilter(techFilter, technology)
           && techFilter.getTitleContains() == null) {
         filteredList.add(technology);
         continue;
       }
     }
-    }
+  }
 
-  private boolean verifyRecommendationFilter(TechnologyFilter techFilter, Technology technology){
+  private boolean verifyRecommendationFilter(TechnologyFilter techFilter, Technology technology) {
     if (technology.getRecommendation() == null) {
-      if (techFilter.getRecommendationIs().isEmpty()) {
-      return true;
-    }
+      if (techFilter.getRecommendationIs() == null || techFilter.getRecommendationIs().isEmpty()) {
+        return true;
+      }
     } else if (techFilter.getRecommendationIs() != null && (technology.getRecommendation()
         .toLowerCase().equals(techFilter.getRecommendationIs().toLowerCase())
         || techFilter.getRecommendationIs().toLowerCase()
@@ -249,7 +244,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
     return false;
   }
-  
+
   private boolean verifyTitleAndShortDescriptionFilter(TechnologyFilter techFilter,
       Technology technology) {
     if (techFilter.getTitleContains() != null
@@ -279,11 +274,11 @@ public class TechnologyServiceImpl implements TechnologyService {
    * @throws BadRequestException .
    */
   private void validateUser(User user) throws BadRequestException {
-    
+
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
-    
+
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
@@ -295,7 +290,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     List<String> orderOptions = new ArrayList<String>();
     for (TechnologyOrderOptionEnum item : TechnologyOrderOptionEnum.values()) {
       orderOptions.add(item.option());
-}
+    }
     return orderOptions;
   }
 }
