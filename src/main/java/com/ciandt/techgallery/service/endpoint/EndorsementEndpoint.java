@@ -11,7 +11,7 @@ import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.EndorsementService;
-import com.ciandt.techgallery.service.EndorsementServiceImpl;
+import com.ciandt.techgallery.service.impl.EndorsementServiceImpl;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.Response;
 

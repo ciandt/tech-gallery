@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.service;
+package com.ciandt.techgallery.service.impl;
 
 import com.google.api.server.spi.response.NotFoundException;
 
@@ -6,6 +6,7 @@ import com.ciandt.techgallery.persistence.dao.TechnologyDetailsCounterDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDetailsCounterDAOImpl;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.counter.TechnologyDetailsCounter;
+import com.ciandt.techgallery.service.TechnologyDetailsCounterService;
 
 /**
  * Services for TechnologyDetailsCounter Endpoint requests.

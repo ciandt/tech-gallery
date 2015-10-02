@@ -18,6 +18,7 @@ import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.impl.EndorsementServiceImpl;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 
 import org.junit.After;

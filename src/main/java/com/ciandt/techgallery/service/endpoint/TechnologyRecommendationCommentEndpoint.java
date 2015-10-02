@@ -11,7 +11,7 @@ import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.TechnologyRecommendationCommentService;
-import com.ciandt.techgallery.service.TechnologyRecommendationCommentServiceImpl;
+import com.ciandt.techgallery.service.impl.TechnologyRecommendationCommentServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationCommentTO;

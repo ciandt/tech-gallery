@@ -9,7 +9,7 @@ import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.RecommendationService;
-import com.ciandt.techgallery.service.RecommendationServiceImpl;
+import com.ciandt.techgallery.service.impl.RecommendationServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 
 import java.util.List;

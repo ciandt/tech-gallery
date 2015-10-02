@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.service;
+package com.ciandt.techgallery.service.impl;
 
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
@@ -17,8 +17,10 @@ import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
-import com.ciandt.techgallery.service.impl.SkillServiceImpl;
-import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
+import com.ciandt.techgallery.service.EndorsementService;
+import com.ciandt.techgallery.service.SkillService;
+import com.ciandt.techgallery.service.TechnologyDetailsCounterService;
+import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.model.EndorsementEntityResponse;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;

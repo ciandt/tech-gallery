@@ -11,7 +11,7 @@ import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.TechnologyRecommendationService;
-import com.ciandt.techgallery.service.TechnologyRecommendationServiceImpl;
+import com.ciandt.techgallery.service.impl.TechnologyRecommendationServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 
 import java.util.List;
