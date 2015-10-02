@@ -4,6 +4,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.ofy.OfyService;
+import com.ciandt.techgallery.persistence.dao.impl.GenericDAOImpl;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.counter.TechnologyDetailsCounter;
 
