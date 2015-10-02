@@ -10,12 +10,15 @@ public class TechnologyFilter implements Response {
 
   /** string for search in title */
   private String titleContains;
-  
+
   /** string for search in shortDescription */
   private String shortDescriptionContains;
-  
+
   /** string for search in recommendation */
   private String recommendationIs;
+
+  /** string for order option */
+  private String orderOptionIs;
 
   public String getTitleContains() {
     return titleContains;
@@ -41,13 +44,22 @@ public class TechnologyFilter implements Response {
     this.shortDescriptionContains = shortDescriptionContains;
   }
 
-  public TechnologyFilter() {
+  public String getOrderOptionIs() {
+    return orderOptionIs;
   }
-  
-  public TechnologyFilter(String titleContains, String shortDescriptionContains, String recommendationIs) {
+
+  public void setOrderOptionIs(String orderOptionIs) {
+    this.orderOptionIs = orderOptionIs;
+  }
+
+  public TechnologyFilter() {}
+
+  public TechnologyFilter(String titleContains, String shortDescriptionContains,
+      String recommendationIs, String orderOptionIs) {
     this.titleContains = titleContains;
     this.shortDescriptionContains = shortDescriptionContains;
     this.recommendationIs = recommendationIs;
+    this.orderOptionIs = orderOptionIs;
   }
-  
+
 }

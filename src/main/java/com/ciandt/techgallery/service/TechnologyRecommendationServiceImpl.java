@@ -33,6 +33,8 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   private TechnologyRecommendationDAO technologyRecommendationDAO =
       new TechnologyRecommendationDAOImpl();
   private TechnologyService technologyService = new TechnologyServiceImpl();
+  TechnologyDetailsCounterService counterService =
+      TechnologyDetailsCounterServiceImpl.getInstance();
   private TechnologyRecommendationTransformer techRecTransformer =
       new TechnologyRecommendationTransformer();
   private UserServiceTG userService = new UserServiceTGImpl();
@@ -69,8 +71,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     recommendation.setTechnology(Ref.create(technology));
     recommendation.setActive(true);
     recommendation.setRecommender(Ref.create(tgUser));
-    TechnologyRecommendation previousRec =
- technologyRecommendationDAO
+    TechnologyRecommendation previousRec = technologyRecommendationDAO
         .findActiveByRecommenderAndTechnology(tgUser, recommendation.getTechnology().get());
 
     // Inactivate previous recommendation
@@ -78,8 +79,10 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
       previousRec.setActive(false);
       previousRec.setInactivatedDate(new Date());
       technologyRecommendationDAO.update(previousRec);
+      counterService.removeRecomendationCounter(technology, previousRec.getScore());
     }
     recommendation.setId(technologyRecommendationDAO.add(recommendation).getId());
+    counterService.addRecomendationCounter(technology, recommendation.getScore());
     return recommendation;
   }
 
@@ -102,7 +105,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   }
 
   @Override
-  public TechnologyRecommendation getRecommendationByComment(TechnologyComment comment){
+  public TechnologyRecommendation getRecommendationByComment(TechnologyComment comment) {
     return technologyRecommendationDAO.findByComment(comment);
   }
 
@@ -151,6 +154,8 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
 
     recommendation.setActive(false);
     technologyRecommendationDAO.update(recommendation);
+    counterService.removeRecomendationCounter(recommendation.getTechnology().get(),
+        recommendation.getScore());
     return techRecTransformer.transformTo(recommendation);
   }
 

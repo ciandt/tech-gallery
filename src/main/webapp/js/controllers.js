@@ -88,6 +88,9 @@ angular.module('techGallery').controller(
     function callBackLoaded() {
       gapi.client.rest.getTechnologies().execute(function(data) {
         gapi.client.rest.handleLogin().execute();
+        gapi.client.rest.getOrderOptions().execute(function(data) {
+        	$scope.orderOptions = data.items;
+        });
         gapi.client.rest.getRecommendations().execute(function(data){
           $scope.dropDownRecommendation = data.items;
           $scope.$apply();
@@ -98,13 +101,18 @@ angular.module('techGallery').controller(
       });
     }
     
+    $scope.selectOrderOption = function(orderOption) {
+    	$scope.selectedOrderOption = orderOption;
+    }
+    
     $scope.searchTechnology = function (){
-      if($scope.textSearch || $scope.selectedRecommendation){
+      if($scope.textSearch || $scope.selectedOrderOption || $scope.selectedRecommendation){
         $scope.techList = '';
         $scope.showLoading = true;
         var req = {
             titleContains: $scope.textSearch,
             shortDescriptionContains: $scope.textSearch,
+            orderOptionIs: $scope.selectedOrderOption,
             recommendationIs: $scope.selectedRecommendation
         }
         gapi.client.rest.findByFilter(req).execute(function(data){
@@ -118,6 +126,7 @@ angular.module('techGallery').controller(
     $scope.searchClear = function (){
       $scope.techList = '';
       $scope.textSearch = '';
+      $scope.selectedOrderOption = undefined;
       $scope.selectedRecommendation = undefined;
       $scope.showLoading = true;
       callBackLoaded();
@@ -125,6 +134,10 @@ angular.module('techGallery').controller(
     
     $scope.selectRecommendation = function(selected){
       $scope.selectedRecommendation = selected;
+    };
+    
+    $scope.selectOrderOption = function(selected){
+    	$scope.selectedOrderOption = selected;
     };
   }
 );

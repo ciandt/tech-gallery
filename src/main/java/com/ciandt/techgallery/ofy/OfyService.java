@@ -10,6 +10,7 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
+import com.ciandt.techgallery.persistence.model.counter.TechnologyDetailsCounter;
 import com.ciandt.techgallery.sample.persistence.model.Card;
 import com.ciandt.techgallery.sample.persistence.model.RecommendationSample;
 import com.ciandt.techgallery.sample.persistence.model.Sample;
@@ -30,6 +31,7 @@ public class OfyService implements ServletContextListener {
   /** Define all entities first. */
   static {
     ObjectifyService.register(Technology.class);
+    ObjectifyService.register(TechnologyDetailsCounter.class);
     ObjectifyService.register(Endorsement.class);
     ObjectifyService.register(TechGalleryUser.class);
     ObjectifyService.register(Skill.class);
@@ -42,7 +44,7 @@ public class OfyService implements ServletContextListener {
     ObjectifyService.register(Sample.class);
     ObjectifyService.register(TechnologyComment.class);
     ObjectifyService.register(TechnologyRecommendation.class);
-    
+
   }
 
   /**
