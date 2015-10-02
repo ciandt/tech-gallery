@@ -15,7 +15,7 @@
         <appengine.version>1.9.25</appengine.version>
         <gcloud.plugin.version>0.9.58.v20150505</gcloud.plugin.version>
         <jackson.databind-version>2.2.3</jackson.databind-version>
-
+        <checkstyle.file.path>/src/main/resources/google_checks.xml</checkstyle.file.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
     </properties>
