@@ -6,7 +6,6 @@ import com.ciandt.techgallery.persistence.dao.TechnologyDetailsCounterDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDetailsCounterDAOImpl;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.counter.TechnologyDetailsCounter;
-import com.ciandt.techgallery.utils.i18n.I18n;
 
 /**
  * Services for TechnologyDetailsCounter Endpoint requests.
@@ -16,7 +15,6 @@ import com.ciandt.techgallery.utils.i18n.I18n;
  */
 public class TechnologyDetailsCounterServiceImpl implements TechnologyDetailsCounterService {
 
-  private static final I18n i18n = I18n.getInstance();
   private static TechnologyDetailsCounterServiceImpl instance;
   TechnologyDetailsCounterDAO technologyDetailsCounterDao =
       TechnologyDetailsCounterDAOImpl.getInstance();
