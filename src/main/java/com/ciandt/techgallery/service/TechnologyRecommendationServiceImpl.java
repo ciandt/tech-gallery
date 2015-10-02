@@ -43,6 +43,8 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   private TechnologyRecommendationDAO technologyRecommendationDAO =
       new TechnologyRecommendationDAOImpl();
   private TechnologyService technologyService = TechnologyServiceImpl.getInstance();
+  TechnologyDetailsCounterService counterService =
+      TechnologyDetailsCounterServiceImpl.getInstance();
   private TechnologyRecommendationTransformer techRecTransformer =
       new TechnologyRecommendationTransformer();
   private UserServiceTG userService = UserServiceTGImpl.getInstance();
@@ -94,8 +96,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     recommendation.setTechnology(Ref.create(technology));
     recommendation.setActive(true);
     recommendation.setRecommender(Ref.create(tgUser));
-    TechnologyRecommendation previousRec =
- technologyRecommendationDAO
+    TechnologyRecommendation previousRec = technologyRecommendationDAO
         .findActiveByRecommenderAndTechnology(tgUser, recommendation.getTechnology().get());
 
     // Inactivate previous recommendation
@@ -103,8 +104,10 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
       previousRec.setActive(false);
       previousRec.setInactivatedDate(new Date());
       technologyRecommendationDAO.update(previousRec);
+      counterService.removeRecomendationCounter(technology, previousRec.getScore());
     }
     recommendation.setId(technologyRecommendationDAO.add(recommendation).getId());
+    counterService.addRecomendationCounter(technology, recommendation.getScore());
     return recommendation;
   }
 
@@ -176,6 +179,8 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
 
     recommendation.setActive(false);
     technologyRecommendationDAO.update(recommendation);
+    counterService.removeRecomendationCounter(recommendation.getTechnology().get(),
+        recommendation.getScore());
     return techRecTransformer.transformTo(recommendation);
   }
 
@@ -199,7 +204,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
           throws BadRequestException, NotFoundException, InternalServerErrorException {
     validateRecommend(recommendId, recommendation);
     validateUser(user, techUser);
-    if (!recommendation.getRecommender().equals(techUser)) {
+    if (!recommendation.getRecommender().get().equals(techUser)) {
       throw new BadRequestException(ValidationMessageEnums.RECOMMEND_RECOMMENDER_ERROR.message());
     }
   }

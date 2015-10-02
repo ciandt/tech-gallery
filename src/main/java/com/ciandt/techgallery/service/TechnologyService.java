@@ -10,6 +10,8 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
 
+import java.util.List;
+
 /**
  * Services for Technologies.
  * 
@@ -23,8 +25,8 @@ public interface TechnologyService {
    * 
    * @param technology json with technology info.
    * @return technology info or message error.
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
+   * @throws InternalServerErrorException .
+   * @throws BadRequestException .
    */
   public Response addTechnology(final TechnologyResponse technology)
       throws InternalServerErrorException, BadRequestException;
@@ -33,36 +35,41 @@ public interface TechnologyService {
    * Service for getting all technologies.
    * 
    * @return technologies info or message error.
-   * @throws InternalServerErrorException
-   * @throws NotFoundException
+   * @throws NotFoundException .
+   * @throws InternalServerErrorException .
+   * @throws NotFoundException .
    */
-  public Response getTechnologies() throws InternalServerErrorException, NotFoundException;
+  Response getTechnologies() throws InternalServerErrorException, NotFoundException;
 
   /**
    * Service for getting a technology response.
    * 
    * @param id entity id.
-   * @return
-   * @throws NotFoundException
+   * @return .
+   * @throws NotFoundException .
    */
-  public Response getTechnology(final String id) throws NotFoundException;
+  Response getTechnology(final String id) throws NotFoundException;
   
   /**
    * Service for getting all technologies according a filter.
    * 
    * @param filter entity filter.
    * @return technologies info or message error.
-   * @throws InternalServerErrorException
-   * @throws NotFoundException
+   * @throws InternalServerErrorException .
+   * @throws NotFoundException .
    */
-  public Response findTechnologiesByFilter(final TechnologyFilter techFilter, User user) throws InternalServerErrorException, NotFoundException, BadRequestException;
+  Response findTechnologiesByFilter(final TechnologyFilter techFilter, User user)
+      throws InternalServerErrorException, NotFoundException, BadRequestException;
  
   /**
    * Service for getting a technology
+   * 
    * @param id entity id
-   * @return 
+   * @return .
    * @throws NotFoundException when entity is not found
    */
-  public Technology getTechnologyById(String id) throws NotFoundException;
+  Technology getTechnologyById(String id) throws NotFoundException;
   
+  List<String> getOrderOptions(User user);
+
 }

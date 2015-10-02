@@ -37,7 +37,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
     return recommendations;
   }
-  
+
   /**
    * Validate the user logged in.
    * 
@@ -45,11 +45,11 @@ public class RecommendationServiceImpl implements RecommendationService {
    * @throws BadRequestException .
    */
   private void validateUser(User user) throws BadRequestException {
-    
+
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
-    
+
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());

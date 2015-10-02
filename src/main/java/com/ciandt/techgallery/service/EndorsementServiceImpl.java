@@ -63,6 +63,9 @@ public class EndorsementServiceImpl implements EndorsementService {
   EndorsementDAO endorsementDAO = new EndorsementDAOImpl();
   /** skill service */
   SkillService skillService = SkillServiceImpl.getInstance();
+  /** TechnologyDetailsCounter Service */
+  TechnologyDetailsCounterService counterService =
+      TechnologyDetailsCounterServiceImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
@@ -335,6 +338,10 @@ public class EndorsementServiceImpl implements EndorsementService {
     List<EndorsementsGroupedByEndorsedTransient> grouped =
         groupEndorsementByEndorsed(endorsementsByTech, techId);
     Collections.sort(grouped, new EndorsementsGroupedByEndorsedTransient());
+
+    Technology technology = techDAO.findById(techId);
+    counterService.updateEdorsedsCounter(technology, grouped.size());
+
     ShowEndorsementsResponse response = new ShowEndorsementsResponse();
     response.setEndorsements(grouped);
     return response;

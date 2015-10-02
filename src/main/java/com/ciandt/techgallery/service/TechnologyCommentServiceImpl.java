@@ -51,6 +51,8 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
   TechnologyRecommendationService recommendationService =
       TechnologyRecommendationServiceImpl.getInstance();
+  TechnologyDetailsCounterService counterService =
+      TechnologyDetailsCounterServiceImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
@@ -80,6 +82,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
 
     TechnologyComment newComment = addNewComment(comment, techUser, technology);
+    counterService.addCommentariesCounter(technology);
     TechnologyCommentTO ret = TechnologyCommentConverter.fromEntityToTransient(newComment);
 
     return ret;
@@ -112,6 +115,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     TechnologyComment comment = technologyCommentDAO.findById(commentId);
     comment.setActive(false);
     technologyCommentDAO.update(comment);
+    counterService.removeCommentariesCounter(comment.getTechnology().get());
     TechnologyCommentTO response = TechnologyCommentConverter.fromEntityToTransient(comment);
     return response;
   }
@@ -141,7 +145,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     TechnologyRecommendation techRecommendation;
     techRecommendation = recommendationService.getRecommendationByComment(comment);
 
-    if (techRecommendation != null) {
+    if (techRecommendation != null && techRecommendation.getActive() == true) {
       commentTO.setRecommendationId(techRecommendation.getId());
       commentTO.setRecommendationScore(techRecommendation.getScore());
     } else {
