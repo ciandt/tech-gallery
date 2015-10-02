@@ -1,10 +1,10 @@
-package com.ciandt.techgallery.persistence.dao;
+package com.ciandt.techgallery.persistence.dao.impl;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.ofy.OfyService;
-import com.ciandt.techgallery.persistence.dao.impl.GenericDAOImpl;
+import com.ciandt.techgallery.persistence.dao.TechnologyDetailsCounterDAO;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.counter.TechnologyDetailsCounter;
 

@@ -3,7 +3,7 @@ package com.ciandt.techgallery.service;
 import com.google.api.server.spi.response.NotFoundException;
 
 import com.ciandt.techgallery.persistence.dao.TechnologyDetailsCounterDAO;
-import com.ciandt.techgallery.persistence.dao.TechnologyDetailsCounterDAOImpl;
+import com.ciandt.techgallery.persistence.dao.impl.TechnologyDetailsCounterDAOImpl;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.counter.TechnologyDetailsCounter;
 

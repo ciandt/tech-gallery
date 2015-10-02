@@ -8,7 +8,7 @@ import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.persistence.dao.TechnologyRecommendationDAO;
-import com.ciandt.techgallery.persistence.dao.TechnologyRecommendationDAOImpl;
+import com.ciandt.techgallery.persistence.dao.impl.TechnologyRecommendationDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;

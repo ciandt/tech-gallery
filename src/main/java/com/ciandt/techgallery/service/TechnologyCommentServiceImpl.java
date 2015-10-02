@@ -10,9 +10,9 @@ import com.googlecode.objectify.Key;
 
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAO;
-import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
+import com.ciandt.techgallery.persistence.dao.impl.TechnologyCommentDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;

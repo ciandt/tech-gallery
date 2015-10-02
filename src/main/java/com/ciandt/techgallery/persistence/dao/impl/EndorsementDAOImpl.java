@@ -1,10 +1,10 @@
-package com.ciandt.techgallery.persistence.dao;
+package com.ciandt.techgallery.persistence.dao.impl;
 
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.ofy.OfyService;
-import com.ciandt.techgallery.persistence.dao.impl.GenericDAOImpl;
+import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;

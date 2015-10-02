@@ -11,9 +11,9 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
-import com.ciandt.techgallery.persistence.dao.EndorsementDAOImpl;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
+import com.ciandt.techgallery.persistence.dao.impl.EndorsementDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
