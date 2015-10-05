@@ -11,12 +11,12 @@ import com.ciandt.techgallery.utils.i18n.I18n;
 public enum RecommendationEnums {
   
   ANY("Todos"),
-  RECOMMENDED("Recomendada"),
+  DISCUSS_NEXT("Discutir para próxima"),
   NOT_RECOMMENDED_RETIRED("Não recomendadas ou aposentar"),
+  OBSERVED_CONCEPT_TEST("Observar e fazer provas de conceito"),
+  RECOMMENDED("Recomendada"),
   RECOMMENDED_ALTERNATIVE("Recomendada alternativa"),
   USE_LEARN("Usar e aprender"),
-  OBSERVED_CONCEPT_TEST("Observar e fazer provas de conceito"),
-  DISCUSS_NEXT("Discutir para próxima"),
   UNINFORMED("Não informado");
 
 
