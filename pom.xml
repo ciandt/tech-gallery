@@ -12,7 +12,7 @@
     <properties>
         <app.id>tech-gallery</app.id>
         <app.version>${app_version}</app.version>
-        <appengine.version>1.9.25</appengine.version>
+        <appengine.version>1.9.27</appengine.version>
         <gcloud.plugin.version>0.9.58.v20150505</gcloud.plugin.version>
         <jackson.databind-version>2.2.3</jackson.databind-version>
         <checkstyle.file.path>/src/main/resources/google_checks.xml</checkstyle.file.path>
