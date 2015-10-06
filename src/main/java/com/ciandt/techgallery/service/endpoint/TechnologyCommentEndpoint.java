@@ -42,38 +42,40 @@ public class TechnologyCommentEndpoint {
       throws InternalServerErrorException, BadRequestException {
     return service.addComment(comment, user);
   }
-  
+
   /**
-   * Endpoint for show  Active Comments.
+   * Endpoint for show Active Comments.
    * 
    * @param json with Comment info.
    * @param user oauth user.
    * @return .
-   * @throws OAuthRequestException 
-   * @throws NotFoundException 
+   * @throws OAuthRequestException
+   * @throws NotFoundException
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
   @ApiMethod(name = "getCommentsByTech", path = "technology-comment-show", httpMethod = "post")
   public Response getCommentsByTech(@Named("technologyId") String technologyId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException {
     return service.getCommentsByTech(technologyId, user);
   }
-  
+
   /**
    * Endpoint to delete a comment.
    * 
    * @param Id of a comment.
    * @param user oauth user.
    * @return .
-   * @throws OAuthRequestException 
-   * @throws NotFoundException 
+   * @throws OAuthRequestException
+   * @throws NotFoundException
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
   @ApiMethod(name = "deleteComment", path = "technology-comment-delete", httpMethod = "post")
   public Response deleteComment(@Named("commentId") Long commentId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException {
     return service.deleteComment(commentId, user);
   }
 }

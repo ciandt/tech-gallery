@@ -1,16 +1,17 @@
 package com.ciandt.techgallery.service;
 
-import java.util.List;
-
-import com.ciandt.techgallery.persistence.model.Endorsement;
-import com.ciandt.techgallery.service.model.EndorsementResponse;
-import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
-import com.ciandt.techgallery.service.model.Response;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.persistence.model.Endorsement;
+import com.ciandt.techgallery.service.model.EndorsementResponse;
+import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
+import com.ciandt.techgallery.service.model.Response;
+
+import java.util.List;
 
 /**
  * Services for Endorsements.
@@ -29,11 +30,12 @@ public interface EndorsementService {
    * @throws InternalServerErrorException
    * @throws BadRequestException
    * @throws NotFoundException
-   * @throws OAuthRequestException 
+   * @throws OAuthRequestException
    */
   public Response addOrUpdateEndorsement(final EndorsementResponse endorsement, final User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
-  
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException;
+
   /**
    * Service for adding a endorsement in +1 button.
    * 
@@ -43,10 +45,11 @@ public interface EndorsementService {
    * @throws InternalServerErrorException
    * @throws BadRequestException
    * @throws NotFoundException
-   * @throws OAuthRequestException 
+   * @throws OAuthRequestException
    */
-  public Response addOrUpdateEndorsementPlusOne(final EndorsementResponse endorsement, final User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
+  public Response addOrUpdateEndorsementPlusOne(final EndorsementResponse endorsement,
+      final User user) throws InternalServerErrorException, BadRequestException, NotFoundException,
+          OAuthRequestException;
 
   /**
    * Service for getting all endorsements.
@@ -72,24 +75,27 @@ public interface EndorsementService {
    * @param endorsements List of Endorsement.
    * @param techId technology id.
    * @return
-   * @throws OAuthRequestException 
-   * @throws InternalServerErrorException 
-   * @throws NotFoundException 
-   * @throws BadRequestException 
+   * @throws OAuthRequestException
+   * @throws InternalServerErrorException
+   * @throws NotFoundException
+   * @throws BadRequestException
    */
   public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
-      List<Endorsement> endorsements, String techId) throws BadRequestException, NotFoundException, InternalServerErrorException, OAuthRequestException;
+      List<Endorsement> endorsements, String techId) throws BadRequestException, NotFoundException,
+          InternalServerErrorException, OAuthRequestException;
 
   /**
    * Service for getting all endorsements of a Technology.
    * 
    * @param techId technology entity id.
    * @return
-   * @throws InternalServerErrorException 
-   * @throws OAuthRequestException 
-   * @throws NotFoundException 
-   * @throws BadRequestException 
+   * @throws InternalServerErrorException
+   * @throws OAuthRequestException
+   * @throws NotFoundException
+   * @throws BadRequestException
    */
-  public Response getEndorsementsByTech(final String techId, User user) throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
-  
+  public Response getEndorsementsByTech(final String techId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException;
+
 }

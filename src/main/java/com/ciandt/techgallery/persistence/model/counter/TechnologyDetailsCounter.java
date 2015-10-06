@@ -24,7 +24,7 @@ public class TechnologyDetailsCounter extends BaseEntity<Long> {
   public static final String NEGATIVE_RECOMENDATIONS_COUNTER = "negativeRecomendationsCounter";
   public static final String COMMENTARIES_COUNTER = "commentariesCounter";
   public static final String ENDORSEDS_COUNTER = "endorsedsCounter";
-  
+
   @Id
   private Long id;
 

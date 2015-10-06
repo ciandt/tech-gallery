@@ -49,7 +49,7 @@ public interface TechnologyService {
    * @throws NotFoundException .
    */
   Response getTechnology(final String id) throws NotFoundException;
-  
+
   /**
    * Service for getting all technologies according a filter.
    * 
@@ -60,7 +60,7 @@ public interface TechnologyService {
    */
   Response findTechnologiesByFilter(final TechnologyFilter techFilter, User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException;
- 
+
   /**
    * Service for getting a technology
    * 
@@ -69,7 +69,7 @@ public interface TechnologyService {
    * @throws NotFoundException when entity is not found
    */
   Technology getTechnologyById(String id) throws NotFoundException;
-  
+
   List<String> getOrderOptions(User user);
 
 }

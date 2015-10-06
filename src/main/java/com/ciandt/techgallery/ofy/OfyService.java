@@ -32,7 +32,7 @@ public class OfyService implements ServletContextListener {
     ObjectifyService.register(Skill.class);
     ObjectifyService.register(TechnologyComment.class);
     ObjectifyService.register(TechnologyRecommendation.class);
-    
+
   }
 
   /**
@@ -59,8 +59,7 @@ public class OfyService implements ServletContextListener {
    * Context destroyed for http servlet.
    */
   @Override
-  public void contextDestroyed(ServletContextEvent arg0) {
-  }
+  public void contextDestroyed(ServletContextEvent arg0) {}
 
   /**
    * Context initialized for http servlet.

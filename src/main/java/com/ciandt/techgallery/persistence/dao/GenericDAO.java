@@ -1,9 +1,9 @@
 package com.ciandt.techgallery.persistence.dao;
 
+import com.googlecode.objectify.Key;
+
 import java.io.Serializable;
 import java.util.List;
-
-import com.googlecode.objectify.Key;
 
 
 /**
@@ -13,7 +13,7 @@ import com.googlecode.objectify.Key;
  *
  */
 public interface GenericDAO<T, ID extends Serializable> {
-  
+
   /**
    * Method that return a list with all Entities.
    * 

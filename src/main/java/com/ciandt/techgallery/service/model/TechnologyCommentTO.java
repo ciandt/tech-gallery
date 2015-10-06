@@ -25,7 +25,7 @@ public class TechnologyCommentTO implements Response {
   public void setId(Long id) {
     this.id = id;
   }
-  
+
   public Boolean isRecommendationScore() {
     return recommendationScore;
   }

@@ -21,8 +21,9 @@ import com.ciandt.techgallery.service.model.SkillResponse;
  * @author Felipe Goncalves de Castro
  *
  */
-@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
-    Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
+@Api(name = "rest", version = "v1",
+    clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
+    scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class SkillEndpoint {
 
   private SkillService service = SkillServiceImpl.getInstance();
@@ -37,8 +38,8 @@ public class SkillEndpoint {
    * @throws BadRequestException
    */
   @ApiMethod(name = "addSkill", path = "skill", httpMethod = "post")
-  public Response addSkill(SkillResponse skill, User user) throws InternalServerErrorException,
-      BadRequestException {
+  public Response addSkill(SkillResponse skill, User user)
+      throws InternalServerErrorException, BadRequestException {
     return service.addOrUpdateSkill(skill, user);
   }
 

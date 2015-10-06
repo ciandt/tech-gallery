@@ -1,10 +1,10 @@
 package com.ciandt.techgallery.persistence.dao;
 
-import java.util.List;
-
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+
+import java.util.List;
 
 /**
  * EndorsementDAOImpl methods interface.

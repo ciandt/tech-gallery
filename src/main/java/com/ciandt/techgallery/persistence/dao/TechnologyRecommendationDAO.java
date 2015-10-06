@@ -29,7 +29,8 @@ public interface TechnologyRecommendationDAO extends GenericDAO<TechnologyRecomm
   public List<TechnologyRecommendation> findAllActivesByTechnology(Technology technology);
 
   /**
-   * Finds the active recommendations by a user in a technology 
+   * Finds the active recommendations by a user in a technology
+   * 
    * @param tgUser Recommender
    * @param technology Technology
    * @return a recommendation, if exists
@@ -39,6 +40,7 @@ public interface TechnologyRecommendationDAO extends GenericDAO<TechnologyRecomm
 
   /**
    * Finds a recommendation by a comment
+   * 
    * @param comment comment
    */
   public TechnologyRecommendation findByComment(TechnologyComment comment);

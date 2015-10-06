@@ -25,7 +25,7 @@ public class TechnologyComment extends BaseEntity<Long> {
   public static final String AUTHOR = "author";
   public static final String TIMESTAMP = "timestamp";
   public static final String ACTIVE = "active";
-  
+
   /*
    * Attributes --------------------------------------------
    */

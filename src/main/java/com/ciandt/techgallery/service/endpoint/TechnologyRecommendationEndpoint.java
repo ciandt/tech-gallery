@@ -26,16 +26,15 @@ public class TechnologyRecommendationEndpoint {
 
   @ApiMethod(name = "getTechnologyRecommendations", path = "technology-recommendations",
       httpMethod = "get")
-  public List<Response> getRecommendations(@Named("id") String technologyId,
-      User user) throws InternalServerErrorException, BadRequestException, NotFoundException,
-          OAuthRequestException {
+  public List<Response> getRecommendations(@Named("id") String technologyId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException {
     return service.getRecommendations(technologyId, user);
   }
 
   @ApiMethod(name = "getRecommendationsUp", path = "technology-recommendations_up",
       httpMethod = "get")
-  public List<Response> getRecommendationsUp(@Named("id") String technologyId,
-      User user)
+  public List<Response> getRecommendationsUp(@Named("id") String technologyId, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException {
     return service.getRecommendationsUpByTechnologyAndUser(technologyId, user);

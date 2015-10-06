@@ -4,6 +4,7 @@ import com.google.api.server.spi.ServiceException;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -68,12 +69,13 @@ public class TechnologyEndpoint {
   public Response getTechnology(@Named("id") String id) throws NotFoundException {
     return service.getTechnology(id);
   }
-  
+
   @ApiMethod(name = "findByFilter", path = "technology/search", httpMethod = "get")
-  public Response findTechnologyByFilter(User user, @Named("titleContains") String titleContains,
-      @Named("shortDescriptionContains") String shortDescriptionContains,
-      @Named("recommendationIs") String recommendationIs,
-      @Named("orderOptionIs") String orderOptionIs) throws ServiceException {
+  public Response findTechnologyByFilter(User user,
+      @Named("titleContains") @Nullable String titleContains,
+      @Named("shortDescriptionContains") @Nullable String shortDescriptionContains,
+      @Named("recommendationIs") @Nullable String recommendationIs,
+      @Named("orderOptionIs") @Nullable String orderOptionIs) throws ServiceException {
     return service.findTechnologiesByFilter(new TechnologyFilter(titleContains,
         shortDescriptionContains, recommendationIs, orderOptionIs), user);
   }
@@ -82,6 +84,6 @@ public class TechnologyEndpoint {
   public List<String> getOrderOptions(User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {
     return service.getOrderOptions(user);
-} 
+  }
 
 }

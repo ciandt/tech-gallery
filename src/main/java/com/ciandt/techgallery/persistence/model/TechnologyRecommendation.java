@@ -23,7 +23,7 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
   public static final String ACTIVE = "active";
   public static final String RECOMMENDER = "recommender";
   public static final String TECHNOLOGY = "technology";
-  
+
   /*
    * Attributes --------------------------------------------
    */

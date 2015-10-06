@@ -24,6 +24,7 @@ public interface TechGalleryUserDAO extends GenericDAO<TechGalleryUser, Long> {
 
   /**
    * Searches an user by her name and email (AND query)
+   * 
    * @param name user name
    * @param email user email
    * @return
@@ -32,6 +33,7 @@ public interface TechGalleryUserDAO extends GenericDAO<TechGalleryUser, Long> {
 
   /**
    * Searches for an user by email
+   * 
    * @param email
    * @return
    */

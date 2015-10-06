@@ -41,8 +41,7 @@ public class NamespaceFilter implements Filter {
   }
 
   @Override
-  public void destroy() {
-  }
+  public void destroy() {}
 
   /**
    * {@inheritDoc}. Each request this method set the namespace. (Namespace is by version)

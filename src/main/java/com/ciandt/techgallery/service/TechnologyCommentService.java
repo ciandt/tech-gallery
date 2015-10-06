@@ -27,7 +27,7 @@ public interface TechnologyCommentService {
    */
   public Response addComment(TechnologyCommentTO comment, User user)
       throws InternalServerErrorException, BadRequestException;
-  
+
   /**
    * Service to show all active comments for a technology.
    * 
@@ -37,7 +37,8 @@ public interface TechnologyCommentService {
    * @throws BadRequestException .
    */
   public Response getCommentsByTech(final String techId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException;
 
   /**
    * Service to delete a comment.
@@ -48,5 +49,6 @@ public interface TechnologyCommentService {
    * @throws BadRequestException .
    */
   public Response deleteComment(final Long commentId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException;
 }

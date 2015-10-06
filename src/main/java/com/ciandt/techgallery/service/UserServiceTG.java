@@ -1,17 +1,18 @@
 package com.ciandt.techgallery.service;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.UserResponse;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Services for Users.
@@ -74,10 +75,12 @@ public interface UserServiceTG {
    * @throws BadRequestException
    * @throws InternalServerErrorException
    */
-  public Response getUserFromProvider(final String user) throws NotFoundException,
-      BadRequestException, InternalServerErrorException;
+  public Response getUserFromProvider(final String user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException;
+
   /**
    * Seaches user on datastore by user's name and email
+   * 
    * @param name user's name
    * @param email user's email
    * @return user response
@@ -85,13 +88,13 @@ public interface UserServiceTG {
    * @throws BadRequestException
    * @throws InternalServerErrorException
    */
-  public TechGalleryUser getUserByEmail(String email) throws NotFoundException,
-      BadRequestException, InternalServerErrorException;
+  public TechGalleryUser getUserByEmail(String email)
+      throws NotFoundException, BadRequestException, InternalServerErrorException;
 
-  public TechGalleryUser getUserSyncedWithProvider(String userLogin) throws NotFoundException,
-      BadRequestException, InternalServerErrorException;
+  public TechGalleryUser getUserSyncedWithProvider(String userLogin)
+      throws NotFoundException, BadRequestException, InternalServerErrorException;
 
-  public Response handleLogin(User user, HttpServletRequest req) throws NotFoundException, BadRequestException,
-      InternalServerErrorException, IOException, OAuthRequestException;
+  public Response handleLogin(User user, HttpServletRequest req) throws NotFoundException,
+      BadRequestException, InternalServerErrorException, IOException, OAuthRequestException;
 
 }

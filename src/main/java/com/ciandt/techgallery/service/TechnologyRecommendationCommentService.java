@@ -14,9 +14,9 @@ import com.ciandt.techgallery.service.model.TechnologyResponse;
 public interface TechnologyRecommendationCommentService {
 
   /**
-   * Receives a wrapper which encapsulates a recommendation and a comment for a technology,
-   * verifies if the comment is valid and saves them associated
-   * associated.
+   * Receives a wrapper which encapsulates a recommendation and a comment for a technology, verifies
+   * if the comment is valid and saves them associated associated.
+   * 
    * @param recommendationTO the recommendation
    * @param commentTO the comment
    * @param technology the technology

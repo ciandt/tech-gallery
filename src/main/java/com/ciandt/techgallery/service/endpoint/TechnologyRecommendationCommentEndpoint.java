@@ -33,7 +33,7 @@ public class TechnologyRecommendationCommentEndpoint {
     return service.addRecommendationComment(recCommentTO.getRecommendation(),
         recCommentTO.getComment(), recCommentTO.getTechnology(), user);
   }
-  
+
   @ApiMethod(name = "deleteCommentAndRecommendation", path = "delete-recommendation-comment",
       httpMethod = "post")
   public void deleteCommentAndRecommendation(@Named("recommendId") Long recommendId,

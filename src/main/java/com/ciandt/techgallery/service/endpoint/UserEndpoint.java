@@ -25,8 +25,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
-    Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
+@Api(name = "rest", version = "v1",
+    clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
+    scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class UserEndpoint {
 
   private UserServiceTG service = UserServiceTGImpl.getInstance();
@@ -40,8 +41,8 @@ public class UserEndpoint {
    * @throws BadRequestException
    */
   @ApiMethod(name = "addUser", path = "user", httpMethod = "post")
-  public Response addUser(UserResponse user) throws InternalServerErrorException,
-      BadRequestException {
+  public Response addUser(UserResponse user)
+      throws InternalServerErrorException, BadRequestException {
     return service.addUser(user);
   }
 
@@ -91,8 +92,8 @@ public class UserEndpoint {
    * @throws BadRequestException
    */
   @ApiMethod(name = "getUserFromProvider", path = "userFromProvider/{login}", httpMethod = "get")
-  public Response getUserFromProvider(@Named("login") String login) throws NotFoundException,
-      BadRequestException, InternalServerErrorException {
+  public Response getUserFromProvider(@Named("login") String login)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
     return service.getUserFromProvider(login);
   }
 

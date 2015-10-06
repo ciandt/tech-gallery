@@ -1,13 +1,14 @@
 package com.ciandt.techgallery.service;
 
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.SkillResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.SkillResponse;
 
 /**
  * Services for Skills.
@@ -34,13 +35,14 @@ public interface SkillService {
    * @param techId technology id.
    * @param user oauth user.
    * @return skill info or message error.
-   * @throws BadRequestException 
-   * @throws OAuthRequestException 
-   * @throws NotFoundException 
-   * @throws InternalServerErrorException 
+   * @throws BadRequestException
+   * @throws OAuthRequestException
+   * @throws NotFoundException
+   * @throws InternalServerErrorException
    */
-  public Response getUserSkill(String techId, User user) throws BadRequestException, OAuthRequestException, NotFoundException, InternalServerErrorException;
-  
+  public Response getUserSkill(String techId, User user) throws BadRequestException,
+      OAuthRequestException, NotFoundException, InternalServerErrorException;
+
   /**
    * Service for getting a TechGalleyUser skill.
    * 

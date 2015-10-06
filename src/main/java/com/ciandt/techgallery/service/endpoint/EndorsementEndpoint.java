@@ -21,8 +21,9 @@ import com.ciandt.techgallery.service.model.Response;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
-    Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
+@Api(name = "rest", version = "v1",
+    clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
+    scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
 public class EndorsementEndpoint {
 
   private EndorsementService service = EndorsementServiceImpl.getInstance();
@@ -92,13 +93,13 @@ public class EndorsementEndpoint {
    * @return
    * @throws NotFoundException
    * @throws InternalServerErrorException
-   * @throws OAuthRequestException 
-   * @throws BadRequestException 
+   * @throws OAuthRequestException
+   * @throws BadRequestException
    */
   @ApiMethod(name = "getEndorsementsByTech", path = "endorsement/tech/{id}", httpMethod = "get")
-  public Response getEndorsementsByTech(@Named("id") String id, User user)
-      throws NotFoundException, InternalServerErrorException, BadRequestException, OAuthRequestException {
+  public Response getEndorsementsByTech(@Named("id") String id, User user) throws NotFoundException,
+      InternalServerErrorException, BadRequestException, OAuthRequestException {
     return service.getEndorsementsByTech(id, user);
   }
-  
+
 }

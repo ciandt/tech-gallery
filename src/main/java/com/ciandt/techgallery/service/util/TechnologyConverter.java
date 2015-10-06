@@ -22,7 +22,7 @@ public class TechnologyConverter {
    */
   public static TechnologyResponse fromEntityToTransient(Technology entity) {
     TechnologyResponse technologyResponse = new TechnologyResponse();
-    
+
     technologyResponse.setId(entity.getId());
     technologyResponse.setName(entity.getName());
     technologyResponse.setShortDescription(entity.getShortDescription());

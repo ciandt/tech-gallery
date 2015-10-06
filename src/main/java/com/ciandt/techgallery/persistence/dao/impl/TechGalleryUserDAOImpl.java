@@ -12,8 +12,8 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
  * @author bliberal
  *
  */
-public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long> implements
-    TechGalleryUserDAO {
+public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long>
+    implements TechGalleryUserDAO {
 
   /*
    * Attributes --------------------------------------------
@@ -60,7 +60,7 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
 
     return entity;
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -82,8 +82,7 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
     Objectify objectify = OfyService.ofy();
     TechGalleryUser entity = null;
     entity = objectify.load().type(TechGalleryUser.class).filter(TechGalleryUser.EMAIL, email)
-        .filter(TechGalleryUser.NAME, name)
-            .first().now();
+        .filter(TechGalleryUser.NAME, name).first().now();
 
     return entity;
   }
