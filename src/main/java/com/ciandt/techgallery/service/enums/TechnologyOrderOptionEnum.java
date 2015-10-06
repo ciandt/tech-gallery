@@ -1,7 +1,5 @@
 package com.ciandt.techgallery.service.enums;
 
-import com.ciandt.techgallery.utils.i18n.I18n;
-
 /**
  * Enum for mapping Order Options.
  * 
@@ -10,22 +8,21 @@ import com.ciandt.techgallery.utils.i18n.I18n;
  */
 public enum TechnologyOrderOptionEnum {
 
-  POSITIVE_RECOMENDATION_QUANTITY("Positive Recomendations Quantity"),
-  NEGATIVE_RECOMENDATION_QUANTITY("Negative Recomendations Quantity"),
-  COMENTARY_QUANTITY("Comentaries Quantity"),
-  ENDORSEMENT_QUANTITY("Endorsed Quantity");
+  POSITIVE_RECOMENDATION_QUANTITY("Quantidade de Recomendações Positivas"),
+  NEGATIVE_RECOMENDATION_QUANTITY("Quantidade de Recomendações Negativas"),
+  COMENTARY_QUANTITY("Quantidade de Comentários"),
+  ENDORSEMENT_QUANTITY("Quantidade de Indicações");
   
   private String option;
-  private I18n i18n  = I18n.getInstance();
-  
+
   TechnologyOrderOptionEnum(String option) {
-    this.option = i18n.t(option);
+    this.option = option;
   }
 
   public String option() {
     return option;
   }
-  
+
   public static TechnologyOrderOptionEnum fromString(String text) {
     if (text != null) {
       for (TechnologyOrderOptionEnum item : TechnologyOrderOptionEnum.values()) {

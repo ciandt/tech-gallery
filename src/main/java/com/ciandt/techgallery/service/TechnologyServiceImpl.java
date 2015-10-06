@@ -166,10 +166,6 @@ public class TechnologyServiceImpl implements TechnologyService {
     List<Technology> completeList = technologyDAO.findAll();
     List<Technology> filteredList = new ArrayList<>();
     verifyFilters(techFilter, completeList, filteredList);
-    if ((techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty())
-        && (techFilter.getRecommendationIs() == null)) {
-      filteredList.addAll(completeList);
-    }
 
     if (filteredList.isEmpty()) {
       return new TechnologiesResponse();
