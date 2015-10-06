@@ -67,7 +67,7 @@ public class TechnologyServiceImpl implements TechnologyService {
    * POST for adding a technology.
    */
   @Override
-  public Response addTechnology(final TechnologyResponse technology)
+  public Technology addTechnology(final Technology technology)
       throws InternalServerErrorException, BadRequestException {
     String techId = technology.getId();
     String techName = technology.getName();
@@ -80,14 +80,14 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (techName == null || techName.equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BE_BLANK.message());
     } else {
-      Technology entity = TechnologyConverter.fromTransientToEntity(technology);
-      technologyDAO.add(entity);
+      //Technology entity = TechnologyConverter.fromTransientToEntity(technology);
+      technologyDAO.add(technology);
       TechnologyDetailsCounter techDetails = new TechnologyDetailsCounter();
-      techDetails.setTechnology(Ref.create(technologyDAO.findById(entity.getId())));
+      techDetails.setTechnology(Ref.create(technologyDAO.findById(technology.getId())));
       technologyDetailsCounterDao.add(techDetails);
 
       // set the id and return it
-      technology.setId(entity.getId());
+      //technology.setId(entity.getId());
       return technology;
     }
   }
@@ -105,8 +105,8 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
       TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(techEntities);
-      response.setTechnologies(internList);
+      //List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(techEntities);
+      response.setTechnologies(techEntities);
       return response;
     }
   }
@@ -163,14 +163,14 @@ public class TechnologyServiceImpl implements TechnologyService {
    * GET for getting one technology.
    */
   @Override
-  public Response getTechnology(final String id) throws NotFoundException {
+  public Technology getTechnology(final String id) throws NotFoundException {
     Technology techEntity = technologyDAO.findById(id);
     // if technology is null, return a not found exception
     if (techEntity == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
       TechnologyResponse response = TechnologyConverter.fromEntityToTransient(techEntity);
-      return response;
+      return techEntity;//response;
     }
   }
 
@@ -192,8 +192,8 @@ public class TechnologyServiceImpl implements TechnologyService {
     } else {
       applyOrdination(techFilter, filteredList);
       TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
-      response.setTechnologies(internList);
+      //List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
+      response.setTechnologies(filteredList);
       return response;
     }
   }

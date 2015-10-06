@@ -72,8 +72,7 @@ public class TechnologyCommentConverter {
     TechnologyComment commentEntity = new TechnologyComment();
     commentEntity.setId(tranzient.getId());
     commentEntity.setComment(tranzient.getComment());
-    commentEntity.setTechnology(Ref.create(techTransformer.transformFrom(
-        (TechnologyResponse) techService.getTechnology(tranzient.getTechnologyId()))));
+    commentEntity.setTechnology(Ref.create(techService.getTechnology(tranzient.getTechnologyId())));
     TechGalleryUser author = tgUserTransformer.transformFrom(tranzient.getAuthor());
     Ref<TechGalleryUser> ref = Ref.create(author);
     commentEntity.setAuthor(ref);

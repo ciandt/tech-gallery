@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.persistence.model.Technology;
+
 import java.util.List;
 
 /**
@@ -11,13 +13,13 @@ import java.util.List;
 public class TechnologiesResponse implements Response {
 
   /** list with all technologies. */
-  List<TechnologyResponse> technologies;
+  List<Technology> technologies;
 
-  public List<TechnologyResponse> getTechnologies() {
+  public List<Technology> getTechnologies() {
     return technologies;
   }
 
-  public void setTechnologies(List<TechnologyResponse> technologies) {
+  public void setTechnologies(List<Technology> technologies) {
     this.technologies = technologies;
   }
 }

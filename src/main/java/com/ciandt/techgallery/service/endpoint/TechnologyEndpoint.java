@@ -11,11 +11,11 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
-import com.ciandt.techgallery.service.model.TechnologyResponse;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class TechnologyEndpoint {
    * @throws BadRequestException
    */
   @ApiMethod(name = "addTechnology", path = "technology", httpMethod = "post")
-  public Response addTechnology(TechnologyResponse technology)
+  public Technology addTechnology(Technology technology)
       throws InternalServerErrorException, BadRequestException {
     return service.addTechnology(technology);
   }
@@ -66,7 +66,7 @@ public class TechnologyEndpoint {
    * @throws NotFoundException
    */
   @ApiMethod(name = "getTechnology", path = "technology/{id}", httpMethod = "get")
-  public Response getTechnology(@Named("id") String id) throws NotFoundException {
+  public Technology getTechnology(@Named("id") String id) throws NotFoundException {
     return service.getTechnology(id);
   }
 

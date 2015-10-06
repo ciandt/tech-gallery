@@ -28,7 +28,7 @@ public interface TechnologyService {
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
-  Response addTechnology(final TechnologyResponse technology)
+  Technology addTechnology(final Technology technology)
       throws InternalServerErrorException, BadRequestException;
 
   /**
@@ -48,7 +48,7 @@ public interface TechnologyService {
    * @return .
    * @throws NotFoundException .
    */
-  Response getTechnology(final String id) throws NotFoundException;
+  Technology getTechnology(final String id) throws NotFoundException;
 
   /**
    * Service for getting all technologies according a filter.

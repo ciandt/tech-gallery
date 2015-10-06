@@ -10,10 +10,10 @@ import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.UserResponse;
 
 import java.io.IOException;
 
@@ -41,7 +41,7 @@ public class UserEndpoint {
    * @throws BadRequestException
    */
   @ApiMethod(name = "addUser", path = "user", httpMethod = "post")
-  public Response addUser(UserResponse user)
+  public TechGalleryUser addUser(TechGalleryUser user)
       throws InternalServerErrorException, BadRequestException {
     return service.addUser(user);
   }
@@ -65,7 +65,7 @@ public class UserEndpoint {
    * @throws NotFoundException
    */
   @ApiMethod(name = "getUser", path = "user/{id}", httpMethod = "get")
-  public Response getUser(@Named("id") Long id) throws NotFoundException {
+  public TechGalleryUser getUser(@Named("id") Long id) throws NotFoundException {
     return service.getUser(id);
   }
 
@@ -77,7 +77,7 @@ public class UserEndpoint {
    * @throws NotFoundException
    */
   @ApiMethod(name = "getUserByLogin", path = "userByLogin/{login}", httpMethod = "get")
-  public Response getUserByLogin(@Named("login") String login) throws NotFoundException {
+  public TechGalleryUser getUserByLogin(@Named("login") String login) throws NotFoundException {
     return service.getUserByLogin(login);
   }
 
@@ -92,13 +92,13 @@ public class UserEndpoint {
    * @throws BadRequestException
    */
   @ApiMethod(name = "getUserFromProvider", path = "userFromProvider/{login}", httpMethod = "get")
-  public Response getUserFromProvider(@Named("login") String login)
+  public TechGalleryUser getUserFromProvider(@Named("login") String login)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     return service.getUserFromProvider(login);
   }
 
   @ApiMethod(name = "handleLogin", path = "handleLogin", httpMethod = "post")
-  public Response handleLogin(User user, HttpServletRequest req) throws NotFoundException,
+  public TechGalleryUser handleLogin(User user, HttpServletRequest req) throws NotFoundException,
       BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
     return service.handleLogin(user, req);
   }

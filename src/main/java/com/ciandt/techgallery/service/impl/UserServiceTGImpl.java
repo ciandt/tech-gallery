@@ -17,6 +17,7 @@ import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.UserServiceTG;
+import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
 import com.ciandt.techgallery.service.model.UsersResponse;
@@ -55,13 +56,18 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   private static UserServiceTGImpl instance;
 
-  TechGalleryUserDAO userDAO = TechGalleryUserDAOImpl.getInstance();
+  TechGalleryUserDAO userDao = TechGalleryUserDAOImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
    */
   private UserServiceTGImpl() {}
 
+  /**
+   * For singleton
+   * 
+   * @return the current instance, if it exists. The recently created instance, if not.
+   */
   public static UserServiceTGImpl getInstance() {
     if (instance == null) {
       instance = new UserServiceTGImpl();
@@ -73,11 +79,11 @@ public class UserServiceTGImpl implements UserServiceTG {
    * Methods --------------------------------------------
    */
   /**
-   * GET for getting all users.
+   * Gets all users from the datastore.
    */
   @Override
   public Response getUsers() throws NotFoundException {
-    List<TechGalleryUser> userEntities = userDAO.findAll();
+    List<TechGalleryUser> userEntities = userDao.findAll();
     // if user list is null, return a not found exception
     if (userEntities == null) {
       throw new NotFoundException(OPERATION_FAILED);
@@ -101,54 +107,50 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * GET for getting one user.
+   * Gets a TechGalleryUser by id.
+   * 
+   * @param id the user's id
+   * @throws NotFoundException if the user is not found
    */
   @Override
-  public Response getUser(final Long id) throws NotFoundException {
-    TechGalleryUser userEntity = userDAO.findById(id);
+  public TechGalleryUser getUser(final Long id) throws NotFoundException {
+    TechGalleryUser userEntity = userDao.findById(id);
     // if user is null, return a not found exception
     if (userEntity == null) {
       throw new NotFoundException(i18n.t("No user was found."));
     } else {
-      return createUserResponse(userEntity);
+      return userEntity;
     }
   }
 
   /**
-   * POST for adding a new user.
+   * Adds a new user to Tech Gallery.
    * 
-   * @throws BadRequestException
+   * @param user the TechGallery user to be added
+   * @throws BadRequestException when the user email parameter is missing
    */
   @Override
-  public Response addUser(final UserResponse user) throws BadRequestException {
+  public TechGalleryUser addUser(final TechGalleryUser user) throws BadRequestException {
     if (!userDataIsValid(user)) {
       throw new BadRequestException(i18n.t("User's email cannot be blank."));
     } else {
-      TechGalleryUser userEntity = new TechGalleryUser();
-      fillTGUserData(user, userEntity);
-      userDAO.add(userEntity);
-      // set the id and return it
-      user.setId(userEntity.getId());
+      userDao.add(user);
       return user;
     }
   }
 
   /**
-   * POST This method should be executed whenever a user logs in It check whether the user exists on
-   * TG's datastore and create them, if not. It also checks if the user's email has been changed and
+   * This method should be executed whenever a user logs in It check whether the user exists on TG's
+   * datastore and create them, if not. It also checks if the user's email has been changed and
    * update it, in case it was changed.
    * 
    * @param user A Google AppEngine API user
    * @return A response with the user data as it is on TG datastore
-   * @throws NotFoundException
-   * @throws BadRequestException
-   * @throws InternalServerErrorException
-   * @throws IOException
-   * @throws OAuthRequestException
    */
   @Override
-  public Response handleLogin(final User user, HttpServletRequest req) throws NotFoundException,
-      BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
+  public TechGalleryUser handleLogin(final User user, HttpServletRequest req)
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException,
+      OAuthRequestException {
     if (user == null) {
       throw new OAuthRequestException(i18n.t("Authorization error"));
     }
@@ -159,42 +161,38 @@ public class UserServiceTGImpl implements UserServiceTG {
     GoogleCredential credential = new GoogleCredential().setAccessToken(accesstoken);
     Plus plus = new Plus.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
         .setApplicationName(i18n.t("Tech Gallery")).build();
-    Person p = plus.people().get("me").execute();
-    TechGalleryUser tgUser = userDAO.findByGoogleId(user.getUserId());
+    Person person = plus.people().get("me").execute();
+    TechGalleryUser tgUser = userDao.findByGoogleId(user.getUserId());
     // Couldn't find by googleID. Try email
     if (tgUser == null) {
-      tgUser = userDAO.findByEmail(userEmail);
+      tgUser = userDao.findByEmail(userEmail);
     }
     // Ok, we couldn't find it. Create it.
     if (tgUser == null) {
       tgUser = new TechGalleryUser();
     }
-    updateUserInformation(user, p, tgUser);
-    userDAO.add(tgUser);
+    updateUserInformation(user, person, tgUser);
+    userDao.add(tgUser);
     log.info("User " + tgUser.getName() + " added/updated");
-    UserResponse uResp = (UserResponse) createUserResponse(tgUser);
-    return uResp;
+    return tgUser;
   }
 
   /**
-   * Updates current Tech Gallery user information with user data found on Google
+   * Updates current Tech Gallery user information with user data found on Google.
    * 
    * @param user Google user
-   * @param p Google Plus person information
+   * @param person Google Plus person information
    * @param tgUser Tech Gallery user
    */
-  private void updateUserInformation(final User user, Person p, TechGalleryUser tgUser) {
+  private void updateUserInformation(final User user, Person person, TechGalleryUser tgUser) {
     String plusEmail = user.getEmail();
-    String plusPhoto = p.getImage().getUrl();
-    String plusName = p.getDisplayName();
+    String plusPhoto = person.getImage().getUrl();
+    String plusName = person.getDisplayName();
 
     String currentEmail = tgUser.getEmail();
     String currentPhoto = tgUser.getPhoto();
     String currentName = tgUser.getName();
 
-    if (tgUser.getGoogleId() == null) {
-      tgUser.setGoogleId(user.getUserId());
-    }
     if (currentEmail == null || !currentEmail.equals(plusEmail)) {
       tgUser.setEmail(plusEmail);
     }
@@ -204,120 +202,98 @@ public class UserServiceTGImpl implements UserServiceTG {
     if (currentName == null || currentName != plusName) {
       tgUser.setName(plusName);
     }
-  }
-
-  /**
-   * Creates a response based on a TechGalleryUser entity
-   * 
-   * @param tgUser
-   * @return the response created
-   */
-  private Response createUserResponse(TechGalleryUser tgUser) {
-    UserResponse response = new UserResponse();
-    response.setId(tgUser.getId());
-    response.setName(tgUser.getName());
-    response.setEmail(tgUser.getEmail());
-    response.setPhoto(tgUser.getPhoto());
-    return response;
-  }
-
-  /**
-   * PUT for editing a user.
-   * 
-   * @throws BadRequestException
-   */
-  @Override
-  public Response updateUser(final UserResponse user) throws BadRequestException {
-    if (!userDataIsValid(user) && user.getId() != null) {
-      throw new BadRequestException(i18n.t("User's email cannot be blank."));
-    } else {
-      TechGalleryUser tgCurrentUser = userDAO.findById(user.getId());
-      fillTGUserData(user, tgCurrentUser);
-      userDAO.update(tgCurrentUser);
-      return user;
+    if (tgUser.getGoogleId() == null) {
+      tgUser.setGoogleId(user.getUserId());
     }
   }
 
-  private void fillTGUserData(final UserResponse user, TechGalleryUser tgUser) {
-    String userName = user.getName();
-    String userEmail = user.getEmail();
-    String userPhoto = user.getPhoto();
-    tgUser.setName(userName);
-    tgUser.setEmail(userEmail);
-    tgUser.setGoogleId(user.getGoogleId());
-    if (userPhoto != null) {
-      tgUser.setPhoto(userPhoto);
+  /**
+   * Updates a user, with validation.
+   * 
+   * @throws BadRequestException in case of a missing parameter
+   * @return the updated user
+   */
+  @Override
+  public TechGalleryUser updateUser(final TechGalleryUser user) throws BadRequestException {
+    if (!userDataIsValid(user) && user.getId() != null) {
+      throw new BadRequestException(i18n.t("User's email cannot be blank."));
+    } else {
+      userDao.update(user);
+      return user;
     }
   }
 
   /**
    * GET for getting an user by its login.
+   * @param login the user's login
+   * @return the user found
    */
   @Override
-  public Response getUserByLogin(final String login) throws NotFoundException {
-    TechGalleryUser userEntity = userDAO.findByLogin(login);
+  public TechGalleryUser getUserByLogin(final String login) throws NotFoundException {
+    TechGalleryUser userEntity = userDao.findByLogin(login);
     if (userEntity == null) {
       throw new NotFoundException(OPERATION_FAILED);
     } else {
-      return createUserResponse(userEntity);
+      return userEntity;// createUserResponse(userEntity);
     }
   }
 
+  /**
+   * Finds a TechGalleryUser by his/her email.
+   * 
+   * @param email the user's email
+   * @throws NotFoundException if the user is not found
+   */
   @Override
   public TechGalleryUser getUserByEmail(final String email)
-      throws BadRequestException, InternalServerErrorException {
-    return userDAO.findByEmail(email);
+      throws NotFoundException {
+    TechGalleryUser tgUser = userDao.findByEmail(email);
+    if (tgUser == null) {
+      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
+    } else {
+      return tgUser;
+    }
+
   }
 
   /**
-   * 
    * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists, adds to
    * TG's datastore (if not there). Returns the user.
    * 
    * @param userLogin userLogin
-   * @return
-   * @throws NotFoundException
-   * @throws BadRequestException
-   * @throws InternalServerErrorException
+   * @return the user saved on the datastore
    */
   @Override
   public TechGalleryUser getUserSyncedWithProvider(final String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     TechGalleryUser tgUser = null;
-    try {
-      UserResponse userResp = (UserResponse) getUserFromProvider(userLogin);
-      tgUser = userDAO.findByEmail(userResp.getEmail());
-      if (tgUser == null) {
-        tgUser = new TechGalleryUser();
-        tgUser.setEmail(userResp.getEmail());
-        tgUser.setName(userResp.getName());
-        Key<TechGalleryUser> key = userDAO.add(tgUser);
-        tgUser.setId(key.getId());
-      }
-    } catch (BadRequestException e) {
-      // User not found on provider
-      if (e.getMessage().equals(OPERATION_FAILED)) {
-        // Logs to App Engine log
-        System.err.println(OPERATION_FAILED + ": " + e.getMessage());
-      }
+    TechGalleryUser userResp = getUserFromProvider(userLogin);
+    tgUser = userDao.findByEmail(getUserFromProvider(userLogin).getEmail());
+    if (tgUser == null) {
+      tgUser = new TechGalleryUser();
+      tgUser.setEmail(userResp.getEmail());
+      tgUser.setName(userResp.getName());
+      Key<TechGalleryUser> key = userDao.add(tgUser);
+      tgUser.setId(key.getId());
     }
     return tgUser;
   }
 
   /**
-   * GET Calls the provider API passing a login to obtain user information
+   * GET Calls the provider API passing a login to obtain user information.
    * 
    * @param userlogin the user login to pass to the provider API
-   * @throws BadRequestException if any IO exceptions occur
-   * @throws InternalServerErrorException
+   * @throws NotFoundException in case the user is not found on provider
+   * @throws BadRequestException in case of JSON or URL error
+   * @throws InternalServerErrorException if any IO exceptions occur
    */
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
-  public Response getUserFromProvider(final String userLogin)
+  public TechGalleryUser getUserFromProvider(final String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
 
     String fullRequest = PEOPLE_ENDPOINT + userLogin + "?format=json";
-    UserResponse uResp = new UserResponse();
+    TechGalleryUser tgUser = new TechGalleryUser();
     try {
       InputStream resourceStream =
           UserServiceTGImpl.class.getClassLoader().getResourceAsStream("people_basic_auth.txt");
@@ -332,12 +308,10 @@ public class UserServiceTGImpl implements UserServiceTG {
       ObjectMapper mapper = new ObjectMapper();
 
       if (conn.getResponseCode() == 200) {
-
-
         Map<String, Object> providerResponse = mapper.readValue(conn.getInputStream(), Map.class);
         HashMap<String, Object> userData = (LinkedHashMap) providerResponse.get("personal_info");
-        uResp.setEmail((String) userData.get("email"));
-        uResp.setName((String) userData.get("name"));
+        tgUser.setEmail((String) userData.get("email"));
+        tgUser.setName((String) userData.get("name"));
       } else {
         throw new NotFoundException(i18n.t("User not found"));
       }
@@ -354,22 +328,22 @@ public class UserServiceTGImpl implements UserServiceTG {
       throw new InternalServerErrorException(i18n.t("An internal server error ocurred."));
 
     }
-    return uResp;
+    return tgUser;
   }
 
   @SuppressWarnings("resource")
   private static String convertStreamToString(java.io.InputStream is) {
-    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-    return s.hasNext() ? s.next() : "";
+    java.util.Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
+    return scanner.hasNext() ? scanner.next() : "";
   }
 
   /**
-   * Validates user data
+   * Validates user data.
    * 
-   * @param user the user data wrapped in a UserResponse entity
+   * @param user the TechGalleryUser entity
    * @return true if data is valid, false otherwise
    */
-  private static boolean userDataIsValid(UserResponse user) {
+  private static boolean userDataIsValid(TechGalleryUser user) {
     // if user is null, return a bad request exception
     if (user == null) {
       return false;
