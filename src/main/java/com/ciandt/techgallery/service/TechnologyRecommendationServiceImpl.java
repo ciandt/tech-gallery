@@ -179,7 +179,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
           throws BadRequestException, NotFoundException, InternalServerErrorException {
     validateRecommend(recommendId, recommendation);
     validateUser(user, techUser);
-    if (!recommendation.getRecommender().equals(techUser)) {
+    if (!recommendation.getRecommender().get().equals(techUser)) {
       throw new BadRequestException(ValidationMessageEnums.RECOMMEND_RECOMMENDER_ERROR.message());
     }
   }

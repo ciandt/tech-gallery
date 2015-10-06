@@ -453,6 +453,8 @@ angular.module('techGallery').controller(
     				$scope.processingComment = true;
     				callBackLoaded();
     				$scope.comment = '';
+    				$scope.score = undefined;
+    				$scope.setClassThumbs('');
     			});
     		}
     	}else{
