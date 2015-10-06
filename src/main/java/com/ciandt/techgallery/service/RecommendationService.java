@@ -20,6 +20,6 @@ public interface RecommendationService {
    * @return
    * @throws NotFoundException when entity is not found
    */
-  public List<String> getRecommendations(User user) throws NotFoundException, BadRequestException;
+  List<String> getRecommendations(User user) throws NotFoundException, BadRequestException;
 
 }

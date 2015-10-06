@@ -26,7 +26,7 @@ public interface TechnologyRecommendationCommentService {
    * @throws InternalServerErrorException
    * @throws NotFoundException
    */
-  public Response addRecommendationComment(TechnologyRecommendationTO recommendationTO,
+  Response addRecommendationComment(TechnologyRecommendationTO recommendationTO,
       TechnologyCommentTO commentTO, TechnologyResponse technology, User user)
           throws BadRequestException, InternalServerErrorException, NotFoundException;
 
@@ -44,7 +44,7 @@ public interface TechnologyRecommendationCommentService {
    * @throws NotFoundException
    * @throws OAuthRequestException
    */
-  public void deleteCommentAndRecommendation(TechnologyRecommendationTO recommendationTO,
+  void deleteCommentAndRecommendation(TechnologyRecommendationTO recommendationTO,
       TechnologyCommentTO commentTO, User user) throws InternalServerErrorException,
           BadRequestException, NotFoundException, OAuthRequestException;
 }

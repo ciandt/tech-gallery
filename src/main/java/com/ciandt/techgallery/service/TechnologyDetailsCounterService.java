@@ -20,17 +20,17 @@ public interface TechnologyDetailsCounterService {
    * @return .
    * @throws NotFoundException .
    */
-  public TechnologyDetailsCounter getTechnologyDetailByTechnology(Technology technology)
+  TechnologyDetailsCounter getTechnologyDetailByTechnology(Technology technology)
       throws NotFoundException;
 
-  public void addCommentariesCounter(Technology technology);
+  void addCommentariesCounter(Technology technology);
 
-  public void removeCommentariesCounter(Technology technology);
+  void removeCommentariesCounter(Technology technology);
 
-  public void addRecomendationCounter(Technology technology, Boolean score);
+  void addRecomendationCounter(Technology technology, Boolean score);
 
-  public void removeRecomendationCounter(Technology technology, Boolean score);
+  void removeRecomendationCounter(Technology technology, Boolean score);
 
-  public void updateEdorsedsCounter(Technology technology, Integer size);
+  void updateEdorsedsCounter(Technology technology, Integer size);
 
 }

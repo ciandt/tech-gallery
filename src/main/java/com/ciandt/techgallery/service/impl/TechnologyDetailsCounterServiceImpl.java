@@ -25,7 +25,7 @@ public class TechnologyDetailsCounterServiceImpl implements TechnologyDetailsCou
    */
   public static TechnologyDetailsCounterServiceImpl getInstance() {
     if (instance == null) {
-      return new TechnologyDetailsCounterServiceImpl();
+      instance = new TechnologyDetailsCounterServiceImpl();
     }
     return instance;
   }

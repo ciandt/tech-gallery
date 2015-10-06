@@ -20,7 +20,7 @@ public interface EndorsementDAO extends GenericDAO<Endorsement, Long> {
    * @param technology
    * @return list of endorsements based on technology
    */
-  public List<Endorsement> findAllByTechnology(String techId);
+  List<Endorsement> findAllByTechnology(String techId);
 
   /**
    * Method that return a list of active endorsements by technology
@@ -28,7 +28,7 @@ public interface EndorsementDAO extends GenericDAO<Endorsement, Long> {
    * @param technology
    * @return list of active endorsements based on technology
    */
-  public List<Endorsement> findAllActivesByTechnology(String techId);
+  List<Endorsement> findAllActivesByTechnology(String techId);
 
   /**
    * Method that return an endorsement by its users and technology
@@ -38,7 +38,7 @@ public interface EndorsementDAO extends GenericDAO<Endorsement, Long> {
    * @param technology
    * @return
    */
-  public List<Endorsement> findByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
+  List<Endorsement> findByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
       Technology technology);
 
   /**
@@ -49,7 +49,7 @@ public interface EndorsementDAO extends GenericDAO<Endorsement, Long> {
    * @param technology
    * @return
    */
-  public List<Endorsement> findActivesByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
+  List<Endorsement> findActivesByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
       Technology technology);
 
 }
