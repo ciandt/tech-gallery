@@ -12,6 +12,6 @@ import com.ciandt.techgallery.persistence.model.Technology;
  */
 public interface SkillDAO extends GenericDAO<Skill, Long> {
 
-  public Skill findByUserAndTechnology(TechGalleryUser user, Technology technology);
+  Skill findByUserAndTechnology(TechGalleryUser user, Technology technology);
 
 }

@@ -32,7 +32,7 @@ public interface EndorsementService {
    * @throws NotFoundException
    * @throws OAuthRequestException
    */
-  public Response addOrUpdateEndorsement(final EndorsementResponse endorsement, final User user)
+  Response addOrUpdateEndorsement(final EndorsementResponse endorsement, final User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException;
 
@@ -47,9 +47,9 @@ public interface EndorsementService {
    * @throws NotFoundException
    * @throws OAuthRequestException
    */
-  public Response addOrUpdateEndorsementPlusOne(final EndorsementResponse endorsement,
-      final User user) throws InternalServerErrorException, BadRequestException, NotFoundException,
-          OAuthRequestException;
+  Response addOrUpdateEndorsementPlusOne(final EndorsementResponse endorsement, final User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException;
 
   /**
    * Service for getting all endorsements.
@@ -58,7 +58,7 @@ public interface EndorsementService {
    * @throws InternalServerErrorException
    * @throws NotFoundException
    */
-  public Response getEndorsements() throws InternalServerErrorException, NotFoundException;
+  Response getEndorsements() throws InternalServerErrorException, NotFoundException;
 
   /**
    * Service for getting a endorsement.
@@ -67,7 +67,7 @@ public interface EndorsementService {
    * @return
    * @throws NotFoundException
    */
-  public Response getEndorsement(final Long id) throws NotFoundException;
+  Response getEndorsement(final Long id) throws NotFoundException;
 
   /**
    * Service for getting a endorsement.
@@ -80,7 +80,7 @@ public interface EndorsementService {
    * @throws NotFoundException
    * @throws BadRequestException
    */
-  public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
+  List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
       List<Endorsement> endorsements, String techId) throws BadRequestException, NotFoundException,
           InternalServerErrorException, OAuthRequestException;
 
@@ -94,7 +94,7 @@ public interface EndorsementService {
    * @throws NotFoundException
    * @throws BadRequestException
    */
-  public Response getEndorsementsByTech(final String techId, User user)
+  Response getEndorsementsByTech(final String techId, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException;
 

@@ -13,14 +13,14 @@ public interface TechGalleryUserDAO extends GenericDAO<TechGalleryUser, Long> {
   /**
    * Method that searches user by its email(used to authenticate into the app)
    */
-  public TechGalleryUser findByLogin(String email);
+  TechGalleryUser findByLogin(String email);
 
   /**
    * Method the searches user by its google id provided by UserAPI
    * 
    * @return
    */
-  public TechGalleryUser findByGoogleId(String id);
+  TechGalleryUser findByGoogleId(String id);
 
   /**
    * Searches an user by her name and email (AND query)
@@ -29,7 +29,7 @@ public interface TechGalleryUserDAO extends GenericDAO<TechGalleryUser, Long> {
    * @param email user email
    * @return
    */
-  public TechGalleryUser findByNameAndEmail(String name, String email);
+  TechGalleryUser findByNameAndEmail(String name, String email);
 
   /**
    * Searches for an user by email
@@ -37,5 +37,5 @@ public interface TechGalleryUserDAO extends GenericDAO<TechGalleryUser, Long> {
    * @param email
    * @return
    */
-  public TechGalleryUser findByEmail(String email);
+  TechGalleryUser findByEmail(String email);
 }

@@ -14,12 +14,12 @@ import java.util.List;
 
 public interface TechnologyRecommendationService {
 
-  public Response addRecommendation(TechnologyRecommendationTO recommendationTO, User user)
+  Response addRecommendation(TechnologyRecommendationTO recommendationTO, User user)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 
-  public TechnologyRecommendation getRecommendationByComment(TechnologyComment comment);
+  TechnologyRecommendation getRecommendationByComment(TechnologyComment comment);
 
-  public List<Response> getRecommendations(String technologyId, User user);
+  List<Response> getRecommendations(String technologyId, User user);
 
   /**
    * Method that return the Recommendations Up by passed parameters.
@@ -32,7 +32,7 @@ public interface TechnologyRecommendationService {
    * 
    * @return List<Response>
    */
-  public List<Response> getRecommendationsUpByTechnologyAndUser(String technologyId, User user);
+  List<Response> getRecommendationsUpByTechnologyAndUser(String technologyId, User user);
 
   /**
    * Method that return the Recommendations Down by passed parameters.
@@ -45,7 +45,7 @@ public interface TechnologyRecommendationService {
    * 
    * @return List<Response>
    */
-  public List<Response> getRecommendationsDownByTechnologyAndUser(String technologyId, User user);
+  List<Response> getRecommendationsDownByTechnologyAndUser(String technologyId, User user);
 
   /**
    * Method to set the recommendation as inactive.
@@ -61,6 +61,6 @@ public interface TechnologyRecommendationService {
    * 
    * @return Response
    */
-  public Response deleteRecommendById(Long recommendId, User user)
+  Response deleteRecommendById(Long recommendId, User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException;
 }

@@ -28,7 +28,7 @@ public interface TechnologyService {
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
-  public Response addTechnology(final TechnologyResponse technology)
+  Response addTechnology(final TechnologyResponse technology)
       throws InternalServerErrorException, BadRequestException;
 
   /**

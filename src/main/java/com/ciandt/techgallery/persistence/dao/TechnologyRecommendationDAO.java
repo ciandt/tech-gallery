@@ -26,7 +26,7 @@ public interface TechnologyRecommendationDAO extends GenericDAO<TechnologyRecomm
    * 
    * @return List<TechnologyRecommendation>
    */
-  public List<TechnologyRecommendation> findAllActivesByTechnology(Technology technology);
+  List<TechnologyRecommendation> findAllActivesByTechnology(Technology technology);
 
   /**
    * Finds the active recommendations by a user in a technology
@@ -35,7 +35,7 @@ public interface TechnologyRecommendationDAO extends GenericDAO<TechnologyRecomm
    * @param technology Technology
    * @return a recommendation, if exists
    */
-  public TechnologyRecommendation findActiveByRecommenderAndTechnology(TechGalleryUser tgUser,
+  TechnologyRecommendation findActiveByRecommenderAndTechnology(TechGalleryUser tgUser,
       Technology technology);
 
   /**
@@ -43,5 +43,5 @@ public interface TechnologyRecommendationDAO extends GenericDAO<TechnologyRecomm
    * 
    * @param comment comment
    */
-  public TechnologyRecommendation findByComment(TechnologyComment comment);
+  TechnologyRecommendation findByComment(TechnologyComment comment);
 }

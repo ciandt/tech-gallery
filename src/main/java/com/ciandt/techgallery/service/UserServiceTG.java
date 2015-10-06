@@ -28,7 +28,7 @@ public interface UserServiceTG {
    * @return users info or message error.
    * @throws NotFoundException
    */
-  public Response getUsers() throws NotFoundException;
+  Response getUsers() throws NotFoundException;
 
   /**
    * Service for getting one user.
@@ -37,7 +37,7 @@ public interface UserServiceTG {
    * @return user info or message error.
    * @throws NotFoundException
    */
-  public Response getUser(final Long id) throws NotFoundException;
+  Response getUser(final Long id) throws NotFoundException;
 
   /**
    * Service for adding a user.
@@ -46,7 +46,7 @@ public interface UserServiceTG {
    * @return user info or message error.
    * @throws BadRequestException
    */
-  public Response addUser(final UserResponse user) throws BadRequestException;
+  Response addUser(final UserResponse user) throws BadRequestException;
 
   /**
    * Service for updating a user.
@@ -55,7 +55,7 @@ public interface UserServiceTG {
    * @return user info or message error.
    * @throws BadRequestException
    */
-  public Response updateUser(final UserResponse user) throws BadRequestException;
+  Response updateUser(final UserResponse user) throws BadRequestException;
 
   /**
    * Service for getting an User by its Login.
@@ -64,7 +64,7 @@ public interface UserServiceTG {
    * @return
    * @throws NotFoundException
    */
-  public Response getUserByLogin(final String user) throws NotFoundException;
+  Response getUserByLogin(final String user) throws NotFoundException;
 
   /**
    * Service for getting an User from an external provider by its Login.
@@ -75,7 +75,7 @@ public interface UserServiceTG {
    * @throws BadRequestException
    * @throws InternalServerErrorException
    */
-  public Response getUserFromProvider(final String user)
+  Response getUserFromProvider(final String user)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 
   /**
@@ -88,13 +88,13 @@ public interface UserServiceTG {
    * @throws BadRequestException
    * @throws InternalServerErrorException
    */
-  public TechGalleryUser getUserByEmail(String email)
+  TechGalleryUser getUserByEmail(String email)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 
-  public TechGalleryUser getUserSyncedWithProvider(String userLogin)
+  TechGalleryUser getUserSyncedWithProvider(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 
-  public Response handleLogin(User user, HttpServletRequest req) throws NotFoundException,
+  Response handleLogin(User user, HttpServletRequest req) throws NotFoundException,
       BadRequestException, InternalServerErrorException, IOException, OAuthRequestException;
 
 }

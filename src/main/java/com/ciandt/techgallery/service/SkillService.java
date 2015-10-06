@@ -26,7 +26,7 @@ public interface SkillService {
    * @throws InternalServerErrorException
    * @throws BadRequestException
    */
-  public Response addOrUpdateSkill(SkillResponse skill, User user)
+  Response addOrUpdateSkill(SkillResponse skill, User user)
       throws InternalServerErrorException, BadRequestException;
 
   /**
@@ -40,8 +40,8 @@ public interface SkillService {
    * @throws NotFoundException
    * @throws InternalServerErrorException
    */
-  public Response getUserSkill(String techId, User user) throws BadRequestException,
-      OAuthRequestException, NotFoundException, InternalServerErrorException;
+  Response getUserSkill(String techId, User user) throws BadRequestException, OAuthRequestException,
+      NotFoundException, InternalServerErrorException;
 
   /**
    * Service for getting a TechGalleyUser skill.
@@ -54,6 +54,6 @@ public interface SkillService {
    * @throws NotFoundException
    * @throws InternalServerErrorException
    */
-  public Response getUserSkill(String techId, TechGalleryUser user) throws BadRequestException,
+  Response getUserSkill(String techId, TechGalleryUser user) throws BadRequestException,
       OAuthRequestException, NotFoundException, InternalServerErrorException;
 }
