@@ -13,7 +13,6 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
-import com.ciandt.techgallery.service.TechnologyDetailsCounterService;
 import com.ciandt.techgallery.service.TechnologyRecommendationService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
@@ -45,8 +44,6 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   private TechnologyRecommendationDAO technologyRecommendationDAO =
       TechnologyRecommendationDAOImpl.getInstance();
   private TechnologyService technologyService = TechnologyServiceImpl.getInstance();
-  TechnologyDetailsCounterService counterService =
-      TechnologyDetailsCounterServiceImpl.getInstance();
   private TechnologyRecommendationTransformer techRecTransformer =
       new TechnologyRecommendationTransformer();
   private UserServiceTG userService = UserServiceTGImpl.getInstance();
@@ -106,10 +103,10 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
       previousRec.setActive(false);
       previousRec.setInactivatedDate(new Date());
       technologyRecommendationDAO.update(previousRec);
-      counterService.removeRecomendationCounter(technology, previousRec.getScore());
+      technologyService.removeRecomendationCounter(technology, previousRec.getScore());
     }
     recommendation.setId(technologyRecommendationDAO.add(recommendation).getId());
-    counterService.addRecomendationCounter(technology, recommendation.getScore());
+    technologyService.addRecomendationCounter(technology, recommendation.getScore());
     return recommendation;
   }
 
@@ -164,7 +161,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     List<Response> recommendationsUpTO = new ArrayList<Response>();
     for (Response recommendation : getRecommendations(technologyId, user)) {
       TechnologyRecommendationTO recommendationTO = (TechnologyRecommendationTO) recommendation;
-      if (recommendationTO.getScore() == score) {
+      if (recommendationTO.getScore().equals(score)) {
         recommendationsUpTO.add(recommendationTO);
       }
     }
@@ -181,7 +178,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
 
     recommendation.setActive(false);
     technologyRecommendationDAO.update(recommendation);
-    counterService.removeRecomendationCounter(recommendation.getTechnology().get(),
+    technologyService.removeRecomendationCounter(recommendation.getTechnology().get(),
         recommendation.getScore());
     return techRecTransformer.transformTo(recommendation);
   }

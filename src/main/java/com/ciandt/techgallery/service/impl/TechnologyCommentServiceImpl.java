@@ -19,8 +19,8 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.TechnologyCommentService;
-import com.ciandt.techgallery.service.TechnologyDetailsCounterService;
 import com.ciandt.techgallery.service.TechnologyRecommendationService;
+import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
@@ -54,8 +54,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
   TechnologyRecommendationService recommendationService =
       TechnologyRecommendationServiceImpl.getInstance();
-  TechnologyDetailsCounterService counterService =
-      TechnologyDetailsCounterServiceImpl.getInstance();
+  TechnologyService techService = TechnologyServiceImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
@@ -85,7 +84,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
 
     TechnologyComment newComment = addNewComment(comment, techUser, technology);
-    counterService.addCommentariesCounter(technology);
+    techService.addCommentariesCounter(technology);
     TechnologyCommentTO ret = TechnologyCommentConverter.fromEntityToTransient(newComment);
 
     return ret;
@@ -118,7 +117,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     TechnologyComment comment = technologyCommentDAO.findById(commentId);
     comment.setActive(false);
     technologyCommentDAO.update(comment);
-    counterService.removeCommentariesCounter(comment.getTechnology().get());
+    techService.removeCommentariesCounter(comment.getTechnology().get());
     TechnologyCommentTO response = TechnologyCommentConverter.fromEntityToTransient(comment);
     return response;
   }

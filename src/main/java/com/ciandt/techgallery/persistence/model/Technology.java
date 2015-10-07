@@ -44,6 +44,18 @@ public class Technology extends BaseEntity<String> {
   @Unindex
   private String recommendation;
 
+  @Index
+  private Integer positiveRecomendationsCounter = 0;
+
+  @Index
+  private Integer negativeRecomendationsCounter = 0;
+
+  @Index
+  private Integer commentariesCounter = 0;
+
+  @Index
+  private Integer endorsedsCounter = 0;
+
   @Override
   public String getId() {
     return id;
@@ -110,4 +122,89 @@ public class Technology extends BaseEntity<String> {
     this.recommendation = recommendation;
   }
 
+  public Integer getPositiveRecomendationsCounter() {
+    return positiveRecomendationsCounter;
+  }
+
+  public void setPositiveRecomendationsCounter(Integer positiveRecomendationsCounter) {
+    this.positiveRecomendationsCounter = positiveRecomendationsCounter;
+  }
+
+  public Integer getNegativeRecomendationsCounter() {
+    return negativeRecomendationsCounter;
+  }
+
+  public void setNegativeRecomendationsCounter(Integer negativeRecomendationsCounter) {
+    this.negativeRecomendationsCounter = negativeRecomendationsCounter;
+  }
+
+  public Integer getCommentariesCounter() {
+    return commentariesCounter;
+  }
+
+  public void setCommentariesCounter(Integer commentariesCounter) {
+    this.commentariesCounter = commentariesCounter;
+  }
+
+  public Integer getEndorsedsCounter() {
+    return endorsedsCounter;
+  }
+
+  public void setEndorsedsCounter(Integer endorsedsCounter) {
+    this.endorsedsCounter = endorsedsCounter;
+  }
+
+  /**
+   * Add 1 to the positive recomndations counter.
+   */
+  public void addPositiveRecomendationsCounter() {
+    this.positiveRecomendationsCounter++;
+  }
+
+  /**
+   * Remove 1 to the positive recomndations counter.
+   */
+  public void removePositiveRecomendationsCounter() {
+    if (this.positiveRecomendationsCounter > 0) {
+      this.positiveRecomendationsCounter--;
+    } else {
+      this.positiveRecomendationsCounter = 0;
+    }
+  }
+
+  /**
+   * Add 1 to the negative recomndations counter.
+   */
+  public void addNegativeRecomendationsCounter() {
+    this.negativeRecomendationsCounter++;
+  }
+
+  /**
+   * Remove 1 to the negative recomndations counter.
+   */
+  public void removeNegativeRecomendationsCounter() {
+    if (this.negativeRecomendationsCounter > 0) {
+      this.negativeRecomendationsCounter--;
+    } else {
+      this.negativeRecomendationsCounter = 0;
+    }
+  }
+
+  /**
+   * Add 1 to the commentary counter.
+   */
+  public void addCommentariesCounter() {
+    this.commentariesCounter++;
+  }
+
+  /**
+   * Remove 1 to the commentary counter.
+   */
+  public void removeCommentariesCounter() {
+    if (this.commentariesCounter > 0) {
+      this.commentariesCounter--;
+    } else {
+      this.commentariesCounter = 0;
+    }
+  }
 }

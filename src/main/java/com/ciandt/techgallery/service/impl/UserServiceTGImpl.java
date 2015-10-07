@@ -196,10 +196,10 @@ public class UserServiceTGImpl implements UserServiceTG {
     if (currentEmail == null || !currentEmail.equals(plusEmail)) {
       tgUser.setEmail(plusEmail);
     }
-    if (currentPhoto == null || currentPhoto != plusPhoto) {
+    if (currentPhoto == null || !currentPhoto.equals(plusPhoto)) {
       tgUser.setPhoto(plusPhoto);
     }
-    if (currentName == null || currentName != plusName) {
+    if (currentName == null || !currentName.equals(plusName)) {
       tgUser.setName(plusName);
     }
     if (tgUser.getGoogleId() == null) {

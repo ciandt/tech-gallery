@@ -19,7 +19,7 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.EndorsementService;
 import com.ciandt.techgallery.service.SkillService;
-import com.ciandt.techgallery.service.TechnologyDetailsCounterService;
+import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.model.EndorsementEntityResponse;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
@@ -65,9 +65,8 @@ public class EndorsementServiceImpl implements EndorsementService {
   EndorsementDAO endorsementDAO = EndorsementDAOImpl.getInstance();
   /** skill service */
   SkillService skillService = SkillServiceImpl.getInstance();
-  /** TechnologyDetailsCounter Service */
-  TechnologyDetailsCounterService counterService =
-      TechnologyDetailsCounterServiceImpl.getInstance();
+  /** Technology service */
+  TechnologyService techService = TechnologyServiceImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
@@ -342,7 +341,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     Collections.sort(grouped, new EndorsementsGroupedByEndorsedTransient());
 
     Technology technology = techDAO.findById(techId);
-    counterService.updateEdorsedsCounter(technology, grouped.size());
+    techService.updateEdorsedsCounter(technology, grouped.size());
 
     ShowEndorsementsResponse response = new ShowEndorsementsResponse();
     response.setEndorsements(grouped);
