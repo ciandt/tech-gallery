@@ -152,7 +152,7 @@ public class EndorsementServiceImpl implements EndorsementService {
 
     // final checks and persist
     // user cannot endorse itself
-    if (tgEndorserUser.getId() == tgEndorsedUser.getId()) {
+    if (tgEndorserUser.getId().equals(tgEndorsedUser.getId())) {
       throw new BadRequestException(i18n.t("You cannot endorse yourself!"));
     }
     // user cannot endorse the same people twice
@@ -241,7 +241,7 @@ public class EndorsementServiceImpl implements EndorsementService {
 
     // final checks and persist
     // user cannot endorse itself
-    if (tgEndorserUser.getId() == tgEndorsedUser.getId()) {
+    if (tgEndorserUser.getId().equals(tgEndorsedUser.getId())) {
       throw new BadRequestException(i18n.t("You cannot endorse yourself!"));
     }
 
