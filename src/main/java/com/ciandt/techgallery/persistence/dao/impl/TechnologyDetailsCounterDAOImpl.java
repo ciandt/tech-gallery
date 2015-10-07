@@ -26,7 +26,7 @@ public class TechnologyDetailsCounterDAOImpl extends GenericDAOImpl<TechnologyDe
    */
   public static TechnologyDetailsCounterDAOImpl getInstance() {
     if (instance == null) {
-      return new TechnologyDetailsCounterDAOImpl();
+      instance =  new TechnologyDetailsCounterDAOImpl();
     }
     return instance;
   }
