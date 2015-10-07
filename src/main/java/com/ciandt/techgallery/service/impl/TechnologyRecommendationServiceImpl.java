@@ -164,7 +164,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     List<Response> recommendationsUpTO = new ArrayList<Response>();
     for (Response recommendation : getRecommendations(technologyId, user)) {
       TechnologyRecommendationTO recommendationTO = (TechnologyRecommendationTO) recommendation;
-      if (recommendationTO.getScore() == score) {
+      if (recommendationTO.getScore().equals(score)) {
         recommendationsUpTO.add(recommendationTO);
       }
     }
