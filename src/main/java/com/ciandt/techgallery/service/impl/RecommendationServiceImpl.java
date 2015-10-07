@@ -5,9 +5,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
-import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.RecommendationService;
 import com.ciandt.techgallery.service.enums.RecommendationEnums;
@@ -26,7 +24,6 @@ import java.util.List;
 public class RecommendationServiceImpl implements RecommendationService {
 
   TechGalleryUserDAO techGalleryUserDAO = TechGalleryUserDAOImpl.getInstance();
-  TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
   private static RecommendationServiceImpl instance;
 
   private RecommendationServiceImpl() {}
