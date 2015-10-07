@@ -22,9 +22,7 @@ import com.google.appengine.api.users.User;
  */
 public class RecommendationServiceImpl implements RecommendationService {
 
-  /** tech gallery user service */
   UserServiceTG userService = UserServiceTGImpl.getInstance();
-
   private static RecommendationServiceImpl instance;
 
   private RecommendationServiceImpl() {
