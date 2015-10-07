@@ -10,6 +10,7 @@ import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.TechnologyCommentService;
 import com.ciandt.techgallery.service.impl.TechnologyCommentServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
@@ -38,7 +39,7 @@ public class TechnologyCommentEndpoint {
    * @throws BadRequestException .
    */
   @ApiMethod(name = "addComment", path = "technology-comment", httpMethod = "post")
-  public Response addComment(TechnologyCommentTO comment, User user)
+  public TechnologyComment addComment(TechnologyComment comment, User user)
       throws InternalServerErrorException, BadRequestException {
     return service.addComment(comment, user);
   }
@@ -48,7 +49,7 @@ public class TechnologyCommentEndpoint {
    * 
    * @param json with Comment info.
    * @param user oauth user.
-   * @return .
+   * @return 
    * @throws OAuthRequestException
    * @throws NotFoundException
    * @throws InternalServerErrorException .
@@ -66,14 +67,14 @@ public class TechnologyCommentEndpoint {
    * 
    * @param Id of a comment.
    * @param user oauth user.
-   * @return .
+   * @return 
    * @throws OAuthRequestException
    * @throws NotFoundException
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
   @ApiMethod(name = "deleteComment", path = "technology-comment-delete", httpMethod = "post")
-  public Response deleteComment(@Named("commentId") Long commentId, User user)
+  public TechnologyComment deleteComment(@Named("commentId") Long commentId, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException {
     return service.deleteComment(commentId, user);

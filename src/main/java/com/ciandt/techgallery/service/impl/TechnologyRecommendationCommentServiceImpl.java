@@ -6,6 +6,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.TechnologyCommentService;
 import com.ciandt.techgallery.service.TechnologyRecommendationCommentService;
 import com.ciandt.techgallery.service.TechnologyRecommendationService;
@@ -43,15 +44,15 @@ public class TechnologyRecommendationCommentServiceImpl
    */
   @Override
   public Response addRecommendationComment(TechnologyRecommendationTO recommendationTO,
-      TechnologyCommentTO commentTO, TechnologyResponse technology, User user)
+      TechnologyComment comment, TechnologyResponse technology, User user)
           throws BadRequestException, InternalServerErrorException, NotFoundException {
 
-    if (!isValidComment(commentTO)) {
+    if (!isValidComment(comment)) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_CANNOT_BLANK.message());
     }
-    commentTO.setTechnologyId(technology.getId());
-    commentTO = (TechnologyCommentTO) comService.addComment(commentTO, user);
-    recommendationTO.setComment(commentTO);
+    comment.setTechnologyId(technology.getId());
+    comment = (TechnologyCommentTO) comService.addComment(comment, user);
+    recommendationTO.setComment(comment);
     recommendationTO.setTechnology(technology);
     recommendationTO =
         (TechnologyRecommendationTO) recService.addRecommendation(recommendationTO, user);

@@ -32,7 +32,7 @@ public interface EndorsementService {
    * @throws NotFoundException
    * @throws OAuthRequestException
    */
-  Response addOrUpdateEndorsement(final EndorsementResponse endorsement, final User user)
+  Endorsement addOrUpdateEndorsement(final EndorsementResponse endorsement, final User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException;
 
@@ -47,7 +47,7 @@ public interface EndorsementService {
    * @throws NotFoundException
    * @throws OAuthRequestException
    */
-  Response addOrUpdateEndorsementPlusOne(final EndorsementResponse endorsement, final User user)
+  Endorsement addOrUpdateEndorsementPlusOne(final EndorsementResponse endorsement, final User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException;
 
@@ -67,7 +67,7 @@ public interface EndorsementService {
    * @return
    * @throws NotFoundException
    */
-  Response getEndorsement(final Long id) throws NotFoundException;
+  Endorsement getEndorsement(final Long id) throws NotFoundException;
 
   /**
    * Service for getting a endorsement.

@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
+
 /**
  * Transient object representing a technology recommendation.
  * 
@@ -12,7 +14,7 @@ public class TechnologyRecommendationTO implements Response {
 
   private Boolean score;
 
-  private TechnologyCommentTO comment;
+  private TechnologyComment comment;
 
   private Boolean active;
 
@@ -28,11 +30,11 @@ public class TechnologyRecommendationTO implements Response {
     this.score = score;
   }
 
-  public TechnologyCommentTO getComment() {
+  public TechnologyComment getComment() {
     return comment;
   }
 
-  public void setComment(TechnologyCommentTO comment) {
+  public void setComment(TechnologyComment comment) {
     this.comment = comment;
   }
 

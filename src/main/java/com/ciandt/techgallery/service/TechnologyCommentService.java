@@ -6,6 +6,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 
@@ -25,7 +26,7 @@ public interface TechnologyCommentService {
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
-  Response addComment(TechnologyCommentTO comment, User user)
+  TechnologyComment addComment(TechnologyComment comment, User user)
       throws InternalServerErrorException, BadRequestException;
 
   /**
@@ -47,6 +48,6 @@ public interface TechnologyCommentService {
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
-  Response deleteComment(final Long commentId, User user) throws InternalServerErrorException,
+  TechnologyComment deleteComment(final Long commentId, User user) throws InternalServerErrorException,
       BadRequestException, NotFoundException, OAuthRequestException;
 }

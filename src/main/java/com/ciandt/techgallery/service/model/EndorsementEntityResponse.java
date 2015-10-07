@@ -6,7 +6,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import java.util.Date;
 
 /**
- * Response with an endorsement Entity
+ * Response with an endorsement Entity.
  * 
  * @author felipers
  *
@@ -65,7 +65,7 @@ public class EndorsementEntityResponse implements Response {
     this.technology = technology;
   }
 
-  public boolean getActive() {
+  public boolean isActive() {
     return active;
   }
 

@@ -92,7 +92,7 @@ public class EndorsementServiceImpl implements EndorsementService {
    * @throws OAuthRequestException
    */
   @Override
-  public Response addOrUpdateEndorsement(EndorsementResponse endorsement, User user)
+  public Endorsement addOrUpdateEndorsement(EndorsementResponse endorsement, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException {
     // endorser user google id
@@ -181,7 +181,7 @@ public class EndorsementServiceImpl implements EndorsementService {
    * @throws OAuthRequestException
    */
   @Override
-  public Response addOrUpdateEndorsementPlusOne(EndorsementResponse endorsement, User user)
+  public Endorsement addOrUpdateEndorsementPlusOne(EndorsementResponse endorsement, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException {
     // endorser user google id
@@ -283,19 +283,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new NotFoundException(i18n.t("No endorsement was found."));
     } else {
       EndorsementsResponse response = new EndorsementsResponse();
-      List<EndorsementEntityResponse> internList = new ArrayList<EndorsementEntityResponse>();
-
-      for (int i = 0; i < endrsEntities.size(); i++) {
-        Endorsement entity = endrsEntities.get(i);
-        EndorsementEntityResponse endrsResponseItem = new EndorsementEntityResponse();
-        endrsResponseItem.setId(entity.getId());
-        endrsResponseItem.setEndorser(entity.getEndorserEntity());
-        endrsResponseItem.setEndorsed(entity.getEndorsedEntity());
-        endrsResponseItem.setTimestamp(entity.getTimestamp());
-        endrsResponseItem.setTechnology(entity.getTechnologyEntity());
-        internList.add(endrsResponseItem);
-      }
-      response.setEndorsements(internList);
+      response.setEndorsements(endrsEntities);
       return response;
     }
   }
@@ -305,21 +293,13 @@ public class EndorsementServiceImpl implements EndorsementService {
    * GET for getting one endorsement.
    */
   @Override
-  public Response getEndorsement(Long id) throws NotFoundException {
+  public Endorsement getEndorsement(Long id) throws NotFoundException {
     Endorsement endorseEntity = endorsementDAO.findById(id);
     // if technology is null, return a not found exception
     if (endorseEntity == null) {
       throw new NotFoundException(i18n.t("No endorsement was found."));
     } else {
-      EndorsementEntityResponse response = new EndorsementEntityResponse();
-      response.setId(endorseEntity.getId());
-      response.setId(endorseEntity.getId());
-      response.setEndorser(endorseEntity.getEndorserEntity());
-      response.setEndorsed(endorseEntity.getEndorsedEntity());
-      response.setTimestamp(endorseEntity.getTimestamp());
-      response.setTechnology(endorseEntity.getTechnologyEntity());
-      response.setActive(endorseEntity.isActive());
-      return response;
+      return endorseEntity;
     }
   }
 

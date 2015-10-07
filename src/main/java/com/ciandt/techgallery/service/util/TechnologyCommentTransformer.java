@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.service.util;
 
+import com.google.api.server.spi.config.Transformer;
 import com.google.api.server.spi.response.NotFoundException;
 
 import com.googlecode.objectify.Ref;
@@ -20,7 +21,8 @@ import java.util.List;
  * @author Felipe Ibrahim
  *
  */
-public class TechnologyCommentConverter {
+public class TechnologyCommentTransformer
+    implements Transformer<TechnologyComment, TechnologyCommentTO> {
 
   private TechnologyService techService = TechnologyServiceImpl.getInstance();
   private TechGalleryUserTransformer tgUserTransformer = new TechGalleryUserTransformer();
@@ -32,7 +34,8 @@ public class TechnologyCommentConverter {
    * @param entity from datastore
    * @return transient entity
    */
-  public static TechnologyCommentTO fromEntityToTransient(TechnologyComment entity) {
+  @Override
+  public TechnologyCommentTO transformTo(TechnologyComment entity) {
     TechnologyCommentTO commentTO = new TechnologyCommentTO();
     TechGalleryUserTransformer userTransformer = new TechGalleryUserTransformer();
     commentTO.setId(entity.getId());
@@ -50,11 +53,11 @@ public class TechnologyCommentConverter {
    * @param list entity from datastore
    * @return list transient entity
    */
-  public static List<TechnologyCommentTO> fromEntityToTransient(List<TechnologyComment> entities) {
+  public List<TechnologyCommentTO> fromEntityToTransient(List<TechnologyComment> entities) {
 
     List<TechnologyCommentTO> commentsTO = new ArrayList<TechnologyCommentTO>();
     for (TechnologyComment entity : entities) {
-      commentsTO.add(fromEntityToTransient(entity));
+      commentsTO.add(transformTo(entity));
     }
 
     return commentsTO;
@@ -67,12 +70,17 @@ public class TechnologyCommentConverter {
    * @return entity from datastore
    * @throws NotFoundException
    */
-  public TechnologyComment fromTransientToEntity(TechnologyCommentTO tranzient)
-      throws NotFoundException {
+  @Override
+  public TechnologyComment transformFrom(TechnologyCommentTO tranzient) {
     TechnologyComment commentEntity = new TechnologyComment();
     commentEntity.setId(tranzient.getId());
     commentEntity.setComment(tranzient.getComment());
-    commentEntity.setTechnology(Ref.create(techService.getTechnology(tranzient.getTechnologyId())));
+    try {
+      commentEntity
+          .setTechnology(Ref.create(techService.getTechnology(tranzient.getTechnologyId())));
+    } catch (NotFoundException e) {
+      commentEntity.setTechnology(null);
+    }
     TechGalleryUser author = tgUserTransformer.transformFrom(tranzient.getAuthor());
     Ref<TechGalleryUser> ref = Ref.create(author);
     commentEntity.setAuthor(ref);

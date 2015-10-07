@@ -10,6 +10,7 @@ import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.service.EndorsementService;
 import com.ciandt.techgallery.service.impl.EndorsementServiceImpl;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
@@ -39,7 +40,7 @@ public class EndorsementEndpoint {
    * @throws OAuthRequestException
    */
   @ApiMethod(name = "addEndorsement", path = "endorsement", httpMethod = "post")
-  public Response addEndorsement(EndorsementResponse endorsement, User user)
+  public Endorsement addEndorsement(EndorsementResponse endorsement, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException {
     return service.addOrUpdateEndorsement(endorsement, user);
@@ -56,7 +57,7 @@ public class EndorsementEndpoint {
    * @throws OAuthRequestException
    */
   @ApiMethod(name = "addEndorsementPlusOne", path = "endorsementPlusOne", httpMethod = "post")
-  public Response addEndorsementPlusOne(EndorsementResponse endorsement, User user)
+  public Endorsement addEndorsementPlusOne(EndorsementResponse endorsement, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException {
     return service.addOrUpdateEndorsementPlusOne(endorsement, user);
@@ -82,7 +83,7 @@ public class EndorsementEndpoint {
    * @throws NotFoundException
    */
   @ApiMethod(name = "getEndorsement", path = "endorsement/{id}", httpMethod = "get")
-  public Response getEndorsement(@Named("id") Long id) throws NotFoundException {
+  public Endorsement getEndorsement(@Named("id") Long id) throws NotFoundException {
     return service.getEndorsement(id);
   }
 
