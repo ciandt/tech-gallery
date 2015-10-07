@@ -1,18 +1,17 @@
 package com.ciandt.techgallery.service;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
-
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.UserResponse;
-
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Services for Users.
@@ -33,7 +32,8 @@ public interface UserServiceTG {
   /**
    * Service for getting one user.
    * 
-   * @param id entity id.
+   * @param id
+   *          entity id.
    * @return user info or message error.
    * @throws NotFoundException
    */
@@ -42,7 +42,8 @@ public interface UserServiceTG {
   /**
    * Service for adding a user.
    * 
-   * @param user json with user info.
+   * @param user
+   *          json with user info.
    * @return user info or message error.
    * @throws BadRequestException
    */
@@ -51,7 +52,8 @@ public interface UserServiceTG {
   /**
    * Service for updating a user.
    * 
-   * @param user json with user info.
+   * @param user
+   *          json with user info.
    * @return user info or message error.
    * @throws BadRequestException
    */
@@ -60,7 +62,8 @@ public interface UserServiceTG {
   /**
    * Service for getting an User by its Login.
    * 
-   * @param id entity id.
+   * @param id
+   *          entity id.
    * @return
    * @throws NotFoundException
    */
@@ -69,7 +72,8 @@ public interface UserServiceTG {
   /**
    * Service for getting an User from an external provider by its Login.
    * 
-   * @param id entity id.
+   * @param id
+   *          entity id.
    * @return
    * @throws NotFoundException
    * @throws BadRequestException
@@ -79,10 +83,18 @@ public interface UserServiceTG {
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 
   /**
+   * 
+   */
+  TechGalleryUser getUserByGoogleId(final String googleId)
+      throws NotFoundException, BadRequestException, InternalServerErrorException;
+
+  /**
    * Seaches user on datastore by user's name and email
    * 
-   * @param name user's name
-   * @param email user's email
+   * @param name
+   *          user's name
+   * @param email
+   *          user's email
    * @return user response
    * @throws NotFoundException
    * @throws BadRequestException
@@ -94,7 +106,7 @@ public interface UserServiceTG {
   TechGalleryUser getUserSyncedWithProvider(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 
-  Response handleLogin(User user, HttpServletRequest req) throws NotFoundException,
-      BadRequestException, InternalServerErrorException, IOException, OAuthRequestException;
+  Response handleLogin(User user, HttpServletRequest req)
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException;
 
 }

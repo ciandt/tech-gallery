@@ -1,21 +1,18 @@
 package com.ciandt.techgallery.service.impl;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
-
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
-import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
-import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.RecommendationService;
-import com.ciandt.techgallery.service.enums.RecommendationEnums;
-import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.RecommendationService;
+import com.ciandt.techgallery.service.UserServiceTG;
+import com.ciandt.techgallery.service.enums.RecommendationEnums;
+import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 /**
  * Services for Recommendation Endpoint requests.
@@ -25,11 +22,13 @@ import java.util.List;
  */
 public class RecommendationServiceImpl implements RecommendationService {
 
-  TechGalleryUserDAO techGalleryUserDAO = TechGalleryUserDAOImpl.getInstance();
-  TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
+  /** tech gallery user service */
+  UserServiceTG userService = UserServiceTGImpl.getInstance();
+
   private static RecommendationServiceImpl instance;
 
-  private RecommendationServiceImpl() {}
+  private RecommendationServiceImpl() {
+  }
 
   public static RecommendationServiceImpl getInstance() {
     if (instance == null) {
@@ -39,7 +38,8 @@ public class RecommendationServiceImpl implements RecommendationService {
   }
 
   @Override
-  public List<String> getRecommendations(User user) throws NotFoundException, BadRequestException {
+  public List<String> getRecommendations(User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
     validateUser(user);
     List<RecommendationEnums> enumValues = Arrays.asList(RecommendationEnums.values());
     List<String> recommendations = new ArrayList<>();
@@ -52,16 +52,20 @@ public class RecommendationServiceImpl implements RecommendationService {
   /**
    * Validate the user logged in.
    * 
-   * @param user info about user from google
-   * @throws BadRequestException .
+   * @param user
+   *          info about user from google
+   * @throws InternalServerErrorException
+   * @throws NotFoundException
+   * @throws BadRequestException
+   *           .
    */
-  private void validateUser(User user) throws BadRequestException {
+  private void validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
 
-    TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
+    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
