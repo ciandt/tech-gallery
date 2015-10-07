@@ -46,6 +46,14 @@ public class TechnologyServiceImpl implements TechnologyService {
    */
   private TechnologyServiceImpl() {}
 
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 07/10/2015
+   *
+   * @return TechnologyServiceImpl instance.
+   */
   public static TechnologyServiceImpl getInstance() {
     if (instance == null) {
       instance = new TechnologyServiceImpl();

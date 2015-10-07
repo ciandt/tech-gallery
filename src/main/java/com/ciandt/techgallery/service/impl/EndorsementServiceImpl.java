@@ -63,9 +63,9 @@ public class EndorsementServiceImpl implements EndorsementService {
   TechGalleryUserDAO userDAO = TechGalleryUserDAOImpl.getInstance();
   /** endorsement dao. */
   EndorsementDAO endorsementDAO = EndorsementDAOImpl.getInstance();
-  /** skill service */
+  /** skill service. */
   SkillService skillService = SkillServiceImpl.getInstance();
-  /** Technology service */
+  /** Technology service. */
   TechnologyService techService = TechnologyServiceImpl.getInstance();
 
   /*
@@ -73,6 +73,14 @@ public class EndorsementServiceImpl implements EndorsementService {
    */
   private EndorsementServiceImpl() {}
 
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 07/10/2015
+   *
+   * @return EndorsementServiceImpl instance.
+   */
   public static EndorsementServiceImpl getInstance() {
     if (instance == null) {
       instance = new EndorsementServiceImpl();
@@ -103,8 +111,6 @@ public class EndorsementServiceImpl implements EndorsementService {
     TechGalleryUser tgEndorsedUser;
     // endorsed email
     String endorsedEmail;
-    // technology id
-    String technologyId;
     // technology from techgallery datastore
     Technology technology;
 
@@ -140,7 +146,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     }
 
     // technology id can't be null and must exists on datastore
-    technologyId = endorsement.getTechnology();
+    String technologyId = endorsement.getTechnology();
     if (technologyId == null || technologyId.equals("")) {
       throw new BadRequestException(i18n.t("Technology was not especified!"));
     } else {

@@ -58,6 +58,14 @@ public class SkillServiceImpl implements SkillService {
    */
   private SkillServiceImpl() {}
 
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 07/10/2015
+   *
+   * @return SkillServiceImpl instance.
+   */
   public static SkillServiceImpl getInstance() {
     if (instance == null) {
       instance = new SkillServiceImpl();
@@ -99,7 +107,7 @@ public class SkillServiceImpl implements SkillService {
    * 
    * @param skill inputs to be validate
    * @param user info about user from google
-   * @throws BadRequestException
+   * @throws BadRequestException for the validations.
    */
   private void validateInputs(SkillResponse skill, User user) throws BadRequestException {
 

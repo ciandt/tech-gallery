@@ -61,6 +61,14 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
    */
   private TechnologyCommentServiceImpl() {}
 
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 07/10/2015
+   *
+   * @return TechnologyCommentServiceImpl instance.
+   */
   public static TechnologyCommentServiceImpl getInstance() {
     if (instance == null) {
       instance = new TechnologyCommentServiceImpl();
@@ -138,7 +146,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
   /**
    * If the comment referenced by commentTO was created because of a recommendation, sets the
-   * recommendation score
+   * recommendation score.
    * 
    * @param commentTO the comment
    */
