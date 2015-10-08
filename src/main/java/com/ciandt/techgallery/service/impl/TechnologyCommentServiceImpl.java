@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * Services for Comments Endpoint requests. 
+ * Services for Comments Endpoint requests.
  * 
  * @author Felipe Ibrahim
  *
@@ -46,17 +46,17 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
    */
   private static TechnologyCommentServiceImpl instance;
 
-  TechnologyCommentDAO technologyCommentDAO = TechnologyCommentDAOImpl.getInstance();
+  TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
 
   UserServiceTG userService = UserServiceTGImpl.getInstance();
-  TechnologyRecommendationService recommendationService = TechnologyRecommendationServiceImpl.getInstance();
+  TechnologyRecommendationService recommendationService =
+      TechnologyRecommendationServiceImpl.getInstance();
   TechnologyService techService = TechnologyServiceImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
    */
-  private TechnologyCommentServiceImpl() {
-  }
+  private TechnologyCommentServiceImpl() {}
 
   /**
    * Singleton method for the service.
@@ -96,31 +96,32 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   }
 
   @Override
-  public Response getCommentsByTech(String techId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+  public Response getCommentsByTech(String techId, User user) throws InternalServerErrorException,
+      BadRequestException, NotFoundException, OAuthRequestException {
 
     validateUser(user);
     validateTechnology(techId);
 
     Technology technology = techService.getTechnologyById(techId);
-    List<TechnologyComment> commentsByTech = technologyCommentDAO.findAllActivesByTechnology(technology);
+    List<TechnologyComment> commentsByTech =
+        technologyCommentDao.findAllActivesByTechnology(technology);
     TechnologyCommentsTO response = new TechnologyCommentsTO();
     response.setComments(TechnologyCommentConverter.fromEntityToTransient(commentsByTech));
-    for (TechnologyCommentTO commentTO : response.getComments()) {
-      setCommentRecommendation(commentTO);
+    for (TechnologyCommentTO commentTo : response.getComments()) {
+      setCommentRecommendation(commentTo);
     }
     return response;
   }
 
   @Override
-  public Response deleteComment(Long commentId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+  public Response deleteComment(Long commentId, User user) throws InternalServerErrorException,
+      BadRequestException, NotFoundException, OAuthRequestException {
 
     validateDeletion(commentId, user);
 
-    TechnologyComment comment = technologyCommentDAO.findById(commentId);
+    TechnologyComment comment = technologyCommentDao.findById(commentId);
     comment.setActive(false);
-    technologyCommentDAO.update(comment);
+    technologyCommentDao.update(comment);
     techService.removeCommentariesCounter(comment.getTechnology().get());
     TechnologyCommentTO response = TechnologyCommentConverter.fromEntityToTransient(comment);
     return response;
@@ -130,9 +131,9 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
       Technology technology) {
     log.info("Adding new Comment...");
 
-    TechnologyComment newComment = new TechnologyComment(comment.getComment(), technology, techUser, new Date(),
-        Boolean.TRUE);
-    Key<TechnologyComment> newCommentKey = technologyCommentDAO.add(newComment);
+    TechnologyComment newComment =
+        new TechnologyComment(comment.getComment(), technology, techUser, new Date(), Boolean.TRUE);
+    Key<TechnologyComment> newCommentKey = technologyCommentDao.add(newComment);
     newComment.setId(newCommentKey.getId());
 
     log.info("New Comment added: " + newComment.getId());
@@ -141,33 +142,30 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   }
 
   /**
-   * If the comment referenced by commentTO was created because of a
-   * recommendation, sets the recommendation score
+   * If the comment referenced by commentTO was created because of a recommendation, sets the
+   * recommendation score
    * 
-   * @param commentTO
-   *          the comment
+   * @param commentTo the comment
    */
-  private void setCommentRecommendation(TechnologyCommentTO commentTO) {
-    TechnologyComment comment = technologyCommentDAO.findById(commentTO.getId());
+  private void setCommentRecommendation(TechnologyCommentTO commentTo) {
+    TechnologyComment comment = technologyCommentDao.findById(commentTo.getId());
     TechnologyRecommendation techRecommendation;
     techRecommendation = recommendationService.getRecommendationByComment(comment);
 
     if (techRecommendation != null && techRecommendation.getActive() == true) {
-      commentTO.setRecommendationId(techRecommendation.getId());
-      commentTO.setRecommendationScore(techRecommendation.getScore());
+      commentTo.setRecommendationId(techRecommendation.getId());
+      commentTo.setRecommendationScore(techRecommendation.getScore());
     } else {
-      commentTO.setRecommendationId(null);
-      commentTO.setRecommendationScore(null);
+      commentTo.setRecommendationId(null);
+      commentTo.setRecommendationScore(null);
     }
   }
 
   /**
    * Validate inputs of TechnologyCommentTO.
    * 
-   * @param comment
-   *          inputs to be validate
-   * @throws BadRequestException
-   *           .
+   * @param comment inputs to be validate
+   * @throws BadRequestException .
    */
   private void validateComment(TechnologyCommentTO comment) throws BadRequestException {
 
@@ -185,10 +183,8 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   /**
    * Validate comment of TechnologyCommentTO.
    * 
-   * @param comment
-   *          id to be validate
-   * @throws BadRequestException
-   *           .
+   * @param comment id to be validate
+   * @throws BadRequestException .
    */
   private void validateComment(Long commentId) throws BadRequestException {
 
@@ -198,7 +194,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_ID_CANNOT_BLANK.message());
     }
 
-    TechnologyComment comment = technologyCommentDAO.findById(commentId);
+    TechnologyComment comment = technologyCommentDao.findById(commentId);
     if (comment == null) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_NOT_EXIST.message());
     }
@@ -207,13 +203,12 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   /**
    * Validate technology.
    * 
-   * @param id
-   *          of technology
+   * @param id of technology
    * @throws NotFoundException
-   * @throws BadRequestException
-   *           .
+   * @throws BadRequestException .
    */
-  private void validateTechnology(String idTechnology) throws BadRequestException, NotFoundException {
+  private void validateTechnology(String idTechnology)
+      throws BadRequestException, NotFoundException {
 
     log.info("Validating the technology");
 
@@ -230,14 +225,13 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   /**
    * Validate the user logged in.
    * 
-   * @param user
-   *          info about user from google
+   * @param user info about user from google
    * @throws InternalServerErrorException
    * @throws NotFoundException
-   * @throws BadRequestException
-   *           .
+   * @throws BadRequestException .
    */
-  private void validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException {
+  private void validateUser(User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     log.info("Validating user to comment");
 
@@ -254,12 +248,10 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   /**
    * Validate comment of TechnologyCommentTO.
    * 
-   * @param comment
-   *          inputs to be validate
+   * @param comment inputs to be validate
    * @throws InternalServerErrorException
    * @throws NotFoundException
-   * @throws BadRequestException
-   *           .
+   * @throws BadRequestException .
    */
   private void validateDeletion(Long commentId, User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
@@ -269,7 +261,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     validateComment(commentId);
     validateUser(user);
 
-    TechnologyComment comment = technologyCommentDAO.findById(commentId);
+    TechnologyComment comment = technologyCommentDao.findById(commentId);
     TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (!comment.getAuthor().get().equals(techUser)) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_AUTHOR_ERROR.message());
