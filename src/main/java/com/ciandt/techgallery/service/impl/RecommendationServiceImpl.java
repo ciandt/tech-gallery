@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Services for Recommendation Endpoint requests.
- * 
+ *
  * @author Thulio Ribeiro
  *
  */
@@ -26,8 +26,7 @@ public class RecommendationServiceImpl implements RecommendationService {
   UserServiceTG userService = UserServiceTGImpl.getInstance();
   private static RecommendationServiceImpl instance;
 
-  private RecommendationServiceImpl() {
-  }
+  private RecommendationServiceImpl() {}
 
   /**
    * Singleton method for the service.
@@ -48,9 +47,9 @@ public class RecommendationServiceImpl implements RecommendationService {
   public List<String> getRecommendations(User user)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     validateUser(user);
-    List<RecommendationEnums> enumValues = Arrays.asList(RecommendationEnums.values());
-    List<String> recommendations = new ArrayList<>();
-    for (RecommendationEnums enumEntry : enumValues) {
+    final List<RecommendationEnums> enumValues = Arrays.asList(RecommendationEnums.values());
+    final List<String> recommendations = new ArrayList<>();
+    for (final RecommendationEnums enumEntry : enumValues) {
       recommendations.add(enumEntry.message());
     }
     return recommendations;
@@ -58,21 +57,20 @@ public class RecommendationServiceImpl implements RecommendationService {
 
   /**
    * Validate the user logged in.
-   * 
-   * @param user
-   *          info about user from google
-   * @throws InternalServerErrorException
-   * @throws NotFoundException
-   * @throws BadRequestException
-   *           .
+   *
+   * @param user info about user from google
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
-  private void validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException {
+  private void validateUser(User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
 
-    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
