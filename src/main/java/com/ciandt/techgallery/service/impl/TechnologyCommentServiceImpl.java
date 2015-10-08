@@ -241,8 +241,10 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
    *
    * @param comment inputs to be validate
    * @throws BadRequestException in case a request with problem were made.
+   * @throws InternalServerErrorException 
+   * @throws NotFoundException 
    */
-  private void validateDeletion(Long commentId, User user) throws BadRequestException {
+  private void validateDeletion(Long commentId, User user) throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     log.info("Validating the deletion");
 
@@ -250,7 +252,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     validateUser(user);
 
     TechnologyComment comment = technologyCommentDao.findById(commentId);
-    TechGalleryUser techUser = userService.findByGoogleId(user.getUserId());
+    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (!comment.getAuthor().get().equals(techUser)) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_AUTHOR_ERROR.message());
     }

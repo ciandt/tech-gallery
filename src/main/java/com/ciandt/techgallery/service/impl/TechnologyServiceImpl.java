@@ -160,7 +160,6 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (techEntity == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
-      TechnologyResponse response = TechnologyConverter.fromEntityToTransient(techEntity);
       return techEntity;
     }
   }

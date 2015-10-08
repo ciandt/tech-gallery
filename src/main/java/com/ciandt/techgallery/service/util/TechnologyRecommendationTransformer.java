@@ -20,8 +20,6 @@ import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
 public class TechnologyRecommendationTransformer
     implements Transformer<TechnologyRecommendation, TechnologyRecommendationTO> {
 
-  private TechnologyTransformer techTransformer = new TechnologyTransformer();
-  private TechGalleryUserTransformer tgUserTransformer = new TechGalleryUserTransformer();
   private TechnologyService techService = TechnologyServiceImpl.getInstance();
   private UserServiceTG tgUserService = UserServiceTGImpl.getInstance();
   private TechnologyCommentService commentService = TechnologyCommentServiceImpl.getInstance();
@@ -66,8 +64,8 @@ public class TechnologyRecommendationTransformer
       product.setComment(arg0.getComment().get());
       product.setActive(arg0.getActive());
       product.setScore(arg0.getScore());
-      product.setTechnology(techTransformer.transformTo(arg0.getTechnology().get()));
-      product.setRecommender(tgUserTransformer.transformTo(arg0.getRecommender().get()));
+      product.setTechnology(arg0.getTechnology().get());
+      product.setRecommender(arg0.getRecommender().get());
       return product;
     } else {
       return null;

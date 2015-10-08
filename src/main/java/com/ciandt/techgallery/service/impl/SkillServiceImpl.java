@@ -75,14 +75,14 @@ public class SkillServiceImpl implements SkillService {
    * Methods --------------------------------------------
    */
   @Override
-  public Response addOrUpdateSkill(SkillResponse skill, User user)
+  public Skill addOrUpdateSkill(Skill skill, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException {
 
     log.info("Starting creating or updating skill");
 
     validateInputs(skill, user);
 
-    final Technology technology = techService.getTechnologyById(skill.getTechnology());
+    final Technology technology = skill.getTechnology().get();//techService.getTechnologyById(skill.getTechnology().get);
     final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     final Skill skillEntity = skillDao.findByUserAndTechnology(techUser, technology);
 
@@ -96,9 +96,8 @@ public class SkillServiceImpl implements SkillService {
     }
 
     final Skill newSkill = addNewSkill(skill, techUser, technology);
-    final SkillResponse ret = SkillConverter.fromEntityToTransient(newSkill);
 
-    return ret;
+    return newSkill;
   }
 
   /**
@@ -111,7 +110,7 @@ public class SkillServiceImpl implements SkillService {
    * @throws InternalServerErrorException in case something goes wrong
    * @throws NotFoundException in case the information are not founded
    */
-  private void validateInputs(SkillResponse skill, User user)
+  private void validateInputs(Skill skill, User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     log.info("Validating inputs of skill");
@@ -133,18 +132,18 @@ public class SkillServiceImpl implements SkillService {
       throw new BadRequestException(ValidationMessageEnums.SKILL_RANGE.message());
     }
 
-    if (skill.getTechnology() == null || skill.getTechnology().isEmpty()) {
+    if (skill.getTechnology() == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     }
-
+/*
     final Technology technology = techService.getTechnologyById(skill.getTechnology());
     if (technology == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
-    }
+    }*/
 
   }
 
-  private Skill addNewSkill(SkillResponse skill, TechGalleryUser techUser, Technology technology) {
+  private Skill addNewSkill(Skill skill, TechGalleryUser techUser, Technology technology) {
     log.info("Adding new skill...");
 
     final Skill newSkill = new Skill();
@@ -161,7 +160,7 @@ public class SkillServiceImpl implements SkillService {
   }
 
   @Override
-  public Response getUserSkill(String techId, User user) throws BadRequestException,
+  public Skill getUserSkill(String techId, User user) throws BadRequestException,
       OAuthRequestException, NotFoundException, InternalServerErrorException {
     // user google id
     String googleId;
@@ -196,12 +195,12 @@ public class SkillServiceImpl implements SkillService {
     if (userSkill == null) {
       throw new NotFoundException(i18n.t("User skill do not exist!"));
     } else {
-      return SkillConverter.fromEntityToTransient(userSkill);
+      return userSkill;
     }
   }
 
   @Override
-  public Response getUserSkill(String techId, TechGalleryUser user) throws BadRequestException,
+  public Skill getUserSkill(String techId, TechGalleryUser user) throws BadRequestException,
       OAuthRequestException, NotFoundException, InternalServerErrorException {
     // User can't be null
     if (user == null) {
@@ -217,7 +216,7 @@ public class SkillServiceImpl implements SkillService {
     if (userSkill == null) {
       return null;
     } else {
-      return SkillConverter.fromEntityToTransient(userSkill);
+      return userSkill;
     }
   }
 

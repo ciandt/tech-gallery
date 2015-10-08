@@ -10,9 +10,9 @@ import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.impl.SkillServiceImpl;
-import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.SkillResponse;
 
 /**
@@ -39,7 +39,7 @@ public class SkillEndpoint {
    * @throws NotFoundException
    */
   @ApiMethod(name = "addSkill", path = "skill", httpMethod = "post")
-  public Response addSkill(SkillResponse skill, User user)
+  public Skill addSkill(Skill skill, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException {
     return service.addOrUpdateSkill(skill, user);
   }
@@ -56,7 +56,7 @@ public class SkillEndpoint {
    * @throws NotFoundException
    */
   @ApiMethod(name = "getUserSkill", path = "skill", httpMethod = "get")
-  public Response getUserSkill(@Named("id") String id, User user)
+  public Skill getUserSkill(@Named("id") String id, User user)
       throws InternalServerErrorException, BadRequestException, OAuthRequestException,
       NotFoundException {
     return service.getUserSkill(id, user);

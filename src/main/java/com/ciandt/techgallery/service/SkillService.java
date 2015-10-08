@@ -6,9 +6,8 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
+import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.SkillResponse;
 
 /**
  * Services for Skills.
@@ -26,7 +25,7 @@ public interface SkillService {
    * @throws InternalServerErrorException
    * @throws BadRequestException
    */
-  Response addOrUpdateSkill(SkillResponse skill, User user)
+  Skill addOrUpdateSkill(Skill skill, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException;
 
   /**
@@ -40,7 +39,7 @@ public interface SkillService {
    * @throws NotFoundException
    * @throws InternalServerErrorException
    */
-  Response getUserSkill(String techId, User user) throws BadRequestException, OAuthRequestException,
+  Skill getUserSkill(String techId, User user) throws BadRequestException, OAuthRequestException,
       NotFoundException, InternalServerErrorException;
 
   /**
@@ -54,6 +53,6 @@ public interface SkillService {
    * @throws NotFoundException
    * @throws InternalServerErrorException
    */
-  Response getUserSkill(String techId, TechGalleryUser user) throws BadRequestException,
+  Skill getUserSkill(String techId, TechGalleryUser user) throws BadRequestException,
       OAuthRequestException, NotFoundException, InternalServerErrorException;
 }

@@ -1,6 +1,13 @@
 package com.ciandt.techgallery.service.util;
 
+import com.google.api.server.spi.config.Transformer;
+
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
+
 import com.ciandt.techgallery.persistence.model.Skill;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.SkillResponse;
 
 /**
@@ -9,7 +16,7 @@ import com.ciandt.techgallery.service.model.SkillResponse;
  * @author Felipe Goncalves de Castro
  *
  */
-public class SkillConverter {
+public class SkillConverter implements Transformer<Skill, SkillResponse> {
 
   /**
    * Transform entity from datastore into response entity which is transient.
@@ -17,7 +24,8 @@ public class SkillConverter {
    * @param entity from datastore
    * @return transient entity
    */
-  public static SkillResponse fromEntityToTransient(Skill entity) {
+  @Override
+  public SkillResponse transformTo(Skill entity) {
     SkillResponse skillResponse = new SkillResponse();
 
     skillResponse.setId(entity.getId());
@@ -33,8 +41,17 @@ public class SkillConverter {
    * @param transient entity
    * @return entity from datastore
    */
-  public Skill fromTransientToEntity(SkillResponse tranzient) {
-    // TODO Auto-generated method stub
-    return null;
+  @Override
+  public Skill transformFrom(SkillResponse arg0) {
+    Skill product = new Skill();
+
+    product.setId(arg0.getId());
+    product.setValue(arg0.getValue());
+    Key<Technology> techKey = Key.create(Technology.class, arg0.getTechnology());
+    product.setTechnology(Ref.create(techKey));
+    Key<TechGalleryUser> userKey = Key.create(TechGalleryUser.class, arg0.getUser().getId());
+    product.setTechGalleryUser(Ref.create(userKey));
+
+    return product;
   }
 }
