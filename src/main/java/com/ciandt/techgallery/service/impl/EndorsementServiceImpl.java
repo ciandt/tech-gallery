@@ -173,10 +173,10 @@ public class EndorsementServiceImpl implements EndorsementService {
    * POST for adding a endorsement. TODO: Refactor - Extract Method. Same in
    * {@link #addOrUpdateEndorsement(EndorsementResponse, User)}
    *
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
-   * @throws NotFoundException
-   * @throws OAuthRequestException
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
+   * @throws OAuthRequestException in case of authentication problem
    */
   @Override
   public Response addOrUpdateEndorsementPlusOne(EndorsementResponse endorsement, User user)

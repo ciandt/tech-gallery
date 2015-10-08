@@ -62,6 +62,14 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   private UserServiceTGImpl() {}
 
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 08/10/2015
+   *
+   * @return UserServiceTGImpl instance.
+   */
   public static UserServiceTGImpl getInstance() {
     if (instance == null) {
       instance = new UserServiceTGImpl();
@@ -137,14 +145,15 @@ public class UserServiceTGImpl implements UserServiceTG {
    * POST This method should be executed whenever a user logs in It check whether the user exists on
    * TG's datastore and create them, if not. It also checks if the user's email has been changed and
    * update it, in case it was changed.
-   * 
+   *
    * @param user A Google AppEngine API user
    * @return A response with the user data as it is on TG datastore
-   * @throws NotFoundException
-   * @throws BadRequestException
-   * @throws InternalServerErrorException
-   * @throws IOException
-   * @throws OAuthRequestException
+   *
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws IOException in case of a IO exception
    */
   @Override
   public Response handleLogin(final User user, HttpServletRequest req) throws NotFoundException,
@@ -207,9 +216,10 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * Creates a response based on a TechGalleryUser entity
-   * 
-   * @param tgUser
+   * Creates a response based on a TechGalleryUser entity.
+   *
+   * @param tgUser to fill the response
+   *
    * @return the response created
    */
   private Response createUserResponse(TechGalleryUser tgUser) {
@@ -223,8 +233,8 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * PUT for editing a user.
-   * 
-   * @throws BadRequestException
+   *
+   * @throws BadRequestException in case a request with problem were made.
    */
   @Override
   public Response updateUser(final UserResponse user) throws BadRequestException {
@@ -270,15 +280,14 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * 
    * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists, adds to
    * TG's datastore (if not there). Returns the user.
-   * 
+   *
    * @param userLogin userLogin
-   * @return
-   * @throws NotFoundException
-   * @throws BadRequestException
-   * @throws InternalServerErrorException
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
+   * @return user sinchronized in provider.
    */
   @Override
   public TechGalleryUser getUserSyncedWithProvider(final String userLogin)
@@ -305,11 +314,11 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * GET Calls the provider API passing a login to obtain user information
-   * 
+   * GET Calls the provider API passing a login to obtain user information.
+   *
    * @param userlogin the user login to pass to the provider API
    * @throws BadRequestException if any IO exceptions occur
-   * @throws InternalServerErrorException
+   * @throws InternalServerErrorException in case something goes wrong
    */
   @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
@@ -357,8 +366,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * Validates user data
-   * 
+   * Validates user data.
+   *
    * @param user the user data wrapped in a UserResponse entity
    * @return true if data is valid, false otherwise
    */

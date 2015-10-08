@@ -59,7 +59,7 @@ public class SkillServiceImpl implements SkillService {
   /**
    * Singleton method for the service.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> Jo�o Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 07/10/2015
    *
    * @return SkillServiceImpl instance.
