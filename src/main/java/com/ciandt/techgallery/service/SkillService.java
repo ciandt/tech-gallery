@@ -23,8 +23,9 @@ public interface SkillService {
    * 
    * @param skill json with skill info.
    * @return skill info or message error.
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   Response addOrUpdateSkill(SkillResponse skill, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException;
@@ -35,10 +36,10 @@ public interface SkillService {
    * @param techId technology id.
    * @param user oauth user.
    * @return skill info or message error.
-   * @throws BadRequestException
-   * @throws OAuthRequestException
-   * @throws NotFoundException
-   * @throws InternalServerErrorException
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   Response getUserSkill(String techId, User user) throws BadRequestException, OAuthRequestException,
       NotFoundException, InternalServerErrorException;
@@ -49,10 +50,10 @@ public interface SkillService {
    * @param techId technology id.
    * @param user datastore user.
    * @return skill info or message error.
-   * @throws BadRequestException
-   * @throws OAuthRequestException
-   * @throws NotFoundException
-   * @throws InternalServerErrorException
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   Response getUserSkill(String techId, TechGalleryUser user) throws BadRequestException,
       OAuthRequestException, NotFoundException, InternalServerErrorException;
