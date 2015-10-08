@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * Services for Technology Endpoint requests.
- * 
+ *
  * @author felipers
  *
  */
@@ -82,11 +82,8 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (techName == null || techName.equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BE_BLANK.message());
     } else {
-      //Technology entity = TechnologyConverter.fromTransientToEntity(technology);
       technologyDAO.add(technology);
 
-      // set the id and return it
-      //technology.setId(entity.getId());
       return technology;
     }
   }
@@ -104,7 +101,6 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
       TechnologiesResponse response = new TechnologiesResponse();
-      //List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(techEntities);
       response.setTechnologies(techEntities);
       return response;
     }
@@ -165,7 +161,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
       TechnologyResponse response = TechnologyConverter.fromEntityToTransient(techEntity);
-      return techEntity;//response;
+      return techEntity;
     }
   }
 
@@ -190,7 +186,6 @@ public class TechnologyServiceImpl implements TechnologyService {
             TechnologyOrderOptionEnum.fromString(techFilter.getOrderOptionIs()));
       }
       TechnologiesResponse response = new TechnologiesResponse();
-      //List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
       response.setTechnologies(filteredList);
       return response;
     }
@@ -254,11 +249,11 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   /**
    * Validate the user logged in.
-   * 
+   *
    * @param user info about user from google
-   * @throws InternalServerErrorException
-   * @throws NotFoundException
-   * @throws BadRequestException
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   private void validateUser(User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException {

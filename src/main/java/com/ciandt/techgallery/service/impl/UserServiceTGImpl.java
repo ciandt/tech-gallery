@@ -68,6 +68,14 @@ public class UserServiceTGImpl implements UserServiceTG {
    * 
    * @return the current instance, if it exists. The recently created instance, if not.
    */
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 08/10/2015
+   *
+   * @return UserServiceTGImpl instance.
+   */
   public static UserServiceTGImpl getInstance() {
     if (instance == null) {
       instance = new UserServiceTGImpl();
@@ -146,6 +154,12 @@ public class UserServiceTGImpl implements UserServiceTG {
    * 
    * @param user A Google AppEngine API user
    * @return A response with the user data as it is on TG datastore
+   *
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws IOException in case of a IO exception
    */
   @Override
   public TechGalleryUser handleLogin(final User user, HttpServletRequest req)
@@ -263,6 +277,10 @@ public class UserServiceTGImpl implements UserServiceTG {
    * @param userLogin userLogin
    * @return the user saved on the datastore
    * @throws BadRequestException 
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
+   * @return user sinchronized in provider.
    */
   @Override
   public TechGalleryUser getUserSyncedWithProvider(final String userLogin)
@@ -361,6 +379,12 @@ public class UserServiceTGImpl implements UserServiceTG {
     }
     return true;
 
+  }
+
+  @Override
+  public TechGalleryUser getUserByGoogleId(String googleId)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
+    return userDao.findByGoogleId(googleId);
   }
 
 }
