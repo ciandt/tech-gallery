@@ -6,7 +6,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import java.util.Date;
 
 /**
- * Response with an endorsement Entity
+ * Response with an endorsement Entity.
  * 
  * @author felipers
  *

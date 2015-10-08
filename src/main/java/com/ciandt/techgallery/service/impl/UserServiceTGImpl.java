@@ -189,7 +189,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * Updates current Tech Gallery user information with user data found on Google
+   * Updates current Tech Gallery user information with user data found on Google.
    * 
    * @param user Google user
    * @param person Google Plus person information

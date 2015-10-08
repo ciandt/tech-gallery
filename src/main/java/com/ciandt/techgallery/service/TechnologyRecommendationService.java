@@ -27,10 +27,10 @@ public interface TechnologyRecommendationService {
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 25/09/2015
    *
-   * @param technologyId
-   * @param user
+   * @param technologyId Technology ID
+   * @param user User
    * 
-   * @return List<Response>
+   * @return List of Responses
    */
   List<Response> getRecommendationsUpByTechnologyAndUser(String technologyId, User user);
 
@@ -40,10 +40,10 @@ public interface TechnologyRecommendationService {
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 25/09/2015
    *
-   * @param technologyId
-   * @param user
+   * @param technologyId Technology ID
+   * @param user User
    * 
-   * @return List<Response>
+   * @return List of Responses
    */
   List<Response> getRecommendationsDownByTechnologyAndUser(String technologyId, User user);
 

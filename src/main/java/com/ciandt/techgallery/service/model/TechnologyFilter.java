@@ -8,16 +8,16 @@ package com.ciandt.techgallery.service.model;
  */
 public class TechnologyFilter implements Response {
 
-  /** string for search in title */
+  /** string for search in title. */
   private String titleContains;
 
-  /** string for search in shortDescription */
+  /** string for search in shortDescription. */
   private String shortDescriptionContains;
 
-  /** string for search in recommendation */
+  /** string for search in recommendation. */
   private String recommendationIs;
 
-  /** string for order option */
+  /** string for order option. */
   private String orderOptionIs;
 
   public String getTitleContains() {
@@ -54,6 +54,14 @@ public class TechnologyFilter implements Response {
 
   public TechnologyFilter() {}
 
+  /**
+   * Construtor for TechnologyFilter.
+   * 
+   * @param titleContains part of the technology's title
+   * @param shortDescriptionContains titleContains part of the technology's short description
+   * @param recommendationIs technology's Ci&T Recommendation
+   * @param orderOptionIs for sort the result
+   */
   public TechnologyFilter(String titleContains, String shortDescriptionContains,
       String recommendationIs, String orderOptionIs) {
     this.titleContains = titleContains;

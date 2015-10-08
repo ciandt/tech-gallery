@@ -56,6 +56,14 @@ public class TechnologyComment extends BaseEntity<Long> {
 
   }
 
+  /**
+   * Construct for TechnologyComment.
+   * @param comment text of the commentary
+   * @param technology commented technology
+   * @param author author of the commentary
+   * @param timestamp when the commentary was done
+   * @param active true if the comentary is active 
+   */
   public TechnologyComment(String comment, Technology technology, TechGalleryUser author,
       Date timestamp, Boolean active) {
     super();

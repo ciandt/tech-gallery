@@ -55,6 +55,14 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
 
   }
 
+  /**
+   * Construct for TechnologyRecommendation.
+   * @param score Tumbs up or down
+   * @param comment commentary of the recomendation
+   * @param active true if is active
+   * @param recommender Author of the recomendation
+   * @param technology recommended technology
+   */
   public TechnologyRecommendation(Boolean score, TechnologyComment comment, Boolean active,
       TechGalleryUser recommender, Technology technology) {
     super();

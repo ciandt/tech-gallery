@@ -12,6 +12,11 @@ public class I18n {
 
   public I18n() {}
 
+  /**
+   * Get the message in the file for the respective language.
+   * @param string message.
+   * @return translated message.
+   */
   public String t(String string) {
     Locale locale = new Locale(language, country);
     ResourceBundle.clearCache();
