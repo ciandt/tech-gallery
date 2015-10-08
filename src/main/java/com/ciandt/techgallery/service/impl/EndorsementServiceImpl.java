@@ -1,19 +1,14 @@
 package com.ciandt.techgallery.service.impl;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.oauth.OAuthRequestException;
-import com.google.appengine.api.users.User;
-
-import com.googlecode.objectify.Ref;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.ciandt.techgallery.persistence.dao.EndorsementDAO;
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.impl.EndorsementDAOImpl;
-import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
-import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
@@ -29,13 +24,12 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
 import com.ciandt.techgallery.service.model.SkillResponse;
 import com.ciandt.techgallery.utils.i18n.I18n;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
+import com.googlecode.objectify.Ref;
 
 /**
  * Services for Endorsement Endpoint requests.
@@ -55,12 +49,8 @@ public class EndorsementServiceImpl implements EndorsementService {
    */
   private static EndorsementServiceImpl instance;
 
-  /** technology dao for getting technologies. */
-  TechnologyDAO techDAO = TechnologyDAOImpl.getInstance();
-  /** tech gallery user service for getting PEOPLE API user. */
+  /** tech gallery user service */
   UserServiceTG userService = UserServiceTGImpl.getInstance();
-  /** user dao for getting users. */
-  TechGalleryUserDAO userDAO = TechGalleryUserDAOImpl.getInstance();
   /** endorsement dao. */
   EndorsementDAO endorsementDAO = EndorsementDAOImpl.getInstance();
   /** skill service. */
@@ -71,7 +61,8 @@ public class EndorsementServiceImpl implements EndorsementService {
   /*
    * Constructors --------------------------------------------
    */
-  private EndorsementServiceImpl() {}
+  private EndorsementServiceImpl() {
+  }
 
   /**
    * Singleton method for the service.
@@ -101,8 +92,7 @@ public class EndorsementServiceImpl implements EndorsementService {
    */
   @Override
   public Response addOrUpdateEndorsement(EndorsementResponse endorsement, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException,
-      OAuthRequestException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     // endorser user google id
     String googleId;
     // endorser user from techgallery datastore
@@ -126,7 +116,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new NotFoundException(i18n.t("Current user was not found!"));
     } else {
       // get the TechGalleryUser from datastore
-      tgEndorserUser = userDAO.findByGoogleId(googleId);
+      tgEndorserUser = userService.getUserByGoogleId(googleId);
       if (tgEndorserUser == null) {
         throw new BadRequestException(i18n.t("Endorser user do not exists on datastore!"));
       }
@@ -150,7 +140,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     if (technologyId == null || technologyId.equals("")) {
       throw new BadRequestException(i18n.t("Technology was not especified!"));
     } else {
-      technology = techDAO.findById(technologyId);
+      technology = techService.getTechnologyById(technologyId);
       if (technology == null) {
         throw new BadRequestException(i18n.t("Technology do not exists!"));
       }
@@ -188,8 +178,7 @@ public class EndorsementServiceImpl implements EndorsementService {
    */
   @Override
   public Response addOrUpdateEndorsementPlusOne(EndorsementResponse endorsement, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException,
-      OAuthRequestException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     // endorser user google id
     String googleId;
     // endorser user from techgallery datastore
@@ -215,7 +204,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new NotFoundException(i18n.t("Current user was not found!"));
     } else {
       // get the TechGalleryUser from datastore
-      tgEndorserUser = userDAO.findByGoogleId(googleId);
+      tgEndorserUser = userService.getUserByGoogleId(googleId);
       if (tgEndorserUser == null) {
         throw new BadRequestException(i18n.t("Endorser user do not exists on datastore!"));
       }
@@ -239,7 +228,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     if (technologyId == null || technologyId.equals("")) {
       throw new BadRequestException(i18n.t("Technology was not especified!"));
     } else {
-      technology = techDAO.findById(technologyId);
+      technology = techService.getTechnologyById(technologyId);
       if (technology == null) {
         throw new BadRequestException(i18n.t("Technology do not exists!"));
       }
@@ -251,11 +240,12 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new BadRequestException(i18n.t("You cannot endorse yourself!"));
     }
 
-    // should exist only one active endorsement per endorser/endorsed/technology. the others are
-    // saved for history purpose. if already exist one active endorsement, set to inactive.
+    // should exist only one active endorsement per
+    // endorser/endorsed/technology. the others are
+    // saved for history purpose. if already exist one active endorsement, set
+    // to inactive.
     // if not, add a new one as active
-    List<Endorsement> endorsements =
-        endorsementDAO.findActivesByUsers(tgEndorserUser, tgEndorsedUser, technology);
+    List<Endorsement> endorsements = endorsementDAO.findActivesByUsers(tgEndorserUser, tgEndorsedUser, technology);
     if (endorsements.size() == 1) {
       endorsements.get(0).setInactivatedDate(new Date());
       endorsements.get(0).setActive(false);
@@ -306,7 +296,6 @@ public class EndorsementServiceImpl implements EndorsementService {
     }
   }
 
-
   /**
    * GET for getting one endorsement.
    */
@@ -339,14 +328,12 @@ public class EndorsementServiceImpl implements EndorsementService {
    */
   @Override
   public Response getEndorsementsByTech(String techId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException,
-      OAuthRequestException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     List<Endorsement> endorsementsByTech = endorsementDAO.findAllActivesByTechnology(techId);
-    List<EndorsementsGroupedByEndorsedTransient> grouped =
-        groupEndorsementByEndorsed(endorsementsByTech, techId);
+    List<EndorsementsGroupedByEndorsedTransient> grouped = groupEndorsementByEndorsed(endorsementsByTech, techId);
     Collections.sort(grouped, new EndorsementsGroupedByEndorsedTransient());
 
-    Technology technology = techDAO.findById(techId);
+    Technology technology = techService.getTechnologyById(techId);
     techService.updateEdorsedsCounter(technology, grouped.size());
 
     ShowEndorsementsResponse response = new ShowEndorsementsResponse();
@@ -355,12 +342,11 @@ public class EndorsementServiceImpl implements EndorsementService {
   }
 
   @Override
-  public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(
-      List<Endorsement> endorsements, String techId) throws BadRequestException, NotFoundException,
-          InternalServerErrorException, OAuthRequestException {
+  public List<EndorsementsGroupedByEndorsedTransient> groupEndorsementByEndorsed(List<Endorsement> endorsements,
+      String techId)
+          throws BadRequestException, NotFoundException, InternalServerErrorException, OAuthRequestException {
 
-    Map<TechGalleryUser, List<TechGalleryUser>> mapUsersGrouped =
-        new HashMap<TechGalleryUser, List<TechGalleryUser>>();
+    Map<TechGalleryUser, List<TechGalleryUser>> mapUsersGrouped = new HashMap<TechGalleryUser, List<TechGalleryUser>>();
 
     for (Endorsement endorsement : endorsements) {
       TechGalleryUser endorsed = endorsement.getEndorsedEntity();
@@ -380,10 +366,8 @@ public class EndorsementServiceImpl implements EndorsementService {
 
   private List<EndorsementsGroupedByEndorsedTransient> transformGroupedUserMapIntoList(
       Map<TechGalleryUser, List<TechGalleryUser>> mapUsersGrouped, String techId)
-          throws BadRequestException, NotFoundException, InternalServerErrorException,
-          OAuthRequestException {
-    List<EndorsementsGroupedByEndorsedTransient> groupedList =
-        new ArrayList<EndorsementsGroupedByEndorsedTransient>();
+          throws BadRequestException, NotFoundException, InternalServerErrorException, OAuthRequestException {
+    List<EndorsementsGroupedByEndorsedTransient> groupedList = new ArrayList<EndorsementsGroupedByEndorsedTransient>();
 
     for (Map.Entry<TechGalleryUser, List<TechGalleryUser>> entry : mapUsersGrouped.entrySet()) {
       EndorsementsGroupedByEndorsedTransient grouped = new EndorsementsGroupedByEndorsedTransient();

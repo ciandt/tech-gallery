@@ -1,29 +1,5 @@
 package com.ciandt.techgallery.service.impl;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.api.services.plus.Plus;
-import com.google.api.services.plus.model.Person;
-import com.google.appengine.api.oauth.OAuthRequestException;
-import com.google.appengine.api.users.User;
-
-import com.googlecode.objectify.Key;
-
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.UserServiceTG;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.UserResponse;
-import com.ciandt.techgallery.service.model.UsersResponse;
-import com.ciandt.techgallery.utils.i18n.I18n;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -37,6 +13,28 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
+import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.UserServiceTG;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.UserResponse;
+import com.ciandt.techgallery.service.model.UsersResponse;
+import com.ciandt.techgallery.utils.i18n.I18n;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.api.services.plus.Plus;
+import com.google.api.services.plus.model.Person;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
+import com.googlecode.objectify.Key;
 
 public class UserServiceTGImpl implements UserServiceTG {
 
@@ -60,7 +58,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   /*
    * Constructors --------------------------------------------
    */
-  private UserServiceTGImpl() {}
+  private UserServiceTGImpl() {
+  }
 
   public static UserServiceTGImpl getInstance() {
     if (instance == null) {
@@ -134,11 +133,13 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * POST This method should be executed whenever a user logs in It check whether the user exists on
-   * TG's datastore and create them, if not. It also checks if the user's email has been changed and
-   * update it, in case it was changed.
+   * POST This method should be executed whenever a user logs in It check
+   * whether the user exists on TG's datastore and create them, if not. It also
+   * checks if the user's email has been changed and update it, in case it was
+   * changed.
    * 
-   * @param user A Google AppEngine API user
+   * @param user
+   *          A Google AppEngine API user
    * @return A response with the user data as it is on TG datastore
    * @throws NotFoundException
    * @throws BadRequestException
@@ -147,14 +148,15 @@ public class UserServiceTGImpl implements UserServiceTG {
    * @throws OAuthRequestException
    */
   @Override
-  public Response handleLogin(final User user, HttpServletRequest req) throws NotFoundException,
-      BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
+  public Response handleLogin(final User user, HttpServletRequest req)
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
     if (user == null) {
       throw new OAuthRequestException(i18n.t("Authorization error"));
     }
     String userEmail = user.getEmail();
     String header = req.getHeader("Authorization");
-    String accesstoken = header.substring(header.indexOf(' ')).trim(); // "Bearer ".length
+    String accesstoken = header.substring(header.indexOf(' ')).trim(); // "Bearer
+                                                                       // ".length
 
     GoogleCredential credential = new GoogleCredential().setAccessToken(accesstoken);
     Plus plus = new Plus.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
@@ -177,11 +179,15 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * Updates current Tech Gallery user information with user data found on Google
+   * Updates current Tech Gallery user information with user data found on
+   * Google
    * 
-   * @param user Google user
-   * @param p Google Plus person information
-   * @param tgUser Tech Gallery user
+   * @param user
+   *          Google user
+   * @param p
+   *          Google Plus person information
+   * @param tgUser
+   *          Tech Gallery user
    */
   private void updateUserInformation(final User user, Person p, TechGalleryUser tgUser) {
     String plusEmail = user.getEmail();
@@ -264,17 +270,17 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   @Override
-  public TechGalleryUser getUserByEmail(final String email)
-      throws BadRequestException, InternalServerErrorException {
+  public TechGalleryUser getUserByEmail(final String email) throws BadRequestException, InternalServerErrorException {
     return userDAO.findByEmail(email);
   }
 
   /**
    * 
-   * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists, adds to
-   * TG's datastore (if not there). Returns the user.
+   * Checks if user exists on provider, syncs with tech gallery's datastore. If
+   * user exists, adds to TG's datastore (if not there). Returns the user.
    * 
-   * @param userLogin userLogin
+   * @param userLogin
+   *          userLogin
    * @return
    * @throws NotFoundException
    * @throws BadRequestException
@@ -307,11 +313,13 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * GET Calls the provider API passing a login to obtain user information
    * 
-   * @param userlogin the user login to pass to the provider API
-   * @throws BadRequestException if any IO exceptions occur
+   * @param userlogin
+   *          the user login to pass to the provider API
+   * @throws BadRequestException
+   *           if any IO exceptions occur
    * @throws InternalServerErrorException
    */
-  @SuppressWarnings({"unchecked", "rawtypes"})
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public Response getUserFromProvider(final String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
@@ -319,8 +327,8 @@ public class UserServiceTGImpl implements UserServiceTG {
     String fullRequest = PEOPLE_ENDPOINT + userLogin + "?format=json";
     UserResponse uResp = new UserResponse();
     try {
-      InputStream resourceStream =
-          UserServiceTGImpl.class.getClassLoader().getResourceAsStream("people_basic_auth.txt");
+      InputStream resourceStream = UserServiceTGImpl.class.getClassLoader()
+          .getResourceAsStream("people_basic_auth.txt");
 
       String auth = convertStreamToString(resourceStream);
 
@@ -332,7 +340,6 @@ public class UserServiceTGImpl implements UserServiceTG {
       ObjectMapper mapper = new ObjectMapper();
 
       if (conn.getResponseCode() == 200) {
-
 
         Map<String, Object> providerResponse = mapper.readValue(conn.getInputStream(), Map.class);
         HashMap<String, Object> userData = (LinkedHashMap) providerResponse.get("personal_info");
@@ -366,7 +373,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Validates user data
    * 
-   * @param user the user data wrapped in a UserResponse entity
+   * @param user
+   *          the user data wrapped in a UserResponse entity
    * @return true if data is valid, false otherwise
    */
   private static boolean userDataIsValid(UserResponse user) {
@@ -386,6 +394,11 @@ public class UserServiceTGImpl implements UserServiceTG {
     }
     return true;
 
+  }
+
+  @Override
+  public TechGalleryUser getUserByGoogleId(String googleId) {
+    return userDAO.findByGoogleId(googleId);
   }
 
 }

@@ -1,17 +1,16 @@
 package com.ciandt.techgallery.service.impl;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
-import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.TechnologyService;
+import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.RecommendationEnums;
 import com.ciandt.techgallery.service.enums.TechnologyOrderOptionEnum;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
@@ -20,11 +19,10 @@ import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
 import com.ciandt.techgallery.service.util.TechnologyConverter;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 /**
  * Services for Technology Endpoint requests.
@@ -38,13 +36,16 @@ public class TechnologyServiceImpl implements TechnologyService {
    * Attributes --------------------------------------------
    */
   private static TechnologyServiceImpl instance;
-  TechGalleryUserDAO techGalleryUserDAO = TechGalleryUserDAOImpl.getInstance();
+
+  /** tech gallery user service */
+  UserServiceTG userService = UserServiceTGImpl.getInstance();
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
    */
-  private TechnologyServiceImpl() {}
+  private TechnologyServiceImpl() {
+  }
 
   /**
    * Singleton method for the service.
@@ -92,7 +93,8 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * GET for getting all technologies.
    * 
-   * @throws NotFoundException .
+   * @throws NotFoundException
+   *           .
    */
   @Override
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
@@ -108,46 +110,44 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
-  private List<Technology> sortTechnologies(List<Technology> techList,
-      TechnologyOrderOptionEnum orderBy) {
+  private List<Technology> sortTechnologies(List<Technology> techList, TechnologyOrderOptionEnum orderBy) {
     switch (orderBy) {
-      case POSITIVE_RECOMENDATION_QUANTITY:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getPositiveRecomendationsCounter(),
-                counter1.getPositiveRecomendationsCounter());
-          }
-        });
-        break;
-      case NEGATIVE_RECOMENDATION_QUANTITY:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getNegativeRecomendationsCounter(),
-                counter1.getNegativeRecomendationsCounter());
-          }
-        });
-        break;
-      case COMENTARY_QUANTITY:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getCommentariesCounter(),
-                counter1.getCommentariesCounter());
-          }
-        });
-        break;
-      case ENDORSEMENT_QUANTITY:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getEndorsedsCounter(), counter1.getEndorsedsCounter());
-          }
-        });
-        break;
-      default:
-        break;
+    case POSITIVE_RECOMENDATION_QUANTITY:
+      Collections.sort(techList, new Comparator<Technology>() {
+        @Override
+        public int compare(Technology counter1, Technology counter2) {
+          return Integer.compare(counter2.getPositiveRecomendationsCounter(),
+              counter1.getPositiveRecomendationsCounter());
+        }
+      });
+      break;
+    case NEGATIVE_RECOMENDATION_QUANTITY:
+      Collections.sort(techList, new Comparator<Technology>() {
+        @Override
+        public int compare(Technology counter1, Technology counter2) {
+          return Integer.compare(counter2.getNegativeRecomendationsCounter(),
+              counter1.getNegativeRecomendationsCounter());
+        }
+      });
+      break;
+    case COMENTARY_QUANTITY:
+      Collections.sort(techList, new Comparator<Technology>() {
+        @Override
+        public int compare(Technology counter1, Technology counter2) {
+          return Integer.compare(counter2.getCommentariesCounter(), counter1.getCommentariesCounter());
+        }
+      });
+      break;
+    case ENDORSEMENT_QUANTITY:
+      Collections.sort(techList, new Comparator<Technology>() {
+        @Override
+        public int compare(Technology counter1, Technology counter2) {
+          return Integer.compare(counter2.getEndorsedsCounter(), counter1.getEndorsedsCounter());
+        }
+      });
+      break;
+    default:
+      break;
     }
     return techList;
   }
@@ -208,8 +208,7 @@ public class TechnologyServiceImpl implements TechnologyService {
           filteredList.add(technology);
           continue;
         }
-      } else if (verifyRecommendationFilter(techFilter, technology)
-          && techFilter.getTitleContains() == null) {
+      } else if (verifyRecommendationFilter(techFilter, technology) && techFilter.getTitleContains() == null) {
         filteredList.add(technology);
         continue;
       }
@@ -219,21 +218,18 @@ public class TechnologyServiceImpl implements TechnologyService {
   private boolean verifyRecommendationFilter(TechnologyFilter techFilter, Technology technology) {
     if (technology.getRecommendation() == null) {
       return true;
-    } else if (techFilter.getRecommendationIs() != null && (technology.getRecommendation()
-        .toLowerCase().equals(techFilter.getRecommendationIs().toLowerCase())
-        || techFilter.getRecommendationIs().toLowerCase()
-            .equals(RecommendationEnums.ANY.message().toLowerCase()))) {
+    } else if (techFilter.getRecommendationIs() != null && (technology.getRecommendation().toLowerCase()
+        .equals(techFilter.getRecommendationIs().toLowerCase())
+        || techFilter.getRecommendationIs().toLowerCase().equals(RecommendationEnums.ANY.message().toLowerCase()))) {
       return true;
     }
     return false;
   }
 
-  private boolean verifyTitleAndShortDescriptionFilter(TechnologyFilter techFilter,
-      Technology technology) {
+  private boolean verifyTitleAndShortDescriptionFilter(TechnologyFilter techFilter, Technology technology) {
     if (techFilter.getTitleContains() != null
-        && (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase())
-            || technology.getShortDescription().toLowerCase()
-                .contains(techFilter.getShortDescriptionContains().toLowerCase()))) {
+        && (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase()) || technology
+            .getShortDescription().toLowerCase().contains(techFilter.getShortDescriptionContains().toLowerCase()))) {
       return true;
     }
     return false;
@@ -253,16 +249,20 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * Validate the user logged in.
    * 
-   * @param user info about user from google
-   * @throws BadRequestException .
+   * @param user
+   *          info about user from google
+   * @throws InternalServerErrorException
+   * @throws NotFoundException
+   * @throws BadRequestException
+   *           .
    */
-  private void validateUser(User user) throws BadRequestException {
+  private void validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
 
-    TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
+    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
