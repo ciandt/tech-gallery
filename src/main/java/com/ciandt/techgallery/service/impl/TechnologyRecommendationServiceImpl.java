@@ -143,11 +143,11 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 25/09/2015
    *
-   * @param technologyId
-   * @param user
-   * @param score
-   * 
-   * @return List<Response>
+   * @param technologyId to find te recommendations
+   * @param user to find the recommendations
+   * @param score to filter the recommendations
+   *
+   * @return recommendationsUpTO
    */
   private List<Response> getRecommendationsByTechnologyUserAndScore(String technologyId, User user,
       Boolean score) {
@@ -182,14 +182,13 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 28/09/2015
    *
-   * @param recommendId
-   * @param recommendation
-   * @param user
-   * @param techUser
-   * 
-   * @throws BadRequestException
-   * @throws NotFoundException
-   * @throws InternalServerErrorException
+   * @param recommendId to use by validation
+   * @param recommendation to use by validation
+   * @param user to use by validation
+   * @param techUser to use by validation
+   *
+   * @throws BadRequestException in case the params are not correct
+   * @throws InternalServerErrorException in case of internal error
    */
   private void validateDeletion(Long recommendId, TechnologyRecommendation recommendation,
       User user, TechGalleryUser techUser)
@@ -207,15 +206,14 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 28/09/2015
    *
-   * @param user
-   * @param techUser
-   * 
-   * @throws BadRequestException
-   * @throws NotFoundException
-   * @throws InternalServerErrorException
+   * @param user to be validated
+   * @param techUser to be validated
+   *
+   * @throws BadRequestException in case the params are not correct
+   * @throws InternalServerErrorException in case of internal error
    */
   private void validateUser(User user, TechGalleryUser techUser)
-      throws BadRequestException, NotFoundException, InternalServerErrorException {
+      throws BadRequestException, InternalServerErrorException {
     log.info("Validating user to recommend");
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
@@ -223,7 +221,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     }
 
     if (techUser == null) {
-      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
+      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
 
@@ -233,22 +231,20 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 28/09/2015
    *
-   * @param recommendId
+   * @param recommendId to be validated
    * @param recommendation
-   * 
-   * @throws BadRequestException
-   * @throws NotFoundException
+   *
+   * @throws BadRequestException in case the params are not correct
    */
   private void validateRecommend(Long recommendId, TechnologyRecommendation recommendation)
-      throws BadRequestException, NotFoundException {
+      throws BadRequestException {
     log.info("Validating the recommend");
 
     if (recommendId == null) {
       throw new BadRequestException(ValidationMessageEnums.RECOMMEND_ID_CANNOT_BLANK.message());
     }
-
     if (recommendation == null) {
-      throw new NotFoundException(ValidationMessageEnums.RECOMMEND_NOT_EXIST.message());
+      throw new BadRequestException(ValidationMessageEnums.RECOMMEND_NOT_EXIST.message());
     }
   }
 }

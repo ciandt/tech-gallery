@@ -22,11 +22,12 @@ public interface TechnologyCommentService {
    * 
    * @param comment json with comment.
    * @return comment or message error.
+   * @throws NotFoundException 
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
   TechnologyComment addComment(TechnologyComment comment, User user)
-      throws InternalServerErrorException, BadRequestException;
+      throws InternalServerErrorException, BadRequestException, NotFoundException;
 
   /**
    * Service to show all active comments for a technology.

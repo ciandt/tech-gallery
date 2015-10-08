@@ -5,13 +5,12 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
-import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.TechnologyService;
+import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.RecommendationEnums;
 import com.ciandt.techgallery.service.enums.TechnologyOrderOptionEnum;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
@@ -38,7 +37,9 @@ public class TechnologyServiceImpl implements TechnologyService {
    * Attributes --------------------------------------------
    */
   private static TechnologyServiceImpl instance;
-  TechGalleryUserDAO techGalleryUserDAO = TechGalleryUserDAOImpl.getInstance();
+
+  /** tech gallery user service */
+  UserServiceTG userService = UserServiceTGImpl.getInstance();
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
 
   /*
@@ -46,6 +47,14 @@ public class TechnologyServiceImpl implements TechnologyService {
    */
   private TechnologyServiceImpl() {}
 
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 07/10/2015
+   *
+   * @return TechnologyServiceImpl instance.
+   */
   public static TechnologyServiceImpl getInstance() {
     if (instance == null) {
       instance = new TechnologyServiceImpl();
@@ -247,17 +256,20 @@ public class TechnologyServiceImpl implements TechnologyService {
    * Validate the user logged in.
    * 
    * @param user info about user from google
-   * @throws BadRequestException .
+   * @throws InternalServerErrorException
+   * @throws NotFoundException
+   * @throws BadRequestException
    */
-  private void validateUser(User user) throws BadRequestException {
+  private void validateUser(User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
 
-    TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
+    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
-      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
 

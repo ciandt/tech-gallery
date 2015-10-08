@@ -234,7 +234,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     if (userEntity == null) {
       throw new NotFoundException(OPERATION_FAILED);
     } else {
-      return userEntity;// createUserResponse(userEntity);
+      return userEntity;
     }
   }
 
@@ -262,10 +262,11 @@ public class UserServiceTGImpl implements UserServiceTG {
    * 
    * @param userLogin userLogin
    * @return the user saved on the datastore
+   * @throws BadRequestException 
    */
   @Override
   public TechGalleryUser getUserSyncedWithProvider(final String userLogin)
-      throws NotFoundException, BadRequestException, InternalServerErrorException {
+      throws NotFoundException, InternalServerErrorException, BadRequestException {
     TechGalleryUser tgUser = null;
     TechGalleryUser userResp = getUserFromProvider(userLogin);
     tgUser = userDao.findByEmail(getUserFromProvider(userLogin).getEmail());

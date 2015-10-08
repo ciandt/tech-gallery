@@ -13,5 +13,14 @@ import java.util.List;
  *
  */
 public interface TechnologyCommentDAO extends GenericDAO<TechnologyComment, Long> {
+
+  /**
+   * Method to find all the comments of a technology.
+   *
+   * @param technology to filter the comments.
+   *
+   * @return all comments of that technology.
+   */
   List<TechnologyComment> findAllActivesByTechnology(Technology technology);
+
 }

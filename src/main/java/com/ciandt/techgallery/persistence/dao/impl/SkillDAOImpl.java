@@ -11,7 +11,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 
 /**
  * SkillDAOImpl methods implementation.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */
@@ -27,6 +27,14 @@ public class SkillDAOImpl extends GenericDAOImpl<Skill, Long>implements SkillDAO
    */
   private SkillDAOImpl() {}
 
+  /**
+   * Singleton method for the DAO.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 08/10/2015
+   *
+   * @return SkillDAOImpl instance.
+   */
   public static SkillDAOImpl getInstance() {
     if (instance == null) {
       instance = new SkillDAOImpl();
@@ -39,8 +47,8 @@ public class SkillDAOImpl extends GenericDAOImpl<Skill, Long>implements SkillDAO
    */
   @Override
   public Skill findByUserAndTechnology(TechGalleryUser user, Technology technology) {
-    Objectify objectify = OfyService.ofy();
-    Skill entity =
+    final Objectify objectify = OfyService.ofy();
+    final Skill entity =
         objectify.load().type(Skill.class).filter(Skill.TECH_GALLERY_USER, Ref.create(user))
             .filter("technology", Ref.create(technology)).filter(Skill.ACTIVE, Boolean.TRUE).first()
             .now();

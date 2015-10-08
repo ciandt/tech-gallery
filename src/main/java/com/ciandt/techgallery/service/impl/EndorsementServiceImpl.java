@@ -62,7 +62,7 @@ public class EndorsementServiceImpl implements EndorsementService {
   /** user dao for getting users. */
   TechGalleryUserDAO userDAO = TechGalleryUserDAOImpl.getInstance();
   /** endorsement dao. */
-  EndorsementDAO endorsementDAO = EndorsementDAOImpl.getInstance();
+  EndorsementDAO endorsementDao = EndorsementDAOImpl.getInstance();
   /** skill service */
   SkillService skillService = SkillServiceImpl.getInstance();
   /** Technology service */
@@ -156,7 +156,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new BadRequestException(i18n.t("You cannot endorse yourself!"));
     }
     // user cannot endorse the same people twice
-    if (endorsementDAO.findActivesByUsers(tgEndorserUser, tgEndorsedUser, technology).size() > 0) {
+    if (endorsementDao.findActivesByUsers(tgEndorserUser, tgEndorsedUser, technology).size() > 0) {
       throw new BadRequestException(i18n.t("You already endorsed this user for this technology"));
     }
     // create endorsement and save it
@@ -166,7 +166,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTimestamp(new Date());
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
-    endorsementDAO.add(entity);
+    endorsementDao.add(entity);
     // return the added entity
     return getEndorsement(entity.getId());
   }
@@ -249,11 +249,11 @@ public class EndorsementServiceImpl implements EndorsementService {
     // saved for history purpose. if already exist one active endorsement, set to inactive.
     // if not, add a new one as active
     List<Endorsement> endorsements =
-        endorsementDAO.findActivesByUsers(tgEndorserUser, tgEndorsedUser, technology);
+        endorsementDao.findActivesByUsers(tgEndorserUser, tgEndorsedUser, technology);
     if (endorsements.size() == 1) {
       endorsements.get(0).setInactivatedDate(new Date());
       endorsements.get(0).setActive(false);
-      endorsementDAO.update(endorsements.get(0));
+      endorsementDao.update(endorsements.get(0));
       return getEndorsement(endorsements.get(0).getId());
     } else if (endorsements.size() > 1) {
       throw new BadRequestException(
@@ -267,7 +267,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTimestamp(new Date());
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
-    endorsementDAO.add(entity);
+    endorsementDao.add(entity);
     // return the added entity
     return getEndorsement(entity.getId());
   }
@@ -277,7 +277,7 @@ public class EndorsementServiceImpl implements EndorsementService {
    */
   @Override
   public Response getEndorsements() throws InternalServerErrorException, NotFoundException {
-    List<Endorsement> endrsEntities = endorsementDAO.findAll();
+    List<Endorsement> endrsEntities = endorsementDao.findAll();
     // if list is null, return a not found exception
     if (endrsEntities == null) {
       throw new NotFoundException(i18n.t("No endorsement was found."));
@@ -288,13 +288,12 @@ public class EndorsementServiceImpl implements EndorsementService {
     }
   }
 
-
   /**
    * GET for getting one endorsement.
    */
   @Override
   public Endorsement getEndorsement(Long id) throws NotFoundException {
-    Endorsement endorseEntity = endorsementDAO.findById(id);
+    Endorsement endorseEntity = endorsementDao.findById(id);
     // if technology is null, return a not found exception
     if (endorseEntity == null) {
       throw new NotFoundException(i18n.t("No endorsement was found."));
@@ -305,22 +304,22 @@ public class EndorsementServiceImpl implements EndorsementService {
 
   /**
    * GET for getting one endorsement.
-   * 
-   * @throws InternalServerErrorException
-   * @throws OAuthRequestException
-   * @throws NotFoundException
-   * @throws BadRequestException
+   *
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @Override
   public Response getEndorsementsByTech(String techId, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException {
-    List<Endorsement> endorsementsByTech = endorsementDAO.findAllActivesByTechnology(techId);
+    List<Endorsement> endorsementsByTech = endorsementDao.findAllActivesByTechnology(techId);
     List<EndorsementsGroupedByEndorsedTransient> grouped =
         groupEndorsementByEndorsed(endorsementsByTech, techId);
     Collections.sort(grouped, new EndorsementsGroupedByEndorsedTransient());
 
-    Technology technology = techDAO.findById(techId);
+    Technology technology = techService.getTechnologyById(techId);
     techService.updateEdorsedsCounter(technology, grouped.size());
 
     ShowEndorsementsResponse response = new ShowEndorsementsResponse();

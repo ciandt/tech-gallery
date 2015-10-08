@@ -35,12 +35,13 @@ public class TechnologyCommentEndpoint {
    * @param json with Comment info.
    * @param user oauth user.
    * @return .
+   * @throws NotFoundException
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
   @ApiMethod(name = "addComment", path = "technology-comment", httpMethod = "post")
   public TechnologyComment addComment(TechnologyComment comment, User user)
-      throws InternalServerErrorException, BadRequestException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException {
     return service.addComment(comment, user);
   }
 

@@ -22,18 +22,19 @@ import javax.servlet.http.HttpServletRequest;
 public interface UserServiceTG {
 
   /**
-   * Gets a TechGalleryUser by id.
+   * Service for getting all users.
    * 
-   * @param id the user's id
-   * @throws NotFoundException if the user is not found
+   * @return users info or message error.
+   * @throws NotFoundException
    */
   Response getUsers() throws NotFoundException;
 
   /**
-   * Adds a new user to Tech Gallery.
+   * Service for getting one user.
    * 
-   * @param user the TechGallery user to be added
-   * @throws BadRequestException when the user email parameter is missing
+   * @param id entity id.
+   * @return user info or message error.
+   * @throws NotFoundException
    */
   TechGalleryUser getUser(final Long id) throws NotFoundException;
 
@@ -47,29 +48,39 @@ public interface UserServiceTG {
   TechGalleryUser addUser(final TechGalleryUser user) throws BadRequestException;
 
   /**
-   * Updates a user, with validation.
+   * Service for updating a user.
    * 
-   * @throws BadRequestException in case of a missing parameter
-   * @return the updated user
+   * @param user json with user info.
+   * @return user info or message error.
+   * @throws BadRequestException
    */
   TechGalleryUser updateUser(final TechGalleryUser user) throws BadRequestException;
 
   /**
-   * GET for getting an user by its login.
-   * @param login the user's login
-   * @return the user found
+   * Service for getting an User by its Login.
+   * 
+   * @param id entity id.
+   * @return
+   * @throws NotFoundException
    */
   TechGalleryUser getUserByLogin(final String user) throws NotFoundException;
 
   /**
-   * GET Calls the provider API passing a login to obtain user information.
+   * Service for getting an User from an external provider by its Login.
    * 
-   * @param userlogin the user login to pass to the provider API
-   * @throws NotFoundException in case the user is not found on provider
-   * @throws BadRequestException in case of JSON or URL error
-   * @throws InternalServerErrorException if any IO exceptions occur
+   * @param id entity id.
+   * @return
+   * @throws NotFoundException
+   * @throws BadRequestException
+   * @throws InternalServerErrorException
    */
   TechGalleryUser getUserFromProvider(final String user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException;
+
+  /**
+   * 
+   */
+  TechGalleryUser getUserByGoogleId(final String googleId)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 
   /**
@@ -86,9 +97,10 @@ public interface UserServiceTG {
    * 
    * @param userLogin userLogin
    * @return the user saved on the datastore
+   * @throws BadRequestException 
    */
   TechGalleryUser getUserSyncedWithProvider(String userLogin)
-      throws NotFoundException, BadRequestException, InternalServerErrorException;
+      throws NotFoundException, InternalServerErrorException, BadRequestException;
 
   /**
    * This method should be executed whenever a user logs in It check whether the user exists on TG's

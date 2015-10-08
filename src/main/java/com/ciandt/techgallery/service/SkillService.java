@@ -27,7 +27,7 @@ public interface SkillService {
    * @throws BadRequestException
    */
   Response addOrUpdateSkill(SkillResponse skill, User user)
-      throws InternalServerErrorException, BadRequestException;
+      throws InternalServerErrorException, BadRequestException, NotFoundException;
 
   /**
    * Service for getting an user skill.

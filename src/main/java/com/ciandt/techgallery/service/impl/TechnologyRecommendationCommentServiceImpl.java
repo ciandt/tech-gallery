@@ -34,6 +34,14 @@ public class TechnologyRecommendationCommentServiceImpl
    */
   private TechnologyRecommendationCommentServiceImpl() {}
 
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 07/10/2015
+   *
+   * @return TechnologyRecommendationCommentServiceImpl instance.
+   */
   public static TechnologyRecommendationCommentServiceImpl getInstance() {
     if (instance == null) {
       instance = new TechnologyRecommendationCommentServiceImpl();

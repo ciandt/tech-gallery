@@ -4,7 +4,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 
 /**
  * TechnologyDAOImpl methods interface.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */

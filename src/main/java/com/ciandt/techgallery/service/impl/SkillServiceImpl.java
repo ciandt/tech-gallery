@@ -10,15 +10,12 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.persistence.dao.SkillDAO;
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.impl.SkillDAOImpl;
-import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
-import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.SkillService;
+import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
@@ -31,7 +28,7 @@ import java.util.logging.Logger;
 
 /**
  * Services for Skill Endpoint requests.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */
@@ -47,10 +44,11 @@ public class SkillServiceImpl implements SkillService {
    * Attributes --------------------------------------------
    */
   private static SkillServiceImpl instance;
-  SkillDAO skillDAO = SkillDAOImpl.getInstance();
-  TechGalleryUserDAO techGalleryUserDAO = TechGalleryUserDAOImpl.getInstance();
-  TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
-  /** tech gallery user service for getting PEOPLE API user. */
+  SkillDAO skillDao = SkillDAOImpl.getInstance();
+
+  /** Technology service. */
+  TechnologyService techService = TechnologyServiceImpl.getInstance();
+  /** tech gallery user service. */
   UserServiceTG userService = UserServiceTGImpl.getInstance();
 
   /*
@@ -58,6 +56,14 @@ public class SkillServiceImpl implements SkillService {
    */
   private SkillServiceImpl() {}
 
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> Jo�o Felipe de Medeiros Moreira </a>
+   * @since 07/10/2015
+   *
+   * @return SkillServiceImpl instance.
+   */
   public static SkillServiceImpl getInstance() {
     if (instance == null) {
       instance = new SkillServiceImpl();
@@ -70,38 +76,43 @@ public class SkillServiceImpl implements SkillService {
    */
   @Override
   public Response addOrUpdateSkill(SkillResponse skill, User user)
-      throws InternalServerErrorException, BadRequestException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException {
 
     log.info("Starting creating or updating skill");
 
     validateInputs(skill, user);
 
-    Technology technology = technologyDAO.findById(skill.getTechnology());
-    TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
-    Skill skillEntity = skillDAO.findByUserAndTechnology(techUser, technology);
+    final Technology technology = techService.getTechnologyById(skill.getTechnology());
+    final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    final Skill skillEntity = skillDao.findByUserAndTechnology(techUser, technology);
 
-    // if there is a skillEntity, it is needed to inactivate it and create a new one
+    // if there is a skillEntity, it is needed to inactivate it and create a new
+    // one
     if (skillEntity != null) {
       log.info("Inactivating skill: " + skillEntity.getId());
       skillEntity.setInactivatedDate(new Date());
       skillEntity.setActive(Boolean.FALSE);
-      skillDAO.update(skillEntity);
+      skillDao.update(skillEntity);
     }
 
-    Skill newSkill = addNewSkill(skill, techUser, technology);
-    SkillResponse ret = SkillConverter.fromEntityToTransient(newSkill);
+    final Skill newSkill = addNewSkill(skill, techUser, technology);
+    final SkillResponse ret = SkillConverter.fromEntityToTransient(newSkill);
 
     return ret;
   }
 
   /**
    * Validate inputs of SkillResponse.
-   * 
+   *
    * @param skill inputs to be validate
    * @param user info about user from google
-   * @throws BadRequestException
+   *
+   * @throws BadRequestException for the validations.
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
    */
-  private void validateInputs(SkillResponse skill, User user) throws BadRequestException {
+  private void validateInputs(SkillResponse skill, User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     log.info("Validating inputs of skill");
 
@@ -109,7 +120,7 @@ public class SkillServiceImpl implements SkillService {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
 
-    TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
+    final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
@@ -126,7 +137,7 @@ public class SkillServiceImpl implements SkillService {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     }
 
-    Technology technology = technologyDAO.findById(skill.getTechnology());
+    final Technology technology = techService.getTechnologyById(skill.getTechnology());
     if (technology == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     }
@@ -136,12 +147,12 @@ public class SkillServiceImpl implements SkillService {
   private Skill addNewSkill(SkillResponse skill, TechGalleryUser techUser, Technology technology) {
     log.info("Adding new skill...");
 
-    Skill newSkill = new Skill();
+    final Skill newSkill = new Skill();
     newSkill.setTechGalleryUser(Ref.create(techUser));
     newSkill.setTechnology(Ref.create(technology));
     newSkill.setValue(skill.getValue());
     newSkill.setActive(Boolean.TRUE);
-    Key<Skill> newSkillKey = skillDAO.add(newSkill);
+    final Key<Skill> newSkillKey = skillDao.add(newSkill);
     newSkill.setId(newSkillKey.getId());
 
     log.info("New skill added: " + newSkill.getId());
@@ -168,19 +179,20 @@ public class SkillServiceImpl implements SkillService {
       throw new NotFoundException(i18n.t("Current user was not found!"));
     } else {
       // get the TechGalleryUser from datastore or PEOPLE API
-      tgUser = techGalleryUserDAO.findByGoogleId(googleId);
-      // userService.getUserSyncedWithProvider(userEmail.replace("@ciandt.com", ""));
+      tgUser = userService.getUserByGoogleId(googleId);
+      // userService.getUserSyncedWithProvider(userEmail.replace("@ciandt.com",
+      // ""));
       if (tgUser == null) {
-        throw new BadRequestException(i18n.t("Endorser user do not exists on datastore!"));
+        throw new NotFoundException(i18n.t("Endorser user do not exists on datastore!"));
       }
     }
 
     // Technology can't be null
-    Technology technology = technologyDAO.findById(techId);
+    final Technology technology = techService.getTechnologyById(techId);
     if (technology == null) {
-      throw new BadRequestException(i18n.t("Technology do not exists!"));
+      throw new NotFoundException(i18n.t("Technology do not exists!"));
     }
-    Skill userSkill = skillDAO.findByUserAndTechnology(tgUser, technology);
+    final Skill userSkill = skillDao.findByUserAndTechnology(tgUser, technology);
     if (userSkill == null) {
       throw new NotFoundException(i18n.t("User skill do not exist!"));
     } else {
@@ -197,11 +209,11 @@ public class SkillServiceImpl implements SkillService {
     }
 
     // Technology can't be null
-    Technology technology = technologyDAO.findById(techId);
+    final Technology technology = techService.getTechnologyById(techId);
     if (technology == null) {
-      throw new BadRequestException(i18n.t("Technology do not exists!"));
+      throw new NotFoundException(i18n.t("Technology do not exists!"));
     }
-    Skill userSkill = skillDAO.findByUserAndTechnology(user, technology);
+    final Skill userSkill = skillDao.findByUserAndTechnology(user, technology);
     if (userSkill == null) {
       return null;
     } else {

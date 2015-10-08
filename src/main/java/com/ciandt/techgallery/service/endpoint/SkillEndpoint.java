@@ -36,10 +36,11 @@ public class SkillEndpoint {
    * @return
    * @throws InternalServerErrorException
    * @throws BadRequestException
+   * @throws NotFoundException
    */
   @ApiMethod(name = "addSkill", path = "skill", httpMethod = "post")
   public Response addSkill(SkillResponse skill, User user)
-      throws InternalServerErrorException, BadRequestException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException {
     return service.addOrUpdateSkill(skill, user);
   }
 

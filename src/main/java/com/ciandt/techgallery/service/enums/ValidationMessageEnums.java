@@ -4,7 +4,7 @@ import com.ciandt.techgallery.utils.i18n.I18n;
 
 /**
  * Enum for mapping messages.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */
@@ -35,7 +35,7 @@ public enum ValidationMessageEnums {
 
 
   private String message;
-  private I18n i18n = I18n.getInstance();
+  private final I18n i18n = I18n.getInstance();
 
   ValidationMessageEnums(String message) {
     this.message = i18n.t(message);

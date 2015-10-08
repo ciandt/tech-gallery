@@ -23,6 +23,13 @@ public enum TechnologyOrderOptionEnum {
     return option;
   }
 
+  /**
+   * Convert the text informed to Enum.
+   *
+   * @param text to be converted.
+   * 
+   * @return the enum value.
+   */
   public static TechnologyOrderOptionEnum fromString(String text) {
     if (text != null) {
       for (TechnologyOrderOptionEnum item : TechnologyOrderOptionEnum.values()) {
