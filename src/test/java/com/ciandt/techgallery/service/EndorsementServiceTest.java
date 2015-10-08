@@ -31,7 +31,7 @@ import java.util.List;
 
 
 /**
- * Test for the EndorsementService
+ * Test for the EndorsementService.
  * 
  * @author Daniel Eduardo
  */

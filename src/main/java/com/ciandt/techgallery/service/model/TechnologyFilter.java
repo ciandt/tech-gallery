@@ -8,16 +8,16 @@ package com.ciandt.techgallery.service.model;
  */
 public class TechnologyFilter implements Response {
 
-  /** string for search in title */
+  /** string for search in title. */
   private String titleContains;
 
-  /** string for search in shortDescription */
+  /** string for search in shortDescription. */
   private String shortDescriptionContains;
 
-  /** string for search in recommendation */
+  /** string for search in recommendation. */
   private String recommendationIs;
 
-  /** string for order option */
+  /** string for order option. */
   private String orderOptionIs;
 
   public String getTitleContains() {
