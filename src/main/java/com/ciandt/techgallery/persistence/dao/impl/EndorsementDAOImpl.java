@@ -14,11 +14,12 @@ import java.util.List;
 
 /**
  * EndorsementDAOImpl methods implementation.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */
-public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>implements EndorsementDAO {
+public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>
+    implements EndorsementDAO {
 
   private static EndorsementDAOImpl instance;
 
@@ -27,6 +28,14 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>impleme
    */
   private EndorsementDAOImpl() {}
 
+  /**
+   * Singleton method for the DAO.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 08/10/2015
+   *
+   * @return EndorsementDAOImpl instance.
+   */
   public static EndorsementDAOImpl getInstance() {
     if (instance == null) {
       instance = new EndorsementDAOImpl();
@@ -35,14 +44,14 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>impleme
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritDoc}.
    */
   @Override
   public List<Endorsement> findAllByTechnology(String techId) {
-    Technology tech = new Technology();
+    final Technology tech = new Technology();
     tech.setId(techId);
-    Objectify objectify = OfyService.ofy();
-    List<Endorsement> entities = objectify.load().type(Endorsement.class)
+    final Objectify objectify = OfyService.ofy();
+    final List<Endorsement> entities = objectify.load().type(Endorsement.class)
         .filter(Endorsement.TECHNOLOGY, Ref.create(tech)).list();
 
     if (entities == null || entities.size() <= 0) {
@@ -52,14 +61,14 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>impleme
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritDoc}.
    */
   @Override
   public List<Endorsement> findAllActivesByTechnology(String techId) {
-    Technology tech = new Technology();
+    final Technology tech = new Technology();
     tech.setId(techId);
-    Objectify objectify = OfyService.ofy();
-    List<Endorsement> entities = objectify.load().type(Endorsement.class)
+    final Objectify objectify = OfyService.ofy();
+    final List<Endorsement> entities = objectify.load().type(Endorsement.class)
         .filter(Endorsement.TECHNOLOGY, Ref.create(tech)).filter("active", true).list();
 
     if (entities == null || entities.size() <= 0) {
@@ -69,13 +78,13 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>impleme
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritDoc}.
    */
   @Override
   public List<Endorsement> findByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
       Technology technology) {
-    Objectify objectify = OfyService.ofy();
-    List<Endorsement> entities = objectify.load().type(Endorsement.class)
+    final Objectify objectify = OfyService.ofy();
+    final List<Endorsement> entities = objectify.load().type(Endorsement.class)
         .filter(Endorsement.TECHNOLOGY, Ref.create(technology))
         .filter("endorser", Ref.create(endorser)).filter(Endorsement.ENDORSED, Ref.create(endorsed))
         .list();
@@ -84,13 +93,13 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>impleme
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritDoc}.
    */
   @Override
   public List<Endorsement> findActivesByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
       Technology technology) {
-    Objectify objectify = OfyService.ofy();
-    List<Endorsement> entities = objectify.load().type(Endorsement.class)
+    final Objectify objectify = OfyService.ofy();
+    final List<Endorsement> entities = objectify.load().type(Endorsement.class)
         .filter(Endorsement.TECHNOLOGY, Ref.create(technology))
         .filter("endorser", Ref.create(endorser)).filter(Endorsement.ENDORSED, Ref.create(endorsed))
         .filter("active", true).list();

@@ -27,6 +27,14 @@ public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, 
    */
   private TechnologyCommentDAOImpl() {}
 
+  /**
+   * Singleton method for the DAO.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 08/10/2015
+   *
+   * @return TechnologyCommentDAOImpl instance.
+   */
   public static TechnologyCommentDAOImpl getInstance() {
     if (instance == null) {
       instance = new TechnologyCommentDAOImpl();
@@ -36,8 +44,8 @@ public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, 
 
   @Override
   public List<TechnologyComment> findAllActivesByTechnology(Technology technology) {
-    Objectify objectify = OfyService.ofy();
-    List<TechnologyComment> entities =
+    final Objectify objectify = OfyService.ofy();
+    final List<TechnologyComment> entities =
         objectify.load().type(TechnologyComment.class).order("-" + TechnologyComment.TIMESTAMP)
             .filter(TechnologyComment.TECHNOLOGY, Ref.create(technology))
             .filter(TechnologyComment.ACTIVE, Boolean.TRUE).list();

@@ -5,11 +5,11 @@ import com.ciandt.techgallery.persistence.model.Technology;
 
 /**
  * TechnologyDAOImpl methods implementation.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */
-public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String>implements TechnologyDAO {
+public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String> implements TechnologyDAO {
 
   /*
    * Attributes --------------------------------------------
@@ -21,6 +21,14 @@ public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String>impleme
    */
   private TechnologyDAOImpl() {}
 
+  /**
+   * Singleton method for the DAO.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 08/10/2015
+   *
+   * @return TechnologyDAOImpl instance.
+   */
   public static TechnologyDAOImpl getInstance() {
     if (instance == null) {
       instance = new TechnologyDAOImpl();
