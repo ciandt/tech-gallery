@@ -10,7 +10,6 @@ import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
-import com.ciandt.techgallery.service.model.TechnologyResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,6 @@ public class TechnologyCommentTransformer
 
   private TechnologyService techService = TechnologyServiceImpl.getInstance();
   private TechGalleryUserTransformer tgUserTransformer = new TechGalleryUserTransformer();
-  private TechnologyTransformer techTransformer = new TechnologyTransformer();
 
   /**
    * Transform entity from datastore into response entity which is transient.
@@ -50,8 +48,8 @@ public class TechnologyCommentTransformer
   /**
    * Transform a list of entity from datastore into list of response entity which is transient.
    * 
-   * @param list entity from datastore
-   * @return list transient entity
+   * @param entities entity list 
+   * @return list of transient entities
    */
   public List<TechnologyCommentTO> fromEntityToTransient(List<TechnologyComment> entities) {
 

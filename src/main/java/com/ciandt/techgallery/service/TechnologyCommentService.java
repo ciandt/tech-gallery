@@ -8,7 +8,6 @@ import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 
 /**
  * TechnologyCommentService Interface.
@@ -48,6 +47,16 @@ public interface TechnologyCommentService {
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
-  TechnologyComment deleteComment(final Long commentId, User user) throws InternalServerErrorException,
-      BadRequestException, NotFoundException, OAuthRequestException;
+  TechnologyComment deleteComment(final Long commentId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException;
+
+  /**
+   * Finds a comment made for a technology by its id.
+   * 
+   * @param id the id of the comment
+   * @return the comment indexed by the id
+   * @throws NotFoundException in case the comment does not exist
+   */
+  TechnologyComment getById(Long id) throws NotFoundException;
 }

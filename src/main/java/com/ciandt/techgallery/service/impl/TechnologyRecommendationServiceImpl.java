@@ -19,7 +19,6 @@ import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
-import com.ciandt.techgallery.service.model.UserResponse;
 import com.ciandt.techgallery.service.util.TechGalleryUserTransformer;
 import com.ciandt.techgallery.service.util.TechnologyRecommendationTransformer;
 
@@ -65,39 +64,33 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * Methods --------------------------------------------
    */
   @Override
-  public Response addRecommendation(TechnologyRecommendationTO recommendationTO, User user)
-      throws NotFoundException, BadRequestException, InternalServerErrorException {
-    TechGalleryUser tgUser = userService.getUserByEmail(user.getEmail());
-    if (tgUser == null) {
-      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
+  public TechnologyRecommendation addRecommendation(TechnologyRecommendation recommendation,
+      User user) throws BadRequestException {
+    try {
+      TechGalleryUser tgUser = userService.getUserByEmail(user.getEmail());
+      recommendation.setRecommender(Ref.create(tgUser));
+      return addNewRecommendation(recommendation, tgUser);
+    } catch (NotFoundException e) {
+      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
-    UserResponse userResp = userTransformer.transformTo(tgUser);
-    recommendationTO.setRecommender(userResp);
-    Technology technology =
-        technologyService.getTechnologyById(recommendationTO.getTechnology().getId());
-    TechnologyRecommendation recommendation = techRecTransformer.transformFrom(recommendationTO);
-
-    recommendation = addNewRecommendation(recommendation, technology, tgUser);
-
-    return techRecTransformer.transformTo(recommendation);
   }
 
   /**
-   * Adds a new recommendation to the datastore, invalidates the previous one
+   * Adds a new recommendation to the datastore, invalidates the previous one.
    * 
    * @param recommendation the recommendation to be added
-   * @param technology
-   * @param tgUser
+   * @param technology the technology for which the recommendation was made
+   * @param tgUser the user who made the recommendation
    * @return the updated recommendation, with id
    */
   private TechnologyRecommendation addNewRecommendation(TechnologyRecommendation recommendation,
-      Technology technology, TechGalleryUser tgUser) {
-    recommendation.setTechnology(Ref.create(technology));
+      TechGalleryUser tgUser) {
     recommendation.setActive(true);
     recommendation.setRecommender(Ref.create(tgUser));
     TechnologyRecommendation previousRec = technologyRecommendationDAO
         .findActiveByRecommenderAndTechnology(tgUser, recommendation.getTechnology().get());
 
+    Technology technology = recommendation.getTechnology().get();
     // Inactivate previous recommendation
     if (previousRec != null) {
       previousRec.setActive(false);

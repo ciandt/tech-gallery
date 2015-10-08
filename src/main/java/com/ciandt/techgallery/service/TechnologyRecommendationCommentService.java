@@ -6,10 +6,12 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
+import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
+import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
-import com.ciandt.techgallery.service.model.TechnologyResponse;
 
 public interface TechnologyRecommendationCommentService {
 
@@ -26,8 +28,8 @@ public interface TechnologyRecommendationCommentService {
    * @throws InternalServerErrorException
    * @throws NotFoundException
    */
-  Response addRecommendationComment(TechnologyRecommendationTO recommendationTO,
-      TechnologyCommentTO commentTO, TechnologyResponse technology, User user)
+  TechnologyRecommendation addRecommendationComment(TechnologyRecommendation recommendation,
+      TechnologyComment comment, Technology technology, User user)
           throws BadRequestException, InternalServerErrorException, NotFoundException;
 
   /**
@@ -44,7 +46,7 @@ public interface TechnologyRecommendationCommentService {
    * @throws NotFoundException
    * @throws OAuthRequestException
    */
-  void deleteCommentAndRecommendation(TechnologyRecommendationTO recommendationTO,
-      TechnologyCommentTO commentTO, User user) throws InternalServerErrorException,
-          BadRequestException, NotFoundException, OAuthRequestException;
+  void deleteCommentAndRecommendationById(Long recommendationId, Long commentId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException;
 }

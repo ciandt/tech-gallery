@@ -1,32 +1,36 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
+import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
+
 public class TechnologyRecommendationCommentTO implements Response {
 
-  private TechnologyRecommendationTO recommendation;
-  private TechnologyCommentTO comment;
-  private TechnologyResponse technology;
+  private TechnologyRecommendation recommendation;
+  private TechnologyComment comment;
+  private Technology technology;
 
-  public TechnologyRecommendationTO getRecommendation() {
+  public TechnologyRecommendation getRecommendation() {
     return recommendation;
   }
 
-  public void setRecommendation(TechnologyRecommendationTO recommendationTO) {
+  public void setRecommendation(TechnologyRecommendation recommendationTO) {
     this.recommendation = recommendationTO;
   }
 
-  public TechnologyCommentTO getComment() {
+  public TechnologyComment getComment() {
     return comment;
   }
 
-  public void setComment(TechnologyCommentTO commentTO) {
-    this.comment = commentTO;
+  public void setComment(TechnologyComment comment) {
+    this.comment = comment;
   }
 
-  public TechnologyResponse getTechnology() {
+  public Technology getTechnology() {
     return technology;
   }
 
-  public void setTechnology(TechnologyResponse technologyTO) {
-    this.technology = technologyTO;
+  public void setTechnology(Technology technology) {
+    this.technology = technology;
   }
 }

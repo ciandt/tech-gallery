@@ -25,7 +25,6 @@ import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 import com.ciandt.techgallery.service.model.TechnologyCommentsTO;
-import com.ciandt.techgallery.service.util.TechnologyCommentTransformer;
 
 import java.util.Date;
 import java.util.List;
@@ -95,17 +94,18 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
       BadRequestException, NotFoundException, OAuthRequestException {
 
     Technology technology = technologyDAO.findById(techId);
-    
+
     validateUser(user);
     validateTechnology(technology);
-    
+
     List<TechnologyComment> commentsByTech =
         technologyCommentDAO.findAllActivesByTechnology(technology);
     TechnologyCommentsTO response = new TechnologyCommentsTO();
     response.setComments(commentsByTech);
-    /*for (TechnologyComment comment : response.getComments()) {
-      setCommentRecommendation(comment);
-    }*/
+    /*
+     * for (TechnologyComment comment : response.getComments()) { setCommentRecommendation(comment);
+     * }
+     */
     return response;
   }
 
@@ -246,6 +246,16 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     TechGalleryUser techUser = techGalleryUserDAO.findByGoogleId(user.getUserId());
     if (!comment.getAuthor().get().equals(techUser)) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_AUTHOR_ERROR.message());
+    }
+  }
+
+  @Override
+  public TechnologyComment getById(Long id) throws NotFoundException {
+    TechnologyComment comment = technologyCommentDAO.findById(id);
+    if (comment == null) {
+      throw new NotFoundException(ValidationMessageEnums.COMMENT_NOT_EXIST.message());
+    } else {
+      return comment;
     }
   }
 

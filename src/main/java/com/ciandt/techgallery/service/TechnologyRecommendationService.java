@@ -8,14 +8,20 @@ import com.google.appengine.api.users.User;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
 
 import java.util.List;
 
 public interface TechnologyRecommendationService {
 
-  Response addRecommendation(TechnologyRecommendationTO recommendationTO, User user)
-      throws NotFoundException, BadRequestException, InternalServerErrorException;
+  /**
+   * Sets a recommender and calls addNewRecommendation.
+   * @param recommendation  the recommendation to add
+   * @param user the user who made the recommendation
+   * @return the saved recommendation
+   * @throws BadRequestException in case the user is not properly informed
+   */
+  TechnologyRecommendation addRecommendation(TechnologyRecommendation recommendation, User user)
+      throws BadRequestException;
 
   TechnologyRecommendation getRecommendationByComment(TechnologyComment comment);
 
