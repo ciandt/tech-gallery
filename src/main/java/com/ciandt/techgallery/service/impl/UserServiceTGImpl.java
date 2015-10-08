@@ -55,7 +55,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   private static UserServiceTGImpl instance;
 
-  TechGalleryUserDAO userDAO = TechGalleryUserDAOImpl.getInstance();
+  TechGalleryUserDAO userDao = TechGalleryUserDAOImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
@@ -85,7 +85,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   @Override
   public Response getUsers() throws NotFoundException {
-    List<TechGalleryUser> userEntities = userDAO.findAll();
+    List<TechGalleryUser> userEntities = userDao.findAll();
     // if user list is null, return a not found exception
     if (userEntities == null) {
       throw new NotFoundException(OPERATION_FAILED);
@@ -113,7 +113,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   @Override
   public Response getUser(final Long id) throws NotFoundException {
-    TechGalleryUser userEntity = userDAO.findById(id);
+    TechGalleryUser userEntity = userDao.findById(id);
     // if user is null, return a not found exception
     if (userEntity == null) {
       throw new NotFoundException(i18n.t("No user was found."));
@@ -134,7 +134,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     } else {
       TechGalleryUser userEntity = new TechGalleryUser();
       fillTGUserData(user, userEntity);
-      userDAO.add(userEntity);
+      userDao.add(userEntity);
       // set the id and return it
       user.setId(userEntity.getId());
       return user;
@@ -170,17 +170,17 @@ public class UserServiceTGImpl implements UserServiceTG {
     Plus plus = new Plus.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
         .setApplicationName(i18n.t("Tech Gallery")).build();
     Person p = plus.people().get("me").execute();
-    TechGalleryUser tgUser = userDAO.findByGoogleId(user.getUserId());
+    TechGalleryUser tgUser = userDao.findByGoogleId(user.getUserId());
     // Couldn't find by googleID. Try email
     if (tgUser == null) {
-      tgUser = userDAO.findByEmail(userEmail);
+      tgUser = userDao.findByEmail(userEmail);
     }
     // Ok, we couldn't find it. Create it.
     if (tgUser == null) {
       tgUser = new TechGalleryUser();
     }
     updateUserInformation(user, p, tgUser);
-    userDAO.add(tgUser);
+    userDao.add(tgUser);
     log.info("User " + tgUser.getName() + " added/updated");
     UserResponse uResp = (UserResponse) createUserResponse(tgUser);
     return uResp;
@@ -241,22 +241,19 @@ public class UserServiceTGImpl implements UserServiceTG {
     if (!userDataIsValid(user) && user.getId() != null) {
       throw new BadRequestException(i18n.t("User's email cannot be blank."));
     } else {
-      TechGalleryUser tgCurrentUser = userDAO.findById(user.getId());
+      TechGalleryUser tgCurrentUser = userDao.findById(user.getId());
       fillTGUserData(user, tgCurrentUser);
-      userDAO.update(tgCurrentUser);
+      userDao.update(tgCurrentUser);
       return user;
     }
   }
 
   private void fillTGUserData(final UserResponse user, TechGalleryUser tgUser) {
-    String userName = user.getName();
-    String userEmail = user.getEmail();
-    String userPhoto = user.getPhoto();
-    tgUser.setName(userName);
-    tgUser.setEmail(userEmail);
+    tgUser.setName(user.getName());
+    tgUser.setEmail(user.getEmail());
     tgUser.setGoogleId(user.getGoogleId());
-    if (userPhoto != null) {
-      tgUser.setPhoto(userPhoto);
+    if (user.getPhoto() != null) {
+      tgUser.setPhoto(user.getPhoto());
     }
   }
 
@@ -265,7 +262,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   @Override
   public Response getUserByLogin(final String login) throws NotFoundException {
-    TechGalleryUser userEntity = userDAO.findByLogin(login);
+    TechGalleryUser userEntity = userDao.findByLogin(login);
     if (userEntity == null) {
       throw new NotFoundException(OPERATION_FAILED);
     } else {
@@ -276,7 +273,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   @Override
   public TechGalleryUser getUserByEmail(final String email)
       throws BadRequestException, InternalServerErrorException {
-    return userDAO.findByEmail(email);
+    return userDao.findByEmail(email);
   }
 
   /**
@@ -295,12 +292,12 @@ public class UserServiceTGImpl implements UserServiceTG {
     TechGalleryUser tgUser = null;
     try {
       UserResponse userResp = (UserResponse) getUserFromProvider(userLogin);
-      tgUser = userDAO.findByEmail(userResp.getEmail());
+      tgUser = userDao.findByEmail(userResp.getEmail());
       if (tgUser == null) {
         tgUser = new TechGalleryUser();
         tgUser.setEmail(userResp.getEmail());
         tgUser.setName(userResp.getName());
-        Key<TechGalleryUser> key = userDAO.add(tgUser);
+        Key<TechGalleryUser> key = userDao.add(tgUser);
         tgUser.setId(key.getId());
       }
     } catch (BadRequestException e) {
@@ -392,7 +389,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   @Override
   public TechGalleryUser getUserByGoogleId(String googleId) {
-    return userDAO.findByGoogleId(googleId);
+    return userDao.findByGoogleId(googleId);
   }
 
 }
