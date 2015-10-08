@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 /**
  * Services for Skill Endpoint requests.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */
@@ -46,9 +46,9 @@ public class SkillServiceImpl implements SkillService {
   private static SkillServiceImpl instance;
   SkillDAO skillDAO = SkillDAOImpl.getInstance();
 
-  /** Technology service */
+  /** Technology service. */
   TechnologyService techService = TechnologyServiceImpl.getInstance();
-  /** tech gallery user service */
+  /** tech gallery user service. */
   UserServiceTG userService = UserServiceTGImpl.getInstance();
 
   /*
@@ -82,9 +82,9 @@ public class SkillServiceImpl implements SkillService {
 
     validateInputs(skill, user);
 
-    Technology technology = techService.getTechnologyById(skill.getTechnology());
-    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
-    Skill skillEntity = skillDAO.findByUserAndTechnology(techUser, technology);
+    final Technology technology = techService.getTechnologyById(skill.getTechnology());
+    final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    final Skill skillEntity = skillDAO.findByUserAndTechnology(techUser, technology);
 
     // if there is a skillEntity, it is needed to inactivate it and create a new
     // one
@@ -95,20 +95,21 @@ public class SkillServiceImpl implements SkillService {
       skillDAO.update(skillEntity);
     }
 
-    Skill newSkill = addNewSkill(skill, techUser, technology);
-    SkillResponse ret = SkillConverter.fromEntityToTransient(newSkill);
+    final Skill newSkill = addNewSkill(skill, techUser, technology);
+    final SkillResponse ret = SkillConverter.fromEntityToTransient(newSkill);
 
     return ret;
   }
 
   /**
    * Validate inputs of SkillResponse.
-   * 
+   *
    * @param skill inputs to be validate
    * @param user info about user from google
+   *
    * @throws BadRequestException for the validations.
-   * @throws InternalServerErrorException
-   * @throws NotFoundException
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
    */
   private void validateInputs(SkillResponse skill, User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
@@ -119,7 +120,7 @@ public class SkillServiceImpl implements SkillService {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
 
-    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
@@ -136,7 +137,7 @@ public class SkillServiceImpl implements SkillService {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     }
 
-    Technology technology = techService.getTechnologyById(skill.getTechnology());
+    final Technology technology = techService.getTechnologyById(skill.getTechnology());
     if (technology == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     }
@@ -146,12 +147,12 @@ public class SkillServiceImpl implements SkillService {
   private Skill addNewSkill(SkillResponse skill, TechGalleryUser techUser, Technology technology) {
     log.info("Adding new skill...");
 
-    Skill newSkill = new Skill();
+    final Skill newSkill = new Skill();
     newSkill.setTechGalleryUser(Ref.create(techUser));
     newSkill.setTechnology(Ref.create(technology));
     newSkill.setValue(skill.getValue());
     newSkill.setActive(Boolean.TRUE);
-    Key<Skill> newSkillKey = skillDAO.add(newSkill);
+    final Key<Skill> newSkillKey = skillDAO.add(newSkill);
     newSkill.setId(newSkillKey.getId());
 
     log.info("New skill added: " + newSkill.getId());
@@ -187,11 +188,11 @@ public class SkillServiceImpl implements SkillService {
     }
 
     // Technology can't be null
-    Technology technology = techService.getTechnologyById(techId);
+    final Technology technology = techService.getTechnologyById(techId);
     if (technology == null) {
       throw new BadRequestException(i18n.t("Technology do not exists!"));
     }
-    Skill userSkill = skillDAO.findByUserAndTechnology(tgUser, technology);
+    final Skill userSkill = skillDAO.findByUserAndTechnology(tgUser, technology);
     if (userSkill == null) {
       throw new NotFoundException(i18n.t("User skill do not exist!"));
     } else {
@@ -208,11 +209,11 @@ public class SkillServiceImpl implements SkillService {
     }
 
     // Technology can't be null
-    Technology technology = techService.getTechnologyById(techId);
+    final Technology technology = techService.getTechnologyById(techId);
     if (technology == null) {
       throw new BadRequestException(i18n.t("Technology do not exists!"));
     }
-    Skill userSkill = skillDAO.findByUserAndTechnology(user, technology);
+    final Skill userSkill = skillDAO.findByUserAndTechnology(user, technology);
     if (userSkill == null) {
       return null;
     } else {

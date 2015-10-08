@@ -22,9 +22,9 @@ public class TechnologyRecommendationCommentServiceImpl
    * Attributes --------------------------------------------
    */
   private static TechnologyRecommendationCommentServiceImpl instance;
-  private TechnologyRecommendationService recService =
+  private final TechnologyRecommendationService recService =
       TechnologyRecommendationServiceImpl.getInstance();
-  private TechnologyCommentService comService = TechnologyCommentServiceImpl.getInstance();
+  private final TechnologyCommentService comService = TechnologyCommentServiceImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
@@ -70,7 +70,7 @@ public class TechnologyRecommendationCommentServiceImpl
 
   /**
    * Validates if the comment is not blank and not null.
-   * 
+   *
    * @param comment the comment wrapper
    * @return true if comment is valid, false otherwise
    */
