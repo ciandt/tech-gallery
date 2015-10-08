@@ -33,39 +33,39 @@ public class TechnologyCommentConverter {
    * @return transient entity
    */
   public static TechnologyCommentTO fromEntityToTransient(TechnologyComment entity) {
-    TechnologyCommentTO commentTO = new TechnologyCommentTO();
+    TechnologyCommentTO commentTo = new TechnologyCommentTO();
     TechGalleryUserTransformer userTransformer = new TechGalleryUserTransformer();
-    commentTO.setId(entity.getId());
-    commentTO.setComment(entity.getComment());
-    commentTO.setTechnologyId(entity.getTechnology().get().getId());
-    commentTO.setCreation(entity.getTimestamp());
-    commentTO.setAuthor(userTransformer.transformTo(entity.getAuthor().get()));
+    commentTo.setId(entity.getId());
+    commentTo.setComment(entity.getComment());
+    commentTo.setTechnologyId(entity.getTechnology().get().getId());
+    commentTo.setCreation(entity.getTimestamp());
+    commentTo.setAuthor(userTransformer.transformTo(entity.getAuthor().get()));
 
-    return commentTO;
+    return commentTo;
   }
 
   /**
    * Transform a list of entity from datastore into list of response entity which is transient.
    * 
-   * @param list entity from datastore
+   * @param entities entity from datastore
    * @return list transient entity
    */
   public static List<TechnologyCommentTO> fromEntityToTransient(List<TechnologyComment> entities) {
 
-    List<TechnologyCommentTO> commentsTO = new ArrayList<TechnologyCommentTO>();
+    List<TechnologyCommentTO> commentsTo = new ArrayList<TechnologyCommentTO>();
     for (TechnologyComment entity : entities) {
-      commentsTO.add(fromEntityToTransient(entity));
+      commentsTo.add(fromEntityToTransient(entity));
     }
 
-    return commentsTO;
+    return commentsTo;
   }
 
   /**
    * Transform entity from response which is transient into datastore entity which can be persisted.
    * 
-   * @param transient entity
+   * @param tranzient entity
    * @return entity from datastore
-   * @throws NotFoundException
+   * @throws NotFoundException in case the information are not founded
    */
   public TechnologyComment fromTransientToEntity(TechnologyCommentTO tranzient)
       throws NotFoundException {
