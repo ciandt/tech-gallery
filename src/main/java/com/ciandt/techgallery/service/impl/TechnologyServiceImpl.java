@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * Services for Technology Endpoint requests.
- * 
+ *
  * @author felipers
  *
  */
@@ -38,7 +38,7 @@ public class TechnologyServiceImpl implements TechnologyService {
    */
   private static TechnologyServiceImpl instance;
 
-  /** tech gallery user service */
+  /** tech gallery user service. */
   UserServiceTG userService = UserServiceTGImpl.getInstance();
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
 
@@ -71,8 +71,8 @@ public class TechnologyServiceImpl implements TechnologyService {
   @Override
   public Response addTechnology(final TechnologyResponse technology)
       throws InternalServerErrorException, BadRequestException {
-    String techId = technology.getId();
-    String techName = technology.getName();
+    final String techId = technology.getId();
+    final String techName = technology.getName();
 
     // technology id can't be null or empty
     if (techId == null || techId.equals("")) {
@@ -82,7 +82,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (techName == null || techName.equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BE_BLANK.message());
     } else {
-      Technology entity = TechnologyConverter.fromTransientToEntity(technology);
+      final Technology entity = TechnologyConverter.fromTransientToEntity(technology);
       technologyDAO.add(entity);
       // set the id and return it
       technology.setId(entity.getId());
@@ -92,18 +92,19 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   /**
    * GET for getting all technologies.
-   * 
+   *
    * @throws NotFoundException .
    */
   @Override
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
-    List<Technology> techEntities = technologyDAO.findAll();
+    final List<Technology> techEntities = technologyDAO.findAll();
     // if list is null, return a not found exception
     if (techEntities == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
-      TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(techEntities);
+      final TechnologiesResponse response = new TechnologiesResponse();
+      final List<TechnologyResponse> internList =
+          TechnologyConverter.fromEntityToTransient(techEntities);
       response.setTechnologies(internList);
       return response;
     }
@@ -158,12 +159,12 @@ public class TechnologyServiceImpl implements TechnologyService {
    */
   @Override
   public Response getTechnology(final String id) throws NotFoundException {
-    Technology techEntity = technologyDAO.findById(id);
+    final Technology techEntity = technologyDAO.findById(id);
     // if technology is null, return a not found exception
     if (techEntity == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
-      TechnologyResponse response = TechnologyConverter.fromEntityToTransient(techEntity);
+      final TechnologyResponse response = TechnologyConverter.fromEntityToTransient(techEntity);
       return response;
     }
   }
@@ -177,7 +178,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       techFilter.setRecommendationIs("");
     }
 
-    List<Technology> completeList = technologyDAO.findAll();
+    final List<Technology> completeList = technologyDAO.findAll();
     List<Technology> filteredList = new ArrayList<>();
     verifyFilters(techFilter, completeList, filteredList);
 
@@ -188,8 +189,9 @@ public class TechnologyServiceImpl implements TechnologyService {
         filteredList = sortTechnologies(filteredList,
             TechnologyOrderOptionEnum.fromString(techFilter.getOrderOptionIs()));
       }
-      TechnologiesResponse response = new TechnologiesResponse();
-      List<TechnologyResponse> internList = TechnologyConverter.fromEntityToTransient(filteredList);
+      final TechnologiesResponse response = new TechnologiesResponse();
+      final List<TechnologyResponse> internList =
+          TechnologyConverter.fromEntityToTransient(filteredList);
       response.setTechnologies(internList);
       return response;
     }
@@ -197,7 +199,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   private void verifyFilters(TechnologyFilter techFilter, List<Technology> completeList,
       List<Technology> filteredList) {
-    for (Technology technology : completeList) {
+    for (final Technology technology : completeList) {
       if (verifyTitleAndShortDescriptionFilter(techFilter, technology)) {
         if (techFilter.getRecommendationIs() != null) {
           if (verifyRecommendationFilter(techFilter, technology)) {
@@ -242,7 +244,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   @Override
   public Technology getTechnologyById(String id) throws NotFoundException {
-    Technology tech = technologyDAO.findById(id);
+    final Technology tech = technologyDAO.findById(id);
     if (tech == null) {
       throw new NotFoundException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     } else {
@@ -253,11 +255,11 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   /**
    * Validate the user logged in.
-   * 
+   *
    * @param user info about user from google
-   * @throws InternalServerErrorException
-   * @throws NotFoundException
-   * @throws BadRequestException
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   private void validateUser(User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
@@ -266,7 +268,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
 
-    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
       throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
@@ -274,8 +276,8 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   @Override
   public List<String> getOrderOptions(User user) {
-    List<String> orderOptions = new ArrayList<String>();
-    for (TechnologyOrderOptionEnum item : TechnologyOrderOptionEnum.values()) {
+    final List<String> orderOptions = new ArrayList<String>();
+    for (final TechnologyOrderOptionEnum item : TechnologyOrderOptionEnum.values()) {
       orderOptions.add(item.option());
     }
     return orderOptions;
