@@ -1,11 +1,11 @@
 package com.ciandt.techgallery.service;
 
-import java.util.List;
-
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
+
+import java.util.List;
 
 /**
  * Services for Recommendations.

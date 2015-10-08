@@ -1,18 +1,19 @@
 package com.ciandt.techgallery.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.RecommendationService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.RecommendationEnums;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Services for Recommendation Endpoint requests.

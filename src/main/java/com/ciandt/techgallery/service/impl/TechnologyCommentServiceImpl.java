@@ -1,8 +1,12 @@
 package com.ciandt.techgallery.service.impl;
 
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
+
+import com.googlecode.objectify.Key;
 
 import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyCommentDAOImpl;
@@ -16,15 +20,13 @@ import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologyCommentTO; 
+import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 import com.ciandt.techgallery.service.model.TechnologyCommentsTO;
 import com.ciandt.techgallery.service.util.TechnologyCommentConverter;
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.oauth.OAuthRequestException;
-import com.google.appengine.api.users.User;
-import com.googlecode.objectify.Key;
+
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Services for Comments Endpoint requests. 
