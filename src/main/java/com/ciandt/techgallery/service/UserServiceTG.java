@@ -98,7 +98,7 @@ public interface UserServiceTG {
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 
   TechGalleryUser getUserSyncedWithProvider(String userLogin)
-      throws NotFoundException, BadRequestException, InternalServerErrorException;
+      throws NotFoundException, InternalServerErrorException;
 
   Response handleLogin(User user, HttpServletRequest req) throws NotFoundException,
       BadRequestException, InternalServerErrorException, IOException, OAuthRequestException;
