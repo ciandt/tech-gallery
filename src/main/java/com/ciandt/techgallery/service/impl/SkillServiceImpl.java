@@ -1,7 +1,13 @@
 package com.ciandt.techgallery.service.impl;
 
-import java.util.Date;
-import java.util.logging.Logger;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
+
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.persistence.dao.SkillDAO;
 import com.ciandt.techgallery.persistence.dao.impl.SkillDAOImpl;
@@ -16,13 +22,9 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.SkillResponse;
 import com.ciandt.techgallery.service.util.SkillConverter;
 import com.ciandt.techgallery.utils.i18n.I18n;
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.oauth.OAuthRequestException;
-import com.google.appengine.api.users.User;
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
+
+import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * Services for Skill Endpoint requests.
@@ -52,8 +54,7 @@ public class SkillServiceImpl implements SkillService {
   /*
    * Constructors --------------------------------------------
    */
-  private SkillServiceImpl() {
-  }
+  private SkillServiceImpl() {}
 
   public static SkillServiceImpl getInstance() {
     if (instance == null) {
@@ -95,10 +96,8 @@ public class SkillServiceImpl implements SkillService {
   /**
    * Validate inputs of SkillResponse.
    * 
-   * @param skill
-   *          inputs to be validate
-   * @param user
-   *          info about user from google
+   * @param skill inputs to be validate
+   * @param user info about user from google
    * @throws BadRequestException
    * @throws InternalServerErrorException
    * @throws NotFoundException
@@ -153,8 +152,8 @@ public class SkillServiceImpl implements SkillService {
   }
 
   @Override
-  public Response getUserSkill(String techId, User user)
-      throws BadRequestException, OAuthRequestException, NotFoundException, InternalServerErrorException {
+  public Response getUserSkill(String techId, User user) throws BadRequestException,
+      OAuthRequestException, NotFoundException, InternalServerErrorException {
     // user google id
     String googleId;
     // user from techgallery datastore
@@ -193,8 +192,8 @@ public class SkillServiceImpl implements SkillService {
   }
 
   @Override
-  public Response getUserSkill(String techId, TechGalleryUser user)
-      throws BadRequestException, OAuthRequestException, NotFoundException, InternalServerErrorException {
+  public Response getUserSkill(String techId, TechGalleryUser user) throws BadRequestException,
+      OAuthRequestException, NotFoundException, InternalServerErrorException {
     // User can't be null
     if (user == null) {
       throw new OAuthRequestException(i18n.t("Null user reference!"));

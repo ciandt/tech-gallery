@@ -1,12 +1,13 @@
 package com.ciandt.techgallery.service;
 
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 
 /**
  * TechnologyCommentService Interface.
@@ -19,13 +20,10 @@ public interface TechnologyCommentService {
   /**
    * Service for adding a technology.
    * 
-   * @param comment
-   *          json with comment.
+   * @param comment json with comment.
    * @return comment or message error.
-   * @throws InternalServerErrorException
-   *           .
-   * @throws BadRequestException
-   *           .
+   * @throws InternalServerErrorException .
+   * @throws BadRequestException .
    */
   Response addComment(TechnologyCommentTO comment, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException;
@@ -33,28 +31,22 @@ public interface TechnologyCommentService {
   /**
    * Service to show all active comments for a technology.
    * 
-   * @param techId
-   *          technology entity id.
+   * @param techId technology entity id.
    * @return comment or message error.
-   * @throws InternalServerErrorException
-   *           .
-   * @throws BadRequestException
-   *           .
+   * @throws InternalServerErrorException .
+   * @throws BadRequestException .
    */
-  Response getCommentsByTech(final String techId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
+  Response getCommentsByTech(final String techId, User user) throws InternalServerErrorException,
+      BadRequestException, NotFoundException, OAuthRequestException;
 
   /**
    * Service to delete a comment.
    * 
-   * @param commentId
-   *          comment entity id.
+   * @param commentId comment entity id.
    * @return comment or message error.
-   * @throws InternalServerErrorException
-   *           .
-   * @throws BadRequestException
-   *           .
+   * @throws InternalServerErrorException .
+   * @throws BadRequestException .
    */
-  Response deleteComment(final Long commentId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
+  Response deleteComment(final Long commentId, User user) throws InternalServerErrorException,
+      BadRequestException, NotFoundException, OAuthRequestException;
 }
