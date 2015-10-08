@@ -44,7 +44,7 @@ public class SkillServiceImpl implements SkillService {
    * Attributes --------------------------------------------
    */
   private static SkillServiceImpl instance;
-  SkillDAO skillDAO = SkillDAOImpl.getInstance();
+  SkillDAO skillDao = SkillDAOImpl.getInstance();
 
   /** Technology service. */
   TechnologyService techService = TechnologyServiceImpl.getInstance();
@@ -84,7 +84,7 @@ public class SkillServiceImpl implements SkillService {
 
     final Technology technology = techService.getTechnologyById(skill.getTechnology());
     final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
-    final Skill skillEntity = skillDAO.findByUserAndTechnology(techUser, technology);
+    final Skill skillEntity = skillDao.findByUserAndTechnology(techUser, technology);
 
     // if there is a skillEntity, it is needed to inactivate it and create a new
     // one
@@ -92,7 +92,7 @@ public class SkillServiceImpl implements SkillService {
       log.info("Inactivating skill: " + skillEntity.getId());
       skillEntity.setInactivatedDate(new Date());
       skillEntity.setActive(Boolean.FALSE);
-      skillDAO.update(skillEntity);
+      skillDao.update(skillEntity);
     }
 
     final Skill newSkill = addNewSkill(skill, techUser, technology);
@@ -152,7 +152,7 @@ public class SkillServiceImpl implements SkillService {
     newSkill.setTechnology(Ref.create(technology));
     newSkill.setValue(skill.getValue());
     newSkill.setActive(Boolean.TRUE);
-    final Key<Skill> newSkillKey = skillDAO.add(newSkill);
+    final Key<Skill> newSkillKey = skillDao.add(newSkill);
     newSkill.setId(newSkillKey.getId());
 
     log.info("New skill added: " + newSkill.getId());
@@ -183,16 +183,16 @@ public class SkillServiceImpl implements SkillService {
       // userService.getUserSyncedWithProvider(userEmail.replace("@ciandt.com",
       // ""));
       if (tgUser == null) {
-        throw new BadRequestException(i18n.t("Endorser user do not exists on datastore!"));
+        throw new NotFoundException(i18n.t("Endorser user do not exists on datastore!"));
       }
     }
 
     // Technology can't be null
     final Technology technology = techService.getTechnologyById(techId);
     if (technology == null) {
-      throw new BadRequestException(i18n.t("Technology do not exists!"));
+      throw new NotFoundException(i18n.t("Technology do not exists!"));
     }
-    final Skill userSkill = skillDAO.findByUserAndTechnology(tgUser, technology);
+    final Skill userSkill = skillDao.findByUserAndTechnology(tgUser, technology);
     if (userSkill == null) {
       throw new NotFoundException(i18n.t("User skill do not exist!"));
     } else {
@@ -211,9 +211,9 @@ public class SkillServiceImpl implements SkillService {
     // Technology can't be null
     final Technology technology = techService.getTechnologyById(techId);
     if (technology == null) {
-      throw new BadRequestException(i18n.t("Technology do not exists!"));
+      throw new NotFoundException(i18n.t("Technology do not exists!"));
     }
-    final Skill userSkill = skillDAO.findByUserAndTechnology(user, technology);
+    final Skill userSkill = skillDao.findByUserAndTechnology(user, technology);
     if (userSkill == null) {
       return null;
     } else {
