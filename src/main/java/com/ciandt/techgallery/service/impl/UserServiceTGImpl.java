@@ -124,8 +124,10 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * POST for adding a new user.
-   * 
-   * @throws BadRequestException
+   *
+   * @param user json with user´s information
+   * @return added user
+   * @throws BadRequestException in case a request with problem were made.
    */
   @Override
   public Response addUser(final UserResponse user) throws BadRequestException {

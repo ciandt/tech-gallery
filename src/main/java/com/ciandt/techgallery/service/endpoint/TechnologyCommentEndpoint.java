@@ -33,10 +33,10 @@ public class TechnologyCommentEndpoint {
    * 
    * @param json with Comment info.
    * @param user oauth user.
-   * @return .
-   * @throws NotFoundException
-   * @throws InternalServerErrorException .
-   * @throws BadRequestException .
+   * @return added commentary
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "addComment", path = "technology-comment", httpMethod = "post")
   public Response addComment(TechnologyCommentTO comment, User user)
@@ -49,11 +49,10 @@ public class TechnologyCommentEndpoint {
    * 
    * @param json with Comment info.
    * @param user oauth user.
-   * @return .
-   * @throws OAuthRequestException
-   * @throws NotFoundException
-   * @throws InternalServerErrorException .
-   * @throws BadRequestException .
+   * @return List of Commentaries
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "getCommentsByTech", path = "technology-comment-show", httpMethod = "post")
   public Response getCommentsByTech(@Named("technologyId") String technologyId, User user)
@@ -67,11 +66,11 @@ public class TechnologyCommentEndpoint {
    * 
    * @param Id of a comment.
    * @param user oauth user.
-   * @return .
-   * @throws OAuthRequestException
-   * @throws NotFoundException
-   * @throws InternalServerErrorException .
-   * @throws BadRequestException .
+   * @return deleted comment
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "deleteComment", path = "technology-comment-delete", httpMethod = "post")
   public Response deleteComment(@Named("commentId") Long commentId, User user)

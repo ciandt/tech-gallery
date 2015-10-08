@@ -33,10 +33,10 @@ public class SkillEndpoint {
    * 
    * @param json with skill info.
    * @param user oauth user.
-   * @return
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
-   * @throws NotFoundException
+   * @return added skill
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "addSkill", path = "skill", httpMethod = "post")
   public Response addSkill(SkillResponse skill, User user)
@@ -49,11 +49,11 @@ public class SkillEndpoint {
    * 
    * @param id technology id.
    * @param user oauth user.
-   * @return
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
-   * @throws OAuthRequestException
-   * @throws NotFoundException
+   * @return User skill
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "getUserSkill", path = "skill", httpMethod = "get")
   public Response getUserSkill(@Named("id") String id, User user)
