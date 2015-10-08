@@ -6,7 +6,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 
 /**
  * SkillDAO methods interface.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */
