@@ -351,7 +351,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   @SuppressWarnings("resource")
-  private static String convertStreamToString(java.io.InputStream is) {
+  private static String convertStreamToString(InputStream is) {
     java.util.Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
     return scanner.hasNext() ? scanner.next() : "";
   }
