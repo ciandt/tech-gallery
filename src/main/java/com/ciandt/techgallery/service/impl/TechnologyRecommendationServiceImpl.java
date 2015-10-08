@@ -54,6 +54,14 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    */
   private TechnologyRecommendationServiceImpl() {}
 
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 07/10/2015
+   *
+   * @return TechnologyRecommendationServiceImpl instance.
+   */
   public static TechnologyRecommendationServiceImpl getInstance() {
     if (instance == null) {
       instance = new TechnologyRecommendationServiceImpl();
@@ -83,11 +91,11 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   }
 
   /**
-   * Adds a new recommendation to the datastore, invalidates the previous one
+   * Adds a new recommendation to the datastore, invalidates the previous one.
    * 
    * @param recommendation the recommendation to be added
-   * @param technology
-   * @param tgUser
+   * @param technology to add at the recommendation
+   * @param tgUser to add at the recommendation
    * @return the updated recommendation, with id
    */
   private TechnologyRecommendation addNewRecommendation(TechnologyRecommendation recommendation,
@@ -150,11 +158,11 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 25/09/2015
    *
-   * @param technologyId
-   * @param user
-   * @param score
+   * @param technologyId to find te recommendations
+   * @param user to find the recommendations
+   * @param score to filter the recommendations
    * 
-   * @return List<Response>
+   * @return recommendationsUpTO
    */
   private List<Response> getRecommendationsByTechnologyUserAndScore(String technologyId, User user,
       Boolean score) {
@@ -189,14 +197,14 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 28/09/2015
    *
-   * @param recommendId
-   * @param recommendation
-   * @param user
-   * @param techUser
+   * @param recommendId to use by validation
+   * @param recommendation to use by validation
+   * @param user to use by validation
+   * @param techUser to use by validation
    * 
-   * @throws BadRequestException
-   * @throws NotFoundException
-   * @throws InternalServerErrorException
+   * @throws BadRequestException in case the params are not correct
+   * @throws NotFoundException in case a information not be founded
+   * @throws InternalServerErrorException in case of internal error
    */
   private void validateDeletion(Long recommendId, TechnologyRecommendation recommendation,
       User user, TechGalleryUser techUser)
@@ -214,12 +222,12 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 28/09/2015
    *
-   * @param user
-   * @param techUser
+   * @param user to be validated
+   * @param techUser to be validated
    * 
-   * @throws BadRequestException
-   * @throws NotFoundException
-   * @throws InternalServerErrorException
+   * @throws BadRequestException in case the params are not correct
+   * @throws NotFoundException in case a information not be founded
+   * @throws InternalServerErrorException in case of internal error
    */
   private void validateUser(User user, TechGalleryUser techUser)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
@@ -240,11 +248,11 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 28/09/2015
    *
-   * @param recommendId
+   * @param recommendId to be validated
    * @param recommendation
    * 
-   * @throws BadRequestException
-   * @throws NotFoundException
+   * @throws BadRequestException in case the params are not correct
+   * @throws NotFoundException in case a information not be founded
    */
   private void validateRecommend(Long recommendId, TechnologyRecommendation recommendation)
       throws BadRequestException, NotFoundException {

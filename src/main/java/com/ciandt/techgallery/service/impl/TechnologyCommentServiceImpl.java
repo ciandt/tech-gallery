@@ -16,7 +16,7 @@ import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologyCommentTO;
+import com.ciandt.techgallery.service.model.TechnologyCommentTO; 
 import com.ciandt.techgallery.service.model.TechnologyCommentsTO;
 import com.ciandt.techgallery.service.util.TechnologyCommentConverter;
 import com.google.api.server.spi.response.BadRequestException;
@@ -27,7 +27,7 @@ import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
 
 /**
- * Services for Comments Endpoint requests.
+ * Services for Comments Endpoint requests. 
  * 
  * @author Felipe Ibrahim
  *
@@ -56,6 +56,14 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   private TechnologyCommentServiceImpl() {
   }
 
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> Jo�o Felipe de Medeiros Moreira </a>
+   * @since 07/10/2015
+   *
+   * @return TechnologyCommentServiceImpl instance.
+   */
   public static TechnologyCommentServiceImpl getInstance() {
     if (instance == null) {
       instance = new TechnologyCommentServiceImpl();
