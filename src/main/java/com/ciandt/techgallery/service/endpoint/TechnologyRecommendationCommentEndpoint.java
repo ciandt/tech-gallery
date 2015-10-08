@@ -61,11 +61,11 @@ public class TechnologyRecommendationCommentEndpoint {
   public void deleteCommentAndRecommendation(@Named("recommendId") Long recommendId,
       @Named("commentId") Long commentId, User user) throws InternalServerErrorException,
           BadRequestException, NotFoundException, OAuthRequestException {
-    TechnologyRecommendationTO recommendationTO = new TechnologyRecommendationTO();
-    recommendationTO.setId(recommendId);
-    TechnologyCommentTO commentTO = new TechnologyCommentTO();
-    commentTO.setId(commentId);
-    service.deleteCommentAndRecommendation(recommendationTO, commentTO, user);
+    TechnologyRecommendationTO recommendationTo = new TechnologyRecommendationTO();
+    recommendationTo.setId(recommendId);
+    TechnologyCommentTO commentTo = new TechnologyCommentTO();
+    commentTo.setId(commentId);
+    service.deleteCommentAndRecommendation(recommendationTo, commentTo, user);
   }
 
 }
