@@ -54,6 +54,14 @@ public class TechnologyFilter implements Response {
 
   public TechnologyFilter() {}
 
+  /**
+   * Construtor for TechnologyFilter.
+   * 
+   * @param titleContains part of the technology's title
+   * @param shortDescriptionContains titleContains part of the technology's short description
+   * @param recommendationIs technology's Ci&T Recommendation
+   * @param orderOptionIs for sort the result
+   */
   public TechnologyFilter(String titleContains, String shortDescriptionContains,
       String recommendationIs, String orderOptionIs) {
     this.titleContains = titleContains;

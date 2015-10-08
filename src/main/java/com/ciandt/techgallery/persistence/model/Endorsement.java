@@ -91,28 +91,39 @@ public class Endorsement extends BaseEntity<Long> {
     this.technology = technology;
   }
 
+  /**
+   * Returns the entity for the referred endorser.
+   * 
+   * @return TechGalleryUser
+   */
   public TechGalleryUser getEndorserEntity() {
     if (endorser != null) {
       return endorser.get();
     }
-
     return null;
   }
 
+  /**
+   * Returns the entity for the referred endorsed.
+   * 
+   * @return TechGalleryUser
+   */
   public TechGalleryUser getEndorsedEntity() {
     if (endorsed != null) {
       return endorsed.get();
     }
-
     return null;
   }
 
-
+  /**
+   * Returns the entity for the referred technology.
+   * 
+   * @return Technology
+   */
   public Technology getTechnologyEntity() {
     if (technology != null) {
       return technology.get();
     }
-
     return null;
   }
 
