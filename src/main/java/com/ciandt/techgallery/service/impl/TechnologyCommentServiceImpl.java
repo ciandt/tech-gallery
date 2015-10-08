@@ -46,7 +46,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
    */
   private static TechnologyCommentServiceImpl instance;
 
-  TechnologyCommentDAO technologyCommentDAO = TechnologyCommentDAOImpl.getInstance();
+  TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
 
   UserServiceTG userService = UserServiceTGImpl.getInstance();
   TechnologyRecommendationService recommendationService =
@@ -104,11 +104,11 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     final Technology technology = techService.getTechnologyById(techId);
     final List<TechnologyComment> commentsByTech =
-        technologyCommentDAO.findAllActivesByTechnology(technology);
+        technologyCommentDao.findAllActivesByTechnology(technology);
     final TechnologyCommentsTO response = new TechnologyCommentsTO();
     response.setComments(TechnologyCommentConverter.fromEntityToTransient(commentsByTech));
-    for (final TechnologyCommentTO commentTO : response.getComments()) {
-      setCommentRecommendation(commentTO);
+    for (final TechnologyCommentTO commentTo : response.getComments()) {
+      setCommentRecommendation(commentTo);
     }
     return response;
   }
@@ -119,9 +119,9 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     validateDeletion(commentId, user);
 
-    final TechnologyComment comment = technologyCommentDAO.findById(commentId);
+    final TechnologyComment comment = technologyCommentDao.findById(commentId);
     comment.setActive(false);
-    technologyCommentDAO.update(comment);
+    technologyCommentDao.update(comment);
     techService.removeCommentariesCounter(comment.getTechnology().get());
     final TechnologyCommentTO response = TechnologyCommentConverter.fromEntityToTransient(comment);
     return response;
@@ -133,7 +133,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     final TechnologyComment newComment =
         new TechnologyComment(comment.getComment(), technology, techUser, new Date(), Boolean.TRUE);
-    final Key<TechnologyComment> newCommentKey = technologyCommentDAO.add(newComment);
+    final Key<TechnologyComment> newCommentKey = technologyCommentDao.add(newComment);
     newComment.setId(newCommentKey.getId());
 
     log.info("New Comment added: " + newComment.getId());
@@ -145,19 +145,19 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
    * If the comment referenced by commentTO was created because of a recommendation, sets the
    * recommendation score.
    *
-   * @param commentTO the comment
+   * @param commentTo the comment
    */
-  private void setCommentRecommendation(TechnologyCommentTO commentTO) {
-    final TechnologyComment comment = technologyCommentDAO.findById(commentTO.getId());
+  private void setCommentRecommendation(TechnologyCommentTO commentTo) {
+    final TechnologyComment comment = technologyCommentDao.findById(commentTo.getId());
     TechnologyRecommendation techRecommendation;
     techRecommendation = recommendationService.getRecommendationByComment(comment);
 
     if (techRecommendation != null && techRecommendation.getActive() == true) {
-      commentTO.setRecommendationId(techRecommendation.getId());
-      commentTO.setRecommendationScore(techRecommendation.getScore());
+      commentTo.setRecommendationId(techRecommendation.getId());
+      commentTo.setRecommendationScore(techRecommendation.getScore());
     } else {
-      commentTO.setRecommendationId(null);
-      commentTO.setRecommendationScore(null);
+      commentTo.setRecommendationId(null);
+      commentTo.setRecommendationScore(null);
     }
   }
 
@@ -194,7 +194,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_ID_CANNOT_BLANK.message());
     }
 
-    final TechnologyComment comment = technologyCommentDAO.findById(commentId);
+    final TechnologyComment comment = technologyCommentDao.findById(commentId);
     if (comment == null) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_NOT_EXIST.message());
     }
@@ -263,7 +263,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     validateComment(commentId);
     validateUser(user);
 
-    final TechnologyComment comment = technologyCommentDAO.findById(commentId);
+    final TechnologyComment comment = technologyCommentDao.findById(commentId);
     final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (!comment.getAuthor().get().equals(techUser)) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_AUTHOR_ERROR.message());
