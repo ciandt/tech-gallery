@@ -1,7 +1,5 @@
 package com.ciandt.techgallery.service.enums;
 
-import com.ciandt.techgallery.utils.i18n.I18n;
-
 /**
  * Enum for mapping recommendations.
  * 
@@ -20,7 +18,6 @@ public enum RecommendationEnums {
 
 
   private String message;
-  private I18n i18n = I18n.getInstance();
 
   private RecommendationEnums(String message) {
     this.message = message;
