@@ -257,7 +257,7 @@ public class TechnologyServiceImpl implements TechnologyService {
    * @param user info about user from google
    * @throws InternalServerErrorException
    * @throws NotFoundException
-   * @throws BadRequestException .
+   * @throws BadRequestException
    */
   private void validateUser(User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
@@ -268,7 +268,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
-      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
 

@@ -181,17 +181,16 @@ public class UserServiceTGImpl implements UserServiceTG {
    * Updates current Tech Gallery user information with user data found on Google
    * 
    * @param user Google user
-   * @param p Google Plus person information
+   * @param person Google Plus person information
    * @param tgUser Tech Gallery user
    */
-  private void updateUserInformation(final User user, Person p, TechGalleryUser tgUser) {
+  private void updateUserInformation(final User user, Person person, TechGalleryUser tgUser) {
     String plusEmail = user.getEmail();
-    String plusPhoto = p.getImage().getUrl();
-    String plusName = p.getDisplayName();
-
+    String plusPhoto = person.getImage().getUrl();
     String currentEmail = tgUser.getEmail();
     String currentPhoto = tgUser.getPhoto();
     String currentName = tgUser.getName();
+    String plusName = person.getDisplayName();
 
     if (tgUser.getGoogleId() == null) {
       tgUser.setGoogleId(user.getUserId());
@@ -283,7 +282,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   @Override
   public TechGalleryUser getUserSyncedWithProvider(final String userLogin)
-      throws NotFoundException, BadRequestException, InternalServerErrorException {
+      throws NotFoundException, InternalServerErrorException {
     TechGalleryUser tgUser = null;
     try {
       UserResponse userResp = (UserResponse) getUserFromProvider(userLogin);
@@ -331,9 +330,7 @@ public class UserServiceTGImpl implements UserServiceTG {
       conn.setRequestMethod("GET");
       conn.setRequestProperty("Authorization", auth);
       ObjectMapper mapper = new ObjectMapper();
-
       if (conn.getResponseCode() == 200) {
-
         Map<String, Object> providerResponse = mapper.readValue(conn.getInputStream(), Map.class);
         HashMap<String, Object> userData = (LinkedHashMap) providerResponse.get("personal_info");
         uResp.setEmail((String) userData.get("email"));
@@ -341,26 +338,22 @@ public class UserServiceTGImpl implements UserServiceTG {
       } else {
         throw new NotFoundException(i18n.t("User not found"));
       }
-
     } catch (JsonParseException e) {
       throw new BadRequestException(OPERATION_FAILED);
-
     } catch (MalformedURLException e) {
       throw new BadRequestException(e.getMessage());
-
     } catch (IOException e) {
       System.err.println("An internal server error ocurred!");
       System.err.println(e.getMessage());
       throw new InternalServerErrorException(i18n.t("An internal server error ocurred."));
-
     }
     return uResp;
   }
 
   @SuppressWarnings("resource")
   private static String convertStreamToString(java.io.InputStream is) {
-    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-    return s.hasNext() ? s.next() : "";
+    java.util.Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
+    return scanner.hasNext() ? scanner.next() : "";
   }
 
   /**

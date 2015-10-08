@@ -77,7 +77,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     TechGalleryUser tgUser = userService.getUserByEmail(user.getEmail());
     if (tgUser == null) {
-      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
+      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
     UserResponse userResp = userTransformer.transformTo(tgUser);
     recommendationTO.setRecommender(userResp);
@@ -166,14 +166,14 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    */
   private List<Response> getRecommendationsByTechnologyUserAndScore(String technologyId, User user,
       Boolean score) {
-    List<Response> recommendationsUpTO = new ArrayList<Response>();
+    List<Response> recommendationsUpTo = new ArrayList<Response>();
     for (Response recommendation : getRecommendations(technologyId, user)) {
-      TechnologyRecommendationTO recommendationTO = (TechnologyRecommendationTO) recommendation;
-      if (recommendationTO.getScore().equals(score)) {
-        recommendationsUpTO.add(recommendationTO);
+      TechnologyRecommendationTO recommendationTo = (TechnologyRecommendationTO) recommendation;
+      if (recommendationTo.getScore().equals(score)) {
+        recommendationsUpTo.add(recommendationTo);
       }
     }
-    return recommendationsUpTO;
+    return recommendationsUpTo;
   }
 
   @Override
@@ -203,12 +203,11 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @param techUser to use by validation
    * 
    * @throws BadRequestException in case the params are not correct
-   * @throws NotFoundException in case a information not be founded
    * @throws InternalServerErrorException in case of internal error
    */
   private void validateDeletion(Long recommendId, TechnologyRecommendation recommendation,
       User user, TechGalleryUser techUser)
-          throws BadRequestException, NotFoundException, InternalServerErrorException {
+          throws BadRequestException, InternalServerErrorException {
     validateRecommend(recommendId, recommendation);
     validateUser(user, techUser);
     if (!recommendation.getRecommender().get().equals(techUser)) {
@@ -226,19 +225,16 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @param techUser to be validated
    * 
    * @throws BadRequestException in case the params are not correct
-   * @throws NotFoundException in case a information not be founded
    * @throws InternalServerErrorException in case of internal error
    */
   private void validateUser(User user, TechGalleryUser techUser)
-      throws BadRequestException, NotFoundException, InternalServerErrorException {
+      throws BadRequestException, InternalServerErrorException {
     log.info("Validating user to recommend");
-
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
-
     if (techUser == null) {
-      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
+      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
 
@@ -252,18 +248,15 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @param recommendation
    * 
    * @throws BadRequestException in case the params are not correct
-   * @throws NotFoundException in case a information not be founded
    */
   private void validateRecommend(Long recommendId, TechnologyRecommendation recommendation)
-      throws BadRequestException, NotFoundException {
+      throws BadRequestException {
     log.info("Validating the recommend");
-
     if (recommendId == null) {
       throw new BadRequestException(ValidationMessageEnums.RECOMMEND_ID_CANNOT_BLANK.message());
     }
-
     if (recommendation == null) {
-      throw new NotFoundException(ValidationMessageEnums.RECOMMEND_NOT_EXIST.message());
+      throw new BadRequestException(ValidationMessageEnums.RECOMMEND_NOT_EXIST.message());
     }
   }
 }
