@@ -26,8 +26,7 @@ public class RecommendationServiceImpl implements RecommendationService {
   UserServiceTG userService = UserServiceTGImpl.getInstance();
   private static RecommendationServiceImpl instance;
 
-  private RecommendationServiceImpl() {
-  }
+  private RecommendationServiceImpl() {}
 
   /**
    * Singleton method for the service.
@@ -59,14 +58,13 @@ public class RecommendationServiceImpl implements RecommendationService {
   /**
    * Validate the user logged in.
    * 
-   * @param user
-   *          info about user from google
+   * @param user info about user from google
    * @throws InternalServerErrorException
    * @throws NotFoundException
-   * @throws BadRequestException
-   *           .
+   * @throws BadRequestException .
    */
-  private void validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException {
+  private void validateUser(User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
@@ -74,7 +72,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 
     TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
-      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
 
