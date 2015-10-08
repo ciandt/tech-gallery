@@ -122,7 +122,7 @@ public class SkillServiceImpl implements SkillService {
 
     final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
-      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
 
     if (skill == null) {
@@ -139,7 +139,7 @@ public class SkillServiceImpl implements SkillService {
 
     final Technology technology = techService.getTechnologyById(skill.getTechnology());
     if (technology == null) {
-      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     }
 
   }

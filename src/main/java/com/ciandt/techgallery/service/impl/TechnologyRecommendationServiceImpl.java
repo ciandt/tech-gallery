@@ -77,7 +77,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     final TechGalleryUser tgUser = userService.getUserByEmail(user.getEmail());
     if (tgUser == null) {
-      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
     final UserResponse userResp = userTransformer.transformTo(tgUser);
     recommendationTO.setRecommender(userResp);
@@ -206,10 +206,11 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    *
    * @throws BadRequestException in case the params are not correct
    * @throws InternalServerErrorException in case of internal error
+   * @throws NotFoundException
    */
   private void validateDeletion(Long recommendId, TechnologyRecommendation recommendation,
       User user, TechGalleryUser techUser)
-          throws BadRequestException, InternalServerErrorException {
+          throws BadRequestException, InternalServerErrorException, NotFoundException {
     validateRecommend(recommendId, recommendation);
     validateUser(user, techUser);
     if (!recommendation.getRecommender().get().equals(techUser)) {
@@ -228,15 +229,16 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    *
    * @throws BadRequestException in case the params are not correct
    * @throws InternalServerErrorException in case of internal error
+   * @throws NotFoundException
    */
   private void validateUser(User user, TechGalleryUser techUser)
-      throws BadRequestException, InternalServerErrorException {
+      throws BadRequestException, InternalServerErrorException, NotFoundException {
     log.info("Validating user to recommend");
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
     }
     if (techUser == null) {
-      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
 
@@ -250,15 +252,16 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @param recommendation
    *
    * @throws BadRequestException in case the params are not correct
+   * @throws NotFoundException
    */
   private void validateRecommend(Long recommendId, TechnologyRecommendation recommendation)
-      throws BadRequestException {
+      throws BadRequestException, NotFoundException {
     log.info("Validating the recommend");
     if (recommendId == null) {
       throw new BadRequestException(ValidationMessageEnums.RECOMMEND_ID_CANNOT_BLANK.message());
     }
     if (recommendation == null) {
-      throw new BadRequestException(ValidationMessageEnums.RECOMMEND_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.RECOMMEND_NOT_EXIST.message());
     }
   }
 }
