@@ -19,8 +19,7 @@ public interface RecommendationService {
    * Service for getting a list of possibles recommendations
    * 
    * @return
-   * @throws NotFoundException
-   *           when entity is not found
+   * @throws NotFoundException when entity is not found
    */
   List<String> getRecommendations(User user)
       throws NotFoundException, BadRequestException, InternalServerErrorException;

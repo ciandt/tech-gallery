@@ -8,10 +8,10 @@ package com.ciandt.techgallery.service.enums;
  */
 public enum TechnologyOrderOptionEnum {
 
-  POSITIVE_RECOMENDATION_QUANTITY("Quantidade de Recomendações Positivas"), 
-  NEGATIVE_RECOMENDATION_QUANTITY("Quantidade de Recomendações Negativas"), 
-  COMENTARY_QUANTITY("Quantidade de Comentários"), 
-  ENDORSEMENT_QUANTITY("Quantidade de Indicações");
+  POSITIVE_RECOMENDATION_QUANTITY(
+      "Quantidade de Recomendações Positivas"), NEGATIVE_RECOMENDATION_QUANTITY(
+          "Quantidade de Recomendações Negativas"), COMENTARY_QUANTITY(
+              "Quantidade de Comentários"), ENDORSEMENT_QUANTITY("Quantidade de Indicações");
 
   private String option;
 

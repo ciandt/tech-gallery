@@ -15,7 +15,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
  * @author Felipe Goncalves de Castro
  *
  */
-public class SkillDAOImpl extends GenericDAOImpl<Skill, Long> implements SkillDAO {
+public class SkillDAOImpl extends GenericDAOImpl<Skill, Long>implements SkillDAO {
 
   /*
    * Attributes --------------------------------------------
