@@ -8,7 +8,7 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 
 /**
  * UserDAOImpl methods implementation.
- * 
+ *
  * @author bliberal
  *
  */
@@ -25,6 +25,14 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
    */
   private TechGalleryUserDAOImpl() {}
 
+  /**
+   * Singleton method for the DAO.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 08/10/2015
+   *
+   * @return TechGalleryUserDAOImpl instance.
+   */
   public static TechGalleryUserDAOImpl getInstance() {
     if (instance == null) {
       instance = new TechGalleryUserDAOImpl();
@@ -36,11 +44,11 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
    * Methods --------------------------------------------
    */
   /**
-   * {@inheritDoc}
+   * {@inheritDoc}.
    */
   @Override
   public TechGalleryUser findByLogin(String email) {
-    Objectify objectify = OfyService.ofy();
+    final Objectify objectify = OfyService.ofy();
     TechGalleryUser entity = null;
     entity = objectify.load().type(TechGalleryUser.class).filter(TechGalleryUser.EMAIL, email)
         .first().now();
@@ -49,11 +57,11 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritDoc}.
    */
   @Override
   public TechGalleryUser findByGoogleId(String id) {
-    Objectify objectify = OfyService.ofy();
+    final Objectify objectify = OfyService.ofy();
     TechGalleryUser entity = null;
     entity = objectify.load().type(TechGalleryUser.class).filter(TechGalleryUser.GOOGLE_ID, id)
         .first().now();
@@ -62,11 +70,11 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritDoc}.
    */
   @Override
   public TechGalleryUser findByEmail(String email) {
-    Objectify objectify = OfyService.ofy();
+    final Objectify objectify = OfyService.ofy();
     TechGalleryUser entity = null;
     entity = objectify.load().type(TechGalleryUser.class).filter(TechGalleryUser.EMAIL, email)
         .first().now();
@@ -75,11 +83,11 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
   }
 
   /**
-   * {@inheritDoc}
+   * {@inheritDoc}.
    */
   @Override
   public TechGalleryUser findByNameAndEmail(String name, String email) {
-    Objectify objectify = OfyService.ofy();
+    final Objectify objectify = OfyService.ofy();
     TechGalleryUser entity = null;
     entity = objectify.load().type(TechGalleryUser.class).filter(TechGalleryUser.EMAIL, email)
         .filter(TechGalleryUser.NAME, name).first().now();

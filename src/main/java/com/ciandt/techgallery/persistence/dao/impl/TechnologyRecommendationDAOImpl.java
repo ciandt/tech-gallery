@@ -29,6 +29,14 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
    */
   private TechnologyRecommendationDAOImpl() {}
 
+  /**
+   * Singleton method for the DAO.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 08/10/2015
+   *
+   * @return TechnologyRecommendationDAOImpl instance.
+   */
   public static TechnologyRecommendationDAOImpl getInstance() {
     if (instance == null) {
       instance = new TechnologyRecommendationDAOImpl();
@@ -38,8 +46,8 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
 
   @Override
   public List<TechnologyRecommendation> findAllActivesByTechnology(Technology technology) {
-    Objectify objectify = OfyService.ofy();
-    List<TechnologyRecommendation> recommendations =
+    final Objectify objectify = OfyService.ofy();
+    final List<TechnologyRecommendation> recommendations =
         objectify.load().type(TechnologyRecommendation.class)
             .filter(TechnologyRecommendation.TECHNOLOGY, Ref.create(technology))
             .filter(TechnologyRecommendation.ACTIVE, Boolean.TRUE).list();
@@ -50,8 +58,8 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
   @Override
   public TechnologyRecommendation findActiveByRecommenderAndTechnology(TechGalleryUser tgUser,
       Technology technology) {
-    Objectify objectify = OfyService.ofy();
-    List<TechnologyRecommendation> recommendations =
+    final Objectify objectify = OfyService.ofy();
+    final List<TechnologyRecommendation> recommendations =
         objectify.load().type(TechnologyRecommendation.class)
             .filter(TechnologyRecommendation.TECHNOLOGY, Ref.create(technology))
             .filter(TechnologyRecommendation.ACTIVE, Boolean.TRUE)
@@ -65,8 +73,8 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
 
   @Override
   public TechnologyRecommendation findByComment(TechnologyComment comment) {
-    Objectify objectify = OfyService.ofy();
-    List<TechnologyRecommendation> recommendations =
+    final Objectify objectify = OfyService.ofy();
+    final List<TechnologyRecommendation> recommendations =
         objectify.load().type(TechnologyRecommendation.class)
             .filter(TechnologyRecommendation.COMMENT, Ref.create(comment)).list();
     if (recommendations == null || recommendations.isEmpty()) {
