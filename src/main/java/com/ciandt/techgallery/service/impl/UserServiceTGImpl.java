@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -240,7 +241,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * GET for getting an user by its login.
-   * 
+   *
    * @param login the user's login
    * @return the user found
    */
@@ -350,8 +351,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   @SuppressWarnings("resource")
-  private static String convertStreamToString(java.io.InputStream is) {
-    java.util.Scanner scanner = new java.util.Scanner(is).useDelimiter("\\A");
+  private static String convertStreamToString(InputStream is) {
+    Scanner scanner = new Scanner(is).useDelimiter("\\A");
     return scanner.hasNext() ? scanner.next() : "";
   }
 
