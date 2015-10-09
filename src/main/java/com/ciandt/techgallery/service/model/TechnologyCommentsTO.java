@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
+
 import java.util.List;
 
 /**
@@ -10,13 +12,13 @@ import java.util.List;
  */
 public class TechnologyCommentsTO implements Response {
 
-  List<TechnologyCommentTO> comments;
+  List<TechnologyComment> comments;
 
-  public List<TechnologyCommentTO> getComments() {
+  public List<TechnologyComment> getComments() {
     return comments;
   }
 
-  public void setComments(List<TechnologyCommentTO> comments) {
+  public void setComments(List<TechnologyComment> comments) {
     this.comments = comments;
   }
 

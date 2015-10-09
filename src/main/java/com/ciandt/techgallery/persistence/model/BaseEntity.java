@@ -1,8 +1,8 @@
 package com.ciandt.techgallery.persistence.model;
 
-import java.util.Date;
-
 import com.googlecode.objectify.annotation.Unindex;
+
+import java.util.Date;
 
 /**
  * BaseEntity entity.

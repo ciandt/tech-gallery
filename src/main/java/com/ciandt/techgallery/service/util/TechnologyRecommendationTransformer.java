@@ -1,33 +1,44 @@
 package com.ciandt.techgallery.service.util;
 
 import com.google.api.server.spi.config.Transformer;
-import com.google.api.server.spi.response.NotFoundException;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
 
 public class TechnologyRecommendationTransformer
     implements Transformer<TechnologyRecommendation, TechnologyRecommendationTO> {
 
-  private TechnologyCommentConverter commentConverter = new TechnologyCommentConverter();
-  private TechnologyTransformer techTransformer = new TechnologyTransformer();
-  private TechGalleryUserTransformer tgUserTransformer = new TechGalleryUserTransformer();
-
   @Override
   public TechnologyRecommendation transformFrom(TechnologyRecommendationTO arg0) {
     if (arg0.getActive() == null || arg0.getActive() == true) {
       TechnologyRecommendation product = new TechnologyRecommendation();
-      try {
-        product.setComment(Ref.create(commentConverter.fromTransientToEntity(arg0.getComment())));
-      } catch (NotFoundException e) {
+      product.setActive(true);
+      product.setScore(arg0.getScore());
+      if (arg0.getComment() != null) {
+        Key<TechnologyComment> commentKey =
+            Key.create(TechnologyComment.class, arg0.getComment().getId());
+        product.setComment(Ref.create(commentKey));
+      } else {
         product.setComment(null);
       }
-      product.setActive(arg0.getActive());
-      product.setScore(arg0.getScore());
-      product.setTechnology(Ref.create(techTransformer.transformFrom(arg0.getTechnology())));
-      product.setRecommender(Ref.create(tgUserTransformer.transformFrom(arg0.getRecommender())));
+      if (arg0.getTechnology() != null) {
+        Key<Technology> technologyKey = Key.create(Technology.class, arg0.getTechnology().getId());
+        product.setTechnology(Ref.create(technologyKey));
+      } else {
+        product.setTechnology(null);
+      }
+      if (arg0.getRecommender() != null) {
+        Key<TechGalleryUser> tgUserKey = Key.create(arg0.getRecommender().getEmail());
+        product.setRecommender(Ref.create(tgUserKey));
+      } else {
+        product.setRecommender(null);
+      }
       return product;
     } else {
       return null;
@@ -38,11 +49,11 @@ public class TechnologyRecommendationTransformer
   public TechnologyRecommendationTO transformTo(TechnologyRecommendation arg0) {
     if (arg0.getActive()) {
       TechnologyRecommendationTO product = new TechnologyRecommendationTO();
-      product.setComment(TechnologyCommentConverter.fromEntityToTransient(arg0.getComment().get()));
+      product.setComment(arg0.getComment().get());
       product.setActive(arg0.getActive());
       product.setScore(arg0.getScore());
-      product.setTechnology(techTransformer.transformTo(arg0.getTechnology().get()));
-      product.setRecommender(tgUserTransformer.transformTo(arg0.getRecommender().get()));
+      product.setTechnology(arg0.getTechnology().get());
+      product.setRecommender(arg0.getRecommender().get());
       return product;
     } else {
       return null;
