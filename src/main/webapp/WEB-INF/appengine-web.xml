@@ -3,10 +3,6 @@
 	<application>tech-gallery</application>
 	<version>${app.version}</version>
 	<threadsafe>true</threadsafe>
-	<basic-scaling>
-		<max-instances>5</max-instances>
-		<idle-timeout>10m</idle-timeout>
-	</basic-scaling>
 	<system-properties>
 		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
 	</system-properties>

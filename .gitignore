@@ -9,3 +9,4 @@ src/main/webapp/node/*
 src/main/webapp/node_modules/*
 resources/people_basic_auth.txt
 src/main/webapp/WEB-INF/*.api
+/bin/
