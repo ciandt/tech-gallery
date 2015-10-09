@@ -9,16 +9,13 @@ import com.google.appengine.api.users.User;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologyCommentTO;
-import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
 
 public interface TechnologyRecommendationCommentService {
 
   /**
    * Receives a wrapper which encapsulates a recommendation and a comment for a technology, verifies
    * if the comment is valid and saves them associated associated.
-   * 
+   *
    * @param recommendationTo the recommendation
    * @param commentTo the comment
    * @param technology the technology

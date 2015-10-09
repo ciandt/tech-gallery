@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * Test for the EndorsementService.
- * 
+ *
  * @author Daniel Eduardo
  */
 public class EndorsementServiceTest {
@@ -53,6 +53,9 @@ public class EndorsementServiceTest {
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
+  /**
+   * Setup method for the test.
+   */
   @Before
   public void setUp() {
     helper.setUp();

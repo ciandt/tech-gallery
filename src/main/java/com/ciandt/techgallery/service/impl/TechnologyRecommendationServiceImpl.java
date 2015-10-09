@@ -40,18 +40,19 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    */
   private static TechnologyRecommendationServiceImpl instance;
 
-  private TechnologyRecommendationDAO technologyRecommendationDAO =
+  private final TechnologyRecommendationDAO technologyRecommendationDAO =
       TechnologyRecommendationDAOImpl.getInstance();
-  private TechnologyService technologyService = TechnologyServiceImpl.getInstance();
-  private TechnologyRecommendationTransformer techRecTransformer =
+  private final TechnologyService technologyService = TechnologyServiceImpl.getInstance();
+  private final TechnologyRecommendationTransformer techRecTransformer =
       new TechnologyRecommendationTransformer();
-  private UserServiceTG userService = UserServiceTGImpl.getInstance();
-  private TechGalleryUserTransformer userTransformer = new TechGalleryUserTransformer();
+  private final UserServiceTG userService = UserServiceTGImpl.getInstance();
+  private final TechGalleryUserTransformer userTransformer = new TechGalleryUserTransformer();
 
   /*
    * Constructors --------------------------------------------
    */
   private TechnologyRecommendationServiceImpl() {}
+
   /**
    * Singleton method for the service.
    *
@@ -74,17 +75,17 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   public TechnologyRecommendation addRecommendation(TechnologyRecommendation recommendation,
       User user) throws BadRequestException {
     try {
-      TechGalleryUser tgUser = userService.getUserByEmail(user.getEmail());
+      final TechGalleryUser tgUser = userService.getUserByEmail(user.getEmail());
       recommendation.setRecommender(Ref.create(tgUser));
       return addNewRecommendation(recommendation, tgUser);
-    } catch (NotFoundException e) {
+    } catch (final NotFoundException e) {
       throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
 
   /**
    * Adds a new recommendation to the datastore, invalidates the previous one.
-   * 
+   *
    * @param recommendation the recommendation to be added
    * @param technology the technology for which the recommendation was made
    * @param tgUser the user who made the recommendation
@@ -94,10 +95,10 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
       TechGalleryUser tgUser) {
     recommendation.setActive(true);
     recommendation.setRecommender(Ref.create(tgUser));
-    TechnologyRecommendation previousRec = technologyRecommendationDAO
+    final TechnologyRecommendation previousRec = technologyRecommendationDAO
         .findActiveByRecommenderAndTechnology(tgUser, recommendation.getTechnology().get());
 
-    Technology technology = recommendation.getTechnology().get();
+    final Technology technology = recommendation.getTechnology().get();
     // Inactivate previous recommendation
     if (previousRec != null) {
       previousRec.setActive(false);
@@ -115,13 +116,13 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     Technology technology;
     try {
       technology = technologyService.getTechnologyById(technologyId);
-    } catch (NotFoundException e) {
+    } catch (final NotFoundException e) {
       return null;
     }
-    List<TechnologyRecommendation> recommendations =
+    final List<TechnologyRecommendation> recommendations =
         technologyRecommendationDAO.findAllActivesByTechnology(technology);
-    List<Response> recommendationTOs = new ArrayList<Response>();
-    for (TechnologyRecommendation recommendation : recommendations) {
+    final List<Response> recommendationTOs = new ArrayList<Response>();
+    for (final TechnologyRecommendation recommendation : recommendations) {
       recommendationTOs.add(techRecTransformer.transformTo(recommendation));
     }
     return recommendationTOs;
@@ -158,9 +159,10 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    */
   private List<Response> getRecommendationsByTechnologyUserAndScore(String technologyId, User user,
       Boolean score) {
-    List<Response> recommendationsUpTO = new ArrayList<Response>();
-    for (Response recommendation : getRecommendations(technologyId, user)) {
-      TechnologyRecommendationTO recommendationTO = (TechnologyRecommendationTO) recommendation;
+    final List<Response> recommendationsUpTO = new ArrayList<Response>();
+    for (final Response recommendation : getRecommendations(technologyId, user)) {
+      final TechnologyRecommendationTO recommendationTO =
+          (TechnologyRecommendationTO) recommendation;
       if (recommendationTO.getScore().equals(score)) {
         recommendationsUpTO.add(recommendationTO);
       }
@@ -171,8 +173,9 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   @Override
   public Response deleteRecommendById(Long recommendId, User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
-    TechnologyRecommendation recommendation = technologyRecommendationDAO.findById(recommendId);
-    TechGalleryUser techUser = userService.getUserByEmail(user.getEmail());
+    final TechnologyRecommendation recommendation =
+        technologyRecommendationDAO.findById(recommendId);
+    final TechGalleryUser techUser = userService.getUserByEmail(user.getEmail());
 
     validateDeletion(recommendId, recommendation, user, techUser);
 
@@ -196,7 +199,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    *
    * @throws BadRequestException in case the params are not correct
    * @throws InternalServerErrorException in case of internal error
-   * @throws NotFoundException
+   * @throws NotFoundException in case the information are not founded
    */
   private void validateDeletion(Long recommendId, TechnologyRecommendation recommendation,
       User user, TechGalleryUser techUser)

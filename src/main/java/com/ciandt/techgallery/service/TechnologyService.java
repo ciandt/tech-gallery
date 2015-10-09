@@ -8,13 +8,12 @@ import com.google.appengine.api.users.User;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
-import com.ciandt.techgallery.service.model.TechnologyResponse;
 
 import java.util.List;
 
 /**
  * Services for Technologies.
- * 
+ *
  * @author felipers
  *
  */
@@ -22,7 +21,7 @@ public interface TechnologyService {
 
   /**
    * Service for adding a technology.
-   * 
+   *
    * @param technology json with technology info.
    * @return technology info or message error.
    * @throws InternalServerErrorException .
@@ -33,7 +32,7 @@ public interface TechnologyService {
 
   /**
    * Service for getting all technologies.
-   * 
+   *
    * @return technologies info or message error.
    * @throws NotFoundException .
    * @throws InternalServerErrorException .
@@ -43,7 +42,7 @@ public interface TechnologyService {
 
   /**
    * Service for getting a technology response.
-   * 
+   *
    * @param id entity id.
    * @return .
    * @throws NotFoundException .
@@ -52,7 +51,7 @@ public interface TechnologyService {
 
   /**
    * Service for getting all technologies according a filter.
-   * 
+   *
    * @param filter entity filter.
    * @return technologies info or message error.
    * @throws InternalServerErrorException .
@@ -63,7 +62,7 @@ public interface TechnologyService {
 
   /**
    * Service for getting a technology
-   * 
+   *
    * @param id entity id
    * @return .
    * @throws NotFoundException when entity is not found

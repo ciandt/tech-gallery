@@ -65,7 +65,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * For singleton
-   * 
+   *
    * @return the current instance, if it exists. The recently created instance, if not.
    */
   /**
@@ -116,7 +116,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * Gets a TechGalleryUser by id.
-   * 
+   *
    * @param id the user's id
    * @throws NotFoundException if the user is not found
    */
@@ -133,7 +133,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * Adds a new user to Tech Gallery.
-   * 
+   *
    * @param user the TechGallery user to be added
    * @return added user
    * @throws BadRequestException when the user email parameter is missing
@@ -152,7 +152,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    * This method should be executed whenever a user logs in It check whether the user exists on TG's
    * datastore and create them, if not. It also checks if the user's email has been changed and
    * update it, in case it was changed.
-   * 
+   *
    * @param user A Google AppEngine API user
    * @return A response with the user data as it is on TG datastore
    *
@@ -194,7 +194,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * Updates current Tech Gallery user information with user data found on Google.
-   * 
+   *
    * @param user Google user
    * @param person Google Plus person information
    * @param tgUser Tech Gallery user
@@ -224,7 +224,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * Updates a user, with validation.
-   * 
+   *
    * @throws BadRequestException in case of a missing parameter
    * @return the updated user
    */
@@ -240,6 +240,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * GET for getting an user by its login.
+   * 
    * @param login the user's login
    * @return the user found
    */
@@ -255,13 +256,12 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * Finds a TechGalleryUser by his/her email.
-   * 
+   *
    * @param email the user's email
    * @throws NotFoundException if the user is not found
    */
   @Override
-  public TechGalleryUser getUserByEmail(final String email)
-      throws NotFoundException {
+  public TechGalleryUser getUserByEmail(final String email) throws NotFoundException {
     TechGalleryUser tgUser = userDao.findByEmail(email);
     if (tgUser == null) {
       throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
@@ -273,10 +273,9 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists, adds to
    * TG's datastore (if not there). Returns the user.
-   * 
+   *
    * @param userLogin userLogin
    * @return the user saved on the datastore
-   * @throws BadRequestException 
    * @throws InternalServerErrorException in case something goes wrong
    * @throws NotFoundException in case the information are not founded
    * @throws BadRequestException in case a request with problem were made.
@@ -300,7 +299,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * GET Calls the provider API passing a login to obtain user information.
-   * 
+   *
    * @param userlogin the user login to pass to the provider API
    * @throws NotFoundException in case the user is not found on provider
    * @throws BadRequestException in case of JSON or URL error
@@ -358,7 +357,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
   /**
    * Validates user data.
-   * 
+   *
    * @param user the TechGalleryUser entity
    * @return true if data is valid, false otherwise
    */

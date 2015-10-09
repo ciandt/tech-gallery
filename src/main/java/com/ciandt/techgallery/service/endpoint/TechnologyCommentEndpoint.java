@@ -14,11 +14,10 @@ import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.TechnologyCommentService;
 import com.ciandt.techgallery.service.impl.TechnologyCommentServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 
 /**
  * Endpoint controller class for Technology Comment requests.
- * 
+ *
  * @author Felipe Ibrahim
  *
  */
@@ -31,7 +30,7 @@ public class TechnologyCommentEndpoint {
 
   /**
    * Endpoint for adding a Comment.
-   * 
+   *
    * @param json with Comment info.
    * @param user oauth user.
    * @return added commentary
@@ -47,7 +46,7 @@ public class TechnologyCommentEndpoint {
 
   /**
    * Endpoint for show Active Comments.
-   * 
+   *
    * @param json with Comment info.
    * @param user oauth user.
    * @return List of Commentaries
@@ -64,7 +63,7 @@ public class TechnologyCommentEndpoint {
 
   /**
    * Endpoint to delete a comment.
-   * 
+   *
    * @param Id of a comment.
    * @param user oauth user.
    * @return deleted comment

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Services for Users.
- * 
+ *
  * @author felipers
  *
  */
@@ -23,7 +23,7 @@ public interface UserServiceTG {
 
   /**
    * Service for getting all users.
-   * 
+   *
    * @return users info or message error.
    * @throws NotFoundException in case the information is not found
    */
@@ -31,16 +31,16 @@ public interface UserServiceTG {
 
   /**
    * Service for getting one user.
-   * 
+   *
    * @param id entity id.
    * @return user info or message error.
-   * @throws NotFoundException
+   * @throws NotFoundException in case the information are not founded
    */
   TechGalleryUser getUser(final Long id) throws NotFoundException;
 
   /**
    * Service for adding a user.
-   * 
+   *
    * @param user json with user info.
    * @return user info or message error.
    * @throws BadRequestException in case a request with problem were made.
@@ -49,7 +49,7 @@ public interface UserServiceTG {
 
   /**
    * Service for updating a user.
-   * 
+   *
    * @param user json with user info.
    * @return user info or message error.
    * @throws BadRequestException in case a request with problem were made.
@@ -58,16 +58,16 @@ public interface UserServiceTG {
 
   /**
    * Service for getting an User by its Login.
-   * 
+   *
    * @param id entity id.
-   * @return
-   * @throws NotFoundException
+   * @return user by his login
+   * @throws NotFoundException in case the information are not founded
    */
   TechGalleryUser getUserByLogin(final String user) throws NotFoundException;
 
   /**
    * Service for getting an User from an external provider by its Login.
-   * 
+   *
    * @param id entity id.
    * @return user
    * @throws InternalServerErrorException in case something goes wrong
@@ -79,7 +79,7 @@ public interface UserServiceTG {
 
   /**
    * Service for getting an User from a external provider by googleId.
-   * 
+   *
    * @param googleId User´s google id
    * @return user
    * @throws InternalServerErrorException in case something goes wrong
@@ -91,7 +91,7 @@ public interface UserServiceTG {
 
   /**
    * Finds a TechGalleryUser by his/her email.
-   * 
+   *
    * @param email the user's email
    * @throws NotFoundException if the user is not found
    */
@@ -100,10 +100,10 @@ public interface UserServiceTG {
   /**
    * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists, adds to
    * TG's datastore (if not there). Returns the user.
-   * 
+   *
    * @param userLogin userLogin
    * @return the user saved on the datastore
-   * @throws BadRequestException 
+   * @throws BadRequestException in case a request with problem were made.
    */
   TechGalleryUser getUserSyncedWithProvider(String userLogin)
       throws NotFoundException, InternalServerErrorException, BadRequestException;
@@ -112,7 +112,7 @@ public interface UserServiceTG {
    * This method should be executed whenever a user logs in It check whether the user exists on TG's
    * datastore and create them, if not. It also checks if the user's email has been changed and
    * update it, in case it was changed.
-   * 
+   *
    * @param user A Google AppEngine API user
    * @return A response with the user data as it is on TG datastore
    */

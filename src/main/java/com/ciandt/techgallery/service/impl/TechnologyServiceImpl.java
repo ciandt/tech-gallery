@@ -17,8 +17,6 @@ import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
-import com.ciandt.techgallery.service.model.TechnologyResponse;
-import com.ciandt.techgallery.service.util.TechnologyConverter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +36,7 @@ public class TechnologyServiceImpl implements TechnologyService {
    */
   private static TechnologyServiceImpl instance;
 
-  /** tech gallery user service */
+  /** tech gallery user service. */
   UserServiceTG userService = UserServiceTGImpl.getInstance();
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
 
@@ -90,7 +88,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   /**
    * GET for getting all technologies.
-   * 
+   *
    * @throws NotFoundException .
    */
   @Override

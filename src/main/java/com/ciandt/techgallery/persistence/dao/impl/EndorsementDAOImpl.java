@@ -18,7 +18,8 @@ import java.util.List;
  * @author Felipe Goncalves de Castro
  *
  */
-public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>implements EndorsementDAO {
+public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>
+    implements EndorsementDAO {
 
   private static EndorsementDAOImpl instance;
 
