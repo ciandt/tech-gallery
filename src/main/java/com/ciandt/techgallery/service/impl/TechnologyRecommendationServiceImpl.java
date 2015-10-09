@@ -19,7 +19,6 @@ import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
-import com.ciandt.techgallery.service.util.TechGalleryUserTransformer;
 import com.ciandt.techgallery.service.util.TechnologyRecommendationTransformer;
 
 import java.util.ArrayList;
@@ -46,7 +45,6 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   private final TechnologyRecommendationTransformer techRecTransformer =
       new TechnologyRecommendationTransformer();
   private final UserServiceTG userService = UserServiceTGImpl.getInstance();
-  private final TechGalleryUserTransformer userTransformer = new TechGalleryUserTransformer();
 
   /*
    * Constructors --------------------------------------------
