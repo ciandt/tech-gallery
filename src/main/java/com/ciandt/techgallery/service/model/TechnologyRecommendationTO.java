@@ -1,5 +1,9 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
+
 /**
  * Transient object representing a technology recommendation.
  * 
@@ -12,13 +16,13 @@ public class TechnologyRecommendationTO implements Response {
 
   private Boolean score;
 
-  private TechnologyCommentTO comment;
+  private TechnologyComment comment;
 
   private Boolean active;
 
-  private UserResponse recommender;
+  private TechGalleryUser recommender;
 
-  private TechnologyResponse technology;
+  private Technology technology;
 
   public Boolean getScore() {
     return score;
@@ -28,11 +32,11 @@ public class TechnologyRecommendationTO implements Response {
     this.score = score;
   }
 
-  public TechnologyCommentTO getComment() {
+  public TechnologyComment getComment() {
     return comment;
   }
 
-  public void setComment(TechnologyCommentTO comment) {
+  public void setComment(TechnologyComment comment) {
     this.comment = comment;
   }
 
@@ -44,19 +48,19 @@ public class TechnologyRecommendationTO implements Response {
     this.active = active;
   }
 
-  public UserResponse getRecommender() {
+  public TechGalleryUser getRecommender() {
     return recommender;
   }
 
-  public void setRecommender(UserResponse recommender) {
+  public void setRecommender(TechGalleryUser recommender) {
     this.recommender = recommender;
   }
 
-  public TechnologyResponse getTechnology() {
+  public Technology getTechnology() {
     return technology;
   }
 
-  public void setTechnology(TechnologyResponse technology) {
+  public void setTechnology(Technology technology) {
     this.technology = technology;
   }
 

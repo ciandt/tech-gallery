@@ -1,7 +1,6 @@
 package com.ciandt.techgallery.service.model;
 
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.sample.service.model.Response;
 
 import java.util.Comparator;
 import java.util.List;
@@ -12,8 +11,8 @@ import java.util.List;
  * @author Daniel Eduardo
  *
  */
-public class EndorsementsGroupedByEndorsedTransient extends Response
-    implements Comparator<EndorsementsGroupedByEndorsedTransient> {
+public class EndorsementsGroupedByEndorsedTransient
+    implements Response, Comparator<EndorsementsGroupedByEndorsedTransient> {
 
   TechGalleryUser endorsed;
 

@@ -10,7 +10,7 @@ public class UserResponse implements Response {
 
   /** user id. */
   private Long id;
-  /** user name */
+  /** user name. */
   private String name;
   /** user email. */
   private String email;
