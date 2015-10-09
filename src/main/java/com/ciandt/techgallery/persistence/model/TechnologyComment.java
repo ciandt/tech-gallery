@@ -1,11 +1,15 @@
 package com.ciandt.techgallery.persistence.model;
 
+import com.google.api.server.spi.config.ApiTransformer;
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
+
+import com.ciandt.techgallery.service.util.TechnologyCommentTransformer;
 
 import java.util.Date;
 
@@ -17,7 +21,15 @@ import java.util.Date;
  * 
  */
 @Entity
+@ApiTransformer(TechnologyCommentTransformer.class)
 public class TechnologyComment extends BaseEntity<Long> {
+
+  public static final String ID = "";
+  public static final String COMMENT = "comment";
+  public static final String TECHNOLOGY = "technology";
+  public static final String AUTHOR = "author";
+  public static final String TIMESTAMP = "timestamp";
+  public static final String ACTIVE = "active";
 
   /*
    * Attributes --------------------------------------------
@@ -49,6 +61,14 @@ public class TechnologyComment extends BaseEntity<Long> {
 
   }
 
+  /**
+   * Construct for TechnologyComment.
+   * @param comment text of the commentary
+   * @param technology commented technology
+   * @param author author of the commentary
+   * @param timestamp when the commentary was done
+   * @param active true if the comentary is active 
+   */
   public TechnologyComment(String comment, Technology technology, TechGalleryUser author,
       Date timestamp, Boolean active) {
     super();

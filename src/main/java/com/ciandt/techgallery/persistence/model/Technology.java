@@ -1,9 +1,13 @@
 package com.ciandt.techgallery.persistence.model;
 
+import com.google.api.server.spi.config.ApiTransformer;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
+
+import com.ciandt.techgallery.service.util.TechnologyTransformer;
 
 /**
  * Technology entity.
@@ -12,6 +16,7 @@ import com.googlecode.objectify.annotation.Unindex;
  *
  */
 @Entity
+@ApiTransformer(TechnologyTransformer.class)
 public class Technology extends BaseEntity<String> {
 
   @Id
@@ -38,6 +43,18 @@ public class Technology extends BaseEntity<String> {
   /** company recommendation info. */
   @Unindex
   private String recommendation;
+
+  @Index
+  private Integer positiveRecomendationsCounter;
+
+  @Index
+  private Integer negativeRecomendationsCounter;
+
+  @Index
+  private Integer commentariesCounter;
+
+  @Index
+  private Integer endorsedsCounter;
 
   @Override
   public String getId() {
@@ -105,4 +122,99 @@ public class Technology extends BaseEntity<String> {
     this.recommendation = recommendation;
   }
 
+  public Integer getPositiveRecomendationsCounter() {
+    return positiveRecomendationsCounter;
+  }
+
+  public void setPositiveRecomendationsCounter(Integer positiveRecomendationsCounter) {
+    this.positiveRecomendationsCounter = positiveRecomendationsCounter;
+  }
+
+  public Integer getNegativeRecomendationsCounter() {
+    return negativeRecomendationsCounter;
+  }
+
+  public void setNegativeRecomendationsCounter(Integer negativeRecomendationsCounter) {
+    this.negativeRecomendationsCounter = negativeRecomendationsCounter;
+  }
+
+  public Integer getCommentariesCounter() {
+    return commentariesCounter;
+  }
+
+  public void setCommentariesCounter(Integer commentariesCounter) {
+    this.commentariesCounter = commentariesCounter;
+  }
+
+  public Integer getEndorsedsCounter() {
+    return endorsedsCounter;
+  }
+
+  public void setEndorsedsCounter(Integer endorsedsCounter) {
+    this.endorsedsCounter = endorsedsCounter;
+  }
+
+  /**
+   * Add 1 to the positive recomndations counter.
+   */
+  public void addPositiveRecomendationsCounter() {
+    this.positiveRecomendationsCounter++;
+  }
+
+  /**
+   * Remove 1 to the positive recomndations counter.
+   */
+  public void removePositiveRecomendationsCounter() {
+    if (this.positiveRecomendationsCounter > 0) {
+      this.positiveRecomendationsCounter--;
+    } else {
+      this.positiveRecomendationsCounter = 0;
+    }
+  }
+
+  /**
+   * Add 1 to the negative recomndations counter.
+   */
+  public void addNegativeRecomendationsCounter() {
+    this.negativeRecomendationsCounter++;
+  }
+
+  /**
+   * Remove 1 to the negative recomndations counter.
+   */
+  public void removeNegativeRecomendationsCounter() {
+    if (this.negativeRecomendationsCounter > 0) {
+      this.negativeRecomendationsCounter--;
+    } else {
+      this.negativeRecomendationsCounter = 0;
+    }
+  }
+
+  /**
+   * Add 1 to the commentary counter.
+   */
+  public void addCommentariesCounter() {
+    this.commentariesCounter++;
+  }
+
+  /**
+   * Remove 1 to the commentary counter.
+   */
+  public void removeCommentariesCounter() {
+    if (this.commentariesCounter > 0) {
+      this.commentariesCounter--;
+    } else {
+      this.commentariesCounter = 0;
+    }
+  }
+
+  /**
+   * Initialize the technology counters.
+   */
+  public void initCounters() {
+    this.commentariesCounter = 0;
+    this.endorsedsCounter = 0;
+    this.negativeRecomendationsCounter = 0;
+    this.positiveRecomendationsCounter = 0;
+  }
 }

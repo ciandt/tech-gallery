@@ -1,11 +1,15 @@
 package com.ciandt.techgallery.persistence.model;
 
+import com.google.api.server.spi.config.ApiTransformer;
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
+
+import com.ciandt.techgallery.service.util.TechnologyRecommendationTransformer;
 
 /**
  * Class of Technology Recommendation
@@ -15,7 +19,15 @@ import com.googlecode.objectify.annotation.Unindex;
  *
  */
 @Entity
+@ApiTransformer(TechnologyRecommendationTransformer.class)
 public class TechnologyRecommendation extends BaseEntity<Long> {
+
+  public static final String ID = "id";
+  public static final String SCORE = "score";
+  public static final String COMMENT = "comment";
+  public static final String ACTIVE = "active";
+  public static final String RECOMMENDER = "recommender";
+  public static final String TECHNOLOGY = "technology";
 
   /*
    * Attributes --------------------------------------------
@@ -48,6 +60,15 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
 
   }
 
+  /**
+   * Construct for TechnologyRecommendation.
+   * 
+   * @param score recommendation score: true = positive, false = negative
+   * @param comment the comment associated with the recommendation
+   * @param active whether the recommendation is active or not
+   * @param recommender the user who recommended the technology
+   * @param technology the technology recommended
+   */
   public TechnologyRecommendation(Boolean score, TechnologyComment comment, Boolean active,
       TechGalleryUser recommender, Technology technology) {
     super();
@@ -63,7 +84,7 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
    */
   @Override
   public Long getId() {
-    return this.id;
+    return id;
   }
 
   @Override

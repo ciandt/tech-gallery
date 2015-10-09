@@ -8,13 +8,12 @@ import com.google.appengine.api.users.User;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
-import com.ciandt.techgallery.service.model.TechnologyResponse;
 
 import java.util.List;
 
 /**
  * Services for Technologies.
- * 
+ *
  * @author felipers
  *
  */
@@ -22,18 +21,18 @@ public interface TechnologyService {
 
   /**
    * Service for adding a technology.
-   * 
+   *
    * @param technology json with technology info.
    * @return technology info or message error.
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
    */
-  public Response addTechnology(final TechnologyResponse technology)
+  Technology addTechnology(final Technology technology)
       throws InternalServerErrorException, BadRequestException;
 
   /**
    * Service for getting all technologies.
-   * 
+   *
    * @return technologies info or message error.
    * @throws NotFoundException .
    * @throws InternalServerErrorException .
@@ -43,16 +42,16 @@ public interface TechnologyService {
 
   /**
    * Service for getting a technology response.
-   * 
+   *
    * @param id entity id.
    * @return .
    * @throws NotFoundException .
    */
-  Response getTechnology(final String id) throws NotFoundException;
+  Technology getTechnology(final String id) throws NotFoundException;
 
   /**
    * Service for getting all technologies according a filter.
-   * 
+   *
    * @param filter entity filter.
    * @return technologies info or message error.
    * @throws InternalServerErrorException .
@@ -63,7 +62,7 @@ public interface TechnologyService {
 
   /**
    * Service for getting a technology
-   * 
+   *
    * @param id entity id
    * @return .
    * @throws NotFoundException when entity is not found
@@ -72,4 +71,13 @@ public interface TechnologyService {
 
   List<String> getOrderOptions(User user);
 
+  void addCommentariesCounter(Technology technology);
+
+  void removeCommentariesCounter(Technology technology);
+
+  void addRecomendationCounter(Technology technology, Boolean score);
+
+  void removeRecomendationCounter(Technology technology, Boolean score);
+
+  void updateEdorsedsCounter(Technology technology, Integer size);
 }

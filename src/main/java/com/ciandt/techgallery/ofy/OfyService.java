@@ -10,12 +10,6 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
-import com.ciandt.techgallery.persistence.model.counter.TechnologyDetailsCounter;
-import com.ciandt.techgallery.sample.persistence.model.Card;
-import com.ciandt.techgallery.sample.persistence.model.RecommendationSample;
-import com.ciandt.techgallery.sample.persistence.model.Sample;
-import com.ciandt.techgallery.sample.persistence.model.TechnologySample;
-import com.ciandt.techgallery.sample.persistence.model.UserGroup;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -31,17 +25,9 @@ public class OfyService implements ServletContextListener {
   /** Define all entities first. */
   static {
     ObjectifyService.register(Technology.class);
-    ObjectifyService.register(TechnologyDetailsCounter.class);
     ObjectifyService.register(Endorsement.class);
     ObjectifyService.register(TechGalleryUser.class);
     ObjectifyService.register(Skill.class);
-    // @TODO improve how to separate the samples' registers from the production's registers
-    // Samples of registers
-    ObjectifyService.register(UserGroup.class);
-    ObjectifyService.register(Card.class);
-    ObjectifyService.register(TechnologySample.class);
-    ObjectifyService.register(RecommendationSample.class);
-    ObjectifyService.register(Sample.class);
     ObjectifyService.register(TechnologyComment.class);
     ObjectifyService.register(TechnologyRecommendation.class);
 
@@ -71,9 +57,7 @@ public class OfyService implements ServletContextListener {
    * Context destroyed for http servlet.
    */
   @Override
-  public void contextDestroyed(ServletContextEvent arg0) {
-    // TODO Auto-generated method stub
-  }
+  public void contextDestroyed(ServletContextEvent arg0) {}
 
   /**
    * Context initialized for http servlet.
