@@ -164,9 +164,10 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
    * Validate comment of TechnologyCommentTO.
    *
    * @param comment id to be validate
+   * @throws NotFoundException
    * @throws BadRequestException .
    */
-  private void validateComment(Long commentId) throws BadRequestException {
+  private void validateComment(Long commentId) throws BadRequestException, NotFoundException {
 
     log.info("Validating the comment");
 
@@ -176,7 +177,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     TechnologyComment comment = technologyCommentDao.findById(commentId);
     if (comment == null) {
-      throw new BadRequestException(ValidationMessageEnums.COMMENT_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.COMMENT_NOT_EXIST.message());
     }
   }
 
@@ -185,11 +186,12 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
    *
    * @param id of technology
    * @throws BadRequestException in case a request with problem were made.
+   * @throws NotFoundException 
    */
-  private void validateTechnology(Technology technology) throws BadRequestException {
+  private void validateTechnology(Technology technology) throws BadRequestException, NotFoundException {
     log.info("Validating the technology");
     if (technology == null) {
-      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     }
   }
 
@@ -211,7 +213,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
 
     TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
     if (techUser == null) {
-      throw new BadRequestException(ValidationMessageEnums.USER_NOT_EXIST.message());
+      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
 

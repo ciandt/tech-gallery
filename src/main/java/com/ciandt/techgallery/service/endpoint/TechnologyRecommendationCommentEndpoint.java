@@ -23,6 +23,17 @@ public class TechnologyRecommendationCommentEndpoint {
   private TechnologyRecommendationCommentService service =
       TechnologyRecommendationCommentServiceImpl.getInstance();
 
+  /**
+   * Endpoint for adding a recomendation and comment.
+   * 
+   * @param recCommentTo transient objetc for recomendationComment
+   * @param user json with user informations
+   * @return recComment
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
+   */
   @ApiMethod(name = "addRecommendationComment", path = "recommendation-comment",
       httpMethod = "post")
   public TechnologyRecommendation addRecommendationComment(
@@ -32,6 +43,17 @@ public class TechnologyRecommendationCommentEndpoint {
         recCommentTo.getComment(), recCommentTo.getTechnology(), user);
   }
 
+  /**
+   * Endpoint for deleting a comment and recomendation.
+   * 
+   * @param recommendId recommendation Id
+   * @param commentId Commentary Id
+   * @param user User
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
+   */
   @ApiMethod(name = "deleteCommentAndRecommendation", path = "delete-recommendation-comment",
       httpMethod = "post")
   public void deleteCommentAndRecommendation(@Named("recommendId") Long recommendId,

@@ -52,7 +52,14 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * Constructors --------------------------------------------
    */
   private TechnologyRecommendationServiceImpl() {}
-
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 07/10/2015
+   *
+   * @return TechnologyRecommendationServiceImpl instance.
+   */
   public static TechnologyRecommendationServiceImpl getInstance() {
     if (instance == null) {
       instance = new TechnologyRecommendationServiceImpl();
@@ -189,6 +196,7 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    *
    * @throws BadRequestException in case the params are not correct
    * @throws InternalServerErrorException in case of internal error
+   * @throws NotFoundException
    */
   private void validateDeletion(Long recommendId, TechnologyRecommendation recommendation,
       User user, TechGalleryUser techUser)

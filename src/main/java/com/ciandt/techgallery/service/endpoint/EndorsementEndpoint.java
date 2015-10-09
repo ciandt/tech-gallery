@@ -33,11 +33,12 @@ public class EndorsementEndpoint {
    * Endpoint for adding or updating an Endorsement.
    * 
    * @param endorsement json with endorsement info.
-   * @return
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
-   * @throws NotFoundException
-   * @throws OAuthRequestException
+   * @param user Endorsement User
+   * @return endorsement
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "addEndorsement", path = "endorsement", httpMethod = "post")
   public Endorsement addEndorsement(EndorsementResponse endorsement, User user)
@@ -50,11 +51,12 @@ public class EndorsementEndpoint {
    * Endpoint for adding or updating an Endorsement through Plus One button.
    * 
    * @param endorsement json with endorsement info.
-   * @return
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
-   * @throws NotFoundException
-   * @throws OAuthRequestException
+   * @param user Endorsement User
+   * @return endorsement
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "addEndorsementPlusOne", path = "endorsementPlusOne", httpMethod = "post")
   public Endorsement addEndorsementPlusOne(EndorsementResponse endorsement, User user)
@@ -66,9 +68,9 @@ public class EndorsementEndpoint {
   /**
    * Endpoint for getting a list of Endorsements.
    * 
-   * @return
-   * @throws InternalServerErrorException
-   * @throws NotFoundException
+   * @return List of all Endorsements
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
    */
   @ApiMethod(name = "getEndorsements", path = "endorsement", httpMethod = "get")
   public Response getEndorsements() throws InternalServerErrorException, NotFoundException {
@@ -79,8 +81,8 @@ public class EndorsementEndpoint {
    * Endpoint for getting an Endorsement.
    * 
    * @param id entity id.
-   * @return
-   * @throws NotFoundException
+   * @return Endorsement
+   * @throws NotFoundException in case the information are not founded
    */
   @ApiMethod(name = "getEndorsement", path = "endorsement/{id}", httpMethod = "get")
   public Endorsement getEndorsement(@Named("id") Long id) throws NotFoundException {
@@ -91,11 +93,11 @@ public class EndorsementEndpoint {
    * Endpoint for getting all endorsements of a Technology.
    * 
    * @param id technology id.
-   * @return
-   * @throws NotFoundException
-   * @throws InternalServerErrorException
-   * @throws OAuthRequestException
-   * @throws BadRequestException
+   * @return List of endorsements
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws OAuthRequestException in case of authentication problem
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "getEndorsementsByTech", path = "endorsement/tech/{id}", httpMethod = "get")
   public Response getEndorsementsByTech(@Named("id") String id, User user) throws NotFoundException,

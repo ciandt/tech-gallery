@@ -33,10 +33,10 @@ public interface TechnologyRecommendationService {
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 25/09/2015
    *
-   * @param technologyId
-   * @param user
+   * @param technologyId Technology ID
+   * @param user User
    * 
-   * @return List<Response>
+   * @return List of Responses
    */
   List<Response> getRecommendationsUpByTechnologyAndUser(String technologyId, User user);
 
@@ -46,10 +46,10 @@ public interface TechnologyRecommendationService {
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 25/09/2015
    *
-   * @param technologyId
-   * @param user
+   * @param technologyId Technology ID
+   * @param user User
    * 
-   * @return List<Response>
+   * @return List of Responses
    */
   List<Response> getRecommendationsDownByTechnologyAndUser(String technologyId, User user);
 
@@ -59,13 +59,12 @@ public interface TechnologyRecommendationService {
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 28/09/2015
    *
-   * @param recommendId
-   * @param user
-   * @throws BadRequestException
-   * @throws NotFoundException
-   * @throws InternalServerErrorException
-   * 
+   * @param recommendId Recomendation ID.
+   * @param user Recomendation User.
    * @return Response
+   * @throws BadRequestException in case a request with problem were made.
+   * @throws NotFoundException in case the information are not founded
+   * @throws InternalServerErrorException in case something goes wrong
    */
   Response deleteRecommendById(Long recommendId, User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException;

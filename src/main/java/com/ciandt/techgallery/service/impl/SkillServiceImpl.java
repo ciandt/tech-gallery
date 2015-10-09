@@ -132,12 +132,7 @@ public class SkillServiceImpl implements SkillService {
     if (skill.getTechnology() == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     }
-    /*
-     * final Technology technology = techService.getTechnologyById(skill.getTechnology()); if
-     * (technology == null) { throw new
-     * BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message()); }
-     */
-
+    
   }
 
   private Skill addNewSkill(Skill skill, TechGalleryUser techUser, Technology technology) {

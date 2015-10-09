@@ -16,10 +16,11 @@ import java.util.List;
 public interface RecommendationService {
 
   /**
-   * Service for getting a list of possibles recommendations
+   * Service for getting a list of possibles recommendations.
    * 
-   * @return
+   * @return List of recomendations
    * @throws NotFoundException when entity is not found
+   * @throws InternalServerErrorException in case something goes wrong
    */
   List<String> getRecommendations(User user)
       throws NotFoundException, BadRequestException, InternalServerErrorException;

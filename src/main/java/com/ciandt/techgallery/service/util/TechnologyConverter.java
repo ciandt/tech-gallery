@@ -38,7 +38,7 @@ public class TechnologyConverter {
   /**
    * Transform a list of entity from datastore into list of response entity which is transient.
    * 
-   * @param list entity from datastore
+   * @param entities from datastore
    * @return list transient entity
    */
   public static List<TechnologyResponse> fromEntityToTransient(List<Technology> entities) {
@@ -54,7 +54,7 @@ public class TechnologyConverter {
   /**
    * Transform entity from response which is transient into datastore entity which can be persisted.
    * 
-   * @param transient entity
+   * @param transientObject entity
    * @return entity from datastore
    */
   public static Technology fromTransientToEntity(TechnologyResponse transientObject) {

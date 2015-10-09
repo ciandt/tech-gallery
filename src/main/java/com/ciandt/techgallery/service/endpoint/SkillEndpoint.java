@@ -32,10 +32,10 @@ public class SkillEndpoint {
    * 
    * @param json with skill info.
    * @param user oauth user.
-   * @return the skill added
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
-   * @throws NotFoundException
+   * @return added skill
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "addSkill", path = "skill", httpMethod = "post")
   public Skill addSkill(Skill skill, User user)

@@ -36,9 +36,9 @@ public class UserEndpoint {
    * Endpoint for adding a User.
    * 
    * @param user json with user info.
-   * @return
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
+   * @return added user
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "addUser", path = "user", httpMethod = "post")
   public TechGalleryUser addUser(TechGalleryUser user)
@@ -49,8 +49,8 @@ public class UserEndpoint {
   /**
    * Endpoint for getting a list of Users.
    * 
-   * @return
-   * @throws NotFoundException
+   * @return list of users
+   * @throws NotFoundException in case the information are not founded
    */
   @ApiMethod(name = "getUsers", path = "user", httpMethod = "get")
   public Response getUsers() throws NotFoundException {
@@ -61,8 +61,8 @@ public class UserEndpoint {
    * Endpoint for getting a User.
    * 
    * @param id entity id.
-   * @return
-   * @throws NotFoundException
+   * @return User
+   * @throws NotFoundException in case the information are not founded
    */
   @ApiMethod(name = "getUser", path = "user/{id}", httpMethod = "get")
   public TechGalleryUser getUser(@Named("id") Long id) throws NotFoundException {
@@ -73,8 +73,8 @@ public class UserEndpoint {
    * Endpoint for getting a User by its Login.
    * 
    * @param id entity id.
-   * @return
-   * @throws NotFoundException
+   * @return user
+   * @throws NotFoundException in case the information are not founded
    */
   @ApiMethod(name = "getUserByLogin", path = "userByLogin/{login}", httpMethod = "get")
   public TechGalleryUser getUserByLogin(@Named("login") String login) throws NotFoundException {
@@ -86,10 +86,10 @@ public class UserEndpoint {
    * the service
    * 
    * @param id entity id.
-   * @return
-   * @throws NotFoundException
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
+   * @return user
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "getUserFromProvider", path = "userFromProvider/{login}", httpMethod = "get")
   public TechGalleryUser getUserFromProvider(@Named("login") String login)

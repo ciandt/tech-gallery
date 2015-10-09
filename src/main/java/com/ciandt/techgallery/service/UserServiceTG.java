@@ -25,7 +25,7 @@ public interface UserServiceTG {
    * Service for getting all users.
    * 
    * @return users info or message error.
-   * @throws NotFoundException
+   * @throws NotFoundException in case the information is not found
    */
   Response getUsers() throws NotFoundException;
 
@@ -43,7 +43,7 @@ public interface UserServiceTG {
    * 
    * @param user json with user info.
    * @return user info or message error.
-   * @throws BadRequestException
+   * @throws BadRequestException in case a request with problem were made.
    */
   TechGalleryUser addUser(final TechGalleryUser user) throws BadRequestException;
 
@@ -52,7 +52,7 @@ public interface UserServiceTG {
    * 
    * @param user json with user info.
    * @return user info or message error.
-   * @throws BadRequestException
+   * @throws BadRequestException in case a request with problem were made.
    */
   TechGalleryUser updateUser(final TechGalleryUser user) throws BadRequestException;
 
@@ -69,16 +69,22 @@ public interface UserServiceTG {
    * Service for getting an User from an external provider by its Login.
    * 
    * @param id entity id.
-   * @return
-   * @throws NotFoundException
-   * @throws BadRequestException
-   * @throws InternalServerErrorException
+   * @return user
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not found
+   * @throws BadRequestException in case a request with problem were made.
    */
   TechGalleryUser getUserFromProvider(final String user)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 
   /**
+   * Service for getting an User from a external provider by googleId.
    * 
+   * @param googleId User´s google id
+   * @return user
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not found
+   * @throws BadRequestException in case a request with problem were made.
    */
   TechGalleryUser getUserByGoogleId(final String googleId)
       throws NotFoundException, BadRequestException, InternalServerErrorException;

@@ -89,20 +89,25 @@ public class Skill extends BaseEntity<Long> {
     this.active = active;
   }
 
+  /**
+   * Returns the entity for the referred technology.
+   * @return Technology
+   */
   public Technology getTechnologyEntity() {
     if (technology != null) {
       return technology.get();
     }
-
     return null;
   }
 
-
+  /**
+   * Returns the entity for the referred user.
+   * @return TechGalleryUser
+   */
   public TechGalleryUser getUserEntity() {
     if (techGalleryUser != null) {
       return techGalleryUser.get();
     }
-
     return null;
   }
 

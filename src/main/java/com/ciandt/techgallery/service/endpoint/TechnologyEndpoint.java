@@ -36,9 +36,9 @@ public class TechnologyEndpoint {
    * Endpoint for adding a Technology.
    * 
    * @param json with technology info.
-   * @return
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
+   * @return added technology
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "addTechnology", path = "technology", httpMethod = "post")
   public Technology addTechnology(Technology technology)
@@ -49,9 +49,9 @@ public class TechnologyEndpoint {
   /**
    * Endpoint for getting a list of Technologies.
    * 
-   * @return
-   * @throws InternalServerErrorException
-   * @throws NotFoundException
+   * @return list of technologies
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
    */
   @ApiMethod(name = "getTechnologies", path = "technology", httpMethod = "get")
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
@@ -62,14 +62,25 @@ public class TechnologyEndpoint {
    * Endpoint for getting a Technology.
    * 
    * @param id entity id.
-   * @return
-   * @throws NotFoundException
+   * @return technology
+   * @throws NotFoundException in case the information are not founded
    */
   @ApiMethod(name = "getTechnology", path = "technology/{id}", httpMethod = "get")
   public Technology getTechnology(@Named("id") String id) throws NotFoundException {
     return service.getTechnology(id);
   }
 
+  /**
+   * Endpointfor gettint a technology by filters
+   * 
+   * @param user User
+   * @param titleContains technology title part.
+   * @param shortDescriptionContains technology short description part.
+   * @param recommendationIs technology Ci&T recomendation
+   * @param orderOptionIs sort type for the list of technologies
+   * @return list of technologies
+   * @throws ServiceException in case of exception in service
+   */
   @ApiMethod(name = "findByFilter", path = "technology/search", httpMethod = "get")
   public Response findTechnologyByFilter(User user,
       @Named("titleContains") @Nullable String titleContains,
@@ -80,6 +91,15 @@ public class TechnologyEndpoint {
         shortDescriptionContains, recommendationIs, orderOptionIs), user);
   }
 
+  /**
+   * Endpoint for getting order option enumerations.
+   * 
+   * @param user User
+   * @return list of enumerations
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
+   */
   @ApiMethod(name = "getOrderOptions", path = "technology/order-options", httpMethod = "get")
   public List<String> getOrderOptions(User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {

@@ -135,6 +135,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    * Adds a new user to Tech Gallery.
    * 
    * @param user the TechGallery user to be added
+   * @return added user
    * @throws BadRequestException when the user email parameter is missing
    */
   @Override
@@ -267,7 +268,6 @@ public class UserServiceTGImpl implements UserServiceTG {
     } else {
       return tgUser;
     }
-
   }
 
   /**
@@ -382,8 +382,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   @Override
-  public TechGalleryUser getUserByGoogleId(String googleId)
-      throws NotFoundException, BadRequestException, InternalServerErrorException {
+  public TechGalleryUser getUserByGoogleId(String googleId) {
     return userDao.findByGoogleId(googleId);
   }
 
