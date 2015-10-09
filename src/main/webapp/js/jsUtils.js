@@ -12,12 +12,23 @@
       gapi.client.load('oauth2', 'v2', function() {
         gapi.client.oauth2.userinfo.get().execute(function(resp) {
           userEmail = resp.email;
+          if(userEmail){
+        	  trackUser(userEmail.replace('@'+resp.hd, ''));
+          }
           if(callBackFunction){
             callBackFunction(authResult);
           }
         })
       });
     },200);
+  }
+  
+  function trackUser(userEmail) {
+	ga('create', 'UA-60744312-3', 'auto');
+	ga('set', '&uid', userEmail);
+	ga('set', 'contentGroup1', userEmail);
+	ga('set', 'dimension1', userEmail);
+	ga('send', 'pageview');
   }
   
   getUserEmail();
@@ -244,7 +255,8 @@
     mockTechComment: mockTechComment,
     getParameterByName: getParameterByName,
     alerts: alerts,
-    logoutRedirect: logoutRedirect
+    logoutRedirect: logoutRedirect,
+    getUserEmail : getUserEmail
   };
 
 })(window);
