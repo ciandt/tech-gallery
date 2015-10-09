@@ -48,8 +48,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
 
   UserServiceTG userService = UserServiceTGImpl.getInstance();
-  TechnologyRecommendationService recommendationService =
-      TechnologyRecommendationServiceImpl.getInstance();
+
   TechnologyService techService = TechnologyServiceImpl.getInstance();
 
   /*
@@ -140,26 +139,6 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     log.info("New Comment added: " + newComment.getId());
 
     return newComment;
-  }
-
-  /**
-   * If the comment referenced by commentTO was created because of a recommendation, sets the
-   * recommendation score.
-   *
-   * @param commentTo the comment
-   */
-  private void setCommentRecommendation(TechnologyCommentTO commentTo) {
-    final TechnologyComment comment = technologyCommentDao.findById(commentTo.getId());
-    TechnologyRecommendation techRecommendation;
-    techRecommendation = recommendationService.getRecommendationByComment(comment);
-
-    if (techRecommendation != null && techRecommendation.getActive() == true) {
-      commentTo.setRecommendationId(techRecommendation.getId());
-      commentTo.setRecommendationScore(techRecommendation.getScore());
-    } else {
-      commentTo.setRecommendationId(null);
-      commentTo.setRecommendationScore(null);
-    }
   }
 
   /**

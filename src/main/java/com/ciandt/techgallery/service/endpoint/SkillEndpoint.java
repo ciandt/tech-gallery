@@ -13,7 +13,6 @@ import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.impl.SkillServiceImpl;
-import com.ciandt.techgallery.service.model.SkillResponse;
 
 /**
  * Endpoint controller class for Skill requests.
@@ -33,7 +32,7 @@ public class SkillEndpoint {
    * 
    * @param json with skill info.
    * @param user oauth user.
-   * @return
+   * @return the skill added
    * @throws InternalServerErrorException
    * @throws BadRequestException
    * @throws NotFoundException
@@ -49,11 +48,11 @@ public class SkillEndpoint {
    * 
    * @param id technology id.
    * @param user oauth user.
-   * @return
-   * @throws InternalServerErrorException
-   * @throws BadRequestException
-   * @throws OAuthRequestException
-   * @throws NotFoundException
+   * @return the user skill
+   * @throws InternalServerErrorException when an unknown error occurs
+   * @throws BadRequestException when some request parameter is wrong missing 
+   * @throws OAuthRequestException when the user is not valid
+   * @throws NotFoundException when the user skill is not found
    */
   @ApiMethod(name = "getUserSkill", path = "skill", httpMethod = "get")
   public Skill getUserSkill(@Named("id") String id, User user)

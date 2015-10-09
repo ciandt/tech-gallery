@@ -6,6 +6,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.persistence.model.Technology;
@@ -15,8 +16,6 @@ import com.ciandt.techgallery.service.TechnologyCommentService;
 import com.ciandt.techgallery.service.TechnologyRecommendationCommentService;
 import com.ciandt.techgallery.service.TechnologyRecommendationService;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
-import com.ciandt.techgallery.service.model.TechnologyCommentTO;
-import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
 
 public class TechnologyRecommendationCommentServiceImpl
     implements TechnologyRecommendationCommentService {
@@ -60,10 +59,11 @@ public class TechnologyRecommendationCommentServiceImpl
     if (!isValidComment(comment)) {
       throw new BadRequestException(ValidationMessageEnums.COMMENT_CANNOT_BLANK.message());
     }
-    comment.setTechnology(Ref.create(technology));
+    Key<Technology> techKey = Key.create(Technology.class, technology.getId());
+    comment.setTechnology(Ref.create(techKey));
     comment = comService.addComment(comment, user);
     recommendation.setComment(Ref.create(comment));
-    recommendation.setTechnology(Ref.create(technology));
+    recommendation.setTechnology(Ref.create(techKey));
     recommendation = recService.addRecommendation(recommendation, user);
 
     return recommendation;

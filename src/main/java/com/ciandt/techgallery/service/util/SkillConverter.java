@@ -47,10 +47,18 @@ public class SkillConverter implements Transformer<Skill, SkillResponse> {
 
     product.setId(arg0.getId());
     product.setValue(arg0.getValue());
-    Key<Technology> techKey = Key.create(Technology.class, arg0.getTechnology());
-    product.setTechnology(Ref.create(techKey));
-    Key<TechGalleryUser> userKey = Key.create(TechGalleryUser.class, arg0.getUser().getId());
-    product.setTechGalleryUser(Ref.create(userKey));
+    if (arg0.getTechnology() != null) {
+      Key<Technology> techKey = Key.create(Technology.class, arg0.getTechnology());
+      product.setTechnology(Ref.create(techKey));
+    } else {
+      product.setTechnology(null);
+    }
+    if (arg0.getUser() != null) {
+      Key<TechGalleryUser> userKey = Key.create(arg0.getUser());
+      product.setTechGalleryUser(Ref.create(userKey));
+    } else {
+      product.setTechGalleryUser(null);
+    }
 
     return product;
   }

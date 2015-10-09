@@ -14,8 +14,8 @@ public class TechnologyRecommendationCommentTO implements Response {
     return recommendation;
   }
 
-  public void setRecommendation(TechnologyRecommendation recommendationTO) {
-    this.recommendation = recommendationTO;
+  public void setRecommendation(TechnologyRecommendation recommendation) {
+    this.recommendation = recommendation;
   }
 
   public TechnologyComment getComment() {

@@ -1,11 +1,15 @@
 package com.ciandt.techgallery.persistence.model;
 
+import com.google.api.server.spi.config.ApiTransformer;
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
+
+import com.ciandt.techgallery.service.util.SkillConverter;
 
 /**
  * Skill entity.
@@ -14,6 +18,7 @@ import com.googlecode.objectify.annotation.Unindex;
  *
  */
 @Entity
+@ApiTransformer(SkillConverter.class)
 public class Skill extends BaseEntity<Long> {
 
   /*

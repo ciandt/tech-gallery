@@ -18,9 +18,6 @@ import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.SkillResponse;
-import com.ciandt.techgallery.service.util.SkillConverter;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
 import java.util.Date;
@@ -82,9 +79,9 @@ public class SkillServiceImpl implements SkillService {
 
     validateInputs(skill, user);
 
-    final Technology technology = skill.getTechnology().get();//techService.getTechnologyById(skill.getTechnology().get);
-    final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
-    final Skill skillEntity = skillDao.findByUserAndTechnology(techUser, technology);
+    Technology technology = skill.getTechnology().get();
+    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    Skill skillEntity = skillDao.findByUserAndTechnology(techUser, technology);
 
     // if there is a skillEntity, it is needed to inactivate it and create a new
     // one
@@ -135,11 +132,11 @@ public class SkillServiceImpl implements SkillService {
     if (skill.getTechnology() == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     }
-/*
-    final Technology technology = techService.getTechnologyById(skill.getTechnology());
-    if (technology == null) {
-      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
-    }*/
+    /*
+     * final Technology technology = techService.getTechnologyById(skill.getTechnology()); if
+     * (technology == null) { throw new
+     * BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message()); }
+     */
 
   }
 
@@ -175,21 +172,19 @@ public class SkillServiceImpl implements SkillService {
 
     // TechGalleryUser can't be null and must exists on datastore
     if (googleId == null || googleId.equals("")) {
-      throw new NotFoundException(i18n.t("Current user was not found!"));
+      throw new BadRequestException(i18n.t("Current user was not found!"));
     } else {
       // get the TechGalleryUser from datastore or PEOPLE API
       tgUser = userService.getUserByGoogleId(googleId);
-      // userService.getUserSyncedWithProvider(userEmail.replace("@ciandt.com",
-      // ""));
       if (tgUser == null) {
-        throw new NotFoundException(i18n.t("Endorser user do not exists on datastore!"));
+        throw new BadRequestException(i18n.t("Endorser user do not exists on datastore!"));
       }
     }
 
     // Technology can't be null
     final Technology technology = techService.getTechnologyById(techId);
     if (technology == null) {
-      throw new NotFoundException(i18n.t("Technology do not exists!"));
+      throw new BadRequestException(i18n.t("Technology do not exists!"));
     }
     final Skill userSkill = skillDao.findByUserAndTechnology(tgUser, technology);
     if (userSkill == null) {

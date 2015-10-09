@@ -8,6 +8,8 @@ import com.googlecode.objectify.Ref;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
+import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
+import com.ciandt.techgallery.service.impl.TechnologyRecommendationServiceImpl;
 import com.ciandt.techgallery.service.model.TechnologyCommentTO;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class TechnologyCommentTransformer
     commentTo.setTechnologyId(entity.getTechnology().get().getId());
     commentTo.setCreation(entity.getTimestamp());
     commentTo.setAuthor(entity.getAuthor().get());
-
+    setCommentRecommendation(entity, commentTo);
     return commentTo;
   }
 
@@ -67,11 +69,41 @@ public class TechnologyCommentTransformer
     TechnologyComment commentEntity = new TechnologyComment();
     commentEntity.setId(tranzient.getId());
     commentEntity.setComment(tranzient.getComment());
-    Key<Technology> techKey = Key.create(Technology.class, tranzient.getTechnologyId());
-    commentEntity.setTechnology(Ref.create(techKey));
-    Key<TechGalleryUser> authorKey = Key.create(TechGalleryUser.class, tranzient.getTechnologyId());
-    Ref<TechGalleryUser> ref = Ref.create(authorKey);
-    commentEntity.setAuthor(ref);
+    if (tranzient.getTechnologyId() != null) {
+      Key<Technology> techKey = Key.create(Technology.class, tranzient.getTechnologyId());
+      commentEntity.setTechnology(Ref.create(techKey));
+    } else {
+      commentEntity.setTechnology(null);
+    }
+    if (tranzient.getTechnologyId() != null) {
+      Key<TechGalleryUser> authorKey =
+          Key.create(TechGalleryUser.class, tranzient.getTechnologyId());
+      commentEntity.setAuthor(Ref.create(authorKey));
+    } else {
+      commentEntity.setAuthor(null);
+    }
+
     return commentEntity;
+  }
+
+
+  /**
+   * If the comment referenced by commentTO was created because of a recommendation, sets the
+   * recommendation score.
+   *
+   * @param commentTo the comment
+   */
+  private void setCommentRecommendation(TechnologyComment comment, TechnologyCommentTO commentTo) {
+    TechnologyRecommendation techRecommendation;
+    techRecommendation =
+        TechnologyRecommendationServiceImpl.getInstance().getRecommendationByComment(comment);
+
+    if (techRecommendation != null && techRecommendation.getActive() == true) {
+      commentTo.setRecommendationId(techRecommendation.getId());
+      commentTo.setRecommendationScore(techRecommendation.getScore());
+    } else {
+      commentTo.setRecommendationId(null);
+      commentTo.setRecommendationScore(null);
+    }
   }
 }

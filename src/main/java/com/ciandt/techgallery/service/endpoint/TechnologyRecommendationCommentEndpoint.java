@@ -26,14 +26,14 @@ public class TechnologyRecommendationCommentEndpoint {
   @ApiMethod(name = "addRecommendationComment", path = "recommendation-comment",
       httpMethod = "post")
   public TechnologyRecommendation addRecommendationComment(
-      TechnologyRecommendationCommentTO recCommentTO, User user)
+      TechnologyRecommendationCommentTO recCommentTo, User user)
           throws InternalServerErrorException, BadRequestException, NotFoundException {
-    return service.addRecommendationComment(recCommentTO.getRecommendation(),
-        recCommentTO.getComment(), recCommentTO.getTechnology(), user);
+    return service.addRecommendationComment(recCommentTo.getRecommendation(),
+        recCommentTo.getComment(), recCommentTo.getTechnology(), user);
   }
 
   @ApiMethod(name = "deleteCommentAndRecommendation", path = "delete-recommendation-comment",
-      httpMethod = "delete")
+      httpMethod = "post")
   public void deleteCommentAndRecommendation(@Named("recommendId") Long recommendId,
       @Named("commentId") Long commentId, User user) throws InternalServerErrorException,
           BadRequestException, NotFoundException, OAuthRequestException {

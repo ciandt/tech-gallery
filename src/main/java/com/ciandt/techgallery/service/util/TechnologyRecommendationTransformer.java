@@ -1,28 +1,18 @@
 package com.ciandt.techgallery.service.util;
 
 import com.google.api.server.spi.config.Transformer;
-import com.google.api.server.spi.response.NotFoundException;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
-import com.ciandt.techgallery.service.TechnologyCommentService;
-import com.ciandt.techgallery.service.TechnologyService;
-import com.ciandt.techgallery.service.UserServiceTG;
-import com.ciandt.techgallery.service.impl.TechnologyCommentServiceImpl;
-import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
-import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
 
 public class TechnologyRecommendationTransformer
     implements Transformer<TechnologyRecommendation, TechnologyRecommendationTO> {
-
-  private TechnologyService techService = TechnologyServiceImpl.getInstance();
-  private UserServiceTG tgUserService = UserServiceTGImpl.getInstance();
-  private TechnologyCommentService commentService = TechnologyCommentServiceImpl.getInstance();
 
   @Override
   public TechnologyRecommendation transformFrom(TechnologyRecommendationTO arg0) {
@@ -30,25 +20,23 @@ public class TechnologyRecommendationTransformer
       TechnologyRecommendation product = new TechnologyRecommendation();
       product.setActive(true);
       product.setScore(arg0.getScore());
-      try {
-        TechnologyComment comment = commentService.getById(arg0.getComment().getId());
-        Ref<TechnologyComment> commentRef = Ref.create(comment);
-        product.setComment(commentRef);
-      } catch (NotFoundException e) {
+      if (arg0.getComment() != null) {
+        Key<TechnologyComment> commentKey =
+            Key.create(TechnologyComment.class, arg0.getComment().getId());
+        product.setComment(Ref.create(commentKey));
+      } else {
+        product.setComment(null);
+      }
+      if (arg0.getTechnology() != null) {
+        Key<Technology> technologyKey = Key.create(Technology.class, arg0.getTechnology().getId());
+        product.setTechnology(Ref.create(technologyKey));
+      } else {
         product.setTechnology(null);
       }
-      try {
-        Technology technology = techService.getTechnologyById(arg0.getTechnology().getId());
-        Ref<Technology> technologyRef = Ref.create(technology);
-        product.setTechnology(technologyRef);
-      } catch (NotFoundException e) {
-        product.setTechnology(null);
-      }
-      try {
-        TechGalleryUser tgUser = tgUserService.getUserByEmail(arg0.getRecommender().getEmail());
-        Ref<TechGalleryUser> refTgUser = Ref.create(tgUser);
-        product.setRecommender(refTgUser);
-      } catch (NotFoundException e) {
+      if (arg0.getRecommender() != null) {
+        Key<TechGalleryUser> tgUserKey = Key.create(arg0.getRecommender().getEmail());
+        product.setRecommender(Ref.create(tgUserKey));
+      } else {
         product.setRecommender(null);
       }
       return product;
