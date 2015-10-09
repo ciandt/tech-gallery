@@ -7,8 +7,7 @@
 }
 
 .techGalleryFixedBar{
-	background-color:#FF6666;
-	opacity:0.8
+	background: rgba(255,50,85,0.7);
 }
 
 .GPlusDefault{
@@ -213,4 +212,17 @@ body, html {
 
 .removeFilter {
   float: right;
+}
+
+.separator{
+	width: 100%;
+    border-top: 1px solid #716F77;
+    list-style-type: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.autoCompleteImage{
+	width:30px;
+	margin-right: 10px;
 }

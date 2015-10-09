@@ -1,30 +1,5 @@
 package com.ciandt.techgallery.service.impl;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.api.services.plus.Plus;
-import com.google.api.services.plus.model.Person;
-import com.google.appengine.api.oauth.OAuthRequestException;
-import com.google.appengine.api.users.User;
-
-import com.googlecode.objectify.Key;
-
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.UserServiceTG;
-import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.UserResponse;
-import com.ciandt.techgallery.service.model.UsersResponse;
-import com.ciandt.techgallery.utils.i18n.I18n;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -40,12 +15,38 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
+import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.UserServiceTG;
+import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.UserResponse;
+import com.ciandt.techgallery.service.model.UsersResponse;
+import com.ciandt.techgallery.utils.i18n.I18n;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.api.services.plus.Plus;
+import com.google.api.services.plus.model.Person;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
+import com.googlecode.objectify.Key;
+
 public class UserServiceTGImpl implements UserServiceTG {
 
   /*
    * Constants --------------------------------------------
    */
-  private static final String PEOPLE_ENDPOINT = "https://people.cit.com.br/profile/";
+  private static final String PEOPLE_ENDPOINT_PROFILE = "https://people.cit.com.br/profile/";
+  private static final String PEOPLE_ENDPOINT_SEARCH = "https://people.cit.com.br/search/json/?q=";
+  private static final int INDEX_PEOPLE_API_NAME = 0;
+  private static final int INDEX_PEOPLE_API_LOGIN = 1;
 
   private static final String OPERATION_FAILED = "Operation failed";
 
@@ -62,17 +63,20 @@ public class UserServiceTGImpl implements UserServiceTG {
   /*
    * Constructors --------------------------------------------
    */
-  private UserServiceTGImpl() {}
+  private UserServiceTGImpl() {
+  }
 
   /**
    * For singleton
    *
-   * @return the current instance, if it exists. The recently created instance, if not.
+   * @return the current instance, if it exists. The recently created instance,
+   *         if not.
    */
   /**
    * Singleton method for the service.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 08/10/2015
    *
    * @return UserServiceTGImpl instance.
@@ -118,8 +122,10 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Gets a TechGalleryUser by id.
    *
-   * @param id the user's id
-   * @throws NotFoundException if the user is not found
+   * @param id
+   *          the user's id
+   * @throws NotFoundException
+   *           if the user is not found
    */
   @Override
   public TechGalleryUser getUser(final Long id) throws NotFoundException {
@@ -135,9 +141,11 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Adds a new user to Tech Gallery.
    *
-   * @param user the TechGallery user to be added
+   * @param user
+   *          the TechGallery user to be added
    * @return added user
-   * @throws BadRequestException when the user email parameter is missing
+   * @throws BadRequestException
+   *           when the user email parameter is missing
    */
   @Override
   public TechGalleryUser addUser(final TechGalleryUser user) throws BadRequestException {
@@ -150,29 +158,35 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * This method should be executed whenever a user logs in It check whether the user exists on TG's
-   * datastore and create them, if not. It also checks if the user's email has been changed and
-   * update it, in case it was changed.
+   * This method should be executed whenever a user logs in It check whether the
+   * user exists on TG's datastore and create them, if not. It also checks if
+   * the user's email has been changed and update it, in case it was changed.
    *
-   * @param user A Google AppEngine API user
+   * @param user
+   *          A Google AppEngine API user
    * @return A response with the user data as it is on TG datastore
    *
-   * @throws InternalServerErrorException in case something goes wrong
-   * @throws NotFoundException in case the information are not founded
-   * @throws BadRequestException in case a request with problem were made.
-   * @throws OAuthRequestException in case of authentication problem
-   * @throws IOException in case of a IO exception
+   * @throws InternalServerErrorException
+   *           in case something goes wrong
+   * @throws NotFoundException
+   *           in case the information are not founded
+   * @throws BadRequestException
+   *           in case a request with problem were made.
+   * @throws OAuthRequestException
+   *           in case of authentication problem
+   * @throws IOException
+   *           in case of a IO exception
    */
   @Override
   public TechGalleryUser handleLogin(final User user, HttpServletRequest req)
-      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException,
-      OAuthRequestException {
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
     if (user == null) {
       throw new OAuthRequestException(i18n.t("Authorization error"));
     }
     String userEmail = user.getEmail();
     String header = req.getHeader("Authorization");
-    String accesstoken = header.substring(header.indexOf(' ')).trim(); // "Bearer ".length
+    String accesstoken = header.substring(header.indexOf(' ')).trim(); // "Bearer
+                                                                       // ".length
 
     GoogleCredential credential = new GoogleCredential().setAccessToken(accesstoken);
     Plus plus = new Plus.Builder(new NetHttpTransport(), new JacksonFactory(), credential)
@@ -194,11 +208,15 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * Updates current Tech Gallery user information with user data found on Google.
+   * Updates current Tech Gallery user information with user data found on
+   * Google.
    *
-   * @param user Google user
-   * @param person Google Plus person information
-   * @param tgUser Tech Gallery user
+   * @param user
+   *          Google user
+   * @param person
+   *          Google Plus person information
+   * @param tgUser
+   *          Tech Gallery user
    */
   private void updateUserInformation(final User user, Person person, TechGalleryUser tgUser) {
     String plusEmail = user.getEmail();
@@ -226,7 +244,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Updates a user, with validation.
    *
-   * @throws BadRequestException in case of a missing parameter
+   * @throws BadRequestException
+   *           in case of a missing parameter
    * @return the updated user
    */
   @Override
@@ -242,7 +261,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * GET for getting an user by its login.
    *
-   * @param login the user's login
+   * @param login
+   *          the user's login
    * @return the user found
    */
   @Override
@@ -258,8 +278,10 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Finds a TechGalleryUser by his/her email.
    *
-   * @param email the user's email
-   * @throws NotFoundException if the user is not found
+   * @param email
+   *          the user's email
+   * @throws NotFoundException
+   *           if the user is not found
    */
   @Override
   public TechGalleryUser getUserByEmail(final String email) throws NotFoundException {
@@ -272,14 +294,18 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists, adds to
-   * TG's datastore (if not there). Returns the user.
+   * Checks if user exists on provider, syncs with tech gallery's datastore. If
+   * user exists, adds to TG's datastore (if not there). Returns the user.
    *
-   * @param userLogin userLogin
+   * @param userLogin
+   *          userLogin
    * @return the user saved on the datastore
-   * @throws InternalServerErrorException in case something goes wrong
-   * @throws NotFoundException in case the information are not founded
-   * @throws BadRequestException in case a request with problem were made.
+   * @throws InternalServerErrorException
+   *           in case something goes wrong
+   * @throws NotFoundException
+   *           in case the information are not founded
+   * @throws BadRequestException
+   *           in case a request with problem were made.
    * @return user sinchronized in provider.
    */
   @Override
@@ -301,21 +327,105 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * GET Calls the provider API passing a login to obtain user information.
    *
-   * @param userlogin the user login to pass to the provider API
-   * @throws NotFoundException in case the user is not found on provider
-   * @throws BadRequestException in case of JSON or URL error
-   * @throws InternalServerErrorException if any IO exceptions occur
+   * @param userlogin
+   *          the user login to pass to the provider API
+   * @throws NotFoundException
+   *           in case the user is not found on provider
+   * @throws BadRequestException
+   *           in case of JSON or URL error
+   * @throws InternalServerErrorException
+   *           if any IO exceptions occur
    */
-  @SuppressWarnings({"unchecked", "rawtypes"})
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public TechGalleryUser getUserFromProvider(final String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
 
-    String fullRequest = PEOPLE_ENDPOINT + userLogin + "?format=json";
     TechGalleryUser tgUser = new TechGalleryUser();
+    Map<String, Object> providerResponse = peopleApiConnect(userLogin, PEOPLE_ENDPOINT_PROFILE);
+    HashMap<String, Object> userData = (LinkedHashMap) providerResponse.get("personal_info");
+    tgUser.setEmail((String) userData.get("email"));
+    tgUser.setName((String) userData.get("name"));
+    return tgUser;
+  }
+  // @SuppressWarnings({ "unchecked", "rawtypes" })
+  // @Override
+  // public TechGalleryUser getUserFromProvider(final String userLogin)
+  // throws NotFoundException, BadRequestException, InternalServerErrorException
+  // {
+  //
+  // String fullRequest = PEOPLE_ENDPOINT + userLogin + "?format=json";
+  // TechGalleryUser tgUser = new TechGalleryUser();
+  // try {
+  // InputStream resourceStream = UserServiceTGImpl.class.getClassLoader()
+  // .getResourceAsStream("people_basic_auth.txt");
+  //
+  // String auth = convertStreamToString(resourceStream);
+  //
+  // URL url = new URL(fullRequest);
+  // HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+  // conn.setDoOutput(true);
+  // conn.setRequestMethod("GET");
+  // conn.setRequestProperty("Authorization", auth);
+  // ObjectMapper mapper = new ObjectMapper();
+  //
+  // if (conn.getResponseCode() == 200) {
+  // Map<String, Object> providerResponse =
+  // mapper.readValue(conn.getInputStream(), Map.class);
+  // HashMap<String, Object> userData = (LinkedHashMap)
+  // providerResponse.get("personal_info");
+  // tgUser.setEmail((String) userData.get("email"));
+  // tgUser.setName((String) userData.get("name"));
+  // } else {
+  // throw new NotFoundException(i18n.t("User not found"));
+  // }
+  //
+  // } catch (JsonParseException e) {
+  // throw new BadRequestException(OPERATION_FAILED);
+  //
+  // } catch (MalformedURLException e) {
+  // throw new BadRequestException(e.getMessage());
+  //
+  // } catch (IOException e) {
+  // System.err.println("An internal server error ocurred!");
+  // System.err.println(e.getMessage());
+  // throw new InternalServerErrorException(i18n.t("An internal server error
+  // ocurred."));
+  //
+  // }
+  // return tgUser;
+  // }
+
+  public List<TechGalleryUser> getUsersList(String userLogin)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
+    userLogin += "*";
+    List<TechGalleryUser> techUsers = new ArrayList<>();
+    Map<String, Object> map = peopleApiConnect(userLogin, PEOPLE_ENDPOINT_SEARCH);
+    ArrayList<?> peopleApiResponse = (ArrayList<?>) map.get("data");
+    for (int index = 0; index < peopleApiResponse.size(); index++) {
+      ArrayList<?> peopleApiUser = (ArrayList<?>) peopleApiResponse.get(index);
+      TechGalleryUser tgUser = userDao.findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
+      if (tgUser != null) {
+        techUsers.add(tgUser);
+      } else {
+        tgUser = new TechGalleryUser();
+        tgUser.setEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
+        tgUser.setName((String) peopleApiUser.get(INDEX_PEOPLE_API_NAME));
+        techUsers.add(tgUser);
+      }
+    }
+    return techUsers;
+  }
+
+  private Map<String, Object> peopleApiConnect(final String userLogin, final String urlEndPoint)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
+    String fullRequest = urlEndPoint + userLogin;
+    if (urlEndPoint.equals(PEOPLE_ENDPOINT_PROFILE)) {
+      fullRequest += "?format=json";
+    }
     try {
-      InputStream resourceStream =
-          UserServiceTGImpl.class.getClassLoader().getResourceAsStream("people_basic_auth.txt");
+      InputStream resourceStream = UserServiceTGImpl.class.getClassLoader()
+          .getResourceAsStream("people_basic_auth.txt");
 
       String auth = convertStreamToString(resourceStream);
 
@@ -328,9 +438,7 @@ public class UserServiceTGImpl implements UserServiceTG {
 
       if (conn.getResponseCode() == 200) {
         Map<String, Object> providerResponse = mapper.readValue(conn.getInputStream(), Map.class);
-        HashMap<String, Object> userData = (LinkedHashMap) providerResponse.get("personal_info");
-        tgUser.setEmail((String) userData.get("email"));
-        tgUser.setName((String) userData.get("name"));
+        return providerResponse;
       } else {
         throw new NotFoundException(i18n.t("User not found"));
       }
@@ -345,9 +453,7 @@ public class UserServiceTGImpl implements UserServiceTG {
       System.err.println("An internal server error ocurred!");
       System.err.println(e.getMessage());
       throw new InternalServerErrorException(i18n.t("An internal server error ocurred."));
-
     }
-    return tgUser;
   }
 
   @SuppressWarnings("resource")
@@ -359,7 +465,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Validates user data.
    *
-   * @param user the TechGalleryUser entity
+   * @param user
+   *          the TechGalleryUser entity
    * @return true if data is valid, false otherwise
    */
   private static boolean userDataIsValid(TechGalleryUser user) {
