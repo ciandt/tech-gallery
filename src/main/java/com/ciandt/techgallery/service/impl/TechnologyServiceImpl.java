@@ -80,6 +80,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (techName == null || techName.equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BE_BLANK.message());
     } else {
+      technology.initCounters();
       technologyDAO.add(technology);
 
       return technology;

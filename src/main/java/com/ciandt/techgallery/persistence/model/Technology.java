@@ -45,16 +45,16 @@ public class Technology extends BaseEntity<String> {
   private String recommendation;
 
   @Index
-  private Integer positiveRecomendationsCounter = 0;
+  private Integer positiveRecomendationsCounter;
 
   @Index
-  private Integer negativeRecomendationsCounter = 0;
+  private Integer negativeRecomendationsCounter;
 
   @Index
-  private Integer commentariesCounter = 0;
+  private Integer commentariesCounter;
 
   @Index
-  private Integer endorsedsCounter = 0;
+  private Integer endorsedsCounter;
 
   @Override
   public String getId() {
@@ -206,5 +206,15 @@ public class Technology extends BaseEntity<String> {
     } else {
       this.commentariesCounter = 0;
     }
+  }
+
+  /**
+   * Initialize the technology counters.
+   */
+  public void initCounters() {
+    this.commentariesCounter = 0;
+    this.endorsedsCounter = 0;
+    this.negativeRecomendationsCounter = 0;
+    this.positiveRecomendationsCounter = 0;
   }
 }
