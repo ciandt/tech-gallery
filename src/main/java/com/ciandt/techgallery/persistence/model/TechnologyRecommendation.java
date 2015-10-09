@@ -61,21 +61,13 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
   }
 
   /**
-<<<<<<< HEAD
-   * Constructor.
+   * Construct for TechnologyRecommendation.
+   * 
    * @param score recommendation score: true = positive, false = negative
    * @param comment the comment associated with the recommendation
    * @param active whether the recommendation is active or not
    * @param recommender the user who recommended the technology
    * @param technology the technology recommended
-=======
-   * Construct for TechnologyRecommendation.
-   * @param score Tumbs up or down
-   * @param comment commentary of the recomendation
-   * @param active true if is active
-   * @param recommender Author of the recomendation
-   * @param technology recommended technology
->>>>>>> feature/TECG-158-refactoring
    */
   public TechnologyRecommendation(Boolean score, TechnologyComment comment, Boolean active,
       TechGalleryUser recommender, Technology technology) {
@@ -92,7 +84,7 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
    */
   @Override
   public Long getId() {
-    return this.id;
+    return id;
   }
 
   @Override
