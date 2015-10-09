@@ -71,8 +71,13 @@
 }
 
 .thumbnail{
-  min-height: 380px;
+  min-height: 430px;
   box-shadow: 5px 5px 5px
+}
+
+.titleThumbnail{
+	text-align:center;
+	white-space: nowrap;
 }
 
 .spacingtop {
@@ -192,7 +197,7 @@ body, html {
 }
 
 .caption {
-  height: 80px;
+  height: 120px;
 }
 
 .recommendationInComment {

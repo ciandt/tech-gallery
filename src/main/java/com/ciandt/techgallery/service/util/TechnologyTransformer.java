@@ -1,9 +1,8 @@
 package com.ciandt.techgallery.service.util;
 
-import com.google.api.server.spi.config.Transformer;
-
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.TechnologyResponse;
+import com.google.api.server.spi.config.Transformer;
 
 public class TechnologyTransformer implements Transformer<Technology, TechnologyResponse> {
 
@@ -18,6 +17,10 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
     product.setRecommendation(arg0.getRecommendation());
     product.setShortDescription(arg0.getShortDescription());
     product.setWebsite(arg0.getWebsite());
+    product.setPositiveRecomendationsCounter(arg0.getPositiveRecomendationsCounter());
+    product.setNegativeRecomendationsCounter(arg0.getNegativeRecomendationsCounter());
+    product.setCommentariesCounter(arg0.getCommentariesCounter());
+    product.setEndorsedsCounter(arg0.getEndorsedsCounter());
     return product;
   }
 
@@ -33,6 +36,10 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
       product.setRecommendation(arg0.getRecommendation());
       product.setShortDescription(arg0.getShortDescription());
       product.setWebsite(arg0.getWebsite());
+      product.setPositiveRecomendationsCounter(arg0.getPositiveRecomendationsCounter());
+      product.setNegativeRecomendationsCounter(arg0.getNegativeRecomendationsCounter());
+      product.setCommentariesCounter(arg0.getCommentariesCounter());
+      product.setEndorsedsCounter(arg0.getEndorsedsCounter());
       return product;
     } else {
       return null;
