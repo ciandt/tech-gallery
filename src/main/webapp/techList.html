@@ -79,15 +79,22 @@
         <div>
             <div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
                 <div class="thumbnail">
+                    <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
+                        <h3>{{tech.name}}</h3>
+                    </a>
+                    <h5 class="titleThumbnail">{{tech.recommendation}}</h5>
                 	<div class="imageSize">
 	                    <img src={{tech.image}} data-holder-rendered="true"
 	                        class="thumbnail-Image">
                     </div>
                     <div class="caption">
-                        <a href={{redirectUrl(tech.id)}}>
-                            <h3>{{tech.name}}</h3>
-                        </a>
                         <p class='technologydescription'>{{tech.shortDescription}}</p>
+                    </div>
+                    <div class="titleThumbnail">
+                        <span class="glyphicon glyphicon-thumbs-up"><sup>{{tech.positiveRecomendationsCounter}}</sup></span>
+                        <span class="glyphicon glyphicon-thumbs-down"><sup>{{tech.negativeRecomendationsCounter}}</sup></span>
+                        <span class="glyphicon glyphicon-user"><sup>{{tech.endorsedsCounter}}</sup></span>
+                        <span class="glyphicon glyphicon-list-alt"><sup>{{tech.commentariesCounter}}</sup></span>
                     </div>
                 </div>
             </div>

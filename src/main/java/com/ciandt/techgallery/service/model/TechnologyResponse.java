@@ -24,6 +24,14 @@ public class TechnologyResponse implements Response {
   private String image;
   /** technology company recommendation. */
   private String recommendation;
+  /** technology positives recommendations. */
+  private Integer positiveRecomendationsCounter;
+  /** technology negative recommendations. */
+  private Integer negativeRecomendationsCounter;
+  /** technology commentaries. */
+  private Integer commentariesCounter;
+  /** technology endorseds. */
+  private Integer endorsedsCounter;
 
   public String getId() {
     return id;
@@ -43,6 +51,38 @@ public class TechnologyResponse implements Response {
 
   public String getShortDescription() {
     return shortDescription;
+  }
+
+  public Integer getPositiveRecomendationsCounter() {
+    return positiveRecomendationsCounter;
+  }
+
+  public void setPositiveRecomendationsCounter(Integer positiveRecomendationsCounter) {
+    this.positiveRecomendationsCounter = positiveRecomendationsCounter;
+  }
+
+  public Integer getNegativeRecomendationsCounter() {
+    return negativeRecomendationsCounter;
+  }
+
+  public void setNegativeRecomendationsCounter(Integer negativeRecomendationsCounter) {
+    this.negativeRecomendationsCounter = negativeRecomendationsCounter;
+  }
+
+  public Integer getCommentariesCounter() {
+    return commentariesCounter;
+  }
+
+  public void setCommentariesCounter(Integer commentariesCounter) {
+    this.commentariesCounter = commentariesCounter;
+  }
+
+  public Integer getEndorsedsCounter() {
+    return endorsedsCounter;
+  }
+
+  public void setEndorsedsCounter(Integer endorsedsCounter) {
+    this.endorsedsCounter = endorsedsCounter;
   }
 
   public void setShortDescription(String shortDescription) {
