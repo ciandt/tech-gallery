@@ -14,6 +14,7 @@
   <script src="lib/angular-route/angular-route.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/jsUtils.js"></script>
+  <script src="js/googleAnalytics.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers/techListController.js"></script>
   <script src="js/filters.js"></script>
@@ -100,17 +101,4 @@
 <!--         <a ng-show="true" href={{logoutRedirect()}} -->
 <!--             class="btn btn-danger" role="button">Logout</a> -->
 <!--     </div> -->
-	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function()
-		{ (i[r].q=i[r].q||[]).push(arguments)}
-		,i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		ga('create', 'UA-60744312-3', 'auto');
-		//Pay attention here - you must get user login. Change second parameter.
-		var userId = 'My User Login';
-		ga('set', 'contentGroup1', userId);
-		ga('set', 'dimension1', userId);
-		ga('send', 'pageview');
-	</script>
 </body>
