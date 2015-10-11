@@ -19,7 +19,7 @@ import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
-import com.ciandt.techgallery.service.util.TechnologyRecommendationTransformer;
+import com.ciandt.techgallery.service.transformer.TechnologyRecommendationTransformer;
 
 import java.util.ArrayList;
 import java.util.Date;
