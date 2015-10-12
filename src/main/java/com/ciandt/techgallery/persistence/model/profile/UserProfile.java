@@ -36,6 +36,7 @@ public class UserProfile extends BaseEntity<String> {
 
   private HashMap<Ref<Technology>, UserProfileItem> otherItems;
 
+  public UserProfile() {}
 
   /**
    * Constructor that receives a profile owner as parameter.
@@ -45,13 +46,16 @@ public class UserProfile extends BaseEntity<String> {
   public UserProfile(Ref<TechGalleryUser> owner) {
     super();
     setOwner(owner);
-    // TODO improve this id
-    setId("profile" + owner.getKey().getId());
+    setId(getIdFromUserRef(owner));
     positiveRecItems = new HashMap<Ref<Technology>, UserProfileItem>();
     negativeRecItems = new HashMap<Ref<Technology>, UserProfileItem>();
     otherItems = new HashMap<Ref<Technology>, UserProfileItem>();
   }
 
+  public static String getIdFromUserRef(Ref<TechGalleryUser> tgUser) {
+    // TODO improve this id
+    return "profile" + tgUser.getKey().getId();
+  }
 
   @Override
   public String getId() {
