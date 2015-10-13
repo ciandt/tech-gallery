@@ -45,6 +45,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   private static final String PEOPLE_ENDPOINT_PROFILE = "https://people.cit.com.br/profile/";
   private static final String PEOPLE_ENDPOINT_SEARCH = "https://people.cit.com.br/search/json/?q=";
+  private static final String EMAIL_DOMAIN = "@ciandt.com";
   private static final int INDEX_PEOPLE_API_NAME = 0;
   private static final int INDEX_PEOPLE_API_LOGIN = 1;
 
@@ -404,7 +405,8 @@ public class UserServiceTGImpl implements UserServiceTG {
     ArrayList<?> peopleApiResponse = (ArrayList<?>) map.get("data");
     for (int index = 0; index < peopleApiResponse.size(); index++) {
       ArrayList<?> peopleApiUser = (ArrayList<?>) peopleApiResponse.get(index);
-      TechGalleryUser foundUser = userDao.findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
+      TechGalleryUser foundUser = userDao
+          .findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
       TechGalleryUser tgUser = new TechGalleryUser();
       if (foundUser != null) {
         tgUser.setEmail(foundUser.getEmail());
