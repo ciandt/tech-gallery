@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.impl.profile;
 
+import com.google.api.server.spi.response.NotFoundException;
+
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 
@@ -12,12 +14,13 @@ import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.persistence.model.profile.UserProfile;
 import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
+import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.ciandt.techgallery.service.profile.UserProfileService;
 
 public class UserProfileServiceImpl implements UserProfileService {
-  
+
   private static UserProfileServiceImpl instance;
-  
+
   static final int RECOMMEND_TECHNOLOGY_POSITIVELY = 1;
   static final int RECOMMEND_TECHNOLOGY_NEGATIVELY = 2;
   static final int REMOVE_TECHNOLOGY_RECOMMENDATION = 3;
@@ -28,7 +31,8 @@ public class UserProfileServiceImpl implements UserProfileService {
   static final int REMOVE_ENDORSEMENT = 8;
 
 
-  private UserProfileServiceImpl(){}
+  private UserProfileServiceImpl() {}
+
   /**
    * Singleton method for the service.
    *
@@ -58,6 +62,22 @@ public class UserProfileServiceImpl implements UserProfileService {
   private Boolean itemHasOtherPropertiesSet(UserProfileItem item) {
     return item.getSkillLevel() > 0 && !item.getComments().isEmpty()
         && item.getEndorsementQuantity() > 0;
+  }
+
+  @Override
+  public UserProfile findUserProfileByEmail(String email) throws NotFoundException {
+    TechGalleryUser owner = UserServiceTGImpl.getInstance().getUserByEmail(email);
+    return findUserProfileByOwner(owner);
+  }
+
+  @Override
+  public UserProfile createProfile(TechGalleryUser tgUser) {
+    UserProfile profile = findUserProfileByOwner(tgUser);
+    if (profile == null) {
+      profile = new UserProfile(tgUser);
+      UserProfileDaoImpl.getInstance().add(profile);
+    }
+    return profile;
   }
 
   /**

@@ -1,9 +1,13 @@
 package com.ciandt.techgallery.service.profile;
 
+import com.google.api.server.spi.response.NotFoundException;
+
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.Skill;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
+import com.ciandt.techgallery.persistence.model.profile.UserProfile;
 
 public interface UserProfileService {
   
@@ -26,12 +30,16 @@ public interface UserProfileService {
    * 
    * @param comment the comment that was added or removed
    */
-  public void handleCommentChanges(TechnologyComment comment);
+  void handleCommentChanges(TechnologyComment comment);
 
   //TODO comment this method
-  public void handleSkillChanges(Skill skill);
+  void handleSkillChanges(Skill skill);
 
   //TODO comment this method
-  public void handleEndorsement(Endorsement endorsement);
+  void handleEndorsement(Endorsement endorsement);
+
+  UserProfile findUserProfileByEmail(String email) throws NotFoundException;
+
+  UserProfile createProfile(TechGalleryUser tgUser);
 
 }
