@@ -4,8 +4,10 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.profile.UserProfile;
 import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.service.profile.UserProfileService;
@@ -20,6 +22,11 @@ public class UserProfileEndpoint {
   @ApiMethod(name = "profile.get", path = "profile", httpMethod = "get")
   public UserProfile getUserProfileByEmail(@Named("email") String email) throws NotFoundException {
     return service.findUserProfileByEmail(email);
+  }
+  
+  @ApiMethod(name = "profile.addItem", path = "profile", httpMethod = "post")
+  public UserProfile addItemToProfile(Technology technology, User user) throws NotFoundException {
+    return service.addItem(technology, user);
   }
 
 }

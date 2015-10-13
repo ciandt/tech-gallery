@@ -1,6 +1,7 @@
 package com.ciandt.techgallery.service.impl.profile;
 
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
@@ -14,6 +15,7 @@ import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.persistence.model.profile.UserProfile;
 import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
+import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.ciandt.techgallery.service.profile.UserProfileService;
 
@@ -68,6 +70,16 @@ public class UserProfileServiceImpl implements UserProfileService {
   public UserProfile findUserProfileByEmail(String email) throws NotFoundException {
     TechGalleryUser owner = UserServiceTGImpl.getInstance().getUserByEmail(email);
     return findUserProfileByOwner(owner);
+  }
+  
+  @Override
+  public UserProfile addItem(Technology technology, User user) throws NotFoundException {
+    TechGalleryUser owner = UserServiceTGImpl.getInstance().getUserByEmail(user.getEmail());
+    UserProfile profile = findUserProfileByOwner(owner);
+    technology = TechnologyServiceImpl.getInstance().getTechnologyById(technology.getId());
+    UserProfileItem newItem = new UserProfileItem(technology);
+    profile.addItem(UserProfile.POSITIVE_RECOMMENDATION, Key.create(technology), newItem);
+    return profile;
   }
 
   @Override

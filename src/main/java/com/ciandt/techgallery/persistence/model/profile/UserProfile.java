@@ -15,6 +15,8 @@ import com.ciandt.techgallery.service.transformer.profile.UserProfileTransformer
 
 import java.util.HashMap;
 
+import javax.jdo.annotations.Persistent;
+
 @Entity
 @ApiTransformer(UserProfileTransformer.class)
 public class UserProfile extends BaseEntity<String> {
@@ -31,10 +33,13 @@ public class UserProfile extends BaseEntity<String> {
   @Index
   private Ref<TechGalleryUser> owner;
 
+  @Persistent(serialized = "true")
   private HashMap<Key<Technology>, UserProfileItem> positiveRecItems;
 
+  @Persistent(serialized = "true")
   private HashMap<Key<Technology>, UserProfileItem> negativeRecItems;
 
+  @Persistent(serialized = "true")
   private HashMap<Key<Technology>, UserProfileItem> otherItems;
 
   public UserProfile() {}
@@ -86,6 +91,7 @@ public class UserProfile extends BaseEntity<String> {
    */
   public void addItem(int category, Key<Technology> technology, UserProfileItem profileItem) {
     if (category == POSITIVE_RECOMMENDATION) {
+
       negativeRecItems.remove(technology);
       otherItems.remove(technology);
       positiveRecItems.put(technology, profileItem);
@@ -119,6 +125,7 @@ public class UserProfile extends BaseEntity<String> {
 
   /**
    * Informs the category of a given technology item.
+   * 
    * @param technology the technology associated with the item
    * @return the category where the item is stored
    */

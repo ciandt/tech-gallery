@@ -1,10 +1,12 @@
 package com.ciandt.techgallery.service.profile;
 
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.persistence.model.profile.UserProfile;
@@ -41,5 +43,7 @@ public interface UserProfileService {
   UserProfile findUserProfileByEmail(String email) throws NotFoundException;
 
   UserProfile createProfile(TechGalleryUser tgUser);
+
+  UserProfile addItem(Technology technology, User user) throws NotFoundException;
 
 }
