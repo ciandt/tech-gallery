@@ -45,6 +45,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   private static final String PEOPLE_ENDPOINT_PROFILE = "https://people.cit.com.br/profile/";
   private static final String PEOPLE_ENDPOINT_SEARCH = "https://people.cit.com.br/search/json/?q=";
+  private static final String EMAIL_DOMAIN = "@ciandt.com";
   private static final int INDEX_PEOPLE_API_NAME = 0;
   private static final int INDEX_PEOPLE_API_LOGIN = 1;
 
@@ -348,53 +349,6 @@ public class UserServiceTGImpl implements UserServiceTG {
     tgUser.setName((String) userData.get("name"));
     return tgUser;
   }
-  // @SuppressWarnings({ "unchecked", "rawtypes" })
-  // @Override
-  // public TechGalleryUser getUserFromProvider(final String userLogin)
-  // throws NotFoundException, BadRequestException, InternalServerErrorException
-  // {
-  //
-  // String fullRequest = PEOPLE_ENDPOINT + userLogin + "?format=json";
-  // TechGalleryUser tgUser = new TechGalleryUser();
-  // try {
-  // InputStream resourceStream = UserServiceTGImpl.class.getClassLoader()
-  // .getResourceAsStream("people_basic_auth.txt");
-  //
-  // String auth = convertStreamToString(resourceStream);
-  //
-  // URL url = new URL(fullRequest);
-  // HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-  // conn.setDoOutput(true);
-  // conn.setRequestMethod("GET");
-  // conn.setRequestProperty("Authorization", auth);
-  // ObjectMapper mapper = new ObjectMapper();
-  //
-  // if (conn.getResponseCode() == 200) {
-  // Map<String, Object> providerResponse =
-  // mapper.readValue(conn.getInputStream(), Map.class);
-  // HashMap<String, Object> userData = (LinkedHashMap)
-  // providerResponse.get("personal_info");
-  // tgUser.setEmail((String) userData.get("email"));
-  // tgUser.setName((String) userData.get("name"));
-  // } else {
-  // throw new NotFoundException(i18n.t("User not found"));
-  // }
-  //
-  // } catch (JsonParseException e) {
-  // throw new BadRequestException(OPERATION_FAILED);
-  //
-  // } catch (MalformedURLException e) {
-  // throw new BadRequestException(e.getMessage());
-  //
-  // } catch (IOException e) {
-  // System.err.println("An internal server error ocurred!");
-  // System.err.println(e.getMessage());
-  // throw new InternalServerErrorException(i18n.t("An internal server error
-  // ocurred."));
-  //
-  // }
-  // return tgUser;
-  // }
 
   public List<TechGalleryUser> getUsersList(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
@@ -404,7 +358,8 @@ public class UserServiceTGImpl implements UserServiceTG {
     ArrayList<?> peopleApiResponse = (ArrayList<?>) map.get("data");
     for (int index = 0; index < peopleApiResponse.size(); index++) {
       ArrayList<?> peopleApiUser = (ArrayList<?>) peopleApiResponse.get(index);
-      TechGalleryUser foundUser = userDao.findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
+      TechGalleryUser foundUser = userDao
+          .findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
       TechGalleryUser tgUser = new TechGalleryUser();
       if (foundUser != null) {
         tgUser.setEmail(foundUser.getEmail());

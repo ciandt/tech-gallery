@@ -4,7 +4,6 @@ angular.module('techGallery').controller(
     'use strict';
     
     $scope.getUsersList = function (value){
-      //Make API call to get the names
       var req = {login:value};
       return gapi.client.rest.getUsersList(req).then(function (data){
         for(var i in data.result.items){
@@ -15,8 +14,6 @@ angular.module('techGallery').controller(
         return data.result.items;
       });
     }
-    
-    $scope.statesWithFlags = [{'name':'Alabama','flag':'5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png', 'completeName':'State of Alabama'},{'name':'Alaska','flag':'e/e6/Flag_of_Alaska.svg/43px-Flag_of_Alaska.svg.png', 'completeName':'State of Alaska'},{'name':'Arizona','flag':'9/9d/Flag_of_Arizona.svg/45px-Flag_of_Arizona.svg.png', 'completeName':'State of Arizona'},{'name':'Arkansas','flag':'9/9d/Flag_of_Arkansas.svg/45px-Flag_of_Arkansas.svg.png', 'completeName':'State of Arkansas'},{'name':'California','flag':'0/01/Flag_of_California.svg/45px-Flag_of_California.svg.png', 'completeName':'State of California'},{'name':'Colorado','flag':'4/46/Flag_of_Colorado.svg/45px-Flag_of_Colorado.svg.png', 'completeName':'State of Colorado'},{'name':'Connecticut','flag':'9/96/Flag_of_Connecticut.svg/39px-Flag_of_Connecticut.svg.png', 'completeName':'State of Connecticut'}];
     
     $scope.idTechnology = jsUtils.getParameterByName('id');
     $scope.loadEndorsements = true;
