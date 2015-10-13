@@ -62,8 +62,8 @@ public class UserProfileServiceImpl implements UserProfileService {
   }
 
   private Boolean itemHasOtherPropertiesSet(UserProfileItem item) {
-    return item.getSkillLevel() > 0 && !item.getComments().isEmpty()
-        && item.getEndorsementQuantity() > 0;
+    return item.getSkillLevel() > 0 || !item.getComments().isEmpty()
+        || item.getEndorsementQuantity() > 0;
   }
 
   @Override
@@ -71,7 +71,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     TechGalleryUser owner = UserServiceTGImpl.getInstance().getUserByEmail(email);
     return findUserProfileByOwner(owner);
   }
-  
+
   @Override
   public UserProfile addItem(Technology technology, User user) throws NotFoundException {
     TechGalleryUser owner = UserServiceTGImpl.getInstance().getUserByEmail(user.getEmail());
@@ -85,7 +85,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     return profile;
   }
 
-  //TODO cache profile
+  // TODO cache profile
   @Override
   public UserProfile createProfile(TechGalleryUser tgUser) {
     UserProfile profile = findUserProfileByOwner(tgUser);
@@ -189,7 +189,7 @@ public class UserProfileServiceImpl implements UserProfileService {
       UserProfileItem item = getTechnologyItem(technology, profile);
       Integer category = profile.getItemCategory(technologyKey);
 
-      if (skill.getValue() != null &&  skill.getValue() > 0) {
+      if (skill.getValue() != null && skill.getValue() > 0) {
         item.setSkillLevel(skill.getValue());
         // No previous category means new item
         if (category == null) {

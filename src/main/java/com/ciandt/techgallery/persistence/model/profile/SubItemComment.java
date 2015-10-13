@@ -7,16 +7,10 @@ import com.googlecode.objectify.Key;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.transformer.profile.SubItemCommentTransformer;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @ApiTransformer(SubItemCommentTransformer.class)
-public class SubItemComment implements Comparable<SubItemComment>, Serializable {
-
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
+public class SubItemComment implements Comparable<SubItemComment> {
 
   private String originCommentKey;
 

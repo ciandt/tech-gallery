@@ -7,7 +7,6 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.Serialize;
 
 import com.ciandt.techgallery.persistence.model.BaseEntity;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -15,6 +14,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.transformer.profile.UserProfileTransformer;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @ApiTransformer(UserProfileTransformer.class)
@@ -32,11 +32,11 @@ public class UserProfile extends BaseEntity<String> {
   @Index
   private Ref<TechGalleryUser> owner;
 
-  @Serialize private HashMap<String, UserProfileItem> positiveRecItems;
+  private Map<String, UserProfileItem> positiveRecItems = new HashMap<>();
 
-  @Serialize private HashMap<String, UserProfileItem> negativeRecItems;
+  private Map<String, UserProfileItem> negativeRecItems = new HashMap<>();
 
-  @Serialize private HashMap<String, UserProfileItem> otherItems;
+  private Map<String, UserProfileItem> otherItems = new HashMap<>();
 
   public UserProfile() {}
 
@@ -49,9 +49,6 @@ public class UserProfile extends BaseEntity<String> {
     super();
     setOwner(Ref.create(owner));
     setId(getIdFromTgUserId(owner.getId()));
-    positiveRecItems = new HashMap<String, UserProfileItem>();
-    negativeRecItems = new HashMap<String, UserProfileItem>();
-    otherItems = new HashMap<String, UserProfileItem>();
   }
 
   public static String getIdFromTgUserId(Long tgUserId) {
@@ -148,17 +145,17 @@ public class UserProfile extends BaseEntity<String> {
   }
 
 
-  public HashMap<String, UserProfileItem> getPositiveRecItems() {
+  public Map<String, UserProfileItem> getPositiveRecItems() {
     return positiveRecItems;
   }
 
 
-  public HashMap<String, UserProfileItem> getNegativeRecItems() {
+  public Map<String, UserProfileItem> getNegativeRecItems() {
     return negativeRecItems;
   }
 
 
-  public HashMap<String, UserProfileItem> getOtherItems() {
+  public Map<String, UserProfileItem> getOtherItems() {
     return otherItems;
   }
 

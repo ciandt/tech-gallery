@@ -8,8 +8,8 @@ import com.ciandt.techgallery.service.model.profile.UserProfileTo;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserProfileTransformer implements Transformer<UserProfile, UserProfileTo> {
 
@@ -28,7 +28,7 @@ public class UserProfileTransformer implements Transformer<UserProfile, UserProf
     return new UserProfileTo(arg0.getOwner().get(), positiveRecItems, negativeRecItems, otherItems);
   }
 
-  private List<UserProfileItem> getSortedItems(HashMap<String, UserProfileItem> items) {
+  private List<UserProfileItem> getSortedItems(Map<String, UserProfileItem> items) {
     ArrayList<UserProfileItem> sortedItems = new ArrayList<UserProfileItem>(items.values());
     Collections.sort(sortedItems);
     return sortedItems;

@@ -3,22 +3,16 @@ package com.ciandt.techgallery.persistence.model.profile;
 import com.google.api.server.spi.config.ApiTransformer;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.annotation.Serialize;
 
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.transformer.profile.UserProfileItemTransformer;
 
-import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 @ApiTransformer(UserProfileItemTransformer.class)
-public class UserProfileItem implements Comparable<UserProfileItem>, Serializable{
-
-  /**
-   * 
-   */
-  private static final long serialVersionUID = 1L;
+public class UserProfileItem implements Comparable<UserProfileItem> {
 
   private String technologyName;
 
@@ -30,7 +24,7 @@ public class UserProfileItem implements Comparable<UserProfileItem>, Serializabl
 
   private Integer skillLevel;
 
-  @Serialize private HashMap<String, SubItemComment> comments;
+  private Map<String, SubItemComment> comments = new HashMap<>();
 
   public UserProfileItem() {}
 
@@ -46,7 +40,6 @@ public class UserProfileItem implements Comparable<UserProfileItem>, Serializabl
     setTechnologyPhotoUrl(technology.getImage());
     endorsementQuantity = 0;
     setSkillLevel(0);
-    comments = new HashMap<String, SubItemComment>();
   }
 
   /**
@@ -123,7 +116,7 @@ public class UserProfileItem implements Comparable<UserProfileItem>, Serializabl
     this.skillLevel = skillLevel;
   }
 
-  public HashMap<String, SubItemComment> getComments() {
+  public Map<String, SubItemComment> getComments() {
     return comments;
   }
 

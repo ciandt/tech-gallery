@@ -34,10 +34,16 @@ public interface UserProfileService {
    */
   void handleCommentChanges(TechnologyComment comment);
 
-  //TODO comment this method
+  /**
+   * Receives a Skill entity and reflects its state on the user profile.
+   * @param skill The recently changed skill
+   */
   void handleSkillChanges(Skill skill);
 
-  //TODO comment this method
+  /**
+   * Receives an Endorsement entity and reflects its state on the user profile.
+   * @param endorsement the recently changed Endorsement entity
+   */
   void handleEndorsement(Endorsement endorsement);
 
   UserProfile findUserProfileByEmail(String email) throws NotFoundException;
