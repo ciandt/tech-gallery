@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" ng-app="techGallery" ng-cloak>
+<head>
+  <meta charset="utf-8">
+  <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/techgallery.css" />
+
+  <script src="https://apis.google.com/js/client.js?onload=init"></script>
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="lib/angular-route/angular-route.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/jsUtils.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers/createTechController.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
+  <script src="js/googleAnalytics.js"></script>
+</head>
+<body ng-controller="createTechController">
+	<nav class="navbar navbar-fixed-top techGalleryFixedBar">
+    	<div class="container">
+      		<div class="navbar-header alignBar">
+        		<a class="navbar-brand" href={{indexPage()}}>
+          			<img class="logoBar" src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png">
+          			<h3 class="headerBar">Tech Gallery</h3>
+        		</a>
+      		</div>
+      		<div id="navbar" class="navbar-collapse collapse rightSideBar">
+        		<div class="navbar-form navbar-right">
+          			<a ng-show="showLogin && !domainError" href="#" ng-click="login()" class="whiteText">Login <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
+          			<a ng-show="domainError || userLogged" href={{logoutRedirect()}} class="whiteText">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+        		</div>
+      		</div>
+    	</div>
+  	</nav>
+  
+  	<div class="page-header"></div>
+
+  	<div class="login-Button" ng-show="showLogin">
+    	<h3 ng-show="!domainError">Para ter acesso ao conteúdo realize seu login...</h3>
+    	<h3 ng-show="domainError">{{domainError}}</h3>
+  	</div>
+  
+	<form id="data" method="post" enctype="multipart/form-data" ng-submit="mycontroller.submitForm(this);">
+	<div ng-show="showContent" class="page-header">
+  		<div id="div_container" class="container">
+       		<div class="row">
+       			<div id="div_image" class="col-xs-6">
+          			<output id="list">
+          				<img src="/images/no_image.png" title="Insira uma imagem" width="200" >
+          			</output>
+        		</div>
+        	</div>
+        	<div class="spacingtop row">
+        		<div id="div_image" class="col-xs-5">
+	          		<input id="idimage" ng-model="image" type="file" class="form-control" 
+    	      				accept="image/png" placeholder="<Imagem>">
+        		</div>
+        		<div class="col-xs-4">
+	        			<input ng-model="name" type="text" class="form-control"
+	    					placeholder="<Nome>" aria-describedby="basic-addon2">
+        		</div>
+      		</div>
+	      	<div class="spacingtop row" id="div_details">
+	        	<div class="col-md-9 text-right">
+					<textarea id="iddesciption" ng-model="description" class="form-control textarea" 
+					maxlength="500" placeholder="<Descrição>" ></textarea>
+		    	</div>
+	      	</div>
+	      	<div class="spacingtop row">
+	        	<div class="col-md-9">
+	        		<input ng-model="shortDescription" type="text" class="form-control"
+	          			placeholder="<Descrição Curta>" aria-describedby="basic-addon2">
+	      	  	</div>
+	        </div>
+	        <div class="spacingtop row">
+	        	<div class="col-md-9">
+	        		<input ng-model="webSite" type="text" class="form-control"
+	          			placeholder="<Web Site>" aria-describedby="basic-addon2">
+	      	  	</div>
+	        </div>
+			<div class="spacingtop">
+				<button id="btn_clear" type="button" class="btn btn-primary" ng-click="cleaTechnology()">Limpar</button>
+				<button id="btn_save" type="submit" class="btn btn-primary">Salvar</button>
+			</div>
+    	</div>
+  	</div>
+	</form>
+</body>
+</html>
