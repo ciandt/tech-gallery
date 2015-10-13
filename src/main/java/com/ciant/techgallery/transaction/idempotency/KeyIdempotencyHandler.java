@@ -1,8 +1,7 @@
 package com.ciant.techgallery.transaction.idempotency;
 
 import com.googlecode.objectify.Key;
-
-import static com.googlecode.objectify.ObjectifyService.ofy;
+import com.googlecode.objectify.ObjectifyService;
 
 public class KeyIdempotencyHandler implements IdempotencyHandler {
 
@@ -12,13 +11,13 @@ public class KeyIdempotencyHandler implements IdempotencyHandler {
   public boolean shouldTransactionProceed(Object target, Object[] args) {
     
     if (args != null) {
-      com.googlecode.objectify.Key<?> key;
+      Key<?> key;
       for (Object arg : args) {
         
-        if (arg instanceof com.googlecode.objectify.Key<?>) {
+        if (arg instanceof Key<?>) {
           key = (Key<?>) arg;
-          Object result = ofy().load().key(key).now();
-          return result==null;
+          Object result = ObjectifyService.ofy().load().key(key).now();
+          return result == null;
         }
       }
     }

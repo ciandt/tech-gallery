@@ -4,15 +4,18 @@ import com.ciant.techgallery.transaction.Transactional;
 
 public class IdempotencyHandlerFactory {
 
-  public static IdempotencyHandler createHandlerAnnotationBased(Transactional transactional){
+  /**
+   * @param transactional annotation written in a transactional method.
+   * @return Creates an IdempotencyHandler based on Transactional annotation.
+   */
+  public static IdempotencyHandler createHandlerAnnotationBased(Transactional transactional) {
     
-    if(transactional.autoIdempotency()){
+    if (transactional.autoIdempotency()) {
       return new AutoIdempotencyHandler();
-    } else if(transactional.keyIdempotency()){
+    } else if (transactional.keyIdempotency()) {
       return new KeyIdempotencyHandler();
     }
     
     return new EmptyIdempotencyHandler();
   }
-  
 }

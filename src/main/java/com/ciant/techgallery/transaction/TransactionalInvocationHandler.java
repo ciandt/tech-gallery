@@ -1,11 +1,10 @@
 package com.ciant.techgallery.transaction;
 
-import static com.googlecode.objectify.ObjectifyService.ofy;
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.Work;
 
 import com.ciant.techgallery.transaction.idempotency.IdempotencyHandler;
 import com.ciant.techgallery.transaction.idempotency.IdempotencyHandlerFactory;
-
-import com.googlecode.objectify.Work;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -46,12 +45,13 @@ public class TransactionalInvocationHandler implements InvocationHandler {
   
       if (transactional != null) {
         
-        final IdempotencyHandler idempotencyHandler = IdempotencyHandlerFactory.createHandlerAnnotationBased(transactional);
+        final IdempotencyHandler idempotencyHandler = 
+            IdempotencyHandlerFactory.createHandlerAnnotationBased(transactional);
         
-        return ofy().execute(transactional.type(), new Work() {
+        return ObjectifyService.ofy().execute(transactional.type(), new Work() {
           @Override
           public Object run() {
-            if(idempotencyHandler.shouldTransactionProceed(proxy, args)){
+            if (idempotencyHandler.shouldTransactionProceed(proxy, args)) {
               Object result = invokeMethod(args, implementationMethod);
               idempotencyHandler.setReturn(result);
             } 
