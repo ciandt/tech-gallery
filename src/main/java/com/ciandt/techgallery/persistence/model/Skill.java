@@ -9,7 +9,7 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
 
-import com.ciandt.techgallery.service.util.SkillConverter;
+import com.ciandt.techgallery.service.transformer.SkillConverter;
 
 /**
  * Skill entity.

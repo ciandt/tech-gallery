@@ -16,8 +16,10 @@ import com.googlecode.objectify.Key;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.persistence.model.profile.UserProfile;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
 import com.ciandt.techgallery.service.model.UsersResponse;
@@ -145,6 +147,7 @@ public class UserServiceTGImpl implements UserServiceTG {
       throw new BadRequestException(i18n.t("User's email cannot be blank."));
     } else {
       userDao.add(user);
+      UserProfileServiceImpl.getInstance().createProfile(user);
       return user;
     }
   }
@@ -188,7 +191,8 @@ public class UserServiceTGImpl implements UserServiceTG {
       tgUser = new TechGalleryUser();
     }
     updateUserInformation(user, person, tgUser);
-    userDao.add(tgUser);
+    addUser(tgUser);
+    //userDao.add(tgUser);
     log.info("User " + tgUser.getName() + " added/updated");
     return tgUser;
   }
@@ -292,8 +296,9 @@ public class UserServiceTGImpl implements UserServiceTG {
       tgUser = new TechGalleryUser();
       tgUser.setEmail(userResp.getEmail());
       tgUser.setName(userResp.getName());
-      Key<TechGalleryUser> key = userDao.add(tgUser);
-      tgUser.setId(key.getId());
+      tgUser = addUser(tgUser);
+      //Key<TechGalleryUser> key = userDao.add(tgUser);
+      //tgUser.setId(key.getId());
     }
     return tgUser;
   }

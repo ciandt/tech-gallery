@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.service.util;
+package com.ciandt.techgallery.service.transformer;
 
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.TechnologyResponse;

@@ -13,13 +13,15 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
+import com.ciandt.techgallery.persistence.model.profile.UserProfile;
 import com.ciandt.techgallery.service.TechnologyRecommendationService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationTO;
-import com.ciandt.techgallery.service.util.TechnologyRecommendationTransformer;
+import com.ciandt.techgallery.service.transformer.TechnologyRecommendationTransformer;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -106,6 +108,8 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     }
     recommendation.setId(technologyRecommendationDAO.add(recommendation).getId());
     technologyService.addRecomendationCounter(technology, recommendation.getScore());
+    //TODO UserProfile: AddRecommendation
+    UserProfileServiceImpl.getInstance().handleRecommendationChanges(recommendation);
     return recommendation;
   }
 
@@ -181,6 +185,8 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
     technologyRecommendationDAO.update(recommendation);
     technologyService.removeRecomendationCounter(recommendation.getTechnology().get(),
         recommendation.getScore());
+    //TODO UserProfile: RemoveRecommendation
+    UserProfileServiceImpl.getInstance().handleRecommendationChanges(recommendation);
     return techRecTransformer.transformTo(recommendation);
   }
 
