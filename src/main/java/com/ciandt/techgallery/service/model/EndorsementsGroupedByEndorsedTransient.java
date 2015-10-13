@@ -6,8 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * TechnologyResponse entity.
- * 
+ * EndorsementsGroupedByEndorsedTransient entity.
+ *
  * @author Daniel Eduardo
  *
  */

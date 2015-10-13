@@ -2,11 +2,11 @@ package com.ciandt.techgallery.service.model;
 
 /**
  * Response with a technology entity.
- * 
+ *
  * @author felipers
  *
  */
-public class TechnologyResponse implements Response {
+public class TechnologyTO implements Response {
 
   /** technology id. */
   private String id;
@@ -128,5 +128,4 @@ public class TechnologyResponse implements Response {
   public void setRecommendation(String recommendation) {
     this.recommendation = recommendation;
   }
-
 }
