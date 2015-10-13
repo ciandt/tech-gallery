@@ -1,7 +1,8 @@
 package com.ciandt.techgallery.filters;
 
 import com.google.appengine.api.NamespaceManager;
-import com.google.appengine.api.utils.SystemProperty;
+
+import com.ciandt.techgallery.utils.TechGalleryUtil;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -53,7 +54,7 @@ public class NamespaceFilter implements Filter {
     // If the NamespaceManager state is already set up from the context of the task creator the
     // current namespace will not be null. It's important to check that the current namespace
     // has not been set before setting it for this request.
-    String applicationVersion = SystemProperty.applicationVersion.get();
+    String applicationVersion = TechGalleryUtil.getApplicationVersion();
 
     if (NamespaceManager.get() == null && !applicationVersion.contains("$")) {
       logger.info("SystemProperty.applicationVersion.get():" + applicationVersion);

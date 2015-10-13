@@ -1,5 +1,8 @@
 package com.ciandt.techgallery.persistence.dao.impl;
 
+import com.googlecode.objectify.Objectify;
+
+import com.ciandt.techgallery.ofy.OfyService;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.model.Technology;
 
@@ -34,5 +37,14 @@ public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String> implem
       instance = new TechnologyDAOImpl();
     }
     return instance;
+  }
+
+  @Override
+  public Technology findByName(String name) {
+    final Objectify objectify = OfyService.ofy();
+    Technology entity =
+        objectify.load().type(Technology.class).filter(Technology.NAME, name).first().now();
+
+    return entity;
   }
 }
