@@ -2,6 +2,7 @@ package com.ciandt.techgallery.persistence.model.profile;
 
 import com.google.api.server.spi.config.ApiTransformer;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -18,11 +19,11 @@ import java.util.HashMap;
 @ApiTransformer(UserProfileTransformer.class)
 public class UserProfile extends BaseEntity<String> {
 
-  static final int POSITIVE_RECOMMENDATION = 1;
+  public static final int POSITIVE_RECOMMENDATION = 1;
 
-  static final int NEGATIVE_RECOMMENDATION = -1;
+  public static final int NEGATIVE_RECOMMENDATION = -1;
 
-  static final int OTHER_RECOMMENDATION = 0;
+  public static final int OTHER = 0;
 
   @Id
   private String id;
@@ -30,11 +31,11 @@ public class UserProfile extends BaseEntity<String> {
   @Index
   private Ref<TechGalleryUser> owner;
 
-  private HashMap<Ref<Technology>, UserProfileItem> positiveRecItems;
+  private HashMap<Key<Technology>, UserProfileItem> positiveRecItems;
 
-  private HashMap<Ref<Technology>, UserProfileItem> negativeRecItems;
+  private HashMap<Key<Technology>, UserProfileItem> negativeRecItems;
 
-  private HashMap<Ref<Technology>, UserProfileItem> otherItems;
+  private HashMap<Key<Technology>, UserProfileItem> otherItems;
 
   public UserProfile() {}
 
@@ -43,18 +44,18 @@ public class UserProfile extends BaseEntity<String> {
    * 
    * @param owner the TechGalleryUser who owns the profile
    */
-  public UserProfile(Ref<TechGalleryUser> owner) {
+  public UserProfile(TechGalleryUser owner) {
     super();
-    setOwner(owner);
-    setId(getIdFromUserRef(owner));
-    positiveRecItems = new HashMap<Ref<Technology>, UserProfileItem>();
-    negativeRecItems = new HashMap<Ref<Technology>, UserProfileItem>();
-    otherItems = new HashMap<Ref<Technology>, UserProfileItem>();
+    setOwner(Ref.create(owner));
+    setId(getIdFromTgUserId(owner.getId()));
+    positiveRecItems = new HashMap<Key<Technology>, UserProfileItem>();
+    negativeRecItems = new HashMap<Key<Technology>, UserProfileItem>();
+    otherItems = new HashMap<Key<Technology>, UserProfileItem>();
   }
 
-  public static String getIdFromUserRef(Ref<TechGalleryUser> tgUser) {
+  public static String getIdFromTgUserId(Long tgUserId) {
     // TODO improve this id
-    return "profile" + tgUser.getKey().getId();
+    return "profile" + tgUserId;
   }
 
   @Override
@@ -83,7 +84,7 @@ public class UserProfile extends BaseEntity<String> {
    * @param technology the Technology associated to the item
    * @param profileItem the profile item itself
    */
-  public void addItem(int category, Ref<Technology> technology, UserProfileItem profileItem) {
+  public void addItem(int category, Key<Technology> technology, UserProfileItem profileItem) {
     if (category == POSITIVE_RECOMMENDATION) {
       negativeRecItems.remove(technology);
       otherItems.remove(technology);
@@ -92,7 +93,7 @@ public class UserProfile extends BaseEntity<String> {
       otherItems.remove(technology);
       positiveRecItems.remove(technology);
       negativeRecItems.put(technology, profileItem);
-    } else if (category == OTHER_RECOMMENDATION) {
+    } else if (category == OTHER) {
       positiveRecItems.remove(technology);
       negativeRecItems.remove(technology);
       otherItems.put(technology, profileItem);
@@ -100,28 +101,61 @@ public class UserProfile extends BaseEntity<String> {
   }
 
   /**
+   * Searches on every category for the specified technology item
+   * 
+   * @param technology the technology associated with the item
+   * @return the item, if exists. null otherwise
+   */
+  public UserProfileItem getItem(Key<Technology> technology) {
+    UserProfileItem item = positiveRecItems.get(technology);
+    if (item == null) {
+      item = negativeRecItems.get(technology);
+      if (item == null) {
+        return otherItems.get(technology);
+      }
+    }
+    return item;
+  }
+
+  /**
+   * Informs the category of a given technology item.
+   * @param technology the technology associated with the item
+   * @return the category where the item is stored
+   */
+  public Integer getItemCategory(Key<Technology> technology) {
+    if (positiveRecItems.containsKey(technology)) {
+      return POSITIVE_RECOMMENDATION;
+    } else if (negativeRecItems.containsKey(technology)) {
+      return NEGATIVE_RECOMMENDATION;
+    } else if (otherItems.containsKey(technology)) {
+      return OTHER;
+    }
+    return null;
+  }
+
+  /**
    * Removes the item from whichever category it is in.
    * 
    * @param technology the Technology item
    */
-  public void removeItem(Ref<Technology> technology) {
+  public void removeItem(Key<Technology> technology) {
     positiveRecItems.remove(technology);
     negativeRecItems.remove(technology);
     otherItems.remove(technology);
   }
 
 
-  public HashMap<Ref<Technology>, UserProfileItem> getPositiveRecItems() {
+  public HashMap<Key<Technology>, UserProfileItem> getPositiveRecItems() {
     return positiveRecItems;
   }
 
 
-  public HashMap<Ref<Technology>, UserProfileItem> getNegativeRecItems() {
+  public HashMap<Key<Technology>, UserProfileItem> getNegativeRecItems() {
     return negativeRecItems;
   }
 
 
-  public HashMap<Ref<Technology>, UserProfileItem> getOtherItems() {
+  public HashMap<Key<Technology>, UserProfileItem> getOtherItems() {
     return otherItems;
   }
 

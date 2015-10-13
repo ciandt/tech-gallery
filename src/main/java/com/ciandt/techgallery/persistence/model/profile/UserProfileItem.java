@@ -4,8 +4,8 @@ import com.google.api.server.spi.config.ApiTransformer;
 
 import com.googlecode.objectify.Key;
 
+import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
-import com.ciandt.techgallery.service.enums.RecommendationEnums;
 import com.ciandt.techgallery.service.transformer.profile.UserProfileItemTransformer;
 
 import java.util.HashMap;
@@ -15,7 +15,9 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
 
   private String technologyName;
 
-  private RecommendationEnums companyRecommendation;
+  private String technologyPhotoUrl;
+
+  private String companyRecommendation;
 
   private Integer endorsementQuantity;
 
@@ -23,15 +25,21 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
 
   private HashMap<Key<TechnologyComment>, SubItemComment> comments;
 
+  public UserProfileItem() {}
+
   /**
-   * Removes a comment from the profile item.
+   * Construct a profile item from a Technology. Only the technology name, recommendation and image
+   * url are set.
    * 
-   * @param commentKey the key of the comment to be removed
+   * @param technology the technology related to this item
    */
-  public void removeComment(Key<TechnologyComment> commentKey) {
-    if (comments != null) {
-      comments.remove(commentKey);
-    }
+  public UserProfileItem(Technology technology) {
+    setTechnologyName(technology.getName());
+    setCompanyRecommendation(technology.getRecommendation());
+    setTechnologyPhotoUrl(technology.getImage());
+    endorsementQuantity = 0;
+    setSkillLevel(0);
+    comments = new HashMap<Key<TechnologyComment>, SubItemComment>();
   }
 
   /**
@@ -47,6 +55,18 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
         new SubItemComment(originComment.getComment(), originComment.getTimestamp()));
   }
 
+  /**
+   * Removes a comment from the profile item.
+   * 
+   * @param commentKey the key of the comment to be removed
+   */
+  public void removeComment(Key<TechnologyComment> commentKey) {
+    if (comments != null) {
+      comments.remove(commentKey);
+    }
+  }
+
+
   public String getTechnologyName() {
     return technologyName;
   }
@@ -55,21 +75,37 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
     this.technologyName = technologyName;
   }
 
-  public RecommendationEnums getCompanyRecommendation() {
+  public String getCompanyRecommendation() {
     return companyRecommendation;
   }
 
-  public void setCompanyRecommendation(RecommendationEnums companyRecommendation) {
+
+  public String getTechnologyPhotoUrl() {
+    return technologyPhotoUrl;
+  }
+
+  public void setTechnologyPhotoUrl(String technologyPhotoUrl) {
+    this.technologyPhotoUrl = technologyPhotoUrl;
+  }
+
+  public void setCompanyRecommendation(String companyRecommendation) {
     this.companyRecommendation = companyRecommendation;
   }
 
+  /**
+   * Adds a number (positive or negative) to the endorsements counter and returns the result.
+   * @param number the number to be added to the counter
+   * @return the final result
+   */
+  public synchronized Integer addToEndorsementsCounter(Integer number) {
+    this.endorsementQuantity += number;
+    return this.endorsementQuantity;
+  }
+  
   public Integer getEndorsementQuantity() {
-    return endorsementQuantity;
+    return addToEndorsementsCounter(0);
   }
 
-  public void setEndorsementQuantity(Integer endorsementQuantity) {
-    this.endorsementQuantity = endorsementQuantity;
-  }
 
   public Integer getSkillLevel() {
     return skillLevel;

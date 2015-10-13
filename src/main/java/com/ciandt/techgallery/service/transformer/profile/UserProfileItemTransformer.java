@@ -23,7 +23,7 @@ public class UserProfileItemTransformer implements Transformer<UserProfileItem, 
     Collections.sort(sortedComments);
 
     return new UserProfileItemTo(arg0.getTechnologyName(),
-        arg0.getCompanyRecommendation().message(), arg0.getEndorsementQuantity(),
+        arg0.getCompanyRecommendation(), arg0.getEndorsementQuantity(),
         arg0.getSkillLevel(), sortedComments);
   }
 

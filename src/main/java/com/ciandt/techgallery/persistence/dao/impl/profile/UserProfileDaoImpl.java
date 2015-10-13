@@ -1,7 +1,7 @@
 package com.ciandt.techgallery.persistence.dao.impl.profile;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.ofy.OfyService;
 import com.ciandt.techgallery.persistence.dao.impl.GenericDAOImpl;
@@ -36,13 +36,15 @@ public class UserProfileDaoImpl extends GenericDAOImpl<UserProfile, String>
 
   /**
    * Finds a user profile by its owner's Ref.
+   * 
    * @param owner the profile owner
    * @return the UserProfile of the owner
    */
-  public UserProfile findByUser(Ref<TechGalleryUser> owner) {
+  @Override
+  public UserProfile findByUser(Key<TechGalleryUser> owner) {
     Objectify objectify = OfyService.ofy();
-    UserProfile entity =
-        objectify.load().type(UserProfile.class).id(UserProfile.getIdFromUserRef(owner)).now();
+    UserProfile entity = objectify.load().type(UserProfile.class)
+        .id(UserProfile.getIdFromTgUserId(owner.getId())).now();
     return entity;
   }
 
