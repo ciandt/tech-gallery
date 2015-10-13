@@ -15,7 +15,9 @@ import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
 import com.ciandt.techgallery.service.profile.UserProfileService;
 
 public class UserProfileServiceImpl implements UserProfileService {
-
+  
+  private static UserProfileServiceImpl instance;
+  
   static final int RECOMMEND_TECHNOLOGY_POSITIVELY = 1;
   static final int RECOMMEND_TECHNOLOGY_NEGATIVELY = 2;
   static final int REMOVE_TECHNOLOGY_RECOMMENDATION = 3;
@@ -26,8 +28,18 @@ public class UserProfileServiceImpl implements UserProfileService {
   static final int REMOVE_ENDORSEMENT = 8;
 
 
-
-  public void registerAction() {}
+  private UserProfileServiceImpl(){}
+  /**
+   * Singleton method for the service.
+   *
+   * @return UserProfileServiceImpl instance.
+   */
+  public static UserProfileServiceImpl getInstance() {
+    if (instance == null) {
+      instance = new UserProfileServiceImpl();
+    }
+    return instance;
+  }
 
   private UserProfile findUserProfileByOwner(TechGalleryUser user) {
     return UserProfileDaoImpl.getInstance().findByUser(Key.create(user));
