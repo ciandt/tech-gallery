@@ -61,25 +61,22 @@ angular.module('techGallery').controller(
     function handleFileSelect(evt) {
         var files = evt.target.files;
         var f = files[0];
-        var reader = new FileReader();
-        reader.onload = (function(theFile) {
-        	return function(e) {
-        		$scope.image = e.target.result;
-        		document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="200" />'].join('');
-        	};
-        })(f);
-        reader.readAsDataURL(f);
+        if(f.type != 'image/png'){
+        	alert('Imagem deve possuir extensão PNG.');
+        	document.getElementById('idimage').value = null;
+        } else {
+        	var reader = new FileReader();
+        	reader.onload = (function(theFile) {
+        		return function(e) {
+        			var image = e.target.result;
+        			$scope.image = image.replace('data:image/png;base64,', '');
+        			document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="200" />'].join('');
+        		};
+        	})(f);
+        	reader.readAsDataURL(f);
+        }
     }
-
     
-//    function fillTechnology(technology) {
-//      $scope.name = technology.name;
-//      $scope.description = technology.description;
-//      $scope.recommendation = technology.recommendation;
-//      $scope.image = technology.image;
-//      $scope.website = technology.website;
-//    }
-
     $scope.closeAlert = function() {
       $scope.alert = undefined;
     };
@@ -95,7 +92,7 @@ angular.module('techGallery').controller(
       }
     }
     
-    $scope.cleaTechnology = function(){
+    $scope.clearTechnology = function(){
     	$scope.name = '';
     	$scope.description = '';
     	$scope.shortDescription = '';
@@ -104,13 +101,28 @@ angular.module('techGallery').controller(
     	document.getElementById('list').innerHTML = ['<img src="/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
     }
     
-    this.submitForm = function(form){
-    	var formData = new FormData(form);
-    	$http.post(uploadUrl, formData, {
-    				transformRequest: angular.identity,
-    				headers: {'Content-Type': undefined}
-    	})
-    	return false;
+    $scope.addTechnology = function(){
+    	var req = {
+    			id : slugify($scope.name),
+    			name : $scope.name,
+    			shortDescription : $scope.shortDescription, 
+    			description : $scope.description,
+    			website : $scope.webSite,
+    			image : $scope.image
+		};
+        gapi.client.rest.addTechnology(req).execute(function(data){
+        	callBackLoaded();
+        	$scope.clearTechnology();
+        });
+    };
+    
+    function slugify(text){
+    	return text.toString().toLowerCase()
+        	.replace(/\s+/g, '-')           // Replace spaces with -
+        	.replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        	.replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        	.replace(/^-+/, '')             // Trim - from start of text
+        	.replace(/-+$/, '');            // Trim - from end of text
     }
   }
 );

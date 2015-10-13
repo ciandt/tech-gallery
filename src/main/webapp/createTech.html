@@ -46,7 +46,7 @@
     	<h3 ng-show="domainError">{{domainError}}</h3>
   	</div>
   
-	<form id="data" method="post" enctype="multipart/form-data" ng-submit="mycontroller.submitForm(this);">
+	<form id="data" method="post" enctype="multipart/form-data">
 	<div ng-show="showContent" class="page-header">
   		<div id="div_container" class="container">
        		<div class="row">
@@ -68,13 +68,13 @@
       		</div>
 	      	<div class="spacingtop row" id="div_details">
 	        	<div class="col-md-9 text-right">
-					<textarea id="iddesciption" ng-model="description" class="form-control textarea" 
+					<textarea ng-model="description" class="form-control textarea" 
 					maxlength="500" placeholder="<Descrição>" ></textarea>
 		    	</div>
 	      	</div>
 	      	<div class="spacingtop row">
 	        	<div class="col-md-9">
-	        		<input ng-model="shortDescription" type="text" class="form-control"
+	        		<input ng-model="shortDescription" type="text" class="form-control" maxlength="140"
 	          			placeholder="<Descrição Curta>" aria-describedby="basic-addon2">
 	      	  	</div>
 	        </div>
@@ -85,8 +85,8 @@
 	      	  	</div>
 	        </div>
 			<div class="spacingtop">
-				<button id="btn_clear" type="button" class="btn btn-primary" ng-click="cleaTechnology()">Limpar</button>
-				<button id="btn_save" type="submit" class="btn btn-primary">Salvar</button>
+				<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearTechnology()">Limpar</button>
+				<button id="btn_save" type="submit" class="btn btn-primary" ng-click="addTechnology()">Salvar</button>
 			</div>
     	</div>
   	</div>

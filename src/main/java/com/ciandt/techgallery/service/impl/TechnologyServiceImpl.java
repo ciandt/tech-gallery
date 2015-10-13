@@ -142,7 +142,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
 
     Technology dbTechnology = technologyDAO.findByName(technology.getName());
-    if (dbTechnology == null) {
+    if (dbTechnology != null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_ALREADY_USED.message());
     }
   }
