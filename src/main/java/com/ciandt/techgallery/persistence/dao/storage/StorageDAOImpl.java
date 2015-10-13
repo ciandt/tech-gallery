@@ -121,7 +121,6 @@ public class StorageDAOImpl implements StorageDAO {
       throws IOException, GeneralSecurityException {
     Storage client = getService();
     Bucket newBucket = new Bucket().setName(applicationVersion).setLocation(LOCATION)
-        .setStorageClass("DURABLE_REDUCED_AVAILABILITY")
         .setAcl(Arrays.asList(new BucketAccessControl().setEntity("allUsers").setRole("READER")));
     Storage.Buckets.Insert bucketToCreate = client.buckets().insert(APPLICATION_NAME, newBucket);
     return bucketToCreate.execute();

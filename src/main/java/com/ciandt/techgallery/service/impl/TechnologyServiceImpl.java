@@ -29,6 +29,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.DatatypeConverter;
+
 /**
  * Services for Technology Endpoint requests.
  *
@@ -75,8 +77,8 @@ public class TechnologyServiceImpl implements TechnologyService {
       throws BadRequestException, IOException, GeneralSecurityException {
 
     validateInformations(technology);
-    String imageLink = storageDAO.insertImage("",
-        new ByteArrayInputStream("Test of json storage sample".getBytes()));
+    String imageLink = storageDAO.insertImage(convertNameToId(technology.getName()),
+        new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImage())));
     fillTechnology(technology, user, imageLink);
     technologyDAO.add(technology);
 
@@ -89,15 +91,31 @@ public class TechnologyServiceImpl implements TechnologyService {
    * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 13/10/2015
    *
-   * @param technology to be filled.
+   * @param technology to be converted.
    * @param user to get informations.
    * @param imageLink returned by the cloud storage.
+   *
    */
   private void fillTechnology(Technology technology, User user, String imageLink) {
+    technology.setId(convertNameToId(technology.getName()));
     technology.setAuthor(user.getEmail());
     technology.setCreationDate(new Date());
     technology.setImage(imageLink);
     technology.initCounters();
+  }
+
+  /**
+   * Method that gets the name of the technology and creates the id.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 13/10/2015
+   *
+   * @param name to format.
+   *
+   * @return the id formatted.
+   */
+  private String convertNameToId(String name) {
+    return name.toLowerCase().replaceAll(" ", "_");
   }
 
   /**
