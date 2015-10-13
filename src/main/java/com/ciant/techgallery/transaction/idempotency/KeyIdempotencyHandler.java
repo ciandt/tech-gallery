@@ -3,12 +3,14 @@ package com.ciant.techgallery.transaction.idempotency;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 
+import java.lang.reflect.Method;
+
 public class KeyIdempotencyHandler implements IdempotencyHandler {
 
   private Object result;
 
   @Override
-  public boolean shouldTransactionProceed(Object target, Object[] args) {
+  public boolean shouldTransactionProceed(Object target, Method method, Object[] args) {
     
     if (args != null) {
       Key<?> key;

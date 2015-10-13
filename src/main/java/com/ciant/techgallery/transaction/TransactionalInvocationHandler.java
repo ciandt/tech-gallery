@@ -51,7 +51,7 @@ public class TransactionalInvocationHandler implements InvocationHandler {
         return ObjectifyService.ofy().execute(transactional.type(), new Work() {
           @Override
           public Object run() {
-            if (idempotencyHandler.shouldTransactionProceed(proxy, args)) {
+            if (idempotencyHandler.shouldTransactionProceed(proxy, method, args)) {
               Object result = invokeMethod(args, implementationMethod);
               idempotencyHandler.setReturn(result);
             } 
