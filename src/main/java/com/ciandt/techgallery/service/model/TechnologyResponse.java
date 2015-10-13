@@ -25,13 +25,13 @@ public class TechnologyResponse implements Response {
   /** technology company recommendation. */
   private String recommendation;
   /** technology positives recommendations. */
-  private Integer positiveRecomendationsCounter;
+  private Integer positiveRecommendationsCounter;
   /** technology negative recommendations. */
-  private Integer negativeRecomendationsCounter;
+  private Integer negativeRecommendationsCounter;
   /** technology commentaries. */
   private Integer commentariesCounter;
   /** technology endorseds. */
-  private Integer endorsedsCounter;
+  private Integer endorsersCounter;
 
   public String getId() {
     return id;
@@ -53,20 +53,20 @@ public class TechnologyResponse implements Response {
     return shortDescription;
   }
 
-  public Integer getPositiveRecomendationsCounter() {
-    return positiveRecomendationsCounter;
+  public Integer getPositiveRecommendationsCounter() {
+    return positiveRecommendationsCounter;
   }
 
-  public void setPositiveRecomendationsCounter(Integer positiveRecomendationsCounter) {
-    this.positiveRecomendationsCounter = positiveRecomendationsCounter;
+  public void setPositiveRecommendationsCounter(Integer positiveRecommendationsCounter) {
+    this.positiveRecommendationsCounter = positiveRecommendationsCounter;
   }
 
-  public Integer getNegativeRecomendationsCounter() {
-    return negativeRecomendationsCounter;
+  public Integer getNegativeRecommendationsCounter() {
+    return negativeRecommendationsCounter;
   }
 
-  public void setNegativeRecomendationsCounter(Integer negativeRecomendationsCounter) {
-    this.negativeRecomendationsCounter = negativeRecomendationsCounter;
+  public void setNegativeRecommendationsCounter(Integer negativeRecommendationsCounter) {
+    this.negativeRecommendationsCounter = negativeRecommendationsCounter;
   }
 
   public Integer getCommentariesCounter() {
@@ -77,12 +77,12 @@ public class TechnologyResponse implements Response {
     this.commentariesCounter = commentariesCounter;
   }
 
-  public Integer getEndorsedsCounter() {
-    return endorsedsCounter;
+  public Integer getEndorsersCounter() {
+    return endorsersCounter;
   }
 
-  public void setEndorsedsCounter(Integer endorsedsCounter) {
-    this.endorsedsCounter = endorsedsCounter;
+  public void setEndorsersCounter(Integer endorsersCounter) {
+    this.endorsersCounter = endorsersCounter;
   }
 
   public void setShortDescription(String shortDescription) {

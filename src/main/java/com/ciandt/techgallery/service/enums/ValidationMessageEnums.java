@@ -15,6 +15,10 @@ public enum ValidationMessageEnums {
   SKILL_RANGE("Skill's value must be between 1 and 5"),
   // Message for technologies
   TECHNOLOGY_ID_CANNOT_BLANK("Technology or technology's id cannot be null or blank."),
+  TECHNOLOGY_NAME_CANNOT_BLANK("Technology's name cannot be null or blank."),
+  TECHNOLOGY_SHORT_DESCRIPTION_BLANK("Technology's short description cannot be null or blank."),
+  TECHNOLOGY_DESCRIPTION_BLANK("Technology's description cannot be null or blank."),
+  TECHNOLOGY_NAME_ALREADY_USED("A technology already exists with this name."),
   TECHNOLOGY_NOT_EXIST("Technology doesn't exist."),
   // Message for users
   USER_CANNOT_BLANK("User or user's id cannot be null or blank."), 
@@ -30,8 +34,7 @@ public enum ValidationMessageEnums {
   RECOMMEND_NOT_EXIST("Recommend doesn't exist."), 
   RECOMMEND_RECOMMENDER_ERROR("This recommend doesn't belong to this user."), 
   TO_INACTIVE("Inactive transient object is not allowed."), 
-  NO_TECHNOLOGY_WAS_FOUND("No technology was found."), 
-  TECHNOLOGY_ID_CANNOT_BE_BLANK("Technology's id cannot be blank.");
+  NO_TECHNOLOGY_WAS_FOUND("No technology was found.");
 
 
   private String message;

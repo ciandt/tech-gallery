@@ -5,8 +5,10 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
+import com.ciandt.techgallery.persistence.dao.StorageDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
+import com.ciandt.techgallery.persistence.dao.storage.StorageDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.TechnologyService;
@@ -18,9 +20,13 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,6 +45,7 @@ public class TechnologyServiceImpl implements TechnologyService {
   /** tech gallery user service. */
   UserServiceTG userService = UserServiceTGImpl.getInstance();
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
+  StorageDAO storageDAO = StorageDAOImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
@@ -63,27 +70,62 @@ public class TechnologyServiceImpl implements TechnologyService {
   /*
    * Methods --------------------------------------------
    */
-  /**
-   * POST for adding a technology.
-   */
   @Override
-  public Technology addTechnology(final Technology technology)
-      throws InternalServerErrorException, BadRequestException {
-    String techId = technology.getId();
-    String techName = technology.getName();
+  public Technology addTechnology(Technology technology, User user)
+      throws BadRequestException, IOException, GeneralSecurityException {
 
-    // technology id can't be null or empty
-    if (techId == null || techId.equals("")) {
-      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BE_BLANK.message());
+    validateInformations(technology);
+    String imageLink = storageDAO.insertImage("",
+        new ByteArrayInputStream("Test of json storage sample".getBytes()));
+    fillTechnology(technology, user, imageLink);
+    technologyDAO.add(technology);
+
+    return technology;
+  }
+
+  /**
+   * Fill a few informations about the technology.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 13/10/2015
+   *
+   * @param technology to be filled.
+   * @param user to get informations.
+   * @param imageLink returned by the cloud storage.
+   */
+  private void fillTechnology(Technology technology, User user, String imageLink) {
+    technology.setAuthor(user.getEmail());
+    technology.setCreationDate(new Date());
+    technology.setImage(imageLink);
+    technology.initCounters();
+  }
+
+  /**
+   * Method to validade informations of the technology to be added.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 13/10/2015
+   *
+   * @param technology to be validated.
+   *
+   * @throws BadRequestException in case a request with problem were made.
+   */
+  private void validateInformations(Technology technology) throws BadRequestException {
+    if (technology.getId() == null || technology.getId().equals("")) {
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
+    } else if (technology.getName() == null || technology.getName().equals("")) {
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
+    } else if (technology.getShortDescription() == null
+        || technology.getShortDescription().equals("")) {
+      throw new BadRequestException(
+          ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
+    } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_DESCRIPTION_BLANK.message());
     }
-    // technology name can't be null or empty
-    if (techName == null || techName.equals("")) {
-      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BE_BLANK.message());
-    } else {
-      technology.initCounters();
-      technologyDAO.add(technology);
 
-      return technology;
+    Technology dbTechnology = technologyDAO.findByName(technology.getName());
+    if (dbTechnology == null) {
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_ALREADY_USED.message());
     }
   }
 
@@ -112,8 +154,8 @@ public class TechnologyServiceImpl implements TechnologyService {
         Collections.sort(techList, new Comparator<Technology>() {
           @Override
           public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getPositiveRecomendationsCounter(),
-                counter1.getPositiveRecomendationsCounter());
+            return Integer.compare(counter2.getPositiveRecommendationsCounter(),
+                counter1.getPositiveRecommendationsCounter());
           }
         });
         break;
@@ -121,8 +163,8 @@ public class TechnologyServiceImpl implements TechnologyService {
         Collections.sort(techList, new Comparator<Technology>() {
           @Override
           public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getNegativeRecomendationsCounter(),
-                counter1.getNegativeRecomendationsCounter());
+            return Integer.compare(counter2.getNegativeRecommendationsCounter(),
+                counter1.getNegativeRecommendationsCounter());
           }
         });
         break;
@@ -139,7 +181,7 @@ public class TechnologyServiceImpl implements TechnologyService {
         Collections.sort(techList, new Comparator<Technology>() {
           @Override
           public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getEndorsedsCounter(), counter1.getEndorsedsCounter());
+            return Integer.compare(counter2.getEndorsersCounter(), counter1.getEndorsersCounter());
           }
         });
         break;
@@ -304,9 +346,9 @@ public class TechnologyServiceImpl implements TechnologyService {
       return;
     }
     if (score) {
-      entity.addPositiveRecomendationsCounter();
+      entity.addPositiveRecommendationsCounter();
     } else {
-      entity.addNegativeRecomendationsCounter();
+      entity.addNegativeRecommendationsCounter();
     }
     technologyDAO.update(entity);
   }
@@ -317,16 +359,16 @@ public class TechnologyServiceImpl implements TechnologyService {
       return;
     }
     if (score) {
-      entity.removePositiveRecomendationsCounter();
+      entity.removePositiveRecommendationsCounter();
     } else {
-      entity.removeNegativeRecomendationsCounter();
+      entity.removeNegativeRecommendationsCounter();
     }
     technologyDAO.update(entity);
   }
 
   @Override
   public void updateEdorsedsCounter(Technology technology, Integer size) {
-    technology.setEndorsedsCounter(size);
+    technology.setEndorsersCounter(size);
     technologyDAO.update(technology);
   }
 }

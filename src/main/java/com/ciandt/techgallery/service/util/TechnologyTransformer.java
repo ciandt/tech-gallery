@@ -17,10 +17,10 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
     product.setRecommendation(baseObject.getRecommendation());
     product.setShortDescription(baseObject.getShortDescription());
     product.setWebsite(baseObject.getWebsite());
-    product.setPositiveRecomendationsCounter(baseObject.getPositiveRecomendationsCounter());
-    product.setNegativeRecomendationsCounter(baseObject.getNegativeRecomendationsCounter());
+    product.setPositiveRecommendationsCounter(baseObject.getPositiveRecommendationsCounter());
+    product.setNegativeRecommendationsCounter(baseObject.getNegativeRecommendationsCounter());
     product.setCommentariesCounter(baseObject.getCommentariesCounter());
-    product.setEndorsedsCounter(baseObject.getEndorsedsCounter());
+    product.setEndorsersCounter(baseObject.getEndorsersCounter());
     return product;
   }
 
@@ -36,10 +36,10 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
       product.setRecommendation(baseObject.getRecommendation());
       product.setShortDescription(baseObject.getShortDescription());
       product.setWebsite(baseObject.getWebsite());
-      product.setPositiveRecomendationsCounter(baseObject.getPositiveRecomendationsCounter());
-      product.setNegativeRecomendationsCounter(baseObject.getNegativeRecomendationsCounter());
+      product.setPositiveRecommendationsCounter(baseObject.getPositiveRecommendationsCounter());
+      product.setNegativeRecommendationsCounter(baseObject.getNegativeRecommendationsCounter());
       product.setCommentariesCounter(baseObject.getCommentariesCounter());
-      product.setEndorsedsCounter(baseObject.getEndorsedsCounter());
+      product.setEndorsersCounter(baseObject.getEndorsersCounter());
       return product;
     } else {
       return null;

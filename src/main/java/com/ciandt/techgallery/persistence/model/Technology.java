@@ -9,9 +9,11 @@ import com.googlecode.objectify.annotation.Unindex;
 
 import com.ciandt.techgallery.service.util.TechnologyTransformer;
 
+import java.util.Date;
+
 /**
  * Technology entity.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */
@@ -19,6 +21,25 @@ import com.ciandt.techgallery.service.util.TechnologyTransformer;
 @ApiTransformer(TechnologyTransformer.class)
 public class Technology extends BaseEntity<String> {
 
+  /*
+   * Constants --------------------------------------------
+   */
+  public static final String ID = "id";
+  public static final String NAME = "name";
+  public static final String SHORT_DESCRIPTION = "shortDescription";
+  public static final String DESCRIPTION = "description";
+  public static final String WEBSITE = "website";
+  public static final String AUTHOR = "author";
+  public static final String IMAGE = "image";
+  public static final String RECOMMENDATION = "recommendation";
+  public static final String POSITIVE_RECOMMENDATIONS_COUNTER = "positiveRecommendationsCounter";
+  public static final String NEGATIVE_RECOMMENDATIONS_COUNTER = "negativeRecommendationsCounter";
+  public static final String COMMENTARIES_COUNTER = "commentariesCounter";
+  public static final String ENDORSERS_COUNTER = "endorsersCounter";
+
+  /*
+   * Attributes --------------------------------------------
+   */
   @Id
   private String id;
 
@@ -45,17 +66,90 @@ public class Technology extends BaseEntity<String> {
   private String recommendation;
 
   @Index
-  private Integer positiveRecomendationsCounter;
+  private Integer positiveRecommendationsCounter;
 
   @Index
-  private Integer negativeRecomendationsCounter;
+  private Integer negativeRecommendationsCounter;
 
   @Index
   private Integer commentariesCounter;
 
   @Index
-  private Integer endorsedsCounter;
+  private Integer endorsersCounter;
 
+  @Unindex
+  private Date creationDate;
+
+  /*
+   * Methods --------------------------------------------
+   */
+  /**
+   * Add 1 to the positive recomndations counter.
+   */
+  public void addPositiveRecommendationsCounter() {
+    positiveRecommendationsCounter++;
+  }
+
+  /**
+   * Remove 1 to the positive recomndations counter.
+   */
+  public void removePositiveRecommendationsCounter() {
+    if (positiveRecommendationsCounter > 0) {
+      positiveRecommendationsCounter--;
+    } else {
+      positiveRecommendationsCounter = 0;
+    }
+  }
+
+  /**
+   * Add 1 to the negative recomndations counter.
+   */
+  public void addNegativeRecommendationsCounter() {
+    negativeRecommendationsCounter++;
+  }
+
+  /**
+   * Remove 1 to the negative recomndations counter.
+   */
+  public void removeNegativeRecommendationsCounter() {
+    if (negativeRecommendationsCounter > 0) {
+      negativeRecommendationsCounter--;
+    } else {
+      negativeRecommendationsCounter = 0;
+    }
+  }
+
+  /**
+   * Add 1 to the commentary counter.
+   */
+  public void addCommentariesCounter() {
+    commentariesCounter++;
+  }
+
+  /**
+   * Remove 1 to the commentary counter.
+   */
+  public void removeCommentariesCounter() {
+    if (commentariesCounter > 0) {
+      commentariesCounter--;
+    } else {
+      commentariesCounter = 0;
+    }
+  }
+
+  /**
+   * Initialize the technology counters.
+   */
+  public void initCounters() {
+    commentariesCounter = 0;
+    endorsersCounter = 0;
+    negativeRecommendationsCounter = 0;
+    positiveRecommendationsCounter = 0;
+  }
+
+  /*
+   * Getter's and Setter's --------------------------------------------
+   */
   @Override
   public String getId() {
     return id;
@@ -122,20 +216,20 @@ public class Technology extends BaseEntity<String> {
     this.recommendation = recommendation;
   }
 
-  public Integer getPositiveRecomendationsCounter() {
-    return positiveRecomendationsCounter;
+  public Integer getPositiveRecommendationsCounter() {
+    return positiveRecommendationsCounter;
   }
 
-  public void setPositiveRecomendationsCounter(Integer positiveRecomendationsCounter) {
-    this.positiveRecomendationsCounter = positiveRecomendationsCounter;
+  public void setPositiveRecommendationsCounter(Integer positiveRecommendationsCounter) {
+    this.positiveRecommendationsCounter = positiveRecommendationsCounter;
   }
 
-  public Integer getNegativeRecomendationsCounter() {
-    return negativeRecomendationsCounter;
+  public Integer getNegativeRecommendationsCounter() {
+    return negativeRecommendationsCounter;
   }
 
-  public void setNegativeRecomendationsCounter(Integer negativeRecomendationsCounter) {
-    this.negativeRecomendationsCounter = negativeRecomendationsCounter;
+  public void setNegativeRecommendationsCounter(Integer negativeRecommendationsCounter) {
+    this.negativeRecommendationsCounter = negativeRecommendationsCounter;
   }
 
   public Integer getCommentariesCounter() {
@@ -146,75 +240,19 @@ public class Technology extends BaseEntity<String> {
     this.commentariesCounter = commentariesCounter;
   }
 
-  public Integer getEndorsedsCounter() {
-    return endorsedsCounter;
+  public Integer getEndorsersCounter() {
+    return endorsersCounter;
   }
 
-  public void setEndorsedsCounter(Integer endorsedsCounter) {
-    this.endorsedsCounter = endorsedsCounter;
+  public void setEndorsersCounter(Integer endorsersCounter) {
+    this.endorsersCounter = endorsersCounter;
   }
 
-  /**
-   * Add 1 to the positive recomndations counter.
-   */
-  public void addPositiveRecomendationsCounter() {
-    this.positiveRecomendationsCounter++;
+  public Date getCreationDate() {
+    return creationDate;
   }
 
-  /**
-   * Remove 1 to the positive recomndations counter.
-   */
-  public void removePositiveRecomendationsCounter() {
-    if (this.positiveRecomendationsCounter > 0) {
-      this.positiveRecomendationsCounter--;
-    } else {
-      this.positiveRecomendationsCounter = 0;
-    }
-  }
-
-  /**
-   * Add 1 to the negative recomndations counter.
-   */
-  public void addNegativeRecomendationsCounter() {
-    this.negativeRecomendationsCounter++;
-  }
-
-  /**
-   * Remove 1 to the negative recomndations counter.
-   */
-  public void removeNegativeRecomendationsCounter() {
-    if (this.negativeRecomendationsCounter > 0) {
-      this.negativeRecomendationsCounter--;
-    } else {
-      this.negativeRecomendationsCounter = 0;
-    }
-  }
-
-  /**
-   * Add 1 to the commentary counter.
-   */
-  public void addCommentariesCounter() {
-    this.commentariesCounter++;
-  }
-
-  /**
-   * Remove 1 to the commentary counter.
-   */
-  public void removeCommentariesCounter() {
-    if (this.commentariesCounter > 0) {
-      this.commentariesCounter--;
-    } else {
-      this.commentariesCounter = 0;
-    }
-  }
-
-  /**
-   * Initialize the technology counters.
-   */
-  public void initCounters() {
-    this.commentariesCounter = 0;
-    this.endorsedsCounter = 0;
-    this.negativeRecomendationsCounter = 0;
-    this.positiveRecomendationsCounter = 0;
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
   }
 }
