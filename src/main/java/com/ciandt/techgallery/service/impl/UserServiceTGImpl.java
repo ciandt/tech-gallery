@@ -350,6 +350,20 @@ public class UserServiceTGImpl implements UserServiceTG {
     return tgUser;
   }
 
+  /**
+   * GET Calls the provider API passing a login to obtain a list of users
+   * information.
+   *
+   * @param string
+   *          to search on provider by name or login
+   * 
+   * @throws NotFoundException
+   *           in case the user is not found on provider
+   * @throws BadRequestException
+   *           in case of JSON or URL error
+   * @throws InternalServerErrorException
+   *           if any IO exceptions occur
+   */
   public List<TechGalleryUser> getUsersList(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     userLogin += "*";
