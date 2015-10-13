@@ -7,6 +7,66 @@
   var userEmail;
   var userDomain;
   
+  var response = {
+    "owner": {
+     "id": "5629499534213120",
+     "name": "Eduardo Gomes Filho",
+     "email": "eduardogf@ciandt.com",
+     "photo": "https://lh6.googleusercontent.com/-rWijWoVPzZo/AAAAAAAAAAI/AAAAAAAAABI/IMd4y2iiKc4/photo.jpg?sz=50",
+     "googleId": "109523629375708129002"
+    },
+    "negativeRecItems": [
+     {
+      "technologyName": "Apache Camel",
+      "companyRecommendation": "Recomendada",
+      "endorsementQuantity": 0,
+      "skillLevel": 3,
+      "comments": [
+       {
+        "body": "n gosto",
+        "timestamp": "2015-10-13T20:06:32.798Z"
+       },
+       {
+         "body": "Deal with it... turn down for whaaaaaaaaaaattttttt!!!!!",
+         "timestamp": "2015-10-13T21:31:32.798Z"
+       },
+       {
+         "body": "Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis.",
+         "timestamp": "2015-10-13T21:31:32.798Z"
+       }
+      ]
+     }
+    ],
+    "otherItems": [
+     {
+      "technologyName": "ADF",
+      "companyRecommendation": "Não recomendadas ou aposentar",
+      "endorsementQuantity": 0,
+      "skillLevel": 0,
+      "comments": [
+       {
+        "body": "hssh",
+        "timestamp": "2015-10-13T19:34:52.124Z"
+       }
+      ]
+     },
+     {
+      "technologyName": "Apache ActiveMQ",
+      "companyRecommendation": "Recomendada",
+      "endorsementQuantity": 0,
+      "skillLevel": 4
+     }
+    ],
+    "kind": "rest#profileItem",
+    "etag": "\"bF-CMA6JG5WRODyeZIjeVNhCxHw/5r9CeFDcpYwnh_0xyXvybrq-cxE\""
+   };
+  
+  var mockUserProfile = function (userMail){
+    if(userMail == "eduardogf@ciandt.com"){
+      return response;
+    }
+  }
+  
   var getUserEmail = function(callBackFunction, authResult){
     setTimeout(function(){
       gapi.client.load('oauth2', 'v2', function() {
@@ -246,6 +306,15 @@
 
     return '';
   };
+  
+  var slugify = function(text){
+    return text.toString().toLowerCase()
+      .replace(/\s+/g, '-')           // Replace spaces with -
+      .replace(/[^a-zA-Z0-9_\-]+/g, '')       // Remove all non-word chars
+      .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+      .replace(/^-+/, '')             // Trim - from start of text
+      .replace(/-+$/, '');            // Trim - from end of text
+  }
 
   window.jsUtils = {
     checkAuth: checkAuth,
@@ -256,7 +325,9 @@
     getParameterByName: getParameterByName,
     alerts: alerts,
     logoutRedirect: logoutRedirect,
-    getUserEmail : getUserEmail
+    getUserEmail : getUserEmail,
+    mockUserProfile : mockUserProfile,
+    slugify: slugify
   };
 
 })(window);

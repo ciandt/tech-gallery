@@ -213,3 +213,33 @@ body, html {
 .removeFilter {
   float: right;
 }
+
+.separator{
+	width: 100%;
+    border-top: 1px solid #716F77;
+    list-style-type: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.profileName{
+    font-style: italic;
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+.profilePhoto{
+	width: 100px;
+}
+
+.userProfileThumbnail{
+	overflow: auto;
+    overflow-x: hidden;
+    width: 300px;
+    height: 430px;
+}
+
+.divComments{
+	margin-top: 30px;
+}
