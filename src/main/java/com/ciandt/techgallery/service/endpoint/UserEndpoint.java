@@ -113,6 +113,21 @@ public class UserEndpoint {
     return service.handleLogin(user, req);
   }
 
+  /**
+   * Endpoint for getting a users from a user provider. The interface with the
+   * provider is made by the service
+   * 
+   * @param string
+   *          to search on provider by name or login
+   * 
+   * @return list of users
+   * @throws InternalServerErrorException
+   *           in case something goes wrong
+   * @throws NotFoundException
+   *           in case the information are not founded
+   * @throws BadRequestException
+   *           in case a request with problem were made.
+   */
   @ApiMethod(name = "getUsersList", path = "search/{login}", httpMethod = "get")
   public List<TechGalleryUser> getUsersList(@Named("login") String login)
       throws NotFoundException, BadRequestException, InternalServerErrorException {

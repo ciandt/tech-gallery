@@ -142,11 +142,12 @@ public interface UserServiceTG {
       throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException;
 
   /**
-   * Service for getting an User from an external provider by its Login.
+   * Service for getting Users from an external provider by its Login.
    *
-   * @param id
-   *          entity id.
-   * @return user
+   * @param string
+   *          to search on provider by name or login
+   * 
+   * @return List of users
    * @throws InternalServerErrorException
    *           in case something goes wrong
    * @throws NotFoundException
