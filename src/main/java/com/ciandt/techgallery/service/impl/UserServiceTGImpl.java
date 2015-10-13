@@ -404,15 +404,18 @@ public class UserServiceTGImpl implements UserServiceTG {
     ArrayList<?> peopleApiResponse = (ArrayList<?>) map.get("data");
     for (int index = 0; index < peopleApiResponse.size(); index++) {
       ArrayList<?> peopleApiUser = (ArrayList<?>) peopleApiResponse.get(index);
-      TechGalleryUser tgUser = userDao.findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
-      if (tgUser != null) {
-        techUsers.add(tgUser);
+      TechGalleryUser foundUser = userDao.findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
+      TechGalleryUser tgUser = new TechGalleryUser();
+      if (foundUser != null) {
+        tgUser.setEmail(foundUser.getEmail());
+        tgUser.setName(foundUser.getName());
+        tgUser.setPhoto(foundUser.getPhoto());
       } else {
-        tgUser = new TechGalleryUser();
         tgUser.setEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
         tgUser.setName((String) peopleApiUser.get(INDEX_PEOPLE_API_NAME));
-        techUsers.add(tgUser);
+        tgUser.setPhoto(null);
       }
+      techUsers.add(tgUser);
     }
     return techUsers;
   }
