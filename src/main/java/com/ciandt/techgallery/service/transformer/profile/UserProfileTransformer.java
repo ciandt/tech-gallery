@@ -2,9 +2,6 @@ package com.ciandt.techgallery.service.transformer.profile;
 
 import com.google.api.server.spi.config.Transformer;
 
-import com.googlecode.objectify.Key;
-
-import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.profile.UserProfile;
 import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
 import com.ciandt.techgallery.service.model.profile.UserProfileTo;
@@ -31,7 +28,7 @@ public class UserProfileTransformer implements Transformer<UserProfile, UserProf
     return new UserProfileTo(arg0.getOwner().get(), positiveRecItems, negativeRecItems, otherItems);
   }
 
-  private List<UserProfileItem> getSortedItems(HashMap<Key<Technology>, UserProfileItem> items) {
+  private List<UserProfileItem> getSortedItems(HashMap<String, UserProfileItem> items) {
     ArrayList<UserProfileItem> sortedItems = new ArrayList<UserProfileItem>(items.values());
     Collections.sort(sortedItems);
     return sortedItems;

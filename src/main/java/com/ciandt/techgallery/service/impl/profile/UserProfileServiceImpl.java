@@ -79,9 +79,13 @@ public class UserProfileServiceImpl implements UserProfileService {
     technology = TechnologyServiceImpl.getInstance().getTechnologyById(technology.getId());
     UserProfileItem newItem = new UserProfileItem(technology);
     profile.addItem(UserProfile.POSITIVE_RECOMMENDATION, Key.create(technology), newItem);
+    profile.addItem(UserProfile.NEGATIVE_RECOMMENDATION, Key.create(technology), newItem);
+    profile.addItem(UserProfile.OTHER, Key.create(technology), newItem);
+    UserProfileDaoImpl.getInstance().add(profile);
     return profile;
   }
 
+  //TODO cache profile
   @Override
   public UserProfile createProfile(TechGalleryUser tgUser) {
     UserProfile profile = findUserProfileByOwner(tgUser);
@@ -124,6 +128,7 @@ public class UserProfileServiceImpl implements UserProfileService {
           profile.removeItem(technologyKey);
         }
       }
+      UserProfileDaoImpl.getInstance().add(profile);
     }
   }
 
@@ -155,6 +160,8 @@ public class UserProfileServiceImpl implements UserProfileService {
         // No previous category means new item
         if (category == null) {
           profile.addItem(UserProfile.OTHER, technologyKey, item);
+        } else {
+          profile.addItem(category, technologyKey, item);
         }
       } else {
 
@@ -166,6 +173,7 @@ public class UserProfileServiceImpl implements UserProfileService {
           }
         }
       }
+      UserProfileDaoImpl.getInstance().add(profile);
     }
   }
 
@@ -181,11 +189,13 @@ public class UserProfileServiceImpl implements UserProfileService {
       UserProfileItem item = getTechnologyItem(technology, profile);
       Integer category = profile.getItemCategory(technologyKey);
 
-      if (skill.getActive()) {
+      if (skill.getValue() != null &&  skill.getValue() > 0) {
         item.setSkillLevel(skill.getValue());
         // No previous category means new item
         if (category == null) {
           profile.addItem(UserProfile.OTHER, technologyKey, item);
+        } else {
+          profile.addItem(category, technologyKey, item);
         }
       } else {
 
@@ -197,6 +207,7 @@ public class UserProfileServiceImpl implements UserProfileService {
           }
         }
       }
+      UserProfileDaoImpl.getInstance().add(profile);
     }
   }
 
@@ -217,6 +228,8 @@ public class UserProfileServiceImpl implements UserProfileService {
         // No previous category means new item
         if (category == null) {
           profile.addItem(UserProfile.OTHER, technologyKey, item);
+        } else {
+          profile.addItem(category, technologyKey, item);
         }
       } else {
 
@@ -228,6 +241,7 @@ public class UserProfileServiceImpl implements UserProfileService {
           }
         }
       }
+      UserProfileDaoImpl.getInstance().add(profile);
     }
   }
 

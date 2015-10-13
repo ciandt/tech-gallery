@@ -3,15 +3,22 @@ package com.ciandt.techgallery.persistence.model.profile;
 import com.google.api.server.spi.config.ApiTransformer;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Serialize;
 
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.transformer.profile.UserProfileItemTransformer;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 @ApiTransformer(UserProfileItemTransformer.class)
-public class UserProfileItem implements Comparable<UserProfileItem> {
+public class UserProfileItem implements Comparable<UserProfileItem>, Serializable{
+
+  /**
+   * 
+   */
+  private static final long serialVersionUID = 1L;
 
   private String technologyName;
 
@@ -23,7 +30,7 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
 
   private Integer skillLevel;
 
-  private HashMap<Key<TechnologyComment>, SubItemComment> comments;
+  @Serialize private HashMap<String, SubItemComment> comments;
 
   public UserProfileItem() {}
 
@@ -39,7 +46,7 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
     setTechnologyPhotoUrl(technology.getImage());
     endorsementQuantity = 0;
     setSkillLevel(0);
-    comments = new HashMap<Key<TechnologyComment>, SubItemComment>();
+    comments = new HashMap<String, SubItemComment>();
   }
 
   /**
@@ -49,9 +56,9 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
    */
   public void addComment(TechnologyComment originComment) {
     if (comments == null) {
-      comments = new HashMap<Key<TechnologyComment>, SubItemComment>();
+      comments = new HashMap<String, SubItemComment>();
     }
-    comments.put(Key.create(originComment),
+    comments.put(Key.create(originComment).getString(),
         new SubItemComment(originComment.getComment(), originComment.getTimestamp()));
   }
 
@@ -62,7 +69,7 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
    */
   public void removeComment(Key<TechnologyComment> commentKey) {
     if (comments != null) {
-      comments.remove(commentKey);
+      comments.remove(commentKey.getString());
     }
   }
 
@@ -97,6 +104,7 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
    * @param number the number to be added to the counter
    * @return the final result
    */
+  //TODO resolver com transação ou memcache. Isso nao resolve
   public synchronized Integer addToEndorsementsCounter(Integer number) {
     this.endorsementQuantity += number;
     return this.endorsementQuantity;
@@ -115,7 +123,7 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
     this.skillLevel = skillLevel;
   }
 
-  public HashMap<Key<TechnologyComment>, SubItemComment> getComments() {
+  public HashMap<String, SubItemComment> getComments() {
     return comments;
   }
 

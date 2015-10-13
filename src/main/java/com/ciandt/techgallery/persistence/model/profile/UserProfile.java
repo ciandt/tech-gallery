@@ -7,6 +7,7 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Serialize;
 
 import com.ciandt.techgallery.persistence.model.BaseEntity;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -14,8 +15,6 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.transformer.profile.UserProfileTransformer;
 
 import java.util.HashMap;
-
-import javax.jdo.annotations.Persistent;
 
 @Entity
 @ApiTransformer(UserProfileTransformer.class)
@@ -33,14 +32,11 @@ public class UserProfile extends BaseEntity<String> {
   @Index
   private Ref<TechGalleryUser> owner;
 
-  @Persistent(serialized = "true")
-  private HashMap<Key<Technology>, UserProfileItem> positiveRecItems;
+  @Serialize private HashMap<String, UserProfileItem> positiveRecItems;
 
-  @Persistent(serialized = "true")
-  private HashMap<Key<Technology>, UserProfileItem> negativeRecItems;
+  @Serialize private HashMap<String, UserProfileItem> negativeRecItems;
 
-  @Persistent(serialized = "true")
-  private HashMap<Key<Technology>, UserProfileItem> otherItems;
+  @Serialize private HashMap<String, UserProfileItem> otherItems;
 
   public UserProfile() {}
 
@@ -53,9 +49,9 @@ public class UserProfile extends BaseEntity<String> {
     super();
     setOwner(Ref.create(owner));
     setId(getIdFromTgUserId(owner.getId()));
-    positiveRecItems = new HashMap<Key<Technology>, UserProfileItem>();
-    negativeRecItems = new HashMap<Key<Technology>, UserProfileItem>();
-    otherItems = new HashMap<Key<Technology>, UserProfileItem>();
+    positiveRecItems = new HashMap<String, UserProfileItem>();
+    negativeRecItems = new HashMap<String, UserProfileItem>();
+    otherItems = new HashMap<String, UserProfileItem>();
   }
 
   public static String getIdFromTgUserId(Long tgUserId) {
@@ -92,17 +88,17 @@ public class UserProfile extends BaseEntity<String> {
   public void addItem(int category, Key<Technology> technology, UserProfileItem profileItem) {
     if (category == POSITIVE_RECOMMENDATION) {
 
-      negativeRecItems.remove(technology);
-      otherItems.remove(technology);
-      positiveRecItems.put(technology, profileItem);
+      negativeRecItems.remove(technology.getString());
+      otherItems.remove(technology.getString());
+      positiveRecItems.put(technology.getString(), profileItem);
     } else if (category == NEGATIVE_RECOMMENDATION) {
-      otherItems.remove(technology);
-      positiveRecItems.remove(technology);
-      negativeRecItems.put(technology, profileItem);
+      otherItems.remove(technology.getString());
+      positiveRecItems.remove(technology.getString());
+      negativeRecItems.put(technology.getString(), profileItem);
     } else if (category == OTHER) {
-      positiveRecItems.remove(technology);
-      negativeRecItems.remove(technology);
-      otherItems.put(technology, profileItem);
+      positiveRecItems.remove(technology.getString());
+      negativeRecItems.remove(technology.getString());
+      otherItems.put(technology.getString(), profileItem);
     }
   }
 
@@ -113,11 +109,11 @@ public class UserProfile extends BaseEntity<String> {
    * @return the item, if exists. null otherwise
    */
   public UserProfileItem getItem(Key<Technology> technology) {
-    UserProfileItem item = positiveRecItems.get(technology);
+    UserProfileItem item = positiveRecItems.get(technology.getString());
     if (item == null) {
-      item = negativeRecItems.get(technology);
+      item = negativeRecItems.get(technology.getString());
       if (item == null) {
-        return otherItems.get(technology);
+        return otherItems.get(technology.getString());
       }
     }
     return item;
@@ -130,11 +126,11 @@ public class UserProfile extends BaseEntity<String> {
    * @return the category where the item is stored
    */
   public Integer getItemCategory(Key<Technology> technology) {
-    if (positiveRecItems.containsKey(technology)) {
+    if (positiveRecItems.containsKey(technology.getString())) {
       return POSITIVE_RECOMMENDATION;
-    } else if (negativeRecItems.containsKey(technology)) {
+    } else if (negativeRecItems.containsKey(technology.getString())) {
       return NEGATIVE_RECOMMENDATION;
-    } else if (otherItems.containsKey(technology)) {
+    } else if (otherItems.containsKey(technology.getString())) {
       return OTHER;
     }
     return null;
@@ -146,23 +142,23 @@ public class UserProfile extends BaseEntity<String> {
    * @param technology the Technology item
    */
   public void removeItem(Key<Technology> technology) {
-    positiveRecItems.remove(technology);
-    negativeRecItems.remove(technology);
-    otherItems.remove(technology);
+    positiveRecItems.remove(technology.getString());
+    negativeRecItems.remove(technology.getString());
+    otherItems.remove(technology.getString());
   }
 
 
-  public HashMap<Key<Technology>, UserProfileItem> getPositiveRecItems() {
+  public HashMap<String, UserProfileItem> getPositiveRecItems() {
     return positiveRecItems;
   }
 
 
-  public HashMap<Key<Technology>, UserProfileItem> getNegativeRecItems() {
+  public HashMap<String, UserProfileItem> getNegativeRecItems() {
     return negativeRecItems;
   }
 
 
-  public HashMap<Key<Technology>, UserProfileItem> getOtherItems() {
+  public HashMap<String, UserProfileItem> getOtherItems() {
     return otherItems;
   }
 
