@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 /**
  * Class that implements the StorageDAO.
@@ -34,6 +35,7 @@ public class StorageDAOImpl implements StorageDAO {
   /*
    * Constants --------------------------------------------
    */
+  private static final Logger logger = Logger.getLogger(StorageDAOImpl.class.getName());
   /** Global instance of the JSON factory. */
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
   private static final String APPLICATION_NAME = SystemProperty.applicationId.get();
@@ -121,8 +123,9 @@ public class StorageDAOImpl implements StorageDAO {
   private static Bucket createBucket(String applicationVersion)
       throws IOException, GeneralSecurityException {
     Storage client = getService();
-    Bucket newBucket = new Bucket().setName(applicationVersion).setLocation(LOCATION)
-        .setAcl(Arrays.asList(new BucketAccessControl().setEntity("allUsers").setRole("READER")));
+    Bucket newBucket =
+        new Bucket().setName("cit-tech-gallery-" + applicationVersion).setLocation(LOCATION).setAcl(
+            Arrays.asList(new BucketAccessControl().setEntity("allUsers").setRole("READER")));
     Storage.Buckets.Insert bucketToCreate = client.buckets().insert(APPLICATION_NAME, newBucket);
     return bucketToCreate.execute();
   }
@@ -143,10 +146,17 @@ public class StorageDAOImpl implements StorageDAO {
   public static Bucket getExistingBucket(String bucketName)
       throws IOException, GeneralSecurityException {
     Storage client = getService();
-    Storage.Buckets.Get bucketRequest = client.buckets().get(bucketName);
+    Storage.Buckets.Get bucketRequest = client.buckets().get("cit-tech-gallery-" + bucketName);
     // Fetch the full set of the bucket's properties (e.g. include the ACLs in the response)
     bucketRequest.setProjection("full");
-    return bucketRequest.execute();
+    try {
+      return bucketRequest.execute();
+    } catch (Exception e) {
+      if (e.getCause() == null) {
+
+      }
+    }
+    return null;
   }
 
   /**
@@ -162,14 +172,20 @@ public class StorageDAOImpl implements StorageDAO {
    */
   private static Storage getService() throws IOException, GeneralSecurityException {
     if (null == storageService) {
+      // GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
+      // new InputStreamReader(StorageDAOImpl.class.getResourceAsStream("/client_secret.json")));
+
+      HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
       GoogleCredential credential = GoogleCredential.getApplicationDefault();
+      // GoogleCredential credential = new
+      // GoogleCredential.Builder().setClientSecrets(clientSecrets)
+      // .setTransport(httpTransport).setJsonFactory(JSON_FACTORY).build();
       // Depending on the environment that provides the default credentials (e.g. Compute Engine,
       // App Engine), the credentials may require us to specify the scopes we need explicitly.
       // Check for this case, and inject the Cloud Storage scope if required.
       if (credential.createScopedRequired()) {
         credential = credential.createScoped(StorageScopes.all());
       }
-      HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
       storageService = new Storage.Builder(httpTransport, JSON_FACTORY, credential)
           .setApplicationName(APPLICATION_NAME).build();
     }
