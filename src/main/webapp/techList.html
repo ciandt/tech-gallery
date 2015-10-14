@@ -23,7 +23,7 @@
 <body ng-controller="techListController">
 
     <nav class="navbar navbar-fixed-top techGalleryFixedBar">
-      <div class="container">
+      <div class="container topBar">
         <div class="navbar-header alignBar">
           <a class="navbar-brand" href={{indexPage()}}>
             <img class="logoBar" src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png">
@@ -32,12 +32,12 @@
         </div>
         <div id="navbar" class="rightSideBar">
           <div class="navbar-form navbar-right">
-            <div class="form-group techSearch">
+            <div class="form-group">
 			  <form ng-submit="searchTechnology()">
                 <input ng-disabled=showLogin type="text" ng-model="textSearch" class="form-control" placeholder="Digite sua busca...">
                 <div class="btn-group" dropdown>
                   <button id="single-button" type="button" class="btn btn-default" dropdown-toggle ng-disabled=showLogin>
-                    {{ selectedRecommendation==null ? 'Selecione uma opção...' : selectedRecommendation }} <span class="caret"></span>
+                    {{ selectedRecommendation==null ? 'Filtrar Por:' : selectedRecommendation }} <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
                     <li role="menuitem" ng-repeat="item in dropDownRecommendation">
@@ -47,7 +47,7 @@
                 </div>
                 <div class="btn-group" dropdown>
                   <button id="opt" type="button" class="btn btn-default" dropdown-toggle ng-disabled=showLogin>
-                    {{ selectedOrderOption==null ? 'Selecione uma opção...' : selectedOrderOption }} <span class="caret"></span>
+                    {{ selectedOrderOption==null ? 'Ordenar Por:' : selectedOrderOption }} <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="opt">
                     <li role="menuitem" ng-repeat="item in orderOptions">

@@ -157,12 +157,12 @@
     			<button id="btn_up" type="button" ng-click="changeThumbs('up')" ng-class="setClassThumbs('up')" 
     					class="btn glyphicon glyphicon-thumbs-up thumbsFont"></button>
     					
-    			<a href="#" class="recommendations-link" ng-click="filterRecommenders()">{{up}}</a>
+    			<a href="#ANC_COMMENTS" class="recommendations-link" ng-click="filterRecommenders()">{{up}}</a>
     			
     			<button id="btn_down" type="button" ng-click="changeThumbs('down')" ng-class="setClassThumbs('down')" 
     					class="btn glyphicon glyphicon-thumbs-down thumbsFont"></button>
     					
-    			<a href="#" class="recommendations-link" ng-click="filterNoRecommenders()">{{down}}</a>
+    			<a href="#ANC_COMMENTS" class="recommendations-link" ng-click="filterNoRecommenders()">{{down}}</a>
     		</div>
     	</div>
     </div>
@@ -181,6 +181,7 @@
     	</div>
     </div>
     <div id="show_comments" class="container">
+    	<a name="ANC_COMMENTS"></a>
 	    <div class="overLayer" ng-show="processingComment">
 	      <img src="/images/loading.gif" class="loading">
 	    </div>

@@ -213,3 +213,7 @@ body, html {
 .removeFilter {
   float: right;
 }
+
+.topBar {
+	padding-right: 0px !important;
+}
