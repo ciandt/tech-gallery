@@ -1,7 +1,5 @@
 package com.ciandt.techgallery.service.model.profile;
 
-import com.ciandt.techgallery.persistence.model.profile.SubItemComment;
-
 import java.util.List;
 
 public class UserProfileItemTo {
@@ -14,7 +12,7 @@ public class UserProfileItemTo {
 
   private Integer skillLevel;
 
-  private List<SubItemComment> comments;
+  private List<SubItemCommentTo> comments;
 
   public UserProfileItemTo() {}
 
@@ -28,7 +26,7 @@ public class UserProfileItemTo {
    * @param comments the comments of the Profile owner, for the Technology
    */
   public UserProfileItemTo(String technologyName, String companyRecommendation,
-      Integer endorsementQuantity, Integer skillLevel, List<SubItemComment> comments) {
+      Integer endorsementQuantity, Integer skillLevel, List<SubItemCommentTo> comments) {
     super();
     this.technologyName = technologyName;
     this.companyRecommendation = companyRecommendation;
@@ -69,11 +67,11 @@ public class UserProfileItemTo {
     this.skillLevel = skillLevel;
   }
 
-  public List<SubItemComment> getComments() {
+  public List<SubItemCommentTo> getComments() {
     return comments;
   }
 
-  public void setComments(List<SubItemComment> comments) {
+  public void setComments(List<SubItemCommentTo> comments) {
     this.comments = comments;
   }
 

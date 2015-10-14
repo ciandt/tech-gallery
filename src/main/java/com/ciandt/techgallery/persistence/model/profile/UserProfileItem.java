@@ -2,14 +2,15 @@ package com.ciandt.techgallery.persistence.model.profile;
 
 import com.google.api.server.spi.config.ApiTransformer;
 
-import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Load;
 
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.service.transformer.profile.UserProfileItemTransformer;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 @ApiTransformer(UserProfileItemTransformer.class)
 public class UserProfileItem implements Comparable<UserProfileItem> {
@@ -24,7 +25,8 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
 
   private Integer skillLevel;
 
-  private Map<String, SubItemComment> comments = new HashMap<>();
+  @Load
+  private Set<Ref<TechnologyComment>> comments = new HashSet<Ref<TechnologyComment>>();
 
   public UserProfileItem() {}
 
@@ -49,20 +51,19 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
    */
   public void addComment(TechnologyComment originComment) {
     if (comments == null) {
-      comments = new HashMap<String, SubItemComment>();
+      comments = new HashSet<Ref<TechnologyComment>>();
     }
-    comments.put(Key.create(originComment).getString(),
-        new SubItemComment(originComment.getComment(), originComment.getTimestamp()));
+    comments.add(Ref.create(originComment));
   }
 
   /**
    * Removes a comment from the profile item.
    * 
-   * @param commentKey the key of the comment to be removed
+   * @param originComment the key of the comment to be removed
    */
-  public void removeComment(Key<TechnologyComment> commentKey) {
+  public void removeComment(TechnologyComment originComment) {
     if (comments != null) {
-      comments.remove(commentKey.getString());
+      comments.remove(Ref.create(originComment));
     }
   }
 
@@ -116,7 +117,7 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
     this.skillLevel = skillLevel;
   }
 
-  public Map<String, SubItemComment> getComments() {
+  public Set<Ref<TechnologyComment>> getComments() {
     return comments;
   }
 

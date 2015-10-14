@@ -166,7 +166,7 @@ public class UserProfileServiceImpl implements UserProfileService {
       } else {
 
         // Comment deletion case
-        item.removeComment(Key.create(comment));
+        item.removeComment(comment);
         if (category == UserProfile.OTHER) {
           if (!itemHasOtherPropertiesSet(item)) {
             profile.removeItem(technologyKey);
