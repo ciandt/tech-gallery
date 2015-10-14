@@ -13,6 +13,7 @@ import com.google.api.services.storage.model.BucketAccessControl;
 import com.google.api.services.storage.model.ObjectAccessControl;
 import com.google.api.services.storage.model.StorageObject;
 import com.google.appengine.api.utils.SystemProperty;
+import com.google.apphosting.api.ApiProxy;
 
 import com.ciandt.techgallery.persistence.dao.StorageDAO;
 import com.ciandt.techgallery.utils.TechGalleryUtil;
@@ -33,6 +34,12 @@ import java.util.logging.Logger;
  */
 public class StorageDAOImpl implements StorageDAO {
 
+  private static final String FULL = "full";
+  private static final String IMAGE_FORMAT = "image/png";
+  private static final String READER = "READER";
+  private static final String ALL_USERS = "allUsers";
+  private static final String PROJECT_EDITORS = "project-editors-";
+  private static final String WRITER = "WRITER";
   /*
    * Constants --------------------------------------------
    */
@@ -41,7 +48,7 @@ public class StorageDAOImpl implements StorageDAO {
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
   private static final String APPLICATION_NAME = SystemProperty.applicationId.get();
   private static final String LOCATION = "US";
-  private static final String BUCKET_NAME = "tech-gallery-";
+  private static final String BUCKET_NAME = SystemProperty.applicationId.get() + "-";
 
   /*
    * Attributes --------------------------------------------
@@ -75,18 +82,18 @@ public class StorageDAOImpl implements StorageDAO {
   @Override
   public String insertImage(String name, InputStream stream)
       throws IOException, GeneralSecurityException {
-    InputStreamContent contentStream = new InputStreamContent("image/png", stream);
+    InputStreamContent contentStream = new InputStreamContent(IMAGE_FORMAT, stream);
     StorageObject objectMetadata = new StorageObject()
         // Set the destination object name
         .setName(name)
         // Set the access control list to publicly read-only
-        .setAcl(Arrays.asList(new ObjectAccessControl().setEntity("allUsers").setRole("READER")));
+        .setAcl(Arrays.asList(new ObjectAccessControl().setEntity(ALL_USERS).setRole(READER)));
 
     Storage client = getService();
     String bucketName = getBucket().getName();
-    logger.log(Level.SEVERE, "##-- " + bucketName);
+    logger.finest("##-- " + bucketName);
     Storage.Objects.Insert insertRequest =
-        client.objects().insert(BUCKET_NAME + "joaom", objectMetadata, contentStream);
+        client.objects().insert(bucketName, objectMetadata, contentStream);
 
     return insertRequest.execute().getMediaLink();
   }
@@ -108,7 +115,7 @@ public class StorageDAOImpl implements StorageDAO {
     if (createdBucket == null) {
       return createBucket(applicationVersion);
     }
-    logger.log(Level.INFO, "##-- Encontrou bucket");
+    logger.finest("##-- Encontrou bucket");
     return createdBucket;
   }
 
@@ -128,13 +135,13 @@ public class StorageDAOImpl implements StorageDAO {
   private static Bucket createBucket(String applicationVersion)
       throws IOException, GeneralSecurityException {
     Storage client = getService();
-    Bucket newBucket =
-        new Bucket().setName(BUCKET_NAME + applicationVersion).setLocation(LOCATION)
-            .setAcl(Arrays.asList(new BucketAccessControl().setEntity("allUsers")
-                .setRole("READER"),
-            new BucketAccessControl().setEntity("project-editors-146680675139").setRole("WRITER")));
+    Bucket newBucket = new Bucket().setName(BUCKET_NAME + applicationVersion).setLocation(LOCATION)
+        .setAcl(Arrays.asList(new BucketAccessControl().setEntity(ALL_USERS).setRole(READER),
+            new BucketAccessControl()
+                .setEntity(PROJECT_EDITORS + ApiProxy.getCurrentEnvironment().getAppId())
+                .setRole(WRITER)));
     Storage.Buckets.Insert bucketToCreate = client.buckets().insert(APPLICATION_NAME, newBucket);
-    logger.log(Level.INFO, "##-- Criará bucket");
+    logger.finest("##-- Criará bucket");
     return bucketToCreate.execute();
   }
 
@@ -156,7 +163,7 @@ public class StorageDAOImpl implements StorageDAO {
     Storage client = getService();
     Storage.Buckets.Get bucketRequest = client.buckets().get(BUCKET_NAME + bucketName);
     // Fetch the full set of the bucket's properties (e.g. include the ACLs in the response)
-    bucketRequest.setProjection("full");
+    bucketRequest.setProjection(FULL);
     try {
       logger.log(Level.INFO, "##-- Buscará bucket");
       return bucketRequest.execute();
