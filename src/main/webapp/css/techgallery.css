@@ -6,6 +6,20 @@
   display: block;
 }
 
+.techGalleryFixedLink {
+	position: fixed;
+	top: 70px !important;
+	right: 20px !important;
+	opacity: 0.8;
+	width: 33px;
+	height: 32px;
+	text-align: center;
+	padding: 1px 0;
+	font-size: 20px;
+	line-height: 1.42;
+	border-radius: 15px;
+}
+
 .techGalleryFixedBar{
 	background: rgba(255,50,85,0.7);
 }
@@ -225,4 +239,8 @@ body, html {
 .autoCompleteImage{
 	width:30px;
 	margin-right: 10px;
+}
+
+.topBar {
+	padding-right: 0px !important;
 }
