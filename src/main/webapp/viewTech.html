@@ -116,11 +116,15 @@
           ng-repeat="response in showEndorsementResponse track by $index">
           <div class="media col-xs-6">
             <div class="media-left media-middle">
-              <img class="media-object endorsed-image"
-                src={{response.endorsed.photo}}>
+              <a href={{redirectUserProfile(response.endorsed.email)}}>
+                <img class="media-object endorsed-image"
+                  src={{response.endorsed.photo}}>
+              </a>
             </div>
             <div class="media-body">
-              <h4 class="media-heading">{{response.endorsed.name}}</h4>
+              <a href={{redirectUserProfile(response.endorsed.email)}}>
+                <h4 class="media-heading">{{response.endorsed.name}}</h4>
+              </a>
               <rating ng-model="response.endorsedSkill" max="5"
                 readonly="true" titles="['','','','','']"></rating>
             </div>
@@ -135,8 +139,10 @@
                 ng-class="response.endorsers.plusOneClass">+{{response.endorsers.length}}</button>
               <div
                 ng-repeat="endorser in response.endorsersFiltered track by $index">
-                <img class="media-object endorsers-image"
-                  src={{endorser.photo}} tooltip={{endorser.name}}>
+                <a href={{redirectUserProfile(endorser.email)}}>
+                  <img class="media-object endorsers-image"
+                    src={{endorser.photo}} tooltip={{endorser.name}}>
+                </a>
               </div>
               <a href="#" ng-show="showAllEndorsers(response.endorsers)"
                 class="glyphicon glyphicon-play"
@@ -190,9 +196,14 @@
 	    		<span class="glyphicon glyphicon-thumbs-down recommendationInComment" ng-show="comment.recommendationScore != null && !comment.recommendationScore"></span>
 	    		<div id="organize_comments" class="container">
 		  			<div class="commentHeader">
-						<img class="media-object endorsed-image commentImage img-circle" src="{{comment.author.photo}}"/>
+                        <a href={{redirectUserProfile(comment.author.email)}}>
+						  <img class="media-object endorsed-image commentImage img-circle" src="{{comment.author.photo}}"/>
+                        </a>
 		  				<b class="flex1">
-		  				<span class="commentName">{{comment.author.name}}</span><span class="smallFont"> em </span>
+                        <a href={{redirectUserProfile(comment.author.email)}}>
+		  				  <span class="commentName">{{comment.author.name}}</span>
+                        </a>
+                        <span class="smallFont"> em </span>
 		  				<span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}</span><span class="smallFont"> disse:</span>
 		  				</b>
 		  				<a ng-show="showSelfInformations(comment.author.email)" ng-click="deleteComment(comment.id)" 
