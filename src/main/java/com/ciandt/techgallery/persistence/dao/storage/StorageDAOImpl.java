@@ -12,6 +12,7 @@ import com.google.api.services.storage.model.Bucket;
 import com.google.api.services.storage.model.BucketAccessControl;
 import com.google.api.services.storage.model.ObjectAccessControl;
 import com.google.api.services.storage.model.StorageObject;
+import com.google.appengine.api.utils.SystemProperty;
 
 import com.ciandt.techgallery.persistence.dao.StorageDAO;
 import com.ciandt.techgallery.utils.TechGalleryUtil;
@@ -35,7 +36,7 @@ public class StorageDAOImpl implements StorageDAO {
    */
   /** Global instance of the JSON factory. */
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-  private static final String APPLICATION_NAME = "[[tech-gallery]]";
+  private static final String APPLICATION_NAME = "[[" + SystemProperty.applicationId + "]]";
   private static final String LOCATION = "US";
 
   /*

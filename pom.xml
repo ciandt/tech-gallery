@@ -55,7 +55,7 @@
         <dependency>
             <groupId>com.google.appengine.tools</groupId>
             <artifactId>appengine-gcs-client</artifactId>
-            <version>RELEASE</version>
+            <version>0.5</version>
         </dependency>
         <!-- Authorization -->
         <dependency>

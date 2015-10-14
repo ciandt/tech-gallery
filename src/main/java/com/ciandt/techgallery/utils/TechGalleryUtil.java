@@ -23,6 +23,19 @@ public class TechGalleryUtil {
    * @return the application version.
    */
   public static String getApplicationVersion() {
-    return SystemProperty.applicationVersion.get();
+    String appVersion = SystemProperty.applicationVersion.get();
+    if (!appVersion.contains("$")) {
+      String namespace = appVersion;
+      String[] version = appVersion.split("\\.");
+      if (version.length > 0 && version[0].contains("-")) {
+        namespace = version[0].split("-")[0];
+      } else if (version.length > 0) {
+        namespace = version[0];
+      } else {
+        namespace = appVersion;
+      }
+      return namespace;
+    }
+    return appVersion;
   }
 }
