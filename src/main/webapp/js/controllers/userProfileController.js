@@ -56,11 +56,50 @@ angular.module('techGallery').controller(
         id : userMail
       };
       var response = jsUtils.mockUserProfile(userMail);
-      $scope.userProfile = response;
-      $scope.$apply();
+      if(response){
+        if(response.positiveRecItems){
+          $scope.completePositiveItems = response.positiveRecItems;
+          response.positiveRecItems = response.positiveRecItems.slice(0,3);
+        }
+        if(response.negativeRecItems){
+          $scope.completeNegativeItems = response.negativeRecItems;
+          response.negativeRecItems = response.negativeRecItems.slice(0,3);
+        }
+        if(response.otherItems ){
+          $scope.completeOtherItems = response.otherItems;
+          response.otherItems = response.otherItems.slice(0,3);
+        }
+        
+        $scope.userProfile = response;
+        $scope.showContent = true;
+        $scope.$apply();
 //      gapi.client.rest.profile.get(req).execute(function(data) {
 //        $scope.userProfile = data;
 //      });
+      }else{
+        $scope.showContent = false;
+        $scope.$apply();
+      }
+    }
+    
+    $scope.showAllItems = function(type){
+      if(type=="positive"){
+        $scope.userProfile.positiveRecItems = $scope.completePositiveItems;
+      }else if(type == "negative"){
+        $scope.userProfile.negativeRecItems = $scope.completeNegativeItems;
+      }else if(type=="other"){
+        $scope.userProfile.otherItems = $scope.completeOtherItems;
+      }
+    }
+    
+    $scope.showLessItems = function(type){
+      if(type=="positive"){
+        $scope.userProfile.positiveRecItems = $scope.userProfile.positiveRecItems.slice(0,3);
+      }else if(type == "negative"){
+        $scope.userProfile.negativeRecItems = $scope.userProfile.negativeRecItems.slice(0,3);
+      }else if(type=="other"){
+        $scope.userProfile.otherItems = $scope.userProfile.otherItems.slice(0,3);
+      }
     }
     
     $scope.getTechnologyImage = function (techName){
