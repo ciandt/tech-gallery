@@ -261,3 +261,7 @@ body, html {
 .spacingUserCards{
 	margin-right: 70px;
 }
+
+.topBar {
+	padding-right: 0px !important;
+}

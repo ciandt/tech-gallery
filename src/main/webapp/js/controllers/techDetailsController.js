@@ -356,6 +356,7 @@ angular.module('techGallery').controller(
     				$scope.techComments.push($scope.techCommentsFull[i]);
     			}
     		}
+    		document.getElementById("txta_comment").focus();
     	}else{
     		$scope.alertComment = true;
     		$scope.alertMsgComment = 'Ninguém recomendou esta tecnologia ainda.';
@@ -370,6 +371,7 @@ angular.module('techGallery').controller(
     				$scope.techComments.push($scope.techCommentsFull[i]);
     			}
     		}
+    		document.getElementById("txta_comment").focus();
     	}else{
     		$scope.alertComment = true;
     		$scope.alertMsgComment = 'Ninguém não recomendou esta tecnologia ainda.';
