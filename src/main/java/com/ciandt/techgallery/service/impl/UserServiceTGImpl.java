@@ -422,8 +422,8 @@ public class UserServiceTGImpl implements UserServiceTG {
       throw new BadRequestException(e.getMessage());
 
     } catch (IOException e) {
-      System.err.println("An internal server error ocurred!");
-      System.err.println(e.getMessage());
+      log.info("An internal server error ocurred!");
+      log.info(e.getMessage());
       throw new InternalServerErrorException(i18n.t("An internal server error ocurred."));
     }
   }
