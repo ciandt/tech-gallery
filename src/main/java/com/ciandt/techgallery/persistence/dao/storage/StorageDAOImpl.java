@@ -81,8 +81,9 @@ public class StorageDAOImpl implements StorageDAO {
         .setAcl(Arrays.asList(new ObjectAccessControl().setEntity("allUsers").setRole("READER")));
 
     Storage client = getService();
+    Bucket bucket = getBucket();
     Storage.Objects.Insert insertRequest =
-        client.objects().insert(getBucket().getName(), objectMetadata, contentStream);
+        client.objects().insert(bucket.getName(), objectMetadata, contentStream);
 
     return insertRequest.execute().getSelfLink();
   }
