@@ -185,14 +185,8 @@ public class StorageDAOImpl implements StorageDAO {
    */
   private static Storage getService() throws IOException, GeneralSecurityException {
     if (null == storageService) {
-      // GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-      // new InputStreamReader(StorageDAOImpl.class.getResourceAsStream("/client_secret.json")));
-
       HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
       GoogleCredential credential = GoogleCredential.getApplicationDefault();
-      // GoogleCredential credential = new
-      // GoogleCredential.Builder().setClientSecrets(clientSecrets)
-      // .setTransport(httpTransport).setJsonFactory(JSON_FACTORY).build();
       // Depending on the environment that provides the default credentials (e.g. Compute Engine,
       // App Engine), the credentials may require us to specify the scopes we need explicitly.
       // Check for this case, and inject the Cloud Storage scope if required.
