@@ -155,6 +155,6 @@ public interface UserServiceTG {
    * @throws BadRequestException
    *           in case a request with problem were made.
    */
-  List<TechGalleryUser> getUsersList(final String user)
+  List<TechGalleryUser> getUsersAutoComplete(final String user)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 }

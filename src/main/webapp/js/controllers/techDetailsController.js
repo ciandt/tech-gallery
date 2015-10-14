@@ -4,8 +4,8 @@ angular.module('techGallery').controller(
     'use strict';
     
     $scope.getUsersList = function (value){
-      var req = {login:value};
-      return gapi.client.rest.getUsersList(req).then(function (data){
+      var req = {query:value};
+      return gapi.client.rest.usersAutoComplete(req).then(function (data){
         for(var i in data.result.items){
           if(!data.result.items[i].photo){
             data.result.items[i].photo = "/images/default-user-image.jpg";
