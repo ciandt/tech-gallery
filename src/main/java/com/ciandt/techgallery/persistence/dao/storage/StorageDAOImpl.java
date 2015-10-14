@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements the StorageDAO.
@@ -34,6 +36,7 @@ public class StorageDAOImpl implements StorageDAO {
   /*
    * Constants --------------------------------------------
    */
+  private static final Logger logger = Logger.getLogger(StorageDAOImpl.class.getName());
   /** Global instance of the JSON factory. */
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
   private static final String APPLICATION_NAME = SystemProperty.applicationId.get();
@@ -81,10 +84,11 @@ public class StorageDAOImpl implements StorageDAO {
 
     Storage client = getService();
     String bucketName = getBucket().getName();
+    logger.log(Level.SEVERE, "##-- " + bucketName);
     Storage.Objects.Insert insertRequest =
-        client.objects().insert("cit-tech-gallery-joaom", objectMetadata, contentStream);
+        client.objects().insert(BUCKET_NAME + "joaom", objectMetadata, contentStream);
 
-    return insertRequest.execute().getSelfLink();
+    return insertRequest.execute().getMediaLink();
   }
 
   /**
@@ -104,6 +108,7 @@ public class StorageDAOImpl implements StorageDAO {
     if (createdBucket == null) {
       return createBucket(applicationVersion);
     }
+    logger.log(Level.INFO, "##-- Encontrou bucket");
     return createdBucket;
   }
 
@@ -123,9 +128,13 @@ public class StorageDAOImpl implements StorageDAO {
   private static Bucket createBucket(String applicationVersion)
       throws IOException, GeneralSecurityException {
     Storage client = getService();
-    Bucket newBucket = new Bucket().setName(BUCKET_NAME + applicationVersion).setLocation(LOCATION)
-        .setAcl(Arrays.asList(new BucketAccessControl().setEntity("allUsers").setRole("READER")));
+    Bucket newBucket =
+        new Bucket().setName(BUCKET_NAME + applicationVersion).setLocation(LOCATION)
+            .setAcl(Arrays.asList(new BucketAccessControl().setEntity("allUsers")
+                .setRole("READER"),
+            new BucketAccessControl().setEntity("project-editors-146680675139").setRole("WRITER")));
     Storage.Buckets.Insert bucketToCreate = client.buckets().insert(APPLICATION_NAME, newBucket);
+    logger.log(Level.INFO, "##-- Criará bucket");
     return bucketToCreate.execute();
   }
 
@@ -149,6 +158,7 @@ public class StorageDAOImpl implements StorageDAO {
     // Fetch the full set of the bucket's properties (e.g. include the ACLs in the response)
     bucketRequest.setProjection("full");
     try {
+      logger.log(Level.INFO, "##-- Buscará bucket");
       return bucketRequest.execute();
     } catch (Exception e) {
       return null;
