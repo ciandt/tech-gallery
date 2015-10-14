@@ -9,6 +9,8 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 /**
@@ -23,12 +25,15 @@ public interface TechnologyService {
    * Service for adding a technology.
    *
    * @param technology json with technology info.
+   * @param user that is adding a technology.
+   *
    * @return technology info or message error.
-   * @throws InternalServerErrorException .
-   * @throws BadRequestException .
+   *
+   * @throws InternalServerErrorException in case some internal server error occur.
+   * @throws BadRequestException in case a request with problem were made.
    */
-  Technology addTechnology(final Technology technology)
-      throws InternalServerErrorException, BadRequestException;
+  public Technology addTechnology(Technology technology, User user)
+      throws BadRequestException, IOException, GeneralSecurityException;
 
   /**
    * Service for getting all technologies.
