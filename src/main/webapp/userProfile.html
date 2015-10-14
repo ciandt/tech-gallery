@@ -53,12 +53,42 @@
   </div>
   
   <div id="positiveCards" class="container">
-    <span class="container-fluid">Recomendações Positivas</span>
+    <h3 class="container-fluid"><strong>Recomendações Positivas</strong></h3>
+    <center><h4 ng-show="!userProfile.positiveRecItems">Não existem tecnologias com recomendações positivas para este usuário...</h4></center>
+    <div class="col-sm-6 col-md-3 spacingUserCards" ng-repeat="positiveItem in userProfile.positiveRecItems">
+        <div class="thumbnail userProfileThumbnail">
+            <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
+                <h3>{{positiveItem.technologyName}}</h3>
+            </a>
+            <h5 class="titleThumbnail">{{positiveItem.companyRecommendation}}</h5>
+          <div class="imageSize">
+              <img src={{getTechnologyImage(positiveItem.technologyName)}} data-holder-rendered="true"
+                  class="thumbnail-Image">
+          </div>
+          <div id="positiveTechInformations">
+            <span class="glyphicon glyphicon-user col-md-6"><sup>{{positiveItem.endorsementQuantity}}</sup></span>
+            <rating class="col-md-6" ng-model="positiveItem.skillLevel" max="5" readonly="true" titles="['','','','','']"></rating>
+          </div>
+          <div id="positiveUserComments" class="divComments">
+            <h4 ng-show="positiveItem.comments"><strong>Comentários</strong></h4>
+            <center ng-show="!positiveItem.comments"><h5>O usuário não possui comentários nesta tecnologia.</h5></center>
+            <div ng-repeat="comment in positiveItem.comments">
+              <strong>{{comment.timestamp | date:"dd/MM/yyyy 'às' H:mm"}}:</strong>
+              <span>{{comment.body}}</span>
+              <li class="separator"></li>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="container">
+    <a href="#" ng-click="userProfile.positiveRecItems.length>=4 ? showLessItems('positive') : showAllItems('positive')" ng-show="completePositiveItems.length > 3" class="pull-right">{{userProfile.positiveItems.length>=4 ? 'Ver Menos...' : 'Ver Todos...'}}</a>
   </div>
   
   <div id="negativeCards" class="container">
-    <span class="container-fluid">Recomendações Negativas</span>
-    <div class="col-sm-6 col-md-3" ng-repeat="negativeItem in userProfile.negativeRecItems">
+    <h3 class="container-fluid"><strong>Recomendações Negativas</strong></h3>
+    <center><h4 ng-show="!userProfile.negativeRecItems">Não existem tecnologias com recomendações negativas para este usuário...</h4></center>
+    <div class="col-sm-6 col-md-3 spacingUserCards" ng-repeat="negativeItem in userProfile.negativeRecItems">
         <div class="thumbnail userProfileThumbnail">
             <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
                 <h3>{{negativeItem.technologyName}}</h3>
@@ -73,7 +103,8 @@
               <rating class="col-md-6" ng-model="negativeItem.skillLevel" max="5" readonly="true" titles="['','','','','']"></rating>
             </div>
             <div id="negativeUserComments" class="divComments">
-              <h4><strong>Comentários</strong></h4>
+              <h4 ng-show="negativeItem.comments"><strong>Comentários</strong></h4>
+              <center ng-show="!negativeItem.comments"><h5>O usuário não possui comentários nesta tecnologia.</h5></center>
               <div ng-repeat="comment in negativeItem.comments">
                 <strong>{{comment.timestamp | date:"dd/MM/yyyy 'às' H:mm"}}:</strong>
                 <span>{{comment.body}}</span>
@@ -83,10 +114,41 @@
         </div>
     </div>
   </div>
-  
-  <div id="otherCards" class="container">
-    <span class="container-fluid">Outras</span>
+  <div class="container">
+    <a href="#" ng-click="userProfile.negativeRecItems.length>=4 ? showLessItems('negative') : showAllItems('negative')" ng-show="completeNegativeItems.length > 3" class="pull-right">{{userProfile.negativeItems.length>=4 ? 'Ver Menos...' : 'Ver Todos...'}}</a>
   </div>
   
+  <div id="otherCards" class="container">
+    <h3 class="container-fluid"><strong>Outras</strong></h3>
+    <center><h4 ng-show="!userProfile.otherItems">Não existem tecnologias com recomendações de outro tipo para este usuário...</h4></center>
+    <div class="col-sm-6 col-md-3 spacingUserCards" ng-repeat="otherItem in userProfile.otherItems">
+        <div class="thumbnail userProfileThumbnail">
+            <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
+                <h3>{{otherItem.technologyName}}</h3>
+            </a>
+            <h5 class="titleThumbnail">{{otherItem.companyRecommendation}}</h5>
+          <div class="imageSize">
+              <img src={{getTechnologyImage(otherItem.technologyName)}} data-holder-rendered="true"
+                  class="thumbnail-Image">
+            </div>
+          <div id="otherTechInformations">
+            <span class="glyphicon glyphicon-user col-md-6"><sup>{{otherItem.endorsementQuantity}}</sup></span>
+            <rating class="col-md-6" ng-model="otherItem.skillLevel" max="5" readonly="true" titles="['','','','','']"></rating>
+          </div>
+          <div id="otherUserComments" class="divComments">
+            <h4 ng-show="otherItem.comments"><strong>Comentários</strong></h4>
+            <center ng-show="!otherItem.comments"><h5>O usuário não possui comentários nesta tecnologia.</h5></center>
+            <div ng-repeat="comment in otherItem.comments">
+              <strong>{{comment.timestamp | date:"dd/MM/yyyy 'às' H:mm"}}:</strong>
+              <span>{{comment.body}}</span>
+              <li class="separator"></li>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="container">
+    <a href="#" ng-click="userProfile.otherItems.length>=4 ? showLessItems('other') : showAllItems('other')" ng-show="completeOtherItems.length > 3" class="pull-right">{{userProfile.otherItems.length>=4 ? 'Ver Menos...' : 'Ver Todos...'}}</a>
+  </div>
 </body>
 </html>

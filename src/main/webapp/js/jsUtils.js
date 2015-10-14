@@ -55,7 +55,25 @@
       "companyRecommendation": "Recomendada",
       "endorsementQuantity": 0,
       "skillLevel": 4
-     }
+     },
+     {
+       "technologyName": "Apache ActiveMQ",
+       "companyRecommendation": "Recomendada",
+       "endorsementQuantity": 0,
+       "skillLevel": 4
+      },
+      {
+        "technologyName": "Apache ActiveMQ",
+        "companyRecommendation": "Recomendada",
+        "endorsementQuantity": 0,
+        "skillLevel": 4
+       },
+       {
+         "technologyName": "Apache ActiveMQ",
+         "companyRecommendation": "Recomendada",
+         "endorsementQuantity": 0,
+         "skillLevel": 4
+        }
     ],
     "kind": "rest#profileItem",
     "etag": "\"bF-CMA6JG5WRODyeZIjeVNhCxHw/5r9CeFDcpYwnh_0xyXvybrq-cxE\""
