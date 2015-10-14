@@ -17,11 +17,13 @@ import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 /**
  * Endpoint controller class for Technology requests.
- * 
+ *
  * @author felipers
  *
  */
@@ -34,21 +36,24 @@ public class TechnologyEndpoint {
 
   /**
    * Endpoint for adding a Technology.
-   * 
+   *
    * @param json with technology info.
    * @return added technology
    * @throws InternalServerErrorException in case something goes wrong
    * @throws BadRequestException in case a request with problem were made.
+   * @throws IOException in case a IO problem.
+   * @throws GeneralSecurityException in case a security problem.
    */
   @ApiMethod(name = "addTechnology", path = "technology", httpMethod = "post")
-  public Technology addTechnology(Technology technology)
-      throws InternalServerErrorException, BadRequestException {
-    return service.addTechnology(technology);
+  public Technology addTechnology(Technology technology, User user)
+      throws InternalServerErrorException, BadRequestException, IOException,
+      GeneralSecurityException {
+    return service.addTechnology(technology, user);
   }
 
   /**
    * Endpoint for getting a list of Technologies.
-   * 
+   *
    * @return list of technologies
    * @throws InternalServerErrorException in case something goes wrong
    * @throws NotFoundException in case the information are not founded
@@ -60,7 +65,7 @@ public class TechnologyEndpoint {
 
   /**
    * Endpoint for getting a Technology.
-   * 
+   *
    * @param id entity id.
    * @return technology
    * @throws NotFoundException in case the information are not founded
@@ -72,7 +77,7 @@ public class TechnologyEndpoint {
 
   /**
    * Endpointfor gettint a technology by filters
-   * 
+   *
    * @param user User
    * @param titleContains technology title part.
    * @param shortDescriptionContains technology short description part.
@@ -93,7 +98,7 @@ public class TechnologyEndpoint {
 
   /**
    * Endpoint for getting order option enumerations.
-   * 
+   *
    * @param user User
    * @return list of enumerations
    * @throws InternalServerErrorException in case something goes wrong
