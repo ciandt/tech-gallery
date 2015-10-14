@@ -36,7 +36,7 @@ public class StorageDAOImpl implements StorageDAO {
    */
   /** Global instance of the JSON factory. */
   private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-  private static final String APPLICATION_NAME = "[[" + SystemProperty.applicationId + "]]";
+  private static final String APPLICATION_NAME = SystemProperty.applicationId.get();
   private static final String LOCATION = "US";
 
   /*
