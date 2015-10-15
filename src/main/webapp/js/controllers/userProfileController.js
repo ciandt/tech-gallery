@@ -53,33 +53,32 @@ angular.module('techGallery').controller(
     function callBackLoaded() {
       var userMail = $scope.userId + "@ciandt.com";
       var req = {
-        id : userMail
+         email : userMail
       };
-      var response = jsUtils.mockUserProfile(userMail);
-      if(response){
-        if(response.positiveRecItems){
-          $scope.completePositiveItems = response.positiveRecItems;
-          response.positiveRecItems = response.positiveRecItems.slice(0,3);
+      gapi.client.rest.profile.get(req).execute(function(data) {
+        var response = data;
+        if(response){
+          if(response.positiveRecItems){
+            $scope.completePositiveItems = response.positiveRecItems;
+            response.positiveRecItems = response.positiveRecItems.slice(0,3);
+          }
+          if(response.negativeRecItems){
+            $scope.completeNegativeItems = response.negativeRecItems;
+            response.negativeRecItems = response.negativeRecItems.slice(0,3);
+          }
+          if(response.otherItems ){
+            $scope.completeOtherItems = response.otherItems;
+            response.otherItems = response.otherItems.slice(0,3);
+          }
+          
+          $scope.userProfile = response;
+          $scope.showContent = true;
+          $scope.$apply();
+        }else{
+          $scope.showContent = false;
+          $scope.$apply();
         }
-        if(response.negativeRecItems){
-          $scope.completeNegativeItems = response.negativeRecItems;
-          response.negativeRecItems = response.negativeRecItems.slice(0,3);
-        }
-        if(response.otherItems ){
-          $scope.completeOtherItems = response.otherItems;
-          response.otherItems = response.otherItems.slice(0,3);
-        }
-        
-        $scope.userProfile = response;
-        $scope.showContent = true;
-        $scope.$apply();
-//      gapi.client.rest.profile.get(req).execute(function(data) {
-//        $scope.userProfile = data;
-//      });
-      }else{
-        $scope.showContent = false;
-        $scope.$apply();
-      }
+      });
     }
     
     $scope.showAllItems = function(type){
@@ -101,10 +100,4 @@ angular.module('techGallery').controller(
         $scope.userProfile.otherItems = $scope.userProfile.otherItems.slice(0,3);
       }
     }
-    
-    $scope.getTechnologyImage = function (techName){
-      var nameNormalized = techName.toString().toLowerCase().replace(/\s+/g, '');
-      return "https://storage.googleapis.com/tech-gallery-assets/imagesLogo/"+nameNormalized+".png"
-    }
-  }
-);
+});

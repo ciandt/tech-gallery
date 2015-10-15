@@ -66,7 +66,7 @@
               </a>
               <h5 class="titleThumbnail">{{positiveItem.companyRecommendation}}</h5>
             <div class="imageSize">
-                <img src={{getTechnologyImage(positiveItem.technologyName)}} data-holder-rendered="true"
+                <img src={{positiveItem.technologyPhotoUrl}} data-holder-rendered="true"
                     class="thumbnail-Image">
             </div>
             <div id="positiveTechInformations">
@@ -99,7 +99,7 @@
               </a>
               <h5 class="titleThumbnail">{{negativeItem.companyRecommendation}}</h5>
           	<div class="imageSize">
-                <img src={{getTechnologyImage(negativeItem.technologyName)}} data-holder-rendered="true"
+                <img src={{negativeItem.technologyPhotoUrl}} data-holder-rendered="true"
                     class="thumbnail-Image">
               </div>
               <div id="negativeTechInformations">
@@ -132,7 +132,7 @@
               </a>
               <h5 class="titleThumbnail">{{otherItem.companyRecommendation}}</h5>
             <div class="imageSize">
-                <img src={{getTechnologyImage(otherItem.technologyName)}} data-holder-rendered="true"
+                <img src={{otherItem.technologyPhotoUrl}} data-holder-rendered="true"
                     class="thumbnail-Image">
               </div>
             <div id="otherTechInformations">
