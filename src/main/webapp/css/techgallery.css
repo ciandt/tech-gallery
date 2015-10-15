@@ -236,6 +236,11 @@ body, html {
     margin-bottom: 5px;
 }
 
+.autoCompleteImage{
+	width:30px;
+	margin-right: 10px;
+}
+
 .profileName{
     font-style: italic;
     font-variant: small-caps;
