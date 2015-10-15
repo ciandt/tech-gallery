@@ -95,15 +95,16 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
 
   /**
    * Adds a number (positive or negative) to the endorsements counter and returns the result.
+   * 
    * @param number the number to be added to the counter
    * @return the final result
    */
-  //TODO resolver com transação ou memcache. Isso nao resolve
+  // TODO this method should run under a transaction to be safe from race conditions
   public synchronized Integer addToEndorsementsCounter(Integer number) {
     this.endorsementQuantity += number;
     return this.endorsementQuantity;
   }
-  
+
   public Integer getEndorsementQuantity() {
     return addToEndorsementsCounter(0);
   }

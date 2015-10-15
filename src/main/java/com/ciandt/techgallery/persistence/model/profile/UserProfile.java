@@ -83,19 +83,24 @@ public class UserProfile extends BaseEntity<String> {
    * @param profileItem the profile item itself
    */
   public void addItem(int category, Key<Technology> technology, UserProfileItem profileItem) {
-    if (category == POSITIVE_RECOMMENDATION) {
-
-      negativeRecItems.remove(technology.getString());
-      otherItems.remove(technology.getString());
-      positiveRecItems.put(technology.getString(), profileItem);
-    } else if (category == NEGATIVE_RECOMMENDATION) {
-      otherItems.remove(technology.getString());
-      positiveRecItems.remove(technology.getString());
-      negativeRecItems.put(technology.getString(), profileItem);
-    } else if (category == OTHER) {
-      positiveRecItems.remove(technology.getString());
-      negativeRecItems.remove(technology.getString());
-      otherItems.put(technology.getString(), profileItem);
+    switch (category) {
+      case POSITIVE_RECOMMENDATION:
+        negativeRecItems.remove(technology.getString());
+        otherItems.remove(technology.getString());
+        positiveRecItems.put(technology.getString(), profileItem);
+        break;
+      case NEGATIVE_RECOMMENDATION:
+        otherItems.remove(technology.getString());
+        positiveRecItems.remove(technology.getString());
+        negativeRecItems.put(technology.getString(), profileItem);
+        break;
+      case OTHER:
+        positiveRecItems.remove(technology.getString());
+        negativeRecItems.remove(technology.getString());
+        otherItems.put(technology.getString(), profileItem);
+        break;
+      default:
+        break;
     }
   }
 
