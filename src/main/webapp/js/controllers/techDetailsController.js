@@ -2,6 +2,19 @@ angular.module('techGallery').controller(
   'techDetailsController',
   function($scope, $timeout, $modal) {
     'use strict';
+    
+    $scope.getUsersList = function (value){
+      var req = {query:value};
+      return gapi.client.rest.usersAutoComplete(req).then(function (data){
+        for(var i in data.result.items){
+          if(!data.result.items[i].photo){
+            data.result.items[i].photo = "/images/default-user-image.jpg";
+          }
+        }
+        return data.result.items;
+      });
+    }
+    
     $scope.idTechnology = jsUtils.getParameterByName('id');
     $scope.loadEndorsements = true;
 
@@ -95,9 +108,13 @@ angular.module('techGallery').controller(
     $scope.endorse = function(alertUser) {
       $scope.processEndorse = true;
       var req = {};
-      req.endorsed = $scope.endorsed;
+      if($scope.endorsed.email){
+        req.endorsed = $scope.endorsed.email;
+      }else{
+        req.endorsed = $scope.endorsed;
+      }
       req.technology = $scope.idTechnology;
-      if ($scope.endorsed) {
+      if ($scope.endorsed.email || $scope.endorsed) {
         gapi.client.rest.addEndorsement(req).execute(function(data) {
           if(alertUser){
             var alert;

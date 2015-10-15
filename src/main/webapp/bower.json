@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "angular": "angularjs#~1.4.4",
-    "angular-bootstrap": "~0.13.3",
+    "angular-bootstrap": "~0.14.0",
     "angular-route": "~1.4.4",
     "angular-sanitize": "~1.4.4",
     "bootstrap": "~3.3.5"

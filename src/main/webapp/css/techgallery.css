@@ -228,6 +228,19 @@ body, html {
   float: right;
 }
 
+.separator{
+	width: 100%;
+    border-top: 1px solid #716F77;
+    list-style-type: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.autoCompleteImage{
+	width:30px;
+	margin-right: 10px;
+}
+
 .topBar {
 	padding-right: 0px !important;
 }
