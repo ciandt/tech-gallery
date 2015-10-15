@@ -23,6 +23,7 @@ import com.ciandt.techgallery.service.model.TechnologyFilter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -115,6 +116,8 @@ public class TechnologyServiceImpl implements TechnologyService {
    * @return the id formatted.
    */
   private String convertNameToId(String name) {
+    name = Normalizer.normalize(name, Normalizer.Form.NFD);
+    name = name.replaceAll("[^\\p{ASCII}]", "");
     return name.toLowerCase().replaceAll(" ", "_");
   }
 
