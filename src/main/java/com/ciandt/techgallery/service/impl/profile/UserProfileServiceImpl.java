@@ -177,7 +177,11 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
   }
 
-  // TODO comment this method
+  /**
+   * When a user sets a new skill level, this method is called to propagate such change on
+   * the user's profile.
+   * @param skill the changed skill
+   */
   @Override
   public void handleSkillChanges(Skill skill) {
     Ref<Technology> technologyRef = skill.getTechnology();
@@ -211,7 +215,11 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
   }
 
-  // TODO comment this method
+  /**
+   * When a user endorses another user, this method is called to propagate such change on
+   * the endorsed user profile.
+   * @param endorsement the recently changed endorsement
+   */
   @Override
   public void handleEndorsement(Endorsement endorsement) {
     Ref<Technology> technologyRef = endorsement.getTechnology();

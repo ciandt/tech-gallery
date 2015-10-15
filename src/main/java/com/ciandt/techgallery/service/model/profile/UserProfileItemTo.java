@@ -8,6 +8,8 @@ public class UserProfileItemTo {
 
   private String companyRecommendation;
 
+  private String technologyPhotoUrl;
+
   private Integer endorsementQuantity;
 
   private Integer skillLevel;
@@ -26,10 +28,12 @@ public class UserProfileItemTo {
    * @param comments the comments of the Profile owner, for the Technology
    */
   public UserProfileItemTo(String technologyName, String companyRecommendation,
-      Integer endorsementQuantity, Integer skillLevel, List<SubItemCommentTo> comments) {
+      String technologyPhotoUrl, Integer endorsementQuantity, Integer skillLevel,
+      List<SubItemCommentTo> comments) {
     super();
     this.technologyName = technologyName;
     this.companyRecommendation = companyRecommendation;
+    this.technologyPhotoUrl = technologyPhotoUrl;
     this.endorsementQuantity = endorsementQuantity;
     this.skillLevel = skillLevel;
     this.comments = comments;
@@ -73,6 +77,14 @@ public class UserProfileItemTo {
 
   public void setComments(List<SubItemCommentTo> comments) {
     this.comments = comments;
+  }
+
+  public String getTechnologyPhotoUrl() {
+    return technologyPhotoUrl;
+  }
+
+  public void setTechnologyPhotoUrl(String technologyPhotoUrl) {
+    this.technologyPhotoUrl = technologyPhotoUrl;
   }
 
 

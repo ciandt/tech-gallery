@@ -95,7 +95,6 @@ public class SkillServiceImpl implements SkillService {
 
     final Skill newSkill = addNewSkill(skill, techUser, technology);
 
-    //TODO UserProfile: AddSkill
     UserProfileServiceImpl.getInstance().handleSkillChanges(newSkill);
     return newSkill;
   }

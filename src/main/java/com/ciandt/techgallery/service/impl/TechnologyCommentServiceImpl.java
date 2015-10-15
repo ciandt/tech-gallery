@@ -88,7 +88,6 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     final TechnologyComment newComment = addNewComment(comment, techUser, technology);
     techService.addCommentariesCounter(technology);
 
-    //TODO UserProfile: AddComment
     UserProfileServiceImpl.getInstance().handleCommentChanges(newComment);
     return newComment;
   }
@@ -124,7 +123,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     comment.setActive(false);
     technologyCommentDao.update(comment);
     techService.removeCommentariesCounter(comment.getTechnology().get());
-    //TODO UserProfile: RemoveComment
+
     UserProfileServiceImpl.getInstance().handleCommentChanges(comment);
     return comment;
   }

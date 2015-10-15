@@ -52,7 +52,7 @@ public class UserProfile extends BaseEntity<String> {
   }
 
   public static String getIdFromTgUserId(Long tgUserId) {
-    // TODO improve this id
+    // TODO improve this id?
     return "profile" + tgUserId;
   }
 

@@ -175,7 +175,6 @@ public class EndorsementServiceImpl implements EndorsementService {
     endorsementDao.add(entity);
     // return the added entity
     
-    //TODO UserProfile: AddEndorsement
     UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
@@ -261,7 +260,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       endorsements.get(0).setInactivatedDate(new Date());
       endorsements.get(0).setActive(false);
       endorsementDao.update(endorsements.get(0));
-      //TODO UserProfile: RemoveEndorsement
+
       UserProfileServiceImpl.getInstance().handleEndorsement(endorsements.get(0));
       return getEndorsement(endorsements.get(0).getId());
     } else if (endorsements.size() > 1) {
@@ -278,7 +277,6 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setActive(true);
     endorsementDao.add(entity);
     
-    //TODO UserProfile: AddEndorsement
     UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     // return the added entity
     return getEndorsement(entity.getId());
