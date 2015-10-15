@@ -18,6 +18,8 @@ import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciandt.techgallery.service.model.ImportUserSkillTO;
+import com.ciandt.techgallery.utils.TechGalleryUtil;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
 import java.util.Date;
@@ -132,7 +134,7 @@ public class SkillServiceImpl implements SkillService {
     if (skill.getTechnology() == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     }
-    
+
   }
 
   private Skill addNewSkill(Skill skill, TechGalleryUser techUser, Technology technology) {
@@ -208,6 +210,36 @@ public class SkillServiceImpl implements SkillService {
     } else {
       return userSkill;
     }
+  }
+
+  @Override
+  public String importUserSkill(ImportUserSkillTO[] userSkills, User user)
+      throws NotFoundException, InternalServerErrorException, BadRequestException {
+    for (ImportUserSkillTO userSkill : userSkills) {
+      String email = userSkill.getEmail();
+      TechGalleryUser techGalleryUser = userService.getUserSyncedWithProvider(email.split("@")[0]);
+      for (String techSkill : userSkill.getTechSkill()) {
+        String[] split = techSkill.split(";");
+        Technology technology = recoverTechnologyById(split[0]);
+
+        Skill skill = new Skill();
+        skill.setActive(true);
+        skill.setTechGalleryUser(Ref.create(techGalleryUser));
+        skill.setTechnology(Ref.create(technology));
+        skill.setValue(Integer.parseInt(split[1]));
+
+        addOrUpdateSkill(skill, user);
+      }
+    }
+
+    return null;
+  }
+
+  private Technology recoverTechnologyById(String techCompleteName) throws NotFoundException {
+    String techName =
+        techCompleteName.substring(techCompleteName.indexOf('['), techCompleteName.indexOf(']'));
+    techName = TechGalleryUtil.slugify(techName);
+    return techService.getTechnologyById(techName);
   }
 
 }
