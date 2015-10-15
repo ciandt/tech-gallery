@@ -379,7 +379,7 @@ public class UserServiceTGImpl implements UserServiceTG {
           .findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
       TechGalleryUser tgUser = new TechGalleryUser();
       if (foundUser != null) {
-        tgUser.setEmail(foundUser.getEmail());
+        tgUser.setEmail(foundUser.getEmail().split("@")[0]);
         tgUser.setName(foundUser.getName());
         tgUser.setPhoto(foundUser.getPhoto());
       } else {

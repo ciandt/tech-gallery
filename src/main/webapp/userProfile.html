@@ -53,7 +53,7 @@
   
   <div ng-show="showContent">
     <div id="userInformations" class="container">
-      <img class="img-circle profilePhoto col-xs-6 col-md-4" src={{userProfile.owner.photo}}>
+      <img class="img-circle profilePhoto col-xs-6 col-md-4" src={{userProfile.owner.photo?userProfile.owner.photo:defaultUserPhoto}}>
       <h3 class="profileName col-xs-12 col-md-8">{{userProfile.owner.name}}</h3>
     </div>
     <div id="positiveCards" class="container">
