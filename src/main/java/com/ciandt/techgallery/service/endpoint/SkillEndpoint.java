@@ -64,7 +64,7 @@ public class SkillEndpoint {
   /**
    * Endpoint for import user´s skills from sheet.
    * 
-   * @param userSkills List of user´s skill for each technology.
+   * @param importUserSkills List of user´s skill for each technology.
    * @param user oauth user.
    * @return String with error or success message.
    * @throws NotFoundException in case the information are not founded
@@ -72,8 +72,8 @@ public class SkillEndpoint {
    * @throws InternalServerErrorException in case something goes wrong
    */
   @ApiMethod(name = "importUserSkill", path = "skill/import", httpMethod = "post")
-  public String importUserSkill(ImportUserSkillTO[] userSkills, User user)
+  public void importUserSkill(ImportUserSkillTO importUserSkills, User user)
       throws NotFoundException, InternalServerErrorException, BadRequestException {
-    return service.importUserSkill(userSkills, user);
+    service.importUserSkill(importUserSkills, user);
   }
 }

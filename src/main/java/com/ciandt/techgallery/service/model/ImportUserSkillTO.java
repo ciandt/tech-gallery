@@ -2,23 +2,13 @@ package com.ciandt.techgallery.service.model;
 
 public class ImportUserSkillTO implements Response {
 
-  private String email;
-  private String[] techSkill;
+  UserSkillTO[] userSkill;
 
-  public String getEmail() {
-    return email;
+  public UserSkillTO[] getUserSkill() {
+    return userSkill;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setUserSkill(UserSkillTO[] userSkill) {
+    this.userSkill = userSkill;
   }
-
-  public String[] getTechSkill() {
-    return techSkill;
-  }
-
-  public void setTechSkill(String[] techSkill) {
-    this.techSkill = techSkill;
-  }
-
 }

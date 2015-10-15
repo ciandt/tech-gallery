@@ -61,13 +61,14 @@ public interface SkillService {
   /**
    * Service for import user´s skills from sheet.
    * 
-   * @param userSkills Array of Transient objects with user email and skills for each technology.
+   * @param importUserSkills Transient objects with Array of user email and skills for each
+   *        technology.
    * @param user oauth user.
    * @return String with error or success message.
    * @throws NotFoundException in case the information are not founded
    * @throws BadRequestException in case a request with problem were made.
    * @throws InternalServerErrorException in case something goes wrong
    */
-  String importUserSkill(ImportUserSkillTO[] userSkills, User user)
+  String importUserSkill(ImportUserSkillTO importUserSkills, User user)
       throws NotFoundException, InternalServerErrorException, BadRequestException;
 }

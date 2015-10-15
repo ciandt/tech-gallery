@@ -1,22 +1,21 @@
 package com.ciandt.techgallery.service.endpoint;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.UserServiceTG;
-import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
-import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.UserServiceTG;
+import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
+
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Endpoint controller class for User requests.
@@ -51,10 +50,10 @@ public class UserEndpoint {
    * @throws BadRequestException
    *           in case a request with problem were made.
    */
-  @ApiMethod(name = "usersAutoComplete", path = "users/autocomplete?q={query}", httpMethod = "get")
-  public List<TechGalleryUser> usersAutoComplete(@Named("query") String query)
-      throws NotFoundException, BadRequestException, InternalServerErrorException {
-    return service.getUsersAutoComplete(query);
-  }
+//  @ApiMethod(name = "usersAutoComplete", path = "users/autocomplete?q={query}", httpMethod = "get")
+//  public List<TechGalleryUser> usersAutoComplete(@Named("query") String query)
+//      throws NotFoundException, BadRequestException, InternalServerErrorException {
+//    return service.getUsersAutoComplete(query);
+//  }
 
 }
