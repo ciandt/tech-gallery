@@ -176,7 +176,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   private List<Technology> sortTechnologies(List<Technology> techList, TechnologyOrderOptionEnum orderBy) {
     switch (orderBy) {
-    case POSITIVE_RECOMENDATION_QUANTITY:
+    case POSITIVE_RECOMMENDATION_AMOUNT:
       Collections.sort(techList, new Comparator<Technology>() {
         @Override
         public int compare(Technology counter1, Technology counter2) {
@@ -185,7 +185,7 @@ public class TechnologyServiceImpl implements TechnologyService {
         }
       });
       break;
-    case NEGATIVE_RECOMENDATION_QUANTITY:
+    case NEGATIVE_RECOMMENDATION_AMOUNT:
       Collections.sort(techList, new Comparator<Technology>() {
         @Override
         public int compare(Technology counter1, Technology counter2) {
@@ -194,7 +194,7 @@ public class TechnologyServiceImpl implements TechnologyService {
         }
       });
       break;
-    case COMENTARY_QUANTITY:
+    case COMMENT_AMOUNT:
       Collections.sort(techList, new Comparator<Technology>() {
         @Override
         public int compare(Technology counter1, Technology counter2) {
@@ -202,7 +202,7 @@ public class TechnologyServiceImpl implements TechnologyService {
         }
       });
       break;
-    case ENDORSEMENT_QUANTITY:
+    case ENDORSEMENT_AMOUNT:
       Collections.sort(techList, new Comparator<Technology>() {
         @Override
         public int compare(Technology counter1, Technology counter2) {
