@@ -20,7 +20,6 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.Normalizer;
@@ -29,8 +28,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-
-import javax.xml.bind.DatatypeConverter;
 
 /**
  * Services for Technology Endpoint requests.
@@ -78,8 +75,11 @@ public class TechnologyServiceImpl implements TechnologyService {
       throws BadRequestException, IOException, GeneralSecurityException {
 
     validateInformations(technology);
-    String imageLink = storageDAO.insertImage(convertNameToId(technology.getName()),
-        new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImage())));
+    String imageLink = "";
+    // String imageLink =
+    // storageDAO.insertImage(convertNameToId(technology.getName()),
+    // new
+    // ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImage())));
     fillTechnology(technology, user, imageLink);
     technologyDAO.add(technology);
 
@@ -99,7 +99,7 @@ public class TechnologyServiceImpl implements TechnologyService {
    */
   private void fillTechnology(Technology technology, User user, String imageLink) {
     technology.setId(convertNameToId(technology.getName()));
-    technology.setAuthor(user.getEmail());
+    // technology.setAuthor(user.getEmail());
     technology.setCreationDate(new Date());
     technology.setImage(imageLink);
     technology.initCounters();
@@ -171,7 +171,7 @@ public class TechnologyServiceImpl implements TechnologyService {
   private List<Technology> sortTechnologies(List<Technology> techList,
       TechnologyOrderOptionEnum orderBy) {
     switch (orderBy) {
-      case POSITIVE_RECOMENDATION_QUANTITY:
+      case POSITIVE_RECOMMENDATION_AMOUNT:
         Collections.sort(techList, new Comparator<Technology>() {
           @Override
           public int compare(Technology counter1, Technology counter2) {
@@ -180,7 +180,7 @@ public class TechnologyServiceImpl implements TechnologyService {
           }
         });
         break;
-      case NEGATIVE_RECOMENDATION_QUANTITY:
+      case NEGATIVE_RECOMMENDATION_AMOUNT:
         Collections.sort(techList, new Comparator<Technology>() {
           @Override
           public int compare(Technology counter1, Technology counter2) {
@@ -189,7 +189,7 @@ public class TechnologyServiceImpl implements TechnologyService {
           }
         });
         break;
-      case COMENTARY_QUANTITY:
+      case COMMENT_AMOUNT:
         Collections.sort(techList, new Comparator<Technology>() {
           @Override
           public int compare(Technology counter1, Technology counter2) {
@@ -198,7 +198,7 @@ public class TechnologyServiceImpl implements TechnologyService {
           }
         });
         break;
-      case ENDORSEMENT_QUANTITY:
+      case ENDORSEMENT_AMOUNT:
         Collections.sort(techList, new Comparator<Technology>() {
           @Override
           public int compare(Technology counter1, Technology counter2) {
