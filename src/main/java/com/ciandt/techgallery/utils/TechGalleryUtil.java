@@ -2,6 +2,11 @@ package com.ciandt.techgallery.utils;
 
 import com.google.appengine.api.utils.SystemProperty;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+import java.util.Locale;
+import java.util.regex.Pattern;
+
 /**
  * Class with the project's util.
  *
@@ -10,6 +15,9 @@ import com.google.appengine.api.utils.SystemProperty;
  *
  */
 public class TechGalleryUtil {
+
+  private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+  private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
 
   /*
    * Methods --------------------------------------------
@@ -37,5 +45,18 @@ public class TechGalleryUtil {
       return namespace;
     }
     return appVersion;
+  }
+
+  /**
+   * Method to slugify a name.
+   * 
+   * @param name name to be changed.
+   * @return Changed name.
+   */
+  public static String slugify(String name) {
+    String nowhitespace = WHITESPACE.matcher(name).replaceAll("-");
+    String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
+    String slug = NONLATIN.matcher(normalized).replaceAll("");
+    return slug.toLowerCase(Locale.ENGLISH);
   }
 }

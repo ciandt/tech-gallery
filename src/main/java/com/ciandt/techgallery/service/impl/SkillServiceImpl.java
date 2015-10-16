@@ -19,9 +19,14 @@ import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
+import com.ciandt.techgallery.service.model.ImportUserSkillTO;
+import com.ciandt.techgallery.service.model.UserSkillTO;
+import com.ciandt.techgallery.utils.TechGalleryUtil;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -134,7 +139,7 @@ public class SkillServiceImpl implements SkillService {
     if (skill.getTechnology() == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     }
-    
+
   }
 
   private Skill addNewSkill(Skill skill, TechGalleryUser techUser, Technology technology) {
@@ -210,6 +215,49 @@ public class SkillServiceImpl implements SkillService {
     } else {
       return userSkill;
     }
+  }
+
+  @Override
+  public String importUserSkill(ImportUserSkillTO importUserSkills, User user)
+      throws NotFoundException, InternalServerErrorException, BadRequestException {
+    List<String> failTechnologies = new ArrayList<>();
+    for (UserSkillTO userSkill : importUserSkills.getUserSkill()) {
+      String email = userSkill.getEmail();
+      TechGalleryUser techGalleryUser = userService.getUserSyncedWithProvider(email.split("@")[0]);
+      for (String techSkill : userSkill.getTechSkill()) {
+        String[] split = techSkill.split(";");
+        if (!failTechnologies.contains(split[0])) {
+          Technology technology = recoverTechnologyById(split[0]);
+          if (technology != null) {
+            Skill skill = new Skill();
+            skill.setActive(true);
+            skill.setTechGalleryUser(Ref.create(techGalleryUser));
+            skill.setTechnology(Ref.create(technology));
+            skill.setValue(Integer.parseInt(split[1]));
+            addOrUpdateSkill(skill, user);
+          } else {
+            failTechnologies.add(split[0]);
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
+  private Technology recoverTechnologyById(String techCompleteName) {
+    Technology technology = null;
+    try {
+      String techName = techCompleteName.substring(techCompleteName.indexOf('[') + 1,
+          techCompleteName.indexOf(']'));
+      techName = TechGalleryUtil.slugify(techName);
+      technology = techService.getTechnologyById(techName);
+    } catch (Exception e) {
+      log.info("Technology " + techCompleteName + " does not exist!");
+    } catch (Throwable e) {
+      log.info("Technology " + techCompleteName + " does not exist!");
+    }
+    return technology;
   }
 
 }
