@@ -107,6 +107,17 @@
       msg : 'Você já fez essa indicação anteriormente!'
     }
   };
+  
+  var techAlerts = {
+    success : {
+      type : 'success',
+      msg : 'Tecnologia criada com sucesso!'
+    },
+    failure : {
+      type : 'danger',
+      msg : 'Erro ao criar Tecnologia!'
+    }
+  };
 
   var getParameterByName = function(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -139,6 +150,7 @@
     checkAuth: checkAuth,
     getParameterByName: getParameterByName,
     alerts: alerts,
+    techAlerts: techAlerts, 
     logoutRedirect: logoutRedirect,
     getUserEmail : getUserEmail,
     slugify: slugify
