@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -155,6 +156,6 @@ public interface UserServiceTG {
    * @throws BadRequestException
    *           in case a request with problem were made.
    */
-  List<TechGalleryUser> getUsersAutoComplete(final String user)
+  List<UserResponse> getUsersAutoComplete(final String user)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 }

@@ -1,12 +1,14 @@
 package com.ciandt.techgallery.service.model;
 
+import java.io.Serializable;
+
 /**
  * Response with an user entity.
  * 
  * @author felipers
  *
  */
-public class UserResponse implements Response {
+public class UserResponse implements Response, Serializable {
 
   /** user id. */
   private Long id;

@@ -34,6 +34,9 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.api.services.plus.Plus;
 import com.google.api.services.plus.model.Person;
+import com.google.appengine.api.memcache.Expiration;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.Key;
@@ -58,6 +61,8 @@ public class UserServiceTGImpl implements UserServiceTG {
    * Attributes --------------------------------------------
    */
   private static UserServiceTGImpl instance;
+  private MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+  private final Expiration memCacheTimeExpliration = Expiration.byDeltaSeconds(7200);
 
   TechGalleryUserDAO userDao = TechGalleryUserDAOImpl.getInstance();
 
@@ -364,27 +369,31 @@ public class UserServiceTGImpl implements UserServiceTG {
    * @throws InternalServerErrorException
    *           if any IO exceptions occur
    */
-  public List<TechGalleryUser> getUsersAutoComplete(String userLogin)
+  public List<UserResponse> getUsersAutoComplete(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     userLogin += "*";
-    List<TechGalleryUser> techUsers = new ArrayList<>();
-    Map<String, Object> map = peopleApiConnect(userLogin, PEOPLE_ENDPOINT_SEARCH);
-    ArrayList<?> peopleApiResponse = (ArrayList<?>) map.get("data");
-    for (int index = 0; index < peopleApiResponse.size(); index++) {
-      ArrayList<?> peopleApiUser = (ArrayList<?>) peopleApiResponse.get(index);
-      TechGalleryUser foundUser = userDao
-          .findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
-      TechGalleryUser tgUser = new TechGalleryUser();
-      if (foundUser != null) {
-        tgUser.setEmail(foundUser.getEmail());
-        tgUser.setName(foundUser.getName());
-        tgUser.setPhoto(foundUser.getPhoto());
-      } else {
-        tgUser.setEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
-        tgUser.setName((String) peopleApiUser.get(INDEX_PEOPLE_API_NAME));
-        tgUser.setPhoto(null);
+    List<UserResponse> techUsers = (List<UserResponse>) syncCache.get(userLogin);
+    if (techUsers == null) {
+      techUsers = new ArrayList<>();
+      Map<String, Object> map = peopleApiConnect(userLogin, PEOPLE_ENDPOINT_SEARCH);
+      ArrayList<?> peopleApiResponse = (ArrayList<?>) map.get("data");
+      for (int index = 0; index < peopleApiResponse.size(); index++) {
+        ArrayList<?> peopleApiUser = (ArrayList<?>) peopleApiResponse.get(index);
+        TechGalleryUser foundUser = userDao
+            .findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
+        UserResponse tgUser = new UserResponse();
+        if (foundUser != null) {
+          tgUser.setEmail(foundUser.getEmail());
+          tgUser.setName(foundUser.getName());
+          tgUser.setPhoto(foundUser.getPhoto());
+        } else {
+          tgUser.setEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
+          tgUser.setName((String) peopleApiUser.get(INDEX_PEOPLE_API_NAME));
+          tgUser.setPhoto(null);
+        }
+        techUsers.add(tgUser);
       }
-      techUsers.add(tgUser);
+      syncCache.put(userLogin, techUsers, memCacheTimeExpliration);
     }
     return techUsers;
   }
