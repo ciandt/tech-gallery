@@ -13,7 +13,6 @@ import com.google.api.services.storage.model.BucketAccessControl;
 import com.google.api.services.storage.model.ObjectAccessControl;
 import com.google.api.services.storage.model.StorageObject;
 import com.google.appengine.api.utils.SystemProperty;
-import com.google.apphosting.api.ApiProxy;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -143,8 +142,7 @@ public class StorageHandler {
     Storage client = getService();
     Bucket newBucket = new Bucket().setName(BUCKET_NAME + applicationVersion).setLocation(LOCATION)
         .setAcl(Arrays.asList(new BucketAccessControl().setEntity(ALL_USERS).setRole(READER),
-            new BucketAccessControl()
-                .setEntity(PROJECT_EDITORS + ApiProxy.getCurrentEnvironment().getAppId())
+            new BucketAccessControl().setEntity(PROJECT_EDITORS + TechGalleryUtil.getAppId())
                 .setRole(WRITER)));
     Storage.Buckets.Insert bucketToCreate = client.buckets().insert(APPLICATION_NAME, newBucket);
     return bucketToCreate.execute();
