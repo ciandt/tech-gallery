@@ -31,6 +31,15 @@ angular.module('techGallery').controller(
       indexPage += location.hostname;
       return indexPage;
     }
+    
+    $scope.redirectUserProfile = function(email) {
+      var userId = email.split('@')[0];
+      var protocol = location.protocol + '//';
+      var host = protocol + location.host;
+      var servletRedirect = '/userProfile.html';
+      var queryString = '?userId=';
+      return host + servletRedirect + queryString + userId;
+    };
 
     var alerts = jsUtils.alerts;
 

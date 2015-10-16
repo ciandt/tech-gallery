@@ -10,6 +10,7 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
+import com.ciandt.techgallery.persistence.model.profile.UserProfile;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -30,6 +31,7 @@ public class OfyService implements ServletContextListener {
     ObjectifyService.register(Skill.class);
     ObjectifyService.register(TechnologyComment.class);
     ObjectifyService.register(TechnologyRecommendation.class);
+    ObjectifyService.register(UserProfile.class);
 
   }
 

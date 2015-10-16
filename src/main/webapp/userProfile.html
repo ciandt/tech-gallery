@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" ng-app="techGallery" ng-cloak>
+<head>
+  <meta charset="utf-8">
+  <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/techgallery.css" />
+
+  <script src="https://apis.google.com/js/client.js?onload=init"></script>
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="lib/angular-route/angular-route.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/jsUtils.js"></script>
+  <script src="js/googleAnalytics.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers/userProfileController.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
+</head>
+<body ng-controller="userProfileController">
+
+  <nav class="navbar navbar-fixed-top techGalleryFixedBar">
+    <div class="container">
+      <div class="navbar-header alignBar">
+        <a class="navbar-brand" href={{indexPage()}}>
+          <img class="logoBar" src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png">
+          <h3 class="headerBar">Tech Gallery</h3>
+        </a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse rightSideBar">
+        <div class="navbar-form navbar-right">
+          <a ng-show="showLogin && !domainError" href="#" ng-click="login()" class="whiteText">Login <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
+          <a ng-show="domainError || userLogged" href={{logoutRedirect()}} class="whiteText">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="page-header"></div>
+
+  <div class="login-Button" ng-show="showLogin">
+    <h3 ng-show="!domainError">Para ter acesso ao conteúdo realize seu login...</h3>
+    <h3 ng-show="domainError">{{domainError}}</h3>
+  </div>
+
+  <div>
+    <h3 class="container-fluid" ng-show="showContent==false"><strong><center>Usuário não encontrado...</center></strong></h3>
+  </div>
+  
+  <div ng-show="showContent">
+    <div id="userInformations" class="container">
+      <img class="img-circle profilePhoto col-xs-6 col-md-4" src={{userProfile.owner.photo?userProfile.owner.photo:defaultUserPhoto}}>
+      <h3 class="profileName col-xs-12 col-md-8">{{userProfile.owner.name}}</h3>
+    </div>
+    <div id="positiveCards" class="container">
+      <h3 class="container-fluid"><strong>Recomendações Positivas</strong></h3>
+      <center><h4 ng-show="!userProfile.positiveRecItems">Não existem tecnologias com recomendações positivas para este usuário...</h4></center>
+      <div class="col-sm-6 col-md-3 spacingUserCards" ng-repeat="positiveItem in userProfile.positiveRecItems">
+          <div class="thumbnail userProfileThumbnail">
+              <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
+                  <h3>{{positiveItem.technologyName}}</h3>
+              </a>
+              <h5 class="titleThumbnail">{{positiveItem.companyRecommendation}}</h5>
+            <div class="imageSize">
+                <img src={{positiveItem.technologyPhotoUrl}} data-holder-rendered="true"
+                    class="thumbnail-Image">
+            </div>
+            <div id="positiveTechInformations">
+              <span class="glyphicon glyphicon-user col-md-6"><sup>{{positiveItem.endorsementQuantity}}</sup></span>
+              <rating class="col-md-6" ng-model="positiveItem.skillLevel" max="5" readonly="true" titles="['','','','','']"></rating>
+            </div>
+            <div id="positiveUserComments" class="divComments">
+              <h4 ng-show="positiveItem.comments"><strong>Comentários</strong></h4>
+              <center ng-show="!positiveItem.comments"><h5>O usuário não possui comentários nesta tecnologia.</h5></center>
+              <div ng-repeat="comment in positiveItem.comments">
+                <strong>{{comment.timestamp | date:"dd/MM/yyyy 'às' H:mm"}}:</strong>
+                <span>{{comment.body}}</span>
+                <li class="separator"></li>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="container">
+      <a href="" ng-click="userProfile.positiveRecItems.length>=4 ? showLessItems('positive') : showAllItems('positive')" ng-show="completePositiveItems.length > 3" class="pull-right">{{userProfile.positiveItems.length>=4 ? 'Ver Menos...' : 'Ver Todos...'}}</a>
+    </div>
+    
+    <div id="negativeCards" class="container">
+      <h3 class="container-fluid"><strong>Recomendações Negativas</strong></h3>
+      <center><h4 ng-show="!userProfile.negativeRecItems">Não existem tecnologias com recomendações negativas para este usuário...</h4></center>
+      <div class="col-sm-6 col-md-3 spacingUserCards" ng-repeat="negativeItem in userProfile.negativeRecItems">
+          <div class="thumbnail userProfileThumbnail">
+              <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
+                  <h3>{{negativeItem.technologyName}}</h3>
+              </a>
+              <h5 class="titleThumbnail">{{negativeItem.companyRecommendation}}</h5>
+          	<div class="imageSize">
+                <img src={{negativeItem.technologyPhotoUrl}} data-holder-rendered="true"
+                    class="thumbnail-Image">
+              </div>
+              <div id="negativeTechInformations">
+                <span class="glyphicon glyphicon-user col-md-6"><sup>{{negativeItem.endorsementQuantity}}</sup></span>
+                <rating class="col-md-6" ng-model="negativeItem.skillLevel" max="5" readonly="true" titles="['','','','','']"></rating>
+              </div>
+              <div id="negativeUserComments" class="divComments">
+                <h4 ng-show="negativeItem.comments"><strong>Comentários</strong></h4>
+                <center ng-show="!negativeItem.comments"><h5>O usuário não possui comentários nesta tecnologia.</h5></center>
+                <div ng-repeat="comment in negativeItem.comments">
+                  <strong>{{comment.timestamp | date:"dd/MM/yyyy 'às' H:mm"}}:</strong>
+                  <span>{{comment.body}}</span>
+                  <li class="separator"></li>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="container">
+      <a href="" ng-click="userProfile.negativeRecItems.length>=4 ? showLessItems('negative') : showAllItems('negative')" ng-show="completeNegativeItems.length > 3" class="pull-right">{{userProfile.negativeItems.length>=4 ? 'Ver Menos...' : 'Ver Todos...'}}</a>
+    </div>
+    
+    <div id="otherCards" class="container">
+      <h3 class="container-fluid"><strong>Outras</strong></h3>
+      <center><h4 ng-show="!userProfile.otherItems">Não existem tecnologias com recomendações de outro tipo para este usuário...</h4></center>
+      <div class="col-sm-6 col-md-3 spacingUserCards" ng-repeat="otherItem in userProfile.otherItems">
+          <div class="thumbnail userProfileThumbnail">
+              <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
+                  <h3>{{otherItem.technologyName}}</h3>
+              </a>
+              <h5 class="titleThumbnail">{{otherItem.companyRecommendation}}</h5>
+            <div class="imageSize">
+                <img src={{otherItem.technologyPhotoUrl}} data-holder-rendered="true"
+                    class="thumbnail-Image">
+              </div>
+            <div id="otherTechInformations">
+              <span class="glyphicon glyphicon-user col-md-6"><sup>{{otherItem.endorsementQuantity}}</sup></span>
+              <rating class="col-md-6" ng-model="otherItem.skillLevel" max="5" readonly="true" titles="['','','','','']"></rating>
+            </div>
+            <div id="otherUserComments" class="divComments">
+              <h4 ng-show="otherItem.comments"><strong>Comentários</strong></h4>
+              <center ng-show="!otherItem.comments"><h5>O usuário não possui comentários nesta tecnologia.</h5></center>
+              <div ng-repeat="comment in otherItem.comments">
+                <strong>{{comment.timestamp | date:"dd/MM/yyyy 'às' H:mm"}}:</strong>
+                <span>{{comment.body}}</span>
+                <li class="separator"></li>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="container">
+      <a href="" ng-click="userProfile.otherItems.length>=4 ? showLessItems('other') : showAllItems('other')" ng-show="completeOtherItems.length > 3" class="pull-right">{{userProfile.otherItems.length>=4 ? 'Ver Menos...' : 'Ver Todos...'}}</a>
+    </div>
+  </div>
+</body>
+</html>
