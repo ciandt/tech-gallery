@@ -61,9 +61,7 @@
       <center><h4 ng-show="!userProfile.positiveRecItems">Não existem tecnologias com recomendações positivas para este usuário...</h4></center>
       <div class="col-sm-6 col-md-3 spacingUserCards" ng-repeat="positiveItem in userProfile.positiveRecItems">
           <div class="thumbnail userProfileThumbnail">
-              <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
-                  <h3>{{positiveItem.technologyName}}</h3>
-              </a>
+              <h3 class="titleThumbnail">{{positiveItem.technologyName}}</h3>
               <h5 class="titleThumbnail">{{positiveItem.companyRecommendation}}</h5>
             <div class="imageSize">
                 <img src={{positiveItem.technologyPhotoUrl}} data-holder-rendered="true"
@@ -94,9 +92,7 @@
       <center><h4 ng-show="!userProfile.negativeRecItems">Não existem tecnologias com recomendações negativas para este usuário...</h4></center>
       <div class="col-sm-6 col-md-3 spacingUserCards" ng-repeat="negativeItem in userProfile.negativeRecItems">
           <div class="thumbnail userProfileThumbnail">
-              <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
-                  <h3>{{negativeItem.technologyName}}</h3>
-              </a>
+              <h3 class="titleThumbnail">{{negativeItem.technologyName}}</h3>
               <h5 class="titleThumbnail">{{negativeItem.companyRecommendation}}</h5>
           	<div class="imageSize">
                 <img src={{negativeItem.technologyPhotoUrl}} data-holder-rendered="true"
@@ -127,9 +123,7 @@
       <center><h4 ng-show="!userProfile.otherItems">Não existem tecnologias com recomendações de outro tipo para este usuário...</h4></center>
       <div class="col-sm-6 col-md-3 spacingUserCards" ng-repeat="otherItem in userProfile.otherItems">
           <div class="thumbnail userProfileThumbnail">
-              <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
-                  <h3>{{otherItem.technologyName}}</h3>
-              </a>
+              <h3 class="titleThumbnail">{{otherItem.technologyName}}</h3>
               <h5 class="titleThumbnail">{{otherItem.companyRecommendation}}</h5>
             <div class="imageSize">
                 <img src={{otherItem.technologyPhotoUrl}} data-holder-rendered="true"
