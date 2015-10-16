@@ -3,6 +3,7 @@ angular.module('techGallery').controller(
   function($scope, $location, $timeout) {
     'use strict';
 
+    $scope.defaultTechImage = 'http://www.clevermusic.com.br/blog/wp-content/uploads/2011/06/not-found.png';
     $scope.domainError = false;
     $scope.userLogged = false;
 //    $scope.selectedRecommendation = 'Selecione';
