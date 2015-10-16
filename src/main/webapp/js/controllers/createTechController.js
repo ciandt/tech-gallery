@@ -54,7 +54,28 @@ angular.module('techGallery').controller(
     };
 
     function callBackLoaded() {
-    	document.getElementById('idimage').addEventListener('change', handleFileSelect, false);
+    	var inputName = document.getElementById("idnome");
+    	var inputDescription = document.getElementById("iddesc");
+    	var inputShortDesc = document.getElementById("idshortdesc");
+        inputName.oninvalid = function (e) {
+        	e.target.setCustomValidity("");
+            if (!e.target.validity.valid) {
+            	e.target.setCustomValidity("O campo <Nome> é obrigatório");
+            }
+        };
+        inputDescription.oninvalid = function (e) {
+        	e.target.setCustomValidity("");
+            if (!e.target.validity.valid) {
+            	e.target.setCustomValidity("O campo <Descrição> é obrigatório");
+            }
+        };
+        inputShortDesc.oninvalid = function (e) {
+        	e.target.setCustomValidity("");
+            if (!e.target.validity.valid) {
+            	e.target.setCustomValidity("O campo <Descrição Curta> é obrigatório");
+            }
+        };
+        document.getElementById('idimage').addEventListener('change', handleFileSelect, false);
     	$scope.$apply();
     }
 
@@ -102,27 +123,29 @@ angular.module('techGallery').controller(
     }
     
     $scope.addTechnology = function(){
-    	var req = {
-    			id : slugify($scope.name),
-    			name : $scope.name,
-    			shortDescription : $scope.shortDescription, 
-    			description : $scope.description,
-    			website : $scope.webSite,
-    			image : $scope.image
-		};
-        gapi.client.rest.addTechnology(req).execute(function(data){
-        	callBackLoaded();
-        	var alert;
-            if (data.hasOwnProperty('error')) {
-              alert = alerts.failure;
-//              alert.msg = data.error.message;
-            }else{
-              alert = alerts.success;
-              $scope.clearTechnology();
-            }
-            $scope.alert = alert;
-        	$scope.$apply();
-        });
+    	if($scope.name != null && $scope.description != null && $scope.shortDescription != null) {
+	    	var req = {
+	    			id : slugify($scope.name),
+	    			name : $scope.name,
+	    			shortDescription : $scope.shortDescription, 
+	    			description : $scope.description,
+	    			website : $scope.webSite,
+	    			image : $scope.image
+			};
+	        gapi.client.rest.addTechnology(req).execute(function(data){
+	        	var alert;
+	            if (data.hasOwnProperty('error')) {
+	              alert = alerts.failure;
+	//              alert.msg = data.error.message;
+	            }else{
+	              alert = alerts.success;
+	              $scope.clearTechnology();
+	            }
+	            $scope.alert = alert;
+	        	$scope.$apply();
+	        });
+    	}
+        callBackLoaded();
     };
     
     function slugify(text){
