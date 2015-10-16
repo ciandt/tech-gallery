@@ -51,7 +51,7 @@ public class UserEndpoint {
    * @throws BadRequestException
    *           in case a request with problem were made.
    */
-  @ApiMethod(name = "usersAutoComplete", path = "users/autocomplete?q={query}", httpMethod = "get")
+  @ApiMethod(name = "usersAutoComplete", path = "users/autocomplete/{query}", httpMethod = "get")
   public List<TechGalleryUser> usersAutoComplete(@Named("query") String query)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     return service.getUsersAutoComplete(query);

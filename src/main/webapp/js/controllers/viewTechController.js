@@ -1,5 +1,5 @@
 angular.module('techGallery').controller(
-  'techDetailsController',
+  'viewTechController',
   function($scope, $timeout, $modal) {
     'use strict';
     
