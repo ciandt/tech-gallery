@@ -270,3 +270,8 @@ body, html {
 .topBar {
 	padding-right: 0px !important;
 }
+
+.endorse-input ul{
+	height:300px;
+	overflow:auto
+}

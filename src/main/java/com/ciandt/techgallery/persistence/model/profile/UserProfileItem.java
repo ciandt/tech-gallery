@@ -123,13 +123,16 @@ public class UserProfileItem implements Comparable<UserProfileItem> {
   }
 
   /**
-   * Items with endorsements come first. If equal, follows lexicographical order for the name of the
-   * Technology.
+   * Items with more endorsements come first. If equal, follows lexicographical order for the name
+   * of the Technology.
+   * 
+   * @param arg0 the other item to be compared with returns -1 if this item has more endorsements, 0
+   *        if the quantities are the same, +1 if the other item has more endorsements
    */
   @Override
   public int compareTo(UserProfileItem arg0) {
     int endorsementsComparison =
-        this.getEndorsementQuantity().compareTo(arg0.getEndorsementQuantity());
+        arg0.getEndorsementQuantity().compareTo(this.getEndorsementQuantity());
     return endorsementsComparison != 0 ? endorsementsComparison
         : this.getTechnologyName().compareTo(arg0.getTechnologyName());
   }
