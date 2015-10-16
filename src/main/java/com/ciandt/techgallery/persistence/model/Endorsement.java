@@ -9,7 +9,7 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
 
-import com.ciandt.techgallery.service.util.EndorsementTransformer;
+import com.ciandt.techgallery.service.transformer.EndorsementTransformer;
 
 import java.util.Date;
 

@@ -50,6 +50,11 @@
 	<div ng-show="showContent" class="page-header">
   		<div id="div_container" class="container">
        		<div class="row">
+	       		<div class="endorse-alerts spacingtop">
+	      			<alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
+	    		</div>
+       		</div>
+       		<div class="row">
        			<div id="div_image" class="col-xs-6">
           			<output id="list">
           				<img src="/images/no_image.png" title="Insira uma imagem" width="200" >

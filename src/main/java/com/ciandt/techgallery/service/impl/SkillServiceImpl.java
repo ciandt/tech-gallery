@@ -99,6 +99,7 @@ public class SkillServiceImpl implements SkillService {
 
     final Skill newSkill = addNewSkill(skill, techUser, technology);
 
+    UserProfileServiceImpl.getInstance().handleSkillChanges(newSkill);
     return newSkill;
   }
 
