@@ -7,7 +7,7 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
 
-import com.ciandt.techgallery.service.util.TechnologyTransformer;
+import com.ciandt.techgallery.service.transformer.TechnologyTransformer;
 
 import java.util.Date;
 

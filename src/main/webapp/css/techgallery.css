@@ -241,6 +241,37 @@ body, html {
 	margin-right: 10px;
 }
 
+.profileName{
+    font-style: italic;
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+.profilePhoto{
+	width: 100px;
+}
+
+.userProfileThumbnail{
+	overflow: auto;
+    overflow-x: hidden;
+    width: 325px;
+    height: 430px;
+}
+
+.divComments{
+	margin-top: 30px;
+}
+
+.spacingUserCards{
+	margin-right: 70px;
+}
+
 .topBar {
 	padding-right: 0px !important;
+}
+
+.endorse-input ul{
+	height:300px;
+	overflow:auto
 }

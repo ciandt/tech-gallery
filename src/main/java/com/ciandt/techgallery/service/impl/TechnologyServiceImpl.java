@@ -141,8 +141,8 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     } else if (technology.getName() == null || technology.getName().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
-    } else if (technology.getShortDescription() == null
-        || technology.getShortDescription().equals("")) {
+    } else
+      if (technology.getShortDescription() == null || technology.getShortDescription().equals("")) {
       throw new BadRequestException(
           ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
     } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
