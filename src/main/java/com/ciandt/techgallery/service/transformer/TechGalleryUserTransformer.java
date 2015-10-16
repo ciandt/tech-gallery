@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.service.util;
+package com.ciandt.techgallery.service.transformer;
 
 import com.google.api.server.spi.config.Transformer;
 

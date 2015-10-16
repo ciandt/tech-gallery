@@ -22,6 +22,7 @@ import com.ciandt.techgallery.service.EndorsementService;
 import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
+import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementsResponse;
@@ -173,6 +174,8 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setActive(true);
     endorsementDao.add(entity);
     // return the added entity
+    
+    UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
 
@@ -257,6 +260,8 @@ public class EndorsementServiceImpl implements EndorsementService {
       endorsements.get(0).setInactivatedDate(new Date());
       endorsements.get(0).setActive(false);
       endorsementDao.update(endorsements.get(0));
+
+      UserProfileServiceImpl.getInstance().handleEndorsement(endorsements.get(0));
       return getEndorsement(endorsements.get(0).getId());
     } else if (endorsements.size() > 1) {
       throw new BadRequestException(
@@ -271,6 +276,8 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
+    
+    UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     // return the added entity
     return getEndorsement(entity.getId());
   }

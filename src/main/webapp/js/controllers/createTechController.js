@@ -16,7 +16,7 @@ angular.module('techGallery').controller(
       return indexPage;
     }
 
-    var alerts = jsUtils.alerts;
+    var alerts = jsUtils.techAlerts;
 
     var successFunction = function(data) {
       if(data!==false && !data.error){
@@ -112,7 +112,16 @@ angular.module('techGallery').controller(
 		};
         gapi.client.rest.addTechnology(req).execute(function(data){
         	callBackLoaded();
-        	$scope.clearTechnology();
+        	var alert;
+            if (data.hasOwnProperty('error')) {
+              alert = alerts.failure;
+//              alert.msg = data.error.message;
+            }else{
+              alert = alerts.success;
+              $scope.clearTechnology();
+            }
+            $scope.alert = alert;
+        	$scope.$apply();
         });
     };
     
@@ -124,5 +133,9 @@ angular.module('techGallery').controller(
         	.replace(/^-+/, '')             // Trim - from start of text
         	.replace(/-+$/, '');            // Trim - from end of text
     }
+    
+    $scope.closeAlert = function() {
+    	$scope.alert = undefined;
+    };
   }
 );

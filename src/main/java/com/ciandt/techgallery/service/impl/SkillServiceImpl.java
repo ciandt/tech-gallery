@@ -18,6 +18,7 @@ import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
 import java.util.Date;
@@ -94,6 +95,7 @@ public class SkillServiceImpl implements SkillService {
 
     final Skill newSkill = addNewSkill(skill, techUser, technology);
 
+    UserProfileServiceImpl.getInstance().handleSkillChanges(newSkill);
     return newSkill;
   }
 
