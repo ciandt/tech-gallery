@@ -41,11 +41,11 @@ public enum ValidationMessageEnums {
   private final I18n i18n = I18n.getInstance();
 
   ValidationMessageEnums(String message) {
-    this.message = i18n.t(message);
+    this.message = message;
   }
 
   public String message() {
-    return message;
+    return i18n.t(message);
   }
 
 }

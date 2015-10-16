@@ -83,7 +83,7 @@ angular.module('techGallery').controller(
         var files = evt.target.files;
         var f = files[0];
         if(f.type != 'image/png'){
-        	alert('Imagem deve possuir extensão PNG.');
+        	alert('Esta imagem tem um tamanho ou tipo errado, escolha uma imagem com o tamanho 355x355 e tipo PNG.');
         	document.getElementById('idimage').value = null;
         } else {
         	var reader = new FileReader();
@@ -136,7 +136,7 @@ angular.module('techGallery').controller(
 	        	var alert;
 	            if (data.hasOwnProperty('error')) {
 	              alert = alerts.failure;
-	//              alert.msg = data.error.message;
+	              alert.msg = data.error.message;
 	            }else{
 	              alert = alerts.success;
 	              $scope.clearTechnology();
