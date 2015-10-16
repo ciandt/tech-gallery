@@ -22,6 +22,7 @@ import com.ciandt.techgallery.service.model.TechnologyFilter;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

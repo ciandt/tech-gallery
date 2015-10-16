@@ -18,6 +18,7 @@ import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.service.model.ImportUserSkillTO;
 import com.ciandt.techgallery.service.model.UserSkillTO;
 import com.ciandt.techgallery.utils.TechGalleryUtil;
