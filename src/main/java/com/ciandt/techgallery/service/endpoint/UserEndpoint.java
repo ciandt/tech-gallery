@@ -13,6 +13,7 @@ import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
+import com.ciandt.techgallery.service.model.UserResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,10 +50,10 @@ public class UserEndpoint {
    * @throws NotFoundException in case the information are not founded
    * @throws BadRequestException in case a request with problem were made.
    */
-//  @ApiMethod(name = "usersAutoComplete", path = "users/autocomplete?q={query}", httpMethod = "get")
-//  public List<TechGalleryUser> usersAutoComplete(@Named("query") String query)
-//      throws NotFoundException, BadRequestException, InternalServerErrorException {
-//    return service.getUsersAutoComplete(query);
-//  }
+  @ApiMethod(name = "usersAutoComplete", path = "users/autocomplete/{query}", httpMethod = "get")
+  public List<UserResponse> usersAutoComplete(@Named("query") String query)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
+    return service.getUsersAutoComplete(query);
+  }
 
 }
