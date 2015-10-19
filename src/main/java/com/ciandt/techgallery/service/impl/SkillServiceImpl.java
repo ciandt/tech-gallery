@@ -27,6 +27,7 @@ import com.ciandt.techgallery.utils.i18n.I18n;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -219,26 +220,36 @@ public class SkillServiceImpl implements SkillService {
 
   @Override
   public String importUserSkill(ImportUserSkillTO importUserSkills, User user)
-      throws NotFoundException, InternalServerErrorException, BadRequestException {
+      throws InternalServerErrorException, BadRequestException {
     List<String> failTechnologies = new ArrayList<>();
     for (UserSkillTO userSkill : importUserSkills.getUserSkill()) {
       String email = userSkill.getEmail();
-      TechGalleryUser techGalleryUser = userService.getUserSyncedWithProvider(email.split("@")[0]);
-      for (String techSkill : userSkill.getTechSkill()) {
-        String[] split = techSkill.split(";");
-        if (!failTechnologies.contains(split[0])) {
-          Technology technology = recoverTechnologyById(split[0]);
-          if (technology != null) {
-            Skill skill = new Skill();
-            skill.setActive(true);
-            skill.setTechGalleryUser(Ref.create(techGalleryUser));
-            skill.setTechnology(Ref.create(technology));
-            skill.setValue(Integer.parseInt(split[1]));
-            addOrUpdateSkill(skill, user);
-          } else {
-            failTechnologies.add(split[0]);
+      TechGalleryUser techGalleryUser;
+      try {
+        techGalleryUser = userService.getUserSyncedWithProvider(email.split("@")[0]);
+        for (String techSkill : userSkill.getTechSkill()) {
+          String[] splitedTechSkill = techSkill.split(";");
+          if (!failTechnologies.contains(splitedTechSkill[0])) {
+            Technology technology = recoverTechnologyById(splitedTechSkill[0]);
+            if (technology != null) {
+              Skill skillEntity = skillDao.findByUserAndTechnology(techGalleryUser, technology);
+              if (skillEntity != null) {
+                log.info("Inactivating skill: " + skillEntity.getId());
+                skillEntity.setInactivatedDate(new Date());
+                skillEntity.setActive(Boolean.FALSE);
+                skillDao.update(skillEntity);
+              }
+              Skill skill = new Skill();
+              skill.setValue(Integer.parseInt(splitedTechSkill[1]));
+              addNewSkill(skill, techGalleryUser, technology);
+            } else {
+              failTechnologies.add(splitedTechSkill[0]);
+            }
           }
         }
+      } catch (NotFoundException e) {
+        log.log(Level.INFO,
+            "User " + userSkill.getEmail() + " not found during import. Row ignored.", e);
       }
     }
 
