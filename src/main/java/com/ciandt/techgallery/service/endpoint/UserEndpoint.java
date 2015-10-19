@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Endpoint controller class for User requests.
- * 
+ *
  * @author felipers
  *
  */
@@ -42,9 +42,9 @@ public class UserEndpoint {
   /**
    * Endpoint for getting a users from a user provider. The interface with the provider is made by
    * the service
-   * 
+   *
    * @param string to search on provider by name or login
-   * 
+   *
    * @return list of users
    * @throws InternalServerErrorException in case something goes wrong
    * @throws NotFoundException in case the information are not founded
