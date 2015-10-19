@@ -219,26 +219,35 @@ public class SkillServiceImpl implements SkillService {
 
   @Override
   public String importUserSkill(ImportUserSkillTO importUserSkills, User user)
-      throws NotFoundException, InternalServerErrorException, BadRequestException {
+      throws InternalServerErrorException, BadRequestException {
     List<String> failTechnologies = new ArrayList<>();
     for (UserSkillTO userSkill : importUserSkills.getUserSkill()) {
       String email = userSkill.getEmail();
-      TechGalleryUser techGalleryUser = userService.getUserSyncedWithProvider(email.split("@")[0]);
-      for (String techSkill : userSkill.getTechSkill()) {
-        String[] split = techSkill.split(";");
-        if (!failTechnologies.contains(split[0])) {
-          Technology technology = recoverTechnologyById(split[0]);
-          if (technology != null) {
-            Skill skill = new Skill();
-            skill.setActive(true);
-            skill.setTechGalleryUser(Ref.create(techGalleryUser));
-            skill.setTechnology(Ref.create(technology));
-            skill.setValue(Integer.parseInt(split[1]));
-            addOrUpdateSkill(skill, user);
-          } else {
-            failTechnologies.add(split[0]);
+      TechGalleryUser techGalleryUser;
+      try {
+        techGalleryUser = userService.getUserSyncedWithProvider(email.split("@")[0]);
+        for (String techSkill : userSkill.getTechSkill()) {
+          String[] split = techSkill.split(";");
+          if (!failTechnologies.contains(split[0])) {
+            Technology technology = recoverTechnologyById(split[0]);
+            if (technology != null) {
+              Skill skillEntity = skillDao.findByUserAndTechnology(techGalleryUser, technology);
+              if (skillEntity != null) {
+                log.info("Inactivating skill: " + skillEntity.getId());
+                skillEntity.setInactivatedDate(new Date());
+                skillEntity.setActive(Boolean.FALSE);
+                skillDao.update(skillEntity);
+              }
+              Skill skill = new Skill();
+              skill.setValue(Integer.parseInt(split[1]));
+              addNewSkill(skill, techGalleryUser, technology);
+            } else {
+              failTechnologies.add(split[0]);
+            }
           }
         }
+      } catch (NotFoundException e) {
+        log.info(e.getMessage());
       }
     }
 

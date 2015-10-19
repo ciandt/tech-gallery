@@ -54,7 +54,7 @@ public class TechGalleryUtil {
    * @return Changed name.
    */
   public static String slugify(String name) {
-    String nowhitespace = WHITESPACE.matcher(name).replaceAll("-");
+    String nowhitespace = WHITESPACE.matcher(name).replaceAll("_");
     String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
     String slug = NONLATIN.matcher(normalized).replaceAll("");
     return slug.toLowerCase(Locale.ENGLISH);
