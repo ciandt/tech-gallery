@@ -27,6 +27,7 @@ import com.ciandt.techgallery.utils.i18n.I18n;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -247,7 +248,8 @@ public class SkillServiceImpl implements SkillService {
           }
         }
       } catch (NotFoundException e) {
-        log.info(e.getMessage());
+        log.log(Level.INFO,
+            "User " + userSkill.getEmail() + " not found during import. Row ignored.", e);
       }
     }
 
