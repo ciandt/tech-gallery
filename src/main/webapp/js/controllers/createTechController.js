@@ -82,20 +82,25 @@ angular.module('techGallery').controller(
     function handleFileSelect(evt) {
         var files = evt.target.files;
         var f = files[0];
-        if(f.type != 'image/png'){
-        	alert('Esta imagem tem um tamanho ou tipo errado, escolha uma imagem com o tamanho 355x355 e tipo PNG.');
-        	document.getElementById('idimage').value = null;
-        } else {
-        	var reader = new FileReader();
-        	reader.onload = (function(theFile) {
-        		return function(e) {
-        			var image = e.target.result;
-        			$scope.image = image.replace('data:image/png;base64,', '');
-        			document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="200" />'].join('');
+        var reader = new FileReader();
+        reader.onload = (function(theFile) {
+        	return function(e) {
+        		var img = new Image;
+        		img.src = reader.result;
+        		img.onload = function() {
+        			if(f.type != 'image/png' || img.width > 355 || img.height > 355){
+        				alert('Esta imagem tem um tamanho ou tipo errado, escolha uma imagem com o tamanho 355x355 e tipo PNG.');
+        				document.getElementById('idimage').value = null;
+        				document.getElementById('list').innerHTML = ['<img src="/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
+        			}else{                    		
+        				var image = e.target.result;
+        				$scope.image = image.replace('data:image/png;base64,', '');
+        				document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="200" />'].join('');
+        			}
         		};
-        	})(f);
-        	reader.readAsDataURL(f);
-        }
+        	};
+        })(f);
+        reader.readAsDataURL(f);
     }
     
     $scope.closeAlert = function() {
