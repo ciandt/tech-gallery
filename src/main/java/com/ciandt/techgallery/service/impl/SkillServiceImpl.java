@@ -228,9 +228,9 @@ public class SkillServiceImpl implements SkillService {
       try {
         techGalleryUser = userService.getUserSyncedWithProvider(email.split("@")[0]);
         for (String techSkill : userSkill.getTechSkill()) {
-          String[] split = techSkill.split(";");
-          if (!failTechnologies.contains(split[0])) {
-            Technology technology = recoverTechnologyById(split[0]);
+          String[] splitedTechSkill = techSkill.split(";");
+          if (!failTechnologies.contains(splitedTechSkill[0])) {
+            Technology technology = recoverTechnologyById(splitedTechSkill[0]);
             if (technology != null) {
               Skill skillEntity = skillDao.findByUserAndTechnology(techGalleryUser, technology);
               if (skillEntity != null) {
@@ -240,10 +240,10 @@ public class SkillServiceImpl implements SkillService {
                 skillDao.update(skillEntity);
               }
               Skill skill = new Skill();
-              skill.setValue(Integer.parseInt(split[1]));
+              skill.setValue(Integer.parseInt(splitedTechSkill[1]));
               addNewSkill(skill, techGalleryUser, technology);
             } else {
-              failTechnologies.add(split[0]);
+              failTechnologies.add(splitedTechSkill[0]);
             }
           }
         }
