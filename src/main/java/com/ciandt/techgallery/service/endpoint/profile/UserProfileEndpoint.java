@@ -3,6 +3,8 @@ package com.ciandt.techgallery.service.endpoint.profile;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
@@ -23,9 +25,10 @@ public class UserProfileEndpoint {
   public UserProfile getUserProfileByEmail(@Named("email") String email) throws NotFoundException {
     return service.findUserProfileByEmail(email);
   }
-  
+
   @ApiMethod(name = "profile.addItem", path = "profile", httpMethod = "post")
-  public UserProfile addItemToProfile(Technology technology, User user) throws NotFoundException {
+  public UserProfile addItemToProfile(Technology technology, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
     return service.addItem(technology, user);
   }
 

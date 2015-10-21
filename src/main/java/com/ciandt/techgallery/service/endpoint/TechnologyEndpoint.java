@@ -57,10 +57,12 @@ public class TechnologyEndpoint {
    * @return list of technologies
    * @throws InternalServerErrorException in case something goes wrong
    * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "getTechnologies", path = "technology", httpMethod = "get")
-  public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
-    return service.getTechnologies();
+  public Response getTechnologies(User user)
+      throws InternalServerErrorException, NotFoundException, BadRequestException {
+    return service.getTechnologies(user);
   }
 
   /**
@@ -68,11 +70,14 @@ public class TechnologyEndpoint {
    *
    * @param id entity id.
    * @return technology
+   * @throws InternalServerErrorException in case something goes wrong
    * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "getTechnology", path = "technology/{id}", httpMethod = "get")
-  public Technology getTechnology(@Named("id") String id) throws NotFoundException {
-    return service.getTechnology(id);
+  public Technology getTechnology(@Named("id") String id, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
+    return service.getTechnologyById(id, user);
   }
 
   /**

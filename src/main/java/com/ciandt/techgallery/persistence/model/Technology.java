@@ -4,6 +4,7 @@ import com.google.api.server.spi.config.ApiTransformer;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
 
@@ -79,6 +80,9 @@ public class Technology extends BaseEntity<String> {
 
   @Unindex
   private Date creationDate;
+
+  @Ignore
+  private boolean followedByUser;
 
   /*
    * Methods --------------------------------------------
@@ -254,5 +258,13 @@ public class Technology extends BaseEntity<String> {
 
   public void setCreationDate(Date creationDate) {
     this.creationDate = creationDate;
+  }
+
+  public boolean isFollowedByUser() {
+    return followedByUser;
+  }
+
+  public void setFollowedByUser(boolean followedByUser) {
+    this.followedByUser = followedByUser;
   }
 }

@@ -15,7 +15,8 @@ public interface TechnologyRecommendationService {
 
   /**
    * Sets a recommender and calls addNewRecommendation.
-   * @param recommendation  the recommendation to add
+   * 
+   * @param recommendation the recommendation to add
    * @param user the user who made the recommendation
    * @return the saved recommendation
    * @throws BadRequestException in case the user is not properly informed
@@ -25,7 +26,8 @@ public interface TechnologyRecommendationService {
 
   TechnologyRecommendation getRecommendationByComment(TechnologyComment comment);
 
-  List<Response> getRecommendations(String technologyId, User user);
+  List<Response> getRecommendations(String technologyId, User user)
+      throws BadRequestException, InternalServerErrorException;
 
   /**
    * Method that return the Recommendations Up by passed parameters.
@@ -37,8 +39,11 @@ public interface TechnologyRecommendationService {
    * @param user User
    * 
    * @return List of Responses
+   * @throws InternalServerErrorException
+   * @throws BadRequestException
    */
-  List<Response> getRecommendationsUpByTechnologyAndUser(String technologyId, User user);
+  List<Response> getRecommendationsUpByTechnologyAndUser(String technologyId, User user)
+      throws BadRequestException, InternalServerErrorException;
 
   /**
    * Method that return the Recommendations Down by passed parameters.
@@ -50,8 +55,11 @@ public interface TechnologyRecommendationService {
    * @param user User
    * 
    * @return List of Responses
+   * @throws InternalServerErrorException
+   * @throws BadRequestException
    */
-  List<Response> getRecommendationsDownByTechnologyAndUser(String technologyId, User user);
+  List<Response> getRecommendationsDownByTechnologyAndUser(String technologyId, User user)
+      throws BadRequestException, InternalServerErrorException;
 
   /**
    * Method to set the recommendation as inactive.
