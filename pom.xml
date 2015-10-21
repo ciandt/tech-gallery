@@ -126,6 +126,12 @@
             <artifactId>google-api-services-plus</artifactId>
             <version>v1-rev255-1.20.0</version>
         </dependency>
+		<!-- Mustache -->
+        <dependency>
+		  <groupId>com.github.spullara.mustache.java</groupId>
+		  <artifactId>compiler</artifactId>
+		  <version>0.8.18</version>
+		</dependency>
     </dependencies>
     <build>
         <!-- for hot reload of the web application -->
@@ -174,7 +180,12 @@
                                 <include>WEB-INF/*.api</include>
                             </includes>
                         </resource>
-                    </webResources>
+			            <resource>
+				            <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+				            <filtering>true</filtering>
+				            <targetPath>WEB-INF</targetPath>
+			            </resource>
+			        </webResources>
                 </configuration>
             </plugin>
             <plugin>
