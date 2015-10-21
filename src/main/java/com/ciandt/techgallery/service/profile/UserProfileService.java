@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.profile;
 
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
@@ -50,6 +52,7 @@ public interface UserProfileService {
 
   UserProfile createProfile(TechGalleryUser tgUser);
 
-  UserProfile addItem(Technology technology, User user) throws NotFoundException;
+  UserProfile addItem(Technology technology, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException;
 
 }

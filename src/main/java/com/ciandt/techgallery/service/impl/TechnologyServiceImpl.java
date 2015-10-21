@@ -5,12 +5,16 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
+import com.googlecode.objectify.Ref;
+
 import com.ciandt.techgallery.persistence.dao.StorageDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.dao.storage.StorageDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
+import com.ciandt.techgallery.service.TechnologyFollowersService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.RecommendationEnums;
@@ -47,6 +51,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   /** tech gallery user service. */
   UserServiceTG userService = UserServiceTGImpl.getInstance();
+  TechnologyFollowersService followersService = TechnologyFollowersServiceImpl.getInstance();
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
   StorageDAO storageDAO = StorageDAOImpl.getInstance();
 
@@ -76,10 +81,9 @@ public class TechnologyServiceImpl implements TechnologyService {
   @Override
   public Technology addTechnology(Technology technology, User user)
       throws BadRequestException, IOException, GeneralSecurityException {
-
     validateInformations(technology);
     String imageLink = technology.getImage();
-    if (technology.getRecommendation() == null) {
+    if (technology.getRecommendation() == null && technology.getImage() != null) {
       imageLink = storageDAO.insertImage(convertNameToId(technology.getName()),
           new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImage())));
     }
@@ -155,18 +159,15 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
-  /**
-   * GET for getting all technologies.
-   *
-   * @throws NotFoundException .
-   */
   @Override
-  public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
+  public Response getTechnologies(User user)
+      throws InternalServerErrorException, NotFoundException, BadRequestException {
     List<Technology> techEntities = technologyDAO.findAll();
     // if list is null, return a not found exception
     if (techEntities == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
+      verifyTechnologyFollowedByUser(user, techEntities);
       TechnologiesResponse response = new TechnologiesResponse();
       response.setTechnologies(techEntities);
       return response;
@@ -217,20 +218,6 @@ public class TechnologyServiceImpl implements TechnologyService {
     return techList;
   }
 
-  /**
-   * GET for getting one technology.
-   */
-  @Override
-  public Technology getTechnology(final String id) throws NotFoundException {
-    Technology techEntity = technologyDAO.findById(id);
-    // if technology is null, return a not found exception
-    if (techEntity == null) {
-      throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
-    } else {
-      return techEntity;
-    }
-  }
-
   @Override
   public Response findTechnologiesByFilter(TechnologyFilter techFilter, User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {
@@ -257,9 +244,23 @@ public class TechnologyServiceImpl implements TechnologyService {
         filteredList = sortTechnologies(filteredList,
             TechnologyOrderOptionEnum.fromString(techFilter.getOrderOptionIs()));
       }
+      verifyTechnologyFollowedByUser(user, filteredList);
       TechnologiesResponse response = new TechnologiesResponse();
       response.setTechnologies(filteredList);
       return response;
+    }
+  }
+
+  private void verifyTechnologyFollowedByUser(User user, List<Technology> filteredList)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
+    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    if (techUser.getFollowedTechnologyIds() != null
+        && !techUser.getFollowedTechnologyIds().isEmpty()) {
+      for (Technology technology : filteredList) {
+        if (techUser.getFollowedTechnologyIds().contains(technology.getId())) {
+          technology.setFollowedByUser(true);
+        }
+      }
     }
   }
 
@@ -309,14 +310,21 @@ public class TechnologyServiceImpl implements TechnologyService {
   }
 
   @Override
-  public Technology getTechnologyById(String id) throws NotFoundException {
+  public Technology getTechnologyById(String id, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
     Technology tech = technologyDAO.findById(id);
     if (tech == null) {
       throw new NotFoundException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     } else {
+      if (user != null) {
+        TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+        if (techUser.getFollowedTechnologyIds() != null
+            && techUser.getFollowedTechnologyIds().contains(tech.getId())) {
+          tech.setFollowedByUser(true);
+        }
+      }
       return tech;
     }
-
   }
 
   /**
@@ -396,5 +404,39 @@ public class TechnologyServiceImpl implements TechnologyService {
   public void updateEdorsedsCounter(Technology technology, Integer size) {
     technology.setEndorsersCounter(size);
     technologyDAO.update(technology);
+  }
+
+  @Override
+  public Technology followTechnology(Technology technology, User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
+    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    if (techUser.getFollowedTechnologyIds() == null) {
+      techUser.setFollowedTechnologyIds(new ArrayList<String>());
+    }
+    TechnologyFollowers technologyFollowers =
+        followersService.getTechnologyFollowersByTechnology(technology);
+
+    if (technologyFollowers == null) {
+      technologyFollowers = new TechnologyFollowers();
+      technologyFollowers.setTechnology(Ref.create(technology));
+      technologyFollowers.setFollowers(new ArrayList<Ref<TechGalleryUser>>());
+      technologyFollowers.getFollowers().add(Ref.create(techUser));
+      techUser.getFollowedTechnologyIds().add(technology.getId());
+    } else if (technologyFollowers.getFollowers().contains(Ref.create(techUser))) {
+      technologyFollowers.getFollowers().remove(Ref.create(techUser));
+      techUser.getFollowedTechnologyIds().remove(technology.getId());
+      userService.updateUser(techUser);
+      if (technologyFollowers.getFollowers().isEmpty()) {
+        followersService.delete(technologyFollowers);
+        return technology;
+      }
+    } else {
+      technologyFollowers.getFollowers().add(Ref.create(techUser));
+      techUser.getFollowedTechnologyIds().add(technology.getId());
+    }
+    followersService.update(technologyFollowers);
+    userService.updateUser(techUser);
+
+    return technology;
   }
 }

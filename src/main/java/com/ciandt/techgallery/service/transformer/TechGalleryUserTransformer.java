@@ -15,6 +15,7 @@ public class TechGalleryUserTransformer implements Transformer<TechGalleryUser, 
     product.setId(arg0.getId());
     product.setName(arg0.getName());
     product.setPhoto(arg0.getPhoto());
+    product.setFollowedTechnologyIds(arg0.getFollowedTechIds());
     return product;
   }
 
@@ -27,6 +28,7 @@ public class TechGalleryUserTransformer implements Transformer<TechGalleryUser, 
       product.setId(arg0.getId());
       product.setName(arg0.getName());
       product.setPhoto(arg0.getPhoto());
+      product.setFollowedTechIds(arg0.getFollowedTechnologyIds());
       return product;
     } else {
       return null;

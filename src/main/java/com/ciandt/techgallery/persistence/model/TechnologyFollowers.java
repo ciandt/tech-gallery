@@ -1,0 +1,61 @@
+package com.ciandt.techgallery.persistence.model;
+
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Unindex;
+
+import java.util.List;
+
+/**
+ * TechnologyFolowers entity.
+ * 
+ * @author ibrahim
+ *
+ */
+@Entity
+public class TechnologyFollowers extends BaseEntity<Long> {
+
+  /*
+   * Constants --------------------------------------------
+   */
+  public static final String ID = "Id";
+  public static final String TECHNOLOGY = "technology";
+  public static final String FOLLOWERS = "followers";
+
+  @Id
+  Long id;
+
+  @Index
+  private Ref<Technology> technology;
+
+  @Unindex
+  private List<Ref<TechGalleryUser>> followers;
+
+  @Override
+  public Long getId() {
+    return id;
+  }
+
+  @Override
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public Ref<Technology> getTechnology() {
+    return technology;
+  }
+
+  public void setTechnology(Ref<Technology> technology) {
+    this.technology = technology;
+  }
+
+  public List<Ref<TechGalleryUser>> getFollowers() {
+    return followers;
+  }
+
+  public void setFollowers(List<Ref<TechGalleryUser>> followers) {
+    this.followers = followers;
+  }
+}

@@ -39,28 +39,21 @@ public interface TechnologyService {
    * Service for getting all technologies.
    *
    * @return technologies info or message error.
-   * @throws NotFoundException .
-   * @throws InternalServerErrorException .
-   * @throws NotFoundException .
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
-  Response getTechnologies() throws InternalServerErrorException, NotFoundException;
-
-  /**
-   * Service for getting a technology response.
-   *
-   * @param id entity id.
-   * @return .
-   * @throws NotFoundException .
-   */
-  Technology getTechnology(final String id) throws NotFoundException;
+  Response getTechnologies(User user)
+      throws InternalServerErrorException, NotFoundException, BadRequestException;
 
   /**
    * Service for getting all technologies according a filter.
    *
    * @param filter entity filter.
    * @return technologies info or message error.
-   * @throws InternalServerErrorException .
-   * @throws NotFoundException .
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   Response findTechnologiesByFilter(final TechnologyFilter techFilter, User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException;
@@ -70,9 +63,12 @@ public interface TechnologyService {
    *
    * @param id entity id
    * @return .
-   * @throws NotFoundException when entity is not found
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
-  Technology getTechnologyById(String id) throws NotFoundException;
+  Technology getTechnologyById(String id, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException;
 
   List<String> getOrderOptions(User user);
 
@@ -85,4 +81,17 @@ public interface TechnologyService {
   void removeRecomendationCounter(Technology technology, Boolean score);
 
   void updateEdorsedsCounter(Technology technology, Integer size);
+
+  /**
+   * Service for follow or unfollow a technologies.
+   *
+   * @param technology entity technology.
+   * @param user entity user.
+   * @return Technology info or message error.
+   * @throws BadRequestException in case a request with problem were made.
+   * @throws InternalServerErrorException in case some internal server error occur.
+   * @throws NotFoundException when entity is not found.
+   */
+  public Technology followTechnology(Technology technology, User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException;
 }

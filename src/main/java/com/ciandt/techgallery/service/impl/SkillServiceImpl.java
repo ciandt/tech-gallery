@@ -185,7 +185,7 @@ public class SkillServiceImpl implements SkillService {
     }
 
     // Technology can't be null
-    final Technology technology = techService.getTechnologyById(techId);
+    final Technology technology = techService.getTechnologyById(techId, user);
     if (technology == null) {
       throw new BadRequestException(i18n.t("Technology do not exists!"));
     }
@@ -206,7 +206,7 @@ public class SkillServiceImpl implements SkillService {
     }
 
     // Technology can't be null
-    final Technology technology = techService.getTechnologyById(techId);
+    final Technology technology = techService.getTechnologyById(techId, null);
     if (technology == null) {
       throw new NotFoundException(i18n.t("Technology do not exists!"));
     }
@@ -262,7 +262,7 @@ public class SkillServiceImpl implements SkillService {
       String techName = techCompleteName.substring(techCompleteName.indexOf('[') + 1,
           techCompleteName.indexOf(']'));
       techName = TechGalleryUtil.slugify(techName);
-      technology = techService.getTechnologyById(techName);
+      technology = techService.getTechnologyById(techName, null);
     } catch (Exception e) {
       log.info("Technology " + techCompleteName + " does not exist!");
     } catch (Throwable e) {
