@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+  <cron>
+    <url>/cron/email</url>
+    <description>Send email with resume of the day for each technology followers</description>
+    <schedule>every 1 minutes</schedule>
+    <target>${app.version}</target>
+  </cron>
+</cronentries>
