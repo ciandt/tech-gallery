@@ -6,18 +6,18 @@ angular.module('techGallery').controller(
     $scope.domainError = false;
     $scope.userLogged = false;
 //    $scope.selectedRecommendation = 'Selecione';
-    
+
     $scope.indexPage = function(){
       var indexPage = location.protocol;
       indexPage += '//';
       indexPage += location.hostname;
       return indexPage;
     }
-    
+
     $scope.logoutRedirect = function(){
       return jsUtils.logoutRedirect();
     }
-    
+
     var executeAuth = function(immediate) {
       $timeout(function() {
         jsUtils.checkAuth(successFunction, immediate);
@@ -73,7 +73,7 @@ angular.module('techGallery').controller(
       gapi.client.rest.getTechnologies().execute(function(data) {
         gapi.client.rest.handleLogin().execute();
         gapi.client.rest.getOrderOptions().execute(function(data) {
-        	$scope.orderOptions = data.items;
+          $scope.orderOptions = data.items;
         });
         gapi.client.rest.getRecommendations().execute(function(data){
           $scope.dropDownRecommendation = data.items;
@@ -84,11 +84,11 @@ angular.module('techGallery').controller(
         $scope.$apply();
       });
     }
-    
+
     $scope.selectOrderOption = function(orderOption) {
-    	$scope.selectedOrderOption = orderOption;
+      $scope.selectedOrderOption = orderOption;
     }
-    
+
     $scope.searchTechnology = function (){
       if($scope.textSearch || $scope.selectedOrderOption || $scope.selectedRecommendation){
         $scope.techList = '';
@@ -106,7 +106,7 @@ angular.module('techGallery').controller(
         });
       }
     }
-    
+
     $scope.searchClear = function (){
       $scope.techList = '';
       $scope.textSearch = '';
@@ -115,13 +115,13 @@ angular.module('techGallery').controller(
       $scope.showLoading = true;
       callBackLoaded();
     }
-    
+
     $scope.selectRecommendation = function(selected){
       $scope.selectedRecommendation = selected;
     };
-    
+
     $scope.selectOrderOption = function(selected){
-    	$scope.selectedOrderOption = selected;
+      $scope.selectedOrderOption = selected;
     };
   }
 );

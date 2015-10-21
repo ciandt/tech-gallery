@@ -7,67 +7,67 @@
 }
 
 .techGalleryFixedLink {
-	position: fixed;
-	top: 70px !important;
-	right: 20px !important;
-	opacity: 0.8;
-	width: 33px;
-	height: 32px;
-	text-align: center;
-	padding: 1px 0;
-	font-size: 20px;
-	line-height: 1.42;
-	border-radius: 15px;
+  position: fixed;
+  top: 70px !important;
+  right: 20px !important;
+  opacity: 0.8;
+  width: 33px;
+  height: 32px;
+  text-align: center;
+  padding: 1px 0;
+  font-size: 20px;
+  line-height: 1.42;
+  border-radius: 15px;
 }
 
 .techGalleryFixedBar{
-	background: rgba(255,50,85,0.7);
+  background: rgba(255,50,85,0.7);
 }
 
 .GPlusDefault{
-	color: #262626 !important;
+  color: #262626 !important;
     font-weight: bold;
     background-color: #fff;
     box-shadow: 1px 1px 1px black;
 }
 
 .GPlusAdded{
-	color: white !important;
-	font-weight: bold;
+  color: white !important;
+  font-weight: bold;
     background-color: #dd4b39;
     box-shadow: 1px 1px 1px black;
 }
 
 .plusOneButton{
-	float: left
+  float: left
 }
 
 .alignBar{
-	margin-top:-20px
+  margin-top:-20px
 }
 
 .logoBar{
-	width:30px;
-	float:left;
-	margin-top:15px;
-	margin-right:10px	
+  width:30px;
+  float:left;
+  margin-top:15px;
+  margin-right:10px
 }
 
 .headerBar{
-	float:right;
-	color:white
+  float:right;
+  color:white
 }
 
 .rightSideBar{
-	margin-top:8px
+  margin-top:8px
 }
 
 .whiteText{
-	color:white
+  color:white
 }
 
 .overLayer{
-	position: absolute;
+  position: absolute;
     width: 100%;
     height: 100%;
     z-index: 999;
@@ -89,8 +89,8 @@
 }
 
 .titleThumbnail{
-	text-align:center;
-	white-space: nowrap;
+  text-align:center;
+  white-space: nowrap;
 }
 
 .spacingtop {
@@ -229,7 +229,7 @@ body, html {
 }
 
 .separator{
-	width: 100%;
+  width: 100%;
     border-top: 1px solid #716F77;
     list-style-type: none;
     margin-top: 5px;
@@ -237,8 +237,8 @@ body, html {
 }
 
 .autoCompleteImage{
-	width:30px;
-	margin-right: 10px;
+  width:30px;
+  margin-right: 10px;
 }
 
 .profileName{
@@ -249,29 +249,29 @@ body, html {
 }
 
 .profilePhoto{
-	width: 100px;
+  width: 100px;
 }
 
 .userProfileThumbnail{
-	overflow: auto;
+  overflow: auto;
     overflow-x: hidden;
     width: 325px;
     height: 430px;
 }
 
 .divComments{
-	margin-top: 30px;
+  margin-top: 30px;
 }
 
 .spacingUserCards{
-	margin-right: 70px;
+  margin-right: 70px;
 }
 
 .topBar {
-	padding-right: 0px !important;
+  padding-right: 0px !important;
 }
 
 .endorse-input ul{
-	height:300px;
-	overflow:auto
+  height:300px;
+  overflow:auto
 }

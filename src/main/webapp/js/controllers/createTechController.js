@@ -4,11 +4,11 @@ angular.module('techGallery').controller(
     'use strict';
     //Fill this property with the domain of your choice
     $scope.domain = '@ciandt.com';
-    
+
     $scope.logoutRedirect = function(){
       return jsUtils.logoutRedirect();
     }
-    
+
     $scope.indexPage = function(){
       var indexPage = location.protocol;
       indexPage += '//';
@@ -40,13 +40,13 @@ angular.module('techGallery').controller(
         $scope.$apply();
       }
     }
-    
+
     function checkLogin(immediate){
       $timeout(function() {
         jsUtils.checkAuth(successFunction, immediate);
       }, 200);
     }
-    
+
     checkLogin(true);
 
     $scope.login = function(){
@@ -54,29 +54,29 @@ angular.module('techGallery').controller(
     };
 
     function callBackLoaded() {
-    	var inputName = document.getElementById("idnome");
-    	var inputDescription = document.getElementById("iddesc");
-    	var inputShortDesc = document.getElementById("idshortdesc");
+      var inputName = document.getElementById("idnome");
+      var inputDescription = document.getElementById("iddesc");
+      var inputShortDesc = document.getElementById("idshortdesc");
         inputName.oninvalid = function (e) {
-        	e.target.setCustomValidity("");
+          e.target.setCustomValidity("");
             if (!e.target.validity.valid) {
-            	e.target.setCustomValidity("O campo <Nome> é obrigatório");
+              e.target.setCustomValidity("O campo <Nome> é obrigatório");
             }
         };
         inputDescription.oninvalid = function (e) {
-        	e.target.setCustomValidity("");
+          e.target.setCustomValidity("");
             if (!e.target.validity.valid) {
-            	e.target.setCustomValidity("O campo <Descrição> é obrigatório");
+              e.target.setCustomValidity("O campo <Descrição> é obrigatório");
             }
         };
         inputShortDesc.oninvalid = function (e) {
-        	e.target.setCustomValidity("");
+          e.target.setCustomValidity("");
             if (!e.target.validity.valid) {
-            	e.target.setCustomValidity("O campo <Descrição Curta> é obrigatório");
+              e.target.setCustomValidity("O campo <Descrição Curta> é obrigatório");
             }
         };
         document.getElementById('idimage').addEventListener('change', handleFileSelect, false);
-    	$scope.$apply();
+      $scope.$apply();
     }
 
     function handleFileSelect(evt) {
@@ -84,25 +84,25 @@ angular.module('techGallery').controller(
         var f = files[0];
         var reader = new FileReader();
         reader.onload = (function(theFile) {
-        	return function(e) {
-        		var img = new Image;
-        		img.src = reader.result;
-        		img.onload = function() {
-        			if(f.type != 'image/png' || img.width > 355 || img.height > 355){
-        				alert('Esta imagem tem um tamanho ou tipo errado, escolha uma imagem com o tamanho 355x355 e tipo PNG.');
-        				document.getElementById('idimage').value = null;
-        				document.getElementById('list').innerHTML = ['<img src="/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
-        			}else{                    		
-        				var image = e.target.result;
-        				$scope.image = image.replace('data:image/png;base64,', '');
-        				document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="200" />'].join('');
-        			}
-        		};
-        	};
+          return function(e) {
+            var img = new Image;
+            img.src = reader.result;
+            img.onload = function() {
+              if(f.type != 'image/png' || img.width > 355 || img.height > 355){
+                alert('Esta imagem tem um tamanho ou tipo errado, escolha uma imagem com o tamanho 355x355 e tipo PNG.');
+                document.getElementById('idimage').value = null;
+                document.getElementById('list').innerHTML = ['<img src="/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
+              }else{
+                var image = e.target.result;
+                $scope.image = image.replace('data:image/png;base64,', '');
+                document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="200" />'].join('');
+              }
+            };
+          };
         })(f);
         reader.readAsDataURL(f);
     }
-    
+
     $scope.closeAlert = function() {
       $scope.alert = undefined;
     };
@@ -117,53 +117,53 @@ angular.module('techGallery').controller(
         document.getElementById(id).className = elementClassIncrease;
       }
     }
-    
+
     $scope.clearTechnology = function(){
-    	$scope.name = '';
-    	$scope.description = '';
-    	$scope.shortDescription = '';
-    	$scope.webSite = '';
-    	document.getElementById('idimage').value = null;
-    	document.getElementById('list').innerHTML = ['<img src="/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
+      $scope.name = '';
+      $scope.description = '';
+      $scope.shortDescription = '';
+      $scope.webSite = '';
+      document.getElementById('idimage').value = null;
+      document.getElementById('list').innerHTML = ['<img src="/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
     }
-    
+
     $scope.addTechnology = function(){
-    	if($scope.name != null && $scope.description != null && $scope.shortDescription != null) {
-	    	var req = {
-	    			id : slugify($scope.name),
-	    			name : $scope.name,
-	    			shortDescription : $scope.shortDescription, 
-	    			description : $scope.description,
-	    			website : $scope.webSite,
-	    			image : $scope.image
-			};
-	        gapi.client.rest.addTechnology(req).execute(function(data){
-	        	var alert;
-	            if (data.hasOwnProperty('error')) {
-	              alert = alerts.failure;
-	              alert.msg = data.error.message;
-	            }else{
-	              alert = alerts.success;
-	              $scope.clearTechnology();
-	            }
-	            $scope.alert = alert;
-	        	$scope.$apply();
-	        });
-    	}
+      if($scope.name != null && $scope.description != null && $scope.shortDescription != null) {
+        var req = {
+            id : slugify($scope.name),
+            name : $scope.name,
+            shortDescription : $scope.shortDescription,
+            description : $scope.description,
+            website : $scope.webSite,
+            image : $scope.image
+      };
+          gapi.client.rest.addTechnology(req).execute(function(data){
+            var alert;
+              if (data.hasOwnProperty('error')) {
+                alert = alerts.failure;
+                alert.msg = data.error.message;
+              }else{
+                alert = alerts.success;
+                $scope.clearTechnology();
+              }
+              $scope.alert = alert;
+            $scope.$apply();
+          });
+      }
         callBackLoaded();
     };
-    
+
     function slugify(text){
-    	return text.toString().toLowerCase()
-        	.replace(/\s+/g, '-')           // Replace spaces with -
-        	.replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-        	.replace(/\-\-+/g, '-')         // Replace multiple - with single -
-        	.replace(/^-+/, '')             // Trim - from start of text
-        	.replace(/-+$/, '');            // Trim - from end of text
+      return text.toString().toLowerCase()
+          .replace(/\s+/g, '-')           // Replace spaces with -
+          .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+          .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+          .replace(/^-+/, '')             // Trim - from start of text
+          .replace(/-+$/, '');            // Trim - from end of text
     }
-    
+
     $scope.closeAlert = function() {
-    	$scope.alert = undefined;
+      $scope.alert = undefined;
     };
   }
 );

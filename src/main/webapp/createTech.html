@@ -22,79 +22,79 @@
   <script src="js/googleAnalytics.js"></script>
 </head>
 <body ng-controller="createTechController">
-	<nav class="navbar navbar-fixed-top techGalleryFixedBar">
-    	<div class="container">
-      		<div class="navbar-header alignBar">
-        		<a class="navbar-brand" href={{indexPage()}}>
-          			<img class="logoBar" src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png">
-          			<h3 class="headerBar">Tech Gallery</h3>
-        		</a>
-      		</div>
-      		<div id="navbar" class="navbar-collapse collapse rightSideBar">
-        		<div class="navbar-form navbar-right">
-          			<a ng-show="showLogin && !domainError" href="#" ng-click="login()" class="whiteText">Login <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
-          			<a ng-show="domainError || userLogged" href={{logoutRedirect()}} class="whiteText">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-        		</div>
-      		</div>
-    	</div>
-  	</nav>
-  
-  	<div class="page-header"></div>
+  <nav class="navbar navbar-fixed-top techGalleryFixedBar">
+      <div class="container">
+          <div class="navbar-header alignBar">
+            <a class="navbar-brand" href={{indexPage()}}>
+                <img class="logoBar" src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png">
+                <h3 class="headerBar">Tech Gallery</h3>
+            </a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse rightSideBar">
+            <div class="navbar-form navbar-right">
+                <a ng-show="showLogin && !domainError" href="#" ng-click="login()" class="whiteText">Login <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
+                <a ng-show="domainError || userLogged" href={{logoutRedirect()}} class="whiteText">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+            </div>
+          </div>
+      </div>
+    </nav>
 
-  	<div class="login-Button" ng-show="showLogin">
-    	<h3 ng-show="!domainError">Para ter acesso ao conteúdo realize seu login...</h3>
-    	<h3 ng-show="domainError">{{domainError}}</h3>
-  	</div>
-  
-	<form id="data" method="post" enctype="multipart/form-data">
-	<div ng-show="showContent" class="page-header">
-  		<div id="div_container" class="container">
-       		<div class="row">
-	       		<div class="endorse-alerts spacingtop">
-	      			<alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
-	    		</div>
-       		</div>
-       		<div class="row">
-       			<div id="div_image" class="col-xs-6">
-          			<output id="list">
-          				<img src="/images/no_image.png" title="Insira uma imagem" width="200" >
-          			</output>
-        		</div>
-        	</div>
-        	<div class="spacingtop row">
-        		<div id="div_image" class="col-xs-5">
-	          		<input id="idimage" ng-model="image" type="file" class="form-control" 
-    	      				accept="image/png" placeholder="<Imagem>">
-        		</div>
-        		<div class="col-xs-4">
-	        			<input ng-model="name" type="text" class="form-control" id="idnome"
-	    					placeholder="<Nome>" required="required" aria-describedby="basic-addon2">
-        		</div>
-      		</div>
-	      	<div class="spacingtop row" id="div_details">
-	        	<div class="col-md-9 text-right">
-					<textarea ng-model="description" class="form-control textarea" required="required" 
-						id="iddesc" maxlength="500" placeholder="<Descrição>" ></textarea>
-		    	</div>
-	      	</div>
-	      	<div class="spacingtop row">
-	        	<div class="col-md-9">
-	        		<input ng-model="shortDescription" type="text" class="form-control" maxlength="140" id="idshortdesc"
-	          			required="required" placeholder="<Descrição Curta>" aria-describedby="basic-addon2">
-	      	  	</div>
-	        </div>
-	        <div class="spacingtop row">
-	        	<div class="col-md-9">
-	        		<input ng-model="webSite" type="text" class="form-control"
-	          			placeholder="<Web Site>" aria-describedby="basic-addon2">
-	      	  	</div>
-	        </div>
-			<div class="spacingtop">
-				<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearTechnology()">Limpar</button>
-				<button id="btn_save" type="submit" class="btn btn-primary" ng-click="addTechnology()">Salvar</button>
-			</div>
-    	</div>
-  	</div>
-	</form>
+    <div class="page-header"></div>
+
+    <div class="login-Button" ng-show="showLogin">
+      <h3 ng-show="!domainError">Para ter acesso ao conteúdo realize seu login...</h3>
+      <h3 ng-show="domainError">{{domainError}}</h3>
+    </div>
+
+  <form id="data" method="post" enctype="multipart/form-data">
+  <div ng-show="showContent" class="page-header">
+      <div id="div_container" class="container">
+          <div class="row">
+            <div class="endorse-alerts spacingtop">
+              <alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
+          </div>
+          </div>
+          <div class="row">
+            <div id="div_image" class="col-xs-6">
+                <output id="list">
+                  <img src="/images/no_image.png" title="Insira uma imagem" width="200" >
+                </output>
+            </div>
+          </div>
+          <div class="spacingtop row">
+            <div id="div_image" class="col-xs-5">
+                <input id="idimage" ng-model="image" type="file" class="form-control"
+                    accept="image/png" placeholder="<Imagem>">
+            </div>
+            <div class="col-xs-4">
+                <input ng-model="name" type="text" class="form-control" id="idnome"
+                placeholder="<Nome>" required="required" aria-describedby="basic-addon2">
+            </div>
+          </div>
+          <div class="spacingtop row" id="div_details">
+            <div class="col-md-9 text-right">
+          <textarea ng-model="description" class="form-control textarea" required="required"
+            id="iddesc" maxlength="500" placeholder="<Descrição>" ></textarea>
+          </div>
+          </div>
+          <div class="spacingtop row">
+            <div class="col-md-9">
+              <input ng-model="shortDescription" type="text" class="form-control" maxlength="140" id="idshortdesc"
+                  required="required" placeholder="<Descrição Curta>" aria-describedby="basic-addon2">
+              </div>
+          </div>
+          <div class="spacingtop row">
+            <div class="col-md-9">
+              <input ng-model="webSite" type="text" class="form-control"
+                  placeholder="<Web Site>" aria-describedby="basic-addon2">
+              </div>
+          </div>
+      <div class="spacingtop">
+        <button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearTechnology()">Limpar</button>
+        <button id="btn_save" type="submit" class="btn btn-primary" ng-click="addTechnology()">Salvar</button>
+      </div>
+      </div>
+    </div>
+  </form>
 </body>
 </html>

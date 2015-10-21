@@ -21,7 +21,7 @@
   <script src="js/directives.js"></script>
 </head>
 <body ng-controller="techListController">
-	<a href="/createTech.html" title="Adicionar Tecnologia" class="btn btn-default btn-circle glyphicon-plus techGalleryFixedLink"></a>
+  <a href="/createTech.html" title="Adicionar Tecnologia" class="btn btn-default btn-circle glyphicon-plus techGalleryFixedLink"></a>
     <nav class="navbar navbar-fixed-top techGalleryFixedBar">
       <div class="container topBar">
         <div class="navbar-header alignBar">
@@ -33,7 +33,7 @@
         <div id="navbar" class="rightSideBar">
           <div class="navbar-form navbar-right">
             <div class="form-group">
-			  <form ng-submit="searchTechnology()">
+        <form ng-submit="searchTechnology()">
                 <input ng-disabled=showLogin type="text" ng-model="textSearch" class="form-control" placeholder="Digite sua busca...">
                 <div class="btn-group" dropdown>
                   <button id="single-button" type="button" class="btn btn-default" dropdown-toggle ng-disabled=showLogin>
@@ -67,16 +67,16 @@
     </nav>
 
     <div class="page-header"></div>
-    
+
     <div class="container login-Button">
       <h3 ng-show="showLogin && !domainError">Para ter acesso ao conteúdo realize seu login...</h3>
       <h3 ng-show="domainError">{{domainError}}</h3>
     </div>
-    
+
     <div class="container">
-    	<div ng-show="showLoading">
-      		<img class="loading" src="/images/loading.gif">
-    	</div>
+      <div ng-show="showLoading">
+          <img class="loading" src="/images/loading.gif">
+      </div>
         <div>
             <div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
                 <div class="thumbnail">
@@ -84,9 +84,9 @@
                         <h3>{{tech.name}}</h3>
                     </a>
                     <h5 class="titleThumbnail">{{tech.recommendation}}</h5>
-                	<div class="imageSize">
-	                    <img src={{tech.image}} data-holder-rendered="true"
-	                        class="thumbnail-Image">
+                  <div class="imageSize">
+                      <img src={{tech.image}} data-holder-rendered="true"
+                          class="thumbnail-Image">
                     </div>
                     <div class="caption">
                         <p class='technologydescription'>{{tech.shortDescription}}</p>
