@@ -80,8 +80,8 @@
 }
 
 .img-tech-view{
-  height: 300px;
-  width: 300px;
+  height: 250px;
+  width: 250px;
 }
 
 .thumbnail{
@@ -130,12 +130,10 @@ body, html {
 }
 
 .endorsers-image {
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   float: left;
   margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 10px;
 }
 
 .endorse-input {
@@ -151,7 +149,8 @@ body, html {
 }
 
 .textarea {
-  height: 108px !important;
+  height: 110px !important;
+  width: 200px !important;
   margin-bottom: 5px;
 }
 
@@ -256,13 +255,18 @@ body, html {
 }
 
 .thumbsRecommendation{
-width: 160px;
-height: 22px;
-background-color: gray;
-margin-top: -4px;
-margin-left: -4px;
-text-align:center;
-border-radius:4px;
-font-size: 14px;
-color: white
+	width: 205px;
+	height: 22px;
+	background-color: gray;
+	margin-top: -4px;
+	margin-left: -4px;
+	text-align:center;
+	border-radius:4px;
+	font-size: 12px;
+	color: white
+}
+
+.teste {
+    overflow: visible !important;
+    min-height: 300px !important;
 }

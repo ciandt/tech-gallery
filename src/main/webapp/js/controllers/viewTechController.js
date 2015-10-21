@@ -2,7 +2,7 @@ angular.module('techGallery').controller(
   'viewTechController',
   function($scope, $timeout, $modal) {
     'use strict';
-    
+    $scope.userDefaultPhoto = "/images/default-user-image.jpg"
     $scope.getUsersList = function (value){
       var req = {query:value};
       return gapi.client.rest.usersAutoComplete(req).then(function (data){
@@ -189,11 +189,11 @@ angular.module('techGallery').controller(
     function setPlusOneClass(endorsers){
       for(var i in endorsers){
         if(endorsers[i].email == $scope.userEmail){
-          endorsers.plusOneClass = 'btn GPlusAdded';
+          endorsers.plusOneClass = 'btn-danger';
           return endorsers;
         }
       }
-      endorsers.plusOneClass = 'btn GPlusDefault';
+      endorsers.plusOneClass = 'btn-default';
       return endorsers;
     };
     

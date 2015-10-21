@@ -14,12 +14,23 @@
         <script src="js/services.js"></script>
         <script src="js/filters.js"></script>
         <script src="js/directives.js"></script>
-        <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+<!--         <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script> -->
+        <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.2.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="lib/gplus-bootstrap/js/bootstrap.min.js"></script>
         <script src="js/controllers/viewTechController.js"></script>
         <script src="lib/gplus-bootstrap/js/scripts.js"></script>
+        <script src="js/controllers/modalController.js"></script>
         
+        <script type="text/ng-template" id="customTemplate.html">
+  <a>
+      <img src={{match.model.photo}} class="autoCompleteImage">
+      <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+    <br>
+    <span ng-bind-html="match.model.name | uibTypeaheadHighlight:query"></span>
+    <li class="separator"></li>
+  </a>
+  </script>
         <script src="js/googleAnalytics.js"></script>
         <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
         <script src="lib/angular-route/angular-route.min.js"></script>
@@ -49,7 +60,7 @@
             <div class="col-md-12">
                 <div class="navbar-header">
                   
-                  <a href="#" style="margin-left:15px;" class="navbar-btn btn btn-default btn-plus dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-eye-open" style="color:#dd1111;"></i> Tecnologia - NomeTec <small><i class="glyphicon glyphicon-chevron-down"></i></small></a>
+                  <a href="#" style="margin-left:15px;" class="navbar-btn btn btn-default btn-plus dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-eye-open" style="color:#dd1111;"></i> Tecnologia - {{name}} <small><i class="glyphicon glyphicon-chevron-down"></i></small></a>
                   <ul class="nav dropdown-menu">
                       <li><a href="#"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Meu Perfil </a></li>
                       <li><a href="/createTech.html"><i class="glyphicon glyphicon-plus"></i> Criar Tecnologia </a></li>
@@ -75,42 +86,117 @@
         
         <div class="container" id="main">
            <div class="row">
-               <div class="panel panel-default">
+               <div class="panel panel-default col-xs-6">
                    <div class="panel-body">
                       <div class="well well-sm">
                           <div class="media">
                               <a class="pull-left" href="#">
                                   <img class="media-object img-tech-view" src="http://img3.wikia.nocookie.net/__cb20110517171552/assassinscreed/images/3/39/Not-found.jpg">
                               </a>
-                              <div class="media-body">
+                              <div class="media-body teste">
                                   <a style="text-align:center" href="{{website}}" target="_blank"><h2>{{name}}</h2></a>
                                   <h3 style="text-align:center" class="media-heading">{{recommendation}}</h2>
-                                  <h5 class="media-heading technologydescription">{{description}}</h2>
+                                  <p class="media-heading technologydescription">{{description}}</p>
                               </div>
                           </div>
                       </div>
                     </div>
-               </div> 
-<!--                <center> -->
-<!--                    <div class="panel panel-default" ng-show="true" style="width: 600px"> -->
-<!--                        <div class="panel-heading"><h4>Tech Gallery...</h4></div> -->
-<!--                        <div class="panel-body"> -->
-<!--                           <p> -->
-<!--                               <a href="#">Seja bem vindo(a) ao Tech Gallery!!!</a> -->
-<!--                           </p> -->
-<!--                           <img src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png" class="img-circle"> -->
-<!--                           <div class="clearfix"></div> -->
-<!--                           <hr> -->
-<!--                           <p> -->
-<!--                           A ferramenta Tech Gallery é uma aplicação que visa prover uma interatividade entre as principais tecnologias do mercado e as opiniões de diversos desenvolvedores que já tiveram uma experiência com tal tecnologia. -->
-<!--                           </p> -->
-<!--                           <p ng-show="showLogin && !domainError">Para ter acesso ao conteúdo da aplicação realize seu <a href="#" ng-click="login()">login</a> e desfrute.</p> -->
-<!--                           <p ng-show="domainError">{{domainError}}</p> -->
-<!--                        </div> -->
-<!--                    </div> -->
-<!--                </center> -->
+               </div>
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4>Avalie-se...</h4>
+                            <p>Em uma escala de Newbie a Jedi, como você se avalia nesta tecnologia?</p>
+                            <div style="text-align: center">
+                                <rating ng-model="rate" max="max" readonly="false"
+                                  on-hover="hoveringOver(value)" on-leave="overStar = null"
+                                  ng-click="selecSkill()" titles="['','','','','']"></rating>
+                            </div>
+                            <div style="text-align: center">
+                                <span class="label"
+                                  ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}"
+                                  ng-show="overStar">{{skillLbl}}</span>
+                            </div>
+                            <p style="text-align: center" ng-show="skillLevel">Sou um {{skillLevel}}!</p>
+                        </div>
+                    </div>
+                </div> 
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4>Recomendação...</h4>
+                            <center>
+                                <p>
+                                    Você recomendaria esta tecnologia?
+                                </p>
+                                <button id="btn_up" type="button" ng-click="changeThumbs('up')" ng-class="setClassThumbs('up')" class="btn glyphicon glyphicon-thumbs-up thumbsFont"></button>
+                    			<a href="#ANC_COMMENTS" class="recommendations-link" ng-click="filterRecommenders()">{{up}}</a>
+                    			<button id="btn_down" type="button" ng-click="changeThumbs('down')" ng-class="setClassThumbs('down')" class="btn glyphicon glyphicon-thumbs-down thumbsFont"></button>
+                    			<a href="#ANC_COMMENTS" class="recommendations-link" ng-click="filterNoRecommenders()">{{down}}</a>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+               <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4>Quem manja muito desta tecnologia?</h4>
+                            <input style="text-align:center" ng-model="endorsed" type="text" class="form-control"
+                              placeholder="(usuário)" aria-describedby="basic-addon2" typeahead="user as user.email for user in getUsersList($viewValue)" typeahead-min-length="3" typeahead-template-url="customTemplate.html" typeahead-loading="loadingUsers" typeahead-no-results="noResults">
+                            <span class="input-group-addon" id="basic-addon2">{{domain}}</span>
+                            <center><button style="margin-top:15px" ng-click="endorse(true)" class="btn btn-primary" role="button">Indicar</button></center>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4>Comente...</h4>
+                            <p ng-show="recommend_message">Para completar a recomendação desta tecnologia, faça um comentário:</p>
+                            <div id="comment_area" class="col-md-9">
+                              <textarea id="txta_comment" ng-model="comment" class="form-control textarea" maxlength="500"></textarea>
+                            </div>
+                            <div style="text-align: center">
+                                <button id="btn_clear" type="button" class="btn btn-primary" style="margin-right: 5px" ng-click="clearComment()">Limpar</button>
+                                <button id="btn_add_comment" type="button" class="btn btn-primary" ng-click="addComment()">Comentar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+            
+            <div class="row">
+                <div class="col-md-12"><h2>Referências na tecnologia</h2></div>
+                <div ng-repeat="response in showEndorsementResponse track by $index" class="col-md-3 col-sm-6">
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                          <div class="well well-sm">
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="media-object" style="width: 100px; height: 100px" src={{response.endorsed.photo}}>
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading">{{response.endorsed.name}}</h4>
+                                <p><rating ng-model="response.endorsedSkill" max="5" readonly="true" titles="['','','','','']"></rating></p>
+                                </div>
+                            </div>
+                           </div>
+                            <button ng-show="!showSelfInformations(response.endorsed.email)"
+                                type="button" id={{generateId($index,response.endorsed.email)}}
+                                ng-disabled=disablePlusOne ng-class="response.endorsers.plusOneClass"
+                                ng-click="addEndorse(response.endorsed, generateId($index,response.endorsed.email))" class="btn pull-left" tooltip={{setToolTipPlusOne($index,response.endorsed.email)}}>+{{response.endorsers.length}}</button>
+                            <a href="#" ng-show="showAllEndorsers(response.endorsers)"
+                                class="glyphicon glyphicon-play pull-right"
+                                ng-click="open(response.endorsers)"></a>
+                            <div class="pull-right" ng-repeat="endorser in response.endorsersFiltered track by $index">
+                           	  <img class="media-object endorsers-image"
+                                src={{endorser.photo}} tooltip={{endorser.name}}>
+                            </div>
+                        </div>
+                     </div> 
+                </div>
+          </div>
+      </div>
 
 <!-- <!--main-->
 <!--         <div class="container" id="main"> -->
@@ -128,8 +214,8 @@
 <!--                       <p> -->
 <!--                       A ferramenta Tech Gallery é uma aplicação que visa prover uma interatividade entre as principais tecnologias do mercado e as opiniões de diversos desenvolvedores que já tiveram uma experiência com tal tecnologia. -->
 <!--                       </p> -->
-<!-- <!--                       <p ng-show="showLogin && !domainError">Para ter acesso ao conteúdo da aplicação realize seu <a href="#" ng-click="login()">login</a> e desfrute.</p> --> -->
-<!-- <!--                       <p ng-show="domainError">{{domainError}}</p> --> -->
+<!-- <!--                       <p ng-show="showLogin && !domainError">Para ter acesso ao conteúdo da aplicação realize seu <a href="#" ng-click="login()">login</a> e desfrute.</p> -->
+<!-- <!--                       <p ng-show="domainError">{{domainError}}</p> -->
 <!--                    </div> -->
 <!--                </div> -->
 <!--            </center> -->
@@ -250,68 +336,7 @@
   
 <!--   <hr> -->
   
-<!--   <div class="row"> -->
-<!--   	<div class="col-md-12"><h2>Posts</h2></div> -->
-<!--     <div class="col-md-4 col-sm-6"> -->
-<!--     	<div class="panel panel-default"> -->
-<!--            <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Upgrade to Bootstrap 3</h4></div> -->
-<!--    			<div class="panel-body"> -->
-<!--               <img src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=70" class="img-circle pull-right"> <a href="#">Guidance and Tools</a> -->
-<!--               <div class="clearfix"></div> -->
-<!--               <hr> -->
-<!--               <p>Migrating from Bootstrap 2.x to 3 is not a simple matter of swapping out the JS and CSS files. -->
-<!--               Bootstrap 3 is a major overhaul, and there are a lot of changes from Bootstrap 2.x. <a href="http://bootply.com/bootstrap-3-migration-guide">This guidance</a> is intended to help 2.x developers transition to 3. -->
-<!--               </p> -->
-<!--               <h5><a href="http://google.com/+bootply">More on Upgrading from +Bootply</a></h5> -->
-              
-<!--             </div> -->
-<!--          </div>  -->
-<!--     </div> -->
-<!--      <div class="col-md-4 col-sm-6"> -->
-<!--     	<div class="panel panel-default"> -->
-<!--            <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Profiles</h4></div> -->
-<!--    			<div class="panel-body"> -->
-<!--               Check out some of our member profiles.. -->
-<!--               <hr> -->
-<!--               <div class="well well-sm"> -->
-<!--                 <div class="media"> -->
-<!--                     <a class="thumbnail pull-left" href="#"> -->
-<!--                         <img class="media-object" src="//placehold.it/80"> -->
-<!--                     </a> -->
-<!--                     <div class="media-body"> -->
-<!--                         <h4 class="media-heading">John Doe</h4> -->
-<!--                 		<p><span class="label label-info">10 photos</span> <span class="label label-primary">89 followers</span></p> -->
-<!--                         <p> -->
-<!--                            <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-comment"></span> Message</a> -->
-<!--                            <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-heart"></span> Favorite</a> -->
-<!--                         </p> -->
-<!--                     </div> -->
-<!--                 </div> -->
-<!--                </div> -->
-<!--             </div> -->
-<!--          </div>  -->
-<!--     </div> -->
-<!--      <div class="col-md-4 col-sm-6"> -->
-<!--     	<div class="panel panel-default"> -->
-<!--            <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>Inspiration</h4></div> -->
-<!--    			<div class="panel-body"> -->
-<!--               <img src="//placehold.it/150" class="img-circle pull-right"> <a href="#">Articles</a> -->
-<!--               <div class="clearfix"></div> -->
-<!--               <hr> -->
-<!--               <div class="clearfix"></div> -->
-<!--               <img src="http://placehold.it/120x90/3333CC/FFF" class="img-responsive img-thumbnail pull-right"> -->
-<!--               <p>The more powerful (and 100% fluid) Bootstrap 3 grid now comes in 4 sizes (or "breakpoints"). Tiny (for smartphones), Small (for tablets), Medium (for laptops) and Large (for laptops/desktops).</p> -->
-<!--               <div class="clearfix"></div> -->
-<!--               <hr> -->
-<!--               <div class="clearfix"></div> -->
-<!--               <img src="http://placehold.it/120x90/33CC33/FFF" class="img-responsive img-thumbnail pull-left" style="margin-right:5px;"> -->
-<!--               <p>Mobile first" is a responsive Web design practice that prioritizes consideration of smart phones and mobile devices when creating Web pages.</p> -->
-              
-              
-<!--             </div> -->
-<!--          </div>  -->
-<!--     </div>/articles -->
-<!--     </div> -->
+  
     
 <!--     <hr> -->
   
