@@ -5,12 +5,16 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
+import com.googlecode.objectify.Ref;
+
 import com.ciandt.techgallery.persistence.dao.StorageDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.dao.storage.StorageDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
+import com.ciandt.techgallery.service.TechnologyFollowersService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.RecommendationEnums;
@@ -47,6 +51,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   /** tech gallery user service. */
   UserServiceTG userService = UserServiceTGImpl.getInstance();
+  TechnologyFollowersService followersService = TechnologyFollowersServiceImpl.getInstance();
   TechnologyDAO technologyDAO = TechnologyDAOImpl.getInstance();
   StorageDAO storageDAO = StorageDAOImpl.getInstance();
 
@@ -79,7 +84,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     validateInformations(technology);
     String imageLink = technology.getImage();
-    if (technology.getRecommendation() == null) {
+    if (technology.getRecommendation() == null && technology.getImage() != null) {
       imageLink = storageDAO.insertImage(convertNameToId(technology.getName()),
           new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImage())));
     }
@@ -396,5 +401,39 @@ public class TechnologyServiceImpl implements TechnologyService {
   public void updateEdorsedsCounter(Technology technology, Integer size) {
     technology.setEndorsersCounter(size);
     technologyDAO.update(technology);
+  }
+
+  @Override
+  public Technology followTechnology(Technology technology, User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
+    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    if (techUser.getFollowedTechnologyIds() == null) {
+      techUser.setFollowedTechnologyIds(new ArrayList<String>());
+    }
+    TechnologyFollowers technologyFollowers =
+        followersService.getTechnologyFollowersByTechnology(technology);
+
+    if (technologyFollowers == null) {
+      technologyFollowers = new TechnologyFollowers();
+      technologyFollowers.setTechnology(Ref.create(technology));
+      technologyFollowers.setFollowers(new ArrayList<Ref<TechGalleryUser>>());
+      technologyFollowers.getFollowers().add(Ref.create(techUser));
+      techUser.getFollowedTechnologyIds().add(technology.getId());
+    } else if (technologyFollowers.getFollowers().contains(Ref.create(techUser))) {
+      technologyFollowers.getFollowers().remove(Ref.create(techUser));
+      techUser.getFollowedTechnologyIds().remove(technology.getId());
+      userService.updateUser(techUser);
+      if (technologyFollowers.getFollowers().isEmpty()) {
+        followersService.delete(technologyFollowers);
+        return technology;
+      }
+    } else {
+      technologyFollowers.getFollowers().add(Ref.create(techUser));
+      techUser.getFollowedTechnologyIds().add(technology.getId());
+    }
+    followersService.update(technologyFollowers);
+    userService.updateUser(techUser);
+
+    return technology;
   }
 }

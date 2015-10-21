@@ -34,7 +34,8 @@ public enum ValidationMessageEnums {
   RECOMMEND_NOT_EXIST("Recommend doesn't exist."), 
   RECOMMEND_RECOMMENDER_ERROR("This recommend doesn't belong to this user."), 
   TO_INACTIVE("Inactive transient object is not allowed."), 
-  NO_TECHNOLOGY_WAS_FOUND("No technology was found.");
+  NO_TECHNOLOGY_WAS_FOUND("No technology was found."),
+  FOLLOWERS_CANNOT_EMPTY("Followers cannot be empty");
 
 
   private String message;

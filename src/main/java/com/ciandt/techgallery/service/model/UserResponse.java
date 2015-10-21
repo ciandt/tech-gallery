@@ -1,6 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Response with an user entity.
@@ -20,6 +21,8 @@ public class UserResponse implements Response, Serializable {
   private String photo;
   /** user google id. */
   private String googleId;
+  /** Followed technologies. */
+  private List<String> followedTechIds;
 
   public Long getId() {
     return id;
@@ -61,4 +64,11 @@ public class UserResponse implements Response, Serializable {
     this.googleId = googleId;
   }
 
+  public List<String> getFollowedTechIds() {
+    return followedTechIds;
+  }
+
+  public void setFollowedTechIds(List<String> followedTechIds) {
+    this.followedTechIds = followedTechIds;
+  }
 }

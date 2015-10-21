@@ -9,6 +9,8 @@ import com.googlecode.objectify.annotation.Unindex;
 
 import com.ciandt.techgallery.service.transformer.TechGalleryUserTransformer;
 
+import java.util.List;
+
 /**
  * Technology entity.
  * 
@@ -27,6 +29,7 @@ public class TechGalleryUser extends BaseEntity<Long> {
   public static final String EMAIL = "email";
   public static final String PHOTO = "photo";
   public static final String GOOGLE_ID = "googleId";
+  public static final String FOLLOWED_TECHNOLOGY_IDS = "followedTechnologyIds";
 
   @Id
   Long id;
@@ -42,6 +45,9 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   @Index
   private String googleId;
+
+  @Unindex
+  private List<String> followedTechnologyIds;
 
   @Override
   public Long getId() {
@@ -83,6 +89,14 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   public void setGoogleId(String googleId) {
     this.googleId = googleId;
+  }
+
+  public List<String> getFollowedTechnologyIds() {
+    return followedTechnologyIds;
+  }
+
+  public void setFollowedTechnologyIds(List<String> followedTechnologyIds) {
+    this.followedTechnologyIds = followedTechnologyIds;
   }
 
   @Override

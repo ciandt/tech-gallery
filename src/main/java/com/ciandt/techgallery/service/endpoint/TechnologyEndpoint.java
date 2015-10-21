@@ -111,4 +111,18 @@ public class TechnologyEndpoint {
     return service.getOrderOptions(user);
   }
 
+  /**
+   * Endpoint for adding or removing a follower from Technology.
+   *
+   * @param json with technology info.
+   * @return added technology
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws BadRequestException in case a request with problem were made.
+   * @throws NotFoundException in case the information are not founded.
+   */
+  @ApiMethod(name = "followTechnology", path = "technology/follow", httpMethod = "post")
+  public Technology followTechnology(Technology technology, User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
+    return service.followTechnology(technology, user);
+  }
 }
