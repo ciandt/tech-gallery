@@ -4,6 +4,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 
+import com.ciandt.techgallery.persistence.model.EmailNotification;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -34,6 +35,7 @@ public class OfyService implements ServletContextListener {
     ObjectifyService.register(TechnologyRecommendation.class);
     ObjectifyService.register(UserProfile.class);
     ObjectifyService.register(TechnologyFollowers.class);
+    ObjectifyService.register(EmailNotification.class);
   }
 
   /**

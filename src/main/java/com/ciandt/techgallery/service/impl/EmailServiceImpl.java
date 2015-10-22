@@ -80,19 +80,22 @@ public class EmailServiceImpl implements EmailService {
   @Override
   public void execute(String userId, String technologyId, String recommendationsIds,
       String commentsIds, String serverUrl) {
-    String[] commentIds = commentsIds.split(",");
-    List<TechnologyComment> comments = new ArrayList<TechnologyComment>();
-    for (String id : commentIds) {
-      comments.add(TechnologyCommentDAOImpl.getInstance().findById(Long.parseLong(id)));
+    if (commentsIds != null && commentsIds != "") {
+      String[] commentIds = commentsIds.split(",");
+      List<TechnologyComment> comments = new ArrayList<TechnologyComment>();
+      for (String id : commentIds) {
+        comments.add(technologyCommentDao.findById(Long.parseLong(id)));
+      }
     }
-    String[] recommendIds = recommendationsIds.split(",");
-    List<TechnologyRecommendation> recommendations = new ArrayList<TechnologyRecommendation>();
-    for (String id : recommendIds) {
-      recommendations.add(TechnologyRecommendationDAOImpl.getInstance()
-          .findById(Long.parseLong(id)));
+    if (recommendationsIds != null && recommendationsIds != "") {
+      String[] recommendIds = recommendationsIds.split(",");
+      List<TechnologyRecommendation> recommendations = new ArrayList<TechnologyRecommendation>();
+      for (String id : recommendIds) {
+        recommendations.add(technologyRecommendationDao.findById(Long.parseLong(id)));
+      }
     }
     TechGalleryUser user = TechGalleryUserDAOImpl.getInstance().findById(Long.parseLong(userId));
-    Technology technology = TechnologyDAOImpl.getInstance().findById(userId);
+    Technology technology = TechnologyDAOImpl.getInstance().findById(technologyId);
     
     //TODO extract method to build template (mustache).
     Map<String, String> variableValue = new HashMap<String, String>();
@@ -155,7 +158,7 @@ public class EmailServiceImpl implements EmailService {
       }
       String addr = "no-reply@" + appId + ".appspotmail.com";
       log.info("app email from address set to: " + addr);
-      from = new InternetAddress(addr, "no-reply@google.com");
+      from = new InternetAddress(addr, addr);
     }
     return from;
   }
@@ -166,17 +169,19 @@ public class EmailServiceImpl implements EmailService {
    */
   public void sendDailyEmailtoFollowers() {
     List<TechnologyFollowers> techFollowers = technologyFollowersDao.findAll();
-    for (TechnologyFollowers technologyFollowers : techFollowers) {
-      Technology technology = technologyFollowers.getTechnology().get();
-      if (technologyFollowers.getFollowers().size() > 0) {
-        Date date = getScheduledDate();
-        String dailyRecommendationsIds =
-            technologyRecommendationDao.findAllRecommendationsIdsStartingFrom(date);
-        String dailyCommentsIds = technologyCommentDao.findAllCommentsIdsStartingFrom(date);
-        List<Ref<TechGalleryUser>> followers = technologyFollowers.getFollowers();
-        for (Ref<TechGalleryUser> ref : followers) {
-          TechGalleryUser follower = ref.get();
-          push(follower, technology, dailyRecommendationsIds, dailyCommentsIds);
+    if (techFollowers != null && techFollowers.size() > 0) {
+      for (TechnologyFollowers technologyFollowers : techFollowers) {
+        Technology technology = technologyFollowers.getTechnology().get();
+        if (technologyFollowers.getFollowers().size() > 0) {
+          Date date = getScheduledDate();
+          String dailyRecommendationsIds =
+              technologyRecommendationDao.findAllRecommendationsIdsStartingFrom(date);
+          String dailyCommentsIds = technologyCommentDao.findAllCommentsIdsStartingFrom(date);
+          List<Ref<TechGalleryUser>> followers = technologyFollowers.getFollowers();
+          for (Ref<TechGalleryUser> ref : followers) {
+            TechGalleryUser follower = ref.get();
+            push(follower, technology, dailyRecommendationsIds, dailyCommentsIds);
+          }
         }
       }
     }
