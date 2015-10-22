@@ -66,7 +66,10 @@ gulp.task('clean', function () {
 
 gulp.task('build:stylesheets', function () {
   gulp.src(src.styles.app)
-    .pipe(sass().on('error', gutil.log))
+    .pipe(sass().on('error', function (err) {
+      gutil.log(chalk.white.bgRed(' Error '));
+      gutil.log(chalk.red(err.message));
+    }))
     // TODO: minify stylesheets
     .pipe(rename(out.styles.file))
     .pipe(gulp.dest(out.styles.folder));
