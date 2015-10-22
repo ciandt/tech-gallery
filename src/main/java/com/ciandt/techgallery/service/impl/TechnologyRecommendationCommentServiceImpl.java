@@ -67,7 +67,7 @@ public class TechnologyRecommendationCommentServiceImpl
     recommendation.setComment(Ref.create(comment));
     recommendation.setTechnology(Ref.create(techKey));
     recommendation = recService.addRecommendation(recommendation, user);
-    technologyService.updateAudit(technology.getId(), user);
+    technologyService.audit(technology.getId(), user);
 
     return recommendation;
 

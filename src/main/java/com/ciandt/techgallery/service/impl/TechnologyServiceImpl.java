@@ -106,7 +106,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       technology.setAuthor(user.getEmail());
     }
     technology.setCreationDate(new Date());
-    technology.setUpdate(new Date());
+    technology.setLastActivity(new Date());
     technology.setImage(imageLink);
     technology.initCounters();
   }
@@ -400,10 +400,10 @@ public class TechnologyServiceImpl implements TechnologyService {
   }
 
   @Override
-  public void updateAudit(String technologyId, User user) throws NotFoundException {
+  public void audit(String technologyId, User user) throws NotFoundException {
     Technology technology = getTechnologyById(technologyId);
-    technology.setUpdate(new Date());
-    technology.setUpdateUser(user.getEmail());
+    technology.setLastActivity(new Date());
+    technology.setLastActivityUser(user.getEmail());
     technologyDAO.update(technology);
   }
 }

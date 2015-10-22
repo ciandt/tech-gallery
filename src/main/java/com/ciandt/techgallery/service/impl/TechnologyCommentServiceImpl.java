@@ -88,7 +88,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     final TechnologyComment newComment = addNewComment(comment, techUser, technology);
     techService.addCommentariesCounter(technology);
 
-    techService.updateAudit(technology.getId(), user);
+    techService.audit(technology.getId(), user);
 
     UserProfileServiceImpl.getInstance().handleCommentChanges(newComment);
     return newComment;
