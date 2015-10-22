@@ -213,12 +213,12 @@ public class TechnologyServiceImpl implements TechnologyService {
         });
         break;
       case LAST_ACTIVITY_DATE:
-//        Collections.sort(techList, new Comparator<Technology>() {
-//          @Override
-//          public int compare(Technology counter1, Technology counter2) {
-//            return counter1.getL().compareTo(counter2.getInactivatedDate());
-//          }
-//        });
+        Collections.sort(techList, new Comparator<Technology>() {
+          @Override
+          public int compare(Technology counter1, Technology counter2) {
+            return counter1.getUpdate().compareTo(counter2.getUpdate());
+          }
+        });
         break;
       default:
         break;
