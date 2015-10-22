@@ -79,7 +79,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     validateInformations(technology);
     String imageLink = technology.getImage();
-    if (technology.getRecommendation() == null) {
+    if (technology.getRecommendation() == null && technology.getImage() != null) {
       imageLink = storageDAO.insertImage(convertNameToId(technology.getName()),
           new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImage())));
     }
