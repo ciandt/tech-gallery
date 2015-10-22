@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A living Technology Gallery.",
   "devDependencies": {
+    "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-csslint": "^0.2.0",
     "gulp-jshint": "^1.11.2",
