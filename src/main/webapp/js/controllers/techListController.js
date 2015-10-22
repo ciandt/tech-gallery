@@ -97,6 +97,7 @@ angular.module('techGallery').controller(
             titleContains: $scope.textSearch,
             shortDescriptionContains: $scope.textSearch,
             orderOptionIs: $scope.selectedOrderOption,
+            dateFilter : undefined,
             recommendationIs: $scope.selectedRecommendation
         }
         gapi.client.rest.findByFilter(req).execute(function(data){

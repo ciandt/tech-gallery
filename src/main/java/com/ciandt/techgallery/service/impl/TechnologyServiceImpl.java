@@ -243,7 +243,7 @@ public class TechnologyServiceImpl implements TechnologyService {
   private List<Technology> setDateFilteredList(List<Technology> completeList, Date dateReference) {
     List<Technology> dateFilteredList = new ArrayList<>();
     for (Technology technology : completeList) {
-      if (technology.getUpdate().before(dateReference)) {
+      if (technology.getUpdate().after(dateReference) || technology.getUpdate().equals(dateReference)) {
         dateFilteredList.add(technology);
       }
     }

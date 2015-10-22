@@ -81,12 +81,13 @@ public class TechnologyFilter implements Response {
    *          for sort the result
    */
   public TechnologyFilter(String titleContains, String shortDescriptionContains, String recommendationIs,
-      int dateFilter, String orderOptionIs) {
+      Integer dateFilter, String orderOptionIs) {
     this.titleContains = titleContains;
     this.shortDescriptionContains = shortDescriptionContains;
     this.recommendationIs = recommendationIs;
     this.orderOptionIs = orderOptionIs;
-    this.dateFilter = DateFilterEnum.values()[dateFilter];
+    if (dateFilter != null && (dateFilter >= 0 && dateFilter <= 2)) {
+      this.dateFilter = DateFilterEnum.values()[dateFilter];
+    }
   }
-
 }

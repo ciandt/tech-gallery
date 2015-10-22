@@ -1,5 +1,15 @@
 package com.ciandt.techgallery.service.endpoint;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.List;
+
+import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.TechnologyService;
+import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.google.api.server.spi.ServiceException;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -9,17 +19,6 @@ import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
-
-import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.persistence.model.Technology;
-import com.ciandt.techgallery.service.TechnologyService;
-import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.TechnologyFilter;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.List;
 
 /**
  * Endpoint controller class for Technology requests.
@@ -102,7 +101,7 @@ public class TechnologyEndpoint {
   @ApiMethod(name = "findByFilter", path = "technology/search", httpMethod = "get")
   public Response findTechnologyByFilter(User user, @Named("titleContains") @Nullable String titleContains,
       @Named("shortDescriptionContains") @Nullable String shortDescriptionContains,
-      @Named("recommendationIs") @Nullable String recommendationIs, @Named("dateFilter") @Nullable int dateFilter,
+      @Named("recommendationIs") @Nullable String recommendationIs, @Named("dateFilter") @Nullable Integer dateFilter,
       @Named("orderOptionIs") @Nullable String orderOptionIs) throws ServiceException {
     return service.findTechnologiesByFilter(
         new TechnologyFilter(titleContains, shortDescriptionContains, recommendationIs, dateFilter, orderOptionIs),
