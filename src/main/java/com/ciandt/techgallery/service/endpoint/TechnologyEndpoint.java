@@ -12,7 +12,9 @@ import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.TechnologyFollowersService;
 import com.ciandt.techgallery.service.TechnologyService;
+import com.ciandt.techgallery.service.impl.TechnologyFollowersServiceImpl;
 import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
@@ -33,6 +35,8 @@ import java.util.List;
 public class TechnologyEndpoint {
 
   private TechnologyService service = TechnologyServiceImpl.getInstance();
+  private TechnologyFollowersService followersService =
+      TechnologyFollowersServiceImpl.getInstance();
 
   /**
    * Endpoint for adding a Technology.
@@ -119,15 +123,15 @@ public class TechnologyEndpoint {
   /**
    * Endpoint for adding or removing a follower from Technology.
    *
-   * @param json with technology info.
+   * @param json with technology id.
    * @return added technology
    * @throws InternalServerErrorException in case something goes wrong
    * @throws BadRequestException in case a request with problem were made.
    * @throws NotFoundException in case the information are not founded.
    */
   @ApiMethod(name = "followTechnology", path = "technology/follow", httpMethod = "post")
-  public Technology followTechnology(Technology technology, User user)
+  public Technology followTechnology(@Named("technologyId") String technologyId, User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
-    return service.followTechnology(technology, user);
+    return followersService.followTechnology(technologyId, user);
   }
 }

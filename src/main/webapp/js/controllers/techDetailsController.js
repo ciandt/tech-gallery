@@ -105,6 +105,7 @@ angular.module('techGallery').controller(
       $scope.recommendation = technology.recommendation;
       $scope.image = technology.image;
       $scope.website = technology.website;
+      $scope.followedByUser = technology.followedByUser;
     }
 
     $scope.closeAlert = function() {
@@ -483,5 +484,33 @@ angular.module('techGallery').controller(
     		}
     	}
     };
+    
+    $scope.setFollowedClass = function(isFollowedByUser){
+      return jsUtils.setFollowedClass(isFollowedByUser);
+    }
+    
+    $scope.followTechnology = function(){
+      var req = {technologyId: $scope.idTechnology}
+      gapi.client.rest.followTechnology(req).execute(function(data){
+        if(!data.hasOwnProperty('error')){
+            var elementId = 'btn-follow-' + data.id;
+            changeFollowedClass(elementId);
+        }
+      });
+    }
+    
+    function changeFollowedClass(elementId){
+      var element = document.getElementById(elementId)
+      var oldClass = element.className;
+      if(oldClass.indexOf('btn-primary') > 0){
+        element.className = 'btn btn-xs btn-danger';
+      }else{
+        element.className = 'btn btn-xs btn-primary';
+      }
+    }
+    
+    $scope.generateFollowId = function(){
+      return 'btn-follow-' + $scope.idTechnology;
+    }
   }
 );

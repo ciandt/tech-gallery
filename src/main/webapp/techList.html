@@ -80,6 +80,7 @@
         <div>
             <div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
                 <div class="thumbnail">
+                    <button type="button" id={{generateFollowId(tech.id)}} ng-click="followTechnology(tech.id)" class="btn btn-xs" ng-class="setFollowedClass(tech.followedByUser)">Seguir</button>
                     <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
                         <h3>{{tech.name}}</h3>
                     </a>

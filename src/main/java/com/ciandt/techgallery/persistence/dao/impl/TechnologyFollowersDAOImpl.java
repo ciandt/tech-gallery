@@ -13,7 +13,7 @@ import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
  * @author ibrahim
  *
  */
-public class TechnologyFollowersDAOImpl extends GenericDAOImpl<TechnologyFollowers, Long>
+public class TechnologyFollowersDAOImpl extends GenericDAOImpl<TechnologyFollowers, String>
     implements TechnologyFollowersDAO {
 
   /*

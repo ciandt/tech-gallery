@@ -81,17 +81,4 @@ public interface TechnologyService {
   void removeRecomendationCounter(Technology technology, Boolean score);
 
   void updateEdorsedsCounter(Technology technology, Integer size);
-
-  /**
-   * Service for follow or unfollow a technologies.
-   *
-   * @param technology entity technology.
-   * @param user entity user.
-   * @return Technology info or message error.
-   * @throws BadRequestException in case a request with problem were made.
-   * @throws InternalServerErrorException in case some internal server error occur.
-   * @throws NotFoundException when entity is not found.
-   */
-  public Technology followTechnology(Technology technology, User user)
-      throws BadRequestException, NotFoundException, InternalServerErrorException;
 }

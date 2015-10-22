@@ -15,7 +15,7 @@ import java.util.List;
  *
  */
 @Entity
-public class TechnologyFollowers extends BaseEntity<Long> {
+public class TechnologyFollowers extends BaseEntity<String> {
 
   /*
    * Constants --------------------------------------------
@@ -25,7 +25,7 @@ public class TechnologyFollowers extends BaseEntity<Long> {
   public static final String FOLLOWERS = "followers";
 
   @Id
-  Long id;
+  String id;
 
   @Index
   private Ref<Technology> technology;
@@ -34,12 +34,12 @@ public class TechnologyFollowers extends BaseEntity<Long> {
   private List<Ref<TechGalleryUser>> followers;
 
   @Override
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
   @Override
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 

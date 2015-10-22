@@ -1,13 +1,23 @@
 package com.ciandt.techgallery.service.impl;
 
 import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
+
+import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.persistence.dao.TechnologyFollowersDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyFollowersDAOImpl;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
 import com.ciandt.techgallery.service.TechnologyFollowersService;
+import com.ciandt.techgallery.service.TechnologyService;
+import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+
+import java.util.ArrayList;
 
 /**
  * Services for Technology Endpoint requests.
@@ -22,6 +32,8 @@ public class TechnologyFollowersServiceImpl implements TechnologyFollowersServic
    */
   private static TechnologyFollowersServiceImpl instance;
 
+  UserServiceTG userService = UserServiceTGImpl.getInstance();
+  TechnologyService techService = TechnologyServiceImpl.getInstance();
   TechnologyFollowersDAO followersDao = TechnologyFollowersDAOImpl.getInstance();
 
   /*
@@ -57,25 +69,68 @@ public class TechnologyFollowersServiceImpl implements TechnologyFollowersServic
   }
 
   @Override
-  public void update(TechnologyFollowers technologyFollowers) throws BadRequestException {
-    if (technologyFollowers.getTechnology() == null) {
-      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
+  public Technology followTechnology(String technologyId, User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
+    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    if (techUser.getFollowedTechnologyIds() == null) {
+      techUser.setFollowedTechnologyIds(new ArrayList<String>());
     }
-    if (technologyFollowers.getFollowers() == null
-        || technologyFollowers.getFollowers().isEmpty()) {
-      throw new BadRequestException(ValidationMessageEnums.FOLLOWERS_CANNOT_EMPTY.message());
+    Technology technology = techService.getTechnologyById(technologyId, user);
+    TechnologyFollowers technologyFollowers = followersDao.findByTechnology(technology);
+
+    if (technologyFollowers == null
+        || !technologyFollowers.getFollowers().contains(Ref.create(techUser))) {
+      technologyFollowers = follow(technologyFollowers, techUser, technology);
+    } else if (technologyFollowers != null
+        && technologyFollowers.getFollowers().contains(Ref.create(techUser))) {
+      technologyFollowers = unfollow(technologyFollowers, techUser, technology);
     }
-    if (technologyFollowers.getId() != null
-        && followersDao.findById(technologyFollowers.getId()) != null) {
-      followersDao.update(technologyFollowers);
-    } else {
-      followersDao.add(technologyFollowers);
+    update(technologyFollowers);
+    userService.updateUser(techUser);
+
+    return technology;
+  }
+
+  private TechnologyFollowers unfollow(TechnologyFollowers technologyFollowers,
+      TechGalleryUser techUser, Technology technology) throws BadRequestException {
+    technologyFollowers.getFollowers().remove(Ref.create(techUser));
+    techUser.getFollowedTechnologyIds().remove(technology.getId());
+    if (technologyFollowers.getFollowers().isEmpty()) {
+      followersDao.delete(technologyFollowers);
+      return null;
     }
+    return technologyFollowers;
+  }
+
+  private TechnologyFollowers follow(TechnologyFollowers technologyFollowers,
+      TechGalleryUser techUser, Technology technology) {
+    if (technologyFollowers == null) {
+      technologyFollowers = new TechnologyFollowers();
+      technologyFollowers.setId(technology.getId());
+      technologyFollowers.setTechnology(Ref.create(technology));
+      technologyFollowers.setFollowers(new ArrayList<Ref<TechGalleryUser>>());
+    }
+    technologyFollowers.getFollowers().add(Ref.create(techUser));
+    techUser.getFollowedTechnologyIds().add(technology.getId());
+    return technologyFollowers;
   }
 
   @Override
-  public void delete(TechnologyFollowers technologyFollowers) {
-    followersDao.delete(technologyFollowers);
+  public void update(TechnologyFollowers technologyFollowers) throws BadRequestException {
+    if (technologyFollowers != null) {
+      if (technologyFollowers.getTechnology() == null) {
+        throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
+      }
+      if (technologyFollowers.getFollowers() == null
+          || technologyFollowers.getFollowers().isEmpty()) {
+        throw new BadRequestException(ValidationMessageEnums.FOLLOWERS_CANNOT_EMPTY.message());
+      }
+      if (technologyFollowers.getId() != null
+          && followersDao.findById(technologyFollowers.getId()) != null) {
+        followersDao.update(technologyFollowers);
+      } else {
+        followersDao.add(technologyFollowers);
+      }
+    }
   }
-
 }

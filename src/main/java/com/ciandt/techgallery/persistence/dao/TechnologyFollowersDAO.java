@@ -9,10 +9,11 @@ import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
  * @author ibrahim
  *
  */
-public interface TechnologyFollowersDAO extends GenericDAO<TechnologyFollowers, Long> {
+public interface TechnologyFollowersDAO extends GenericDAO<TechnologyFollowers, String> {
 
   /**
    * Method to find TechnologyFollowers by Technology
+   * 
    * @param technology technology info.
    * @return TechnologyFollowers or null;
    */
