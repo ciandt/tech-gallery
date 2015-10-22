@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -111,6 +112,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       technology.setAuthor(user.getEmail());
     }
     technology.setCreationDate(new Date());
+    technology.setUpdate(new Date());
     technology.setImage(imageLink);
     technology.initCounters();
   }
@@ -238,14 +240,22 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
-  public List<Technology> dateFilteredList(List<Technology> completeList, Date dateReference) {
+  private List<Technology> setDateFilteredList(List<Technology> completeList, Date dateReference) {
     List<Technology> dateFilteredList = new ArrayList<>();
     for (Technology technology : completeList) {
-      if (technology.getLastActivity.before(dateReference)) {
+      if (technology.getUpdate().before(dateReference)) {
         dateFilteredList.add(technology);
       }
     }
     return dateFilteredList;
+  }
+
+  private Date setDateReference(Date currentDate, int daysToSubtract) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(currentDate);
+    cal.add(Calendar.DATE, daysToSubtract);
+    Date dateReference = cal.getTime();
+    return dateReference;
   }
 
   @Override
@@ -258,20 +268,28 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
     List<Technology> completeList = technologyDAO.findAll();
     List<Technology> dateFilteredList = new ArrayList<>();
+
     if (techFilter.getDateFilter() != null) {
       Date currentDate = new Date();
       switch (techFilter.getDateFilter()) {
       case LAST_DAY:
-        Date dateReference = currentDate.
+        Date lastDay = setDateReference(currentDate, -1);
+        dateFilteredList = setDateFilteredList(completeList, lastDay);
         break;
 
       case LAST_7_DAYS:
+        Date last7Days = setDateReference(currentDate, -7);
+        dateFilteredList = setDateFilteredList(completeList, last7Days);
         break;
 
       case LAST_30_DAYS:
+        Date last30Days = setDateReference(currentDate, -30);
+        dateFilteredList = setDateFilteredList(completeList, last30Days);
         break;
       }
+      completeList = dateFilteredList;
     }
+
     List<Technology> filteredList = new ArrayList<>();
     if ((techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty())
         && (techFilter.getRecommendationIs() == null || techFilter.getRecommendationIs().isEmpty())) {
@@ -424,6 +442,14 @@ public class TechnologyServiceImpl implements TechnologyService {
   @Override
   public void updateEdorsedsCounter(Technology technology, Integer size) {
     technology.setEndorsersCounter(size);
+    technologyDAO.update(technology);
+  }
+
+  @Override
+  public void updateAudit(String technologyId, User user) throws NotFoundException {
+    Technology technology = getTechnologyById(technologyId);
+    technology.setUpdate(new Date());
+    technology.setUpdateUser(user.getEmail());
     technologyDAO.update(technology);
   }
 }
