@@ -75,6 +75,9 @@ angular.module('techGallery').controller(
             	e.target.setCustomValidity("O campo <Descrição Curta> é obrigatório");
             }
         };
+        gapi.client.rest.getLoggedUser().execute(function(data) {
+              $scope.loggedUserInformation = data;
+            });
         document.getElementById('idimage').addEventListener('change', handleFileSelect, false);
     	$scope.$apply();
     }
