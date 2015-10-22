@@ -85,4 +85,17 @@ public interface TechnologyService {
   void removeRecomendationCounter(Technology technology, Boolean score);
 
   void updateEdorsedsCounter(Technology technology, Integer size);
+
+  /**
+   * Method to update the audit of the technology informed.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 22/10/2015
+   *
+   * @param technologyId to be updated.
+   * @param user to fill the update user.
+   *
+   * @throws NotFoundException in case the technology does not exists.
+   */
+  void audit(String technologyId, User user) throws NotFoundException;
 }

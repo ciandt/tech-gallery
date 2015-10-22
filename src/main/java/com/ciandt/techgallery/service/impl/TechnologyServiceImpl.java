@@ -106,6 +106,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       technology.setAuthor(user.getEmail());
     }
     technology.setCreationDate(new Date());
+    technology.setLastActivity(new Date());
     technology.setImage(imageLink);
     technology.initCounters();
   }
@@ -141,8 +142,8 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     } else if (technology.getName() == null || technology.getName().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
-    } else
-      if (technology.getShortDescription() == null || technology.getShortDescription().equals("")) {
+    } else if (technology.getShortDescription() == null
+        || "".equals(technology.getShortDescription())) {
       throw new BadRequestException(
           ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
     } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
@@ -395,6 +396,14 @@ public class TechnologyServiceImpl implements TechnologyService {
   @Override
   public void updateEdorsedsCounter(Technology technology, Integer size) {
     technology.setEndorsersCounter(size);
+    technologyDAO.update(technology);
+  }
+
+  @Override
+  public void audit(String technologyId, User user) throws NotFoundException {
+    Technology technology = getTechnologyById(technologyId);
+    technology.setLastActivity(new Date());
+    technology.setLastActivityUser(user.getEmail());
     technologyDAO.update(technology);
   }
 }
