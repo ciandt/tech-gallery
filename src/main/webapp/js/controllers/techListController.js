@@ -123,5 +123,16 @@ angular.module('techGallery').controller(
     $scope.selectOrderOption = function(selected){
     	$scope.selectedOrderOption = selected;
     };
+    
+    $scope.deleteTechnology = function(technologyId){
+      if(confirm('Você realmente quer apagar a tecnologia?')) {
+        var req = {technologyId: technologyId};
+        gapi.client.rest.deleteTechnology(req).execute(function(data){
+          if(!data.hasOwnProperty('error')){
+            callBackLoaded();
+          }
+        });
+      }
+    }
   }
 );

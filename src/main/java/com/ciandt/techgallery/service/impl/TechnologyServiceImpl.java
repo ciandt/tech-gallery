@@ -1,9 +1,16 @@
 package com.ciandt.techgallery.service.impl;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
 
 import com.ciandt.techgallery.persistence.dao.StorageDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
@@ -19,18 +26,11 @@ import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.bind.DatatypeConverter;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
 
 /**
  * Services for Technology Endpoint requests.
@@ -53,12 +53,14 @@ public class TechnologyServiceImpl implements TechnologyService {
   /*
    * Constructors --------------------------------------------
    */
-  private TechnologyServiceImpl() {}
+  private TechnologyServiceImpl() {
+  }
 
   /**
    * Singleton method for the service.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 07/10/2015
    *
    * @return TechnologyServiceImpl instance.
@@ -92,12 +94,16 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * Fill a few informations about the technology.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 13/10/2015
    *
-   * @param technology to be converted.
-   * @param user to get informations.
-   * @param imageLink returned by the cloud storage.
+   * @param technology
+   *          to be converted.
+   * @param user
+   *          to get informations.
+   * @param imageLink
+   *          returned by the cloud storage.
    *
    */
   private void fillTechnology(Technology technology, User user, String imageLink) {
@@ -105,6 +111,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (user != null && user.getEmail() != null) {
       technology.setAuthor(user.getEmail());
     }
+    technology.setActive(Boolean.TRUE);
     technology.setCreationDate(new Date());
     technology.setLastActivity(new Date());
     technology.setImage(imageLink);
@@ -114,10 +121,12 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * Method that gets the name of the technology and creates the id.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 13/10/2015
    *
-   * @param name to format.
+   * @param name
+   *          to format.
    *
    * @return the id formatted.
    */
@@ -130,22 +139,23 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * Method to validade informations of the technology to be added.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 13/10/2015
    *
-   * @param technology to be validated.
+   * @param technology
+   *          to be validated.
    *
-   * @throws BadRequestException in case a request with problem were made.
+   * @throws BadRequestException
+   *           in case a request with problem were made.
    */
   private void validateInformations(Technology technology) throws BadRequestException {
     if (technology.getId() == null || technology.getId().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     } else if (technology.getName() == null || technology.getName().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
-    } else if (technology.getShortDescription() == null
-        || "".equals(technology.getShortDescription())) {
-      throw new BadRequestException(
-          ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
+    } else if (technology.getShortDescription() == null || "".equals(technology.getShortDescription())) {
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
     } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_DESCRIPTION_BLANK.message());
     }
@@ -159,11 +169,12 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * GET for getting all technologies.
    *
-   * @throws NotFoundException .
+   * @throws NotFoundException
+   *           .
    */
   @Override
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
-    List<Technology> techEntities = technologyDAO.findAll();
+    List<Technology> techEntities = technologyDAO.findAllActiveTechnologies();
     // if list is null, return a not found exception
     if (techEntities == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
@@ -174,46 +185,44 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
-  private List<Technology> sortTechnologies(List<Technology> techList,
-      TechnologyOrderOptionEnum orderBy) {
+  private List<Technology> sortTechnologies(List<Technology> techList, TechnologyOrderOptionEnum orderBy) {
     switch (orderBy) {
-      case POSITIVE_RECOMMENDATION_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getPositiveRecommendationsCounter(),
-                counter1.getPositiveRecommendationsCounter());
-          }
-        });
-        break;
-      case NEGATIVE_RECOMMENDATION_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getNegativeRecommendationsCounter(),
-                counter1.getNegativeRecommendationsCounter());
-          }
-        });
-        break;
-      case COMMENT_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getCommentariesCounter(),
-                counter1.getCommentariesCounter());
-          }
-        });
-        break;
-      case ENDORSEMENT_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getEndorsersCounter(), counter1.getEndorsersCounter());
-          }
-        });
-        break;
-      default:
-        break;
+    case POSITIVE_RECOMMENDATION_AMOUNT:
+      Collections.sort(techList, new Comparator<Technology>() {
+        @Override
+        public int compare(Technology counter1, Technology counter2) {
+          return Integer.compare(counter2.getPositiveRecommendationsCounter(),
+              counter1.getPositiveRecommendationsCounter());
+        }
+      });
+      break;
+    case NEGATIVE_RECOMMENDATION_AMOUNT:
+      Collections.sort(techList, new Comparator<Technology>() {
+        @Override
+        public int compare(Technology counter1, Technology counter2) {
+          return Integer.compare(counter2.getNegativeRecommendationsCounter(),
+              counter1.getNegativeRecommendationsCounter());
+        }
+      });
+      break;
+    case COMMENT_AMOUNT:
+      Collections.sort(techList, new Comparator<Technology>() {
+        @Override
+        public int compare(Technology counter1, Technology counter2) {
+          return Integer.compare(counter2.getCommentariesCounter(), counter1.getCommentariesCounter());
+        }
+      });
+      break;
+    case ENDORSEMENT_AMOUNT:
+      Collections.sort(techList, new Comparator<Technology>() {
+        @Override
+        public int compare(Technology counter1, Technology counter2) {
+          return Integer.compare(counter2.getEndorsersCounter(), counter1.getEndorsersCounter());
+        }
+      });
+      break;
+    default:
+      break;
     }
     return techList;
   }
@@ -244,8 +253,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     List<Technology> completeList = technologyDAO.findAll();
     List<Technology> filteredList = new ArrayList<>();
     if ((techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty())
-        && (techFilter.getRecommendationIs() == null
-            || techFilter.getRecommendationIs().isEmpty())) {
+        && (techFilter.getRecommendationIs() == null || techFilter.getRecommendationIs().isEmpty())) {
       filteredList.addAll(completeList);
     } else {
       verifyFilters(techFilter, completeList, filteredList);
@@ -278,8 +286,7 @@ public class TechnologyServiceImpl implements TechnologyService {
           filteredList.add(technology);
           continue;
         }
-      } else if (verifyRecommendationFilter(techFilter, technology)
-          && techFilter.getTitleContains() == null) {
+      } else if (verifyRecommendationFilter(techFilter, technology) && techFilter.getTitleContains() == null) {
         filteredList.add(technology);
         continue;
       }
@@ -289,21 +296,18 @@ public class TechnologyServiceImpl implements TechnologyService {
   private boolean verifyRecommendationFilter(TechnologyFilter techFilter, Technology technology) {
     if (technology.getRecommendation() == null) {
       return true;
-    } else if (techFilter.getRecommendationIs() != null && (technology.getRecommendation()
-        .toLowerCase().equals(techFilter.getRecommendationIs().toLowerCase())
-        || techFilter.getRecommendationIs().toLowerCase()
-            .equals(RecommendationEnums.ANY.message().toLowerCase()))) {
+    } else if (techFilter.getRecommendationIs() != null && (technology.getRecommendation().toLowerCase()
+        .equals(techFilter.getRecommendationIs().toLowerCase())
+        || techFilter.getRecommendationIs().toLowerCase().equals(RecommendationEnums.ANY.message().toLowerCase()))) {
       return true;
     }
     return false;
   }
 
-  private boolean verifyTitleAndShortDescriptionFilter(TechnologyFilter techFilter,
-      Technology technology) {
+  private boolean verifyTitleAndShortDescriptionFilter(TechnologyFilter techFilter, Technology technology) {
     if (techFilter.getTitleContains() != null
-        && (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase())
-            || technology.getShortDescription().toLowerCase()
-                .contains(techFilter.getShortDescriptionContains().toLowerCase()))) {
+        && (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase()) || technology
+            .getShortDescription().toLowerCase().contains(techFilter.getShortDescriptionContains().toLowerCase()))) {
       return true;
     }
     return false;
@@ -323,13 +327,16 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * Validate the user logged in.
    *
-   * @param user info about user from google
-   * @throws InternalServerErrorException in case something goes wrong
-   * @throws NotFoundException in case the information are not founded
-   * @throws BadRequestException in case a request with problem were made.
+   * @param user
+   *          info about user from google
+   * @throws InternalServerErrorException
+   *           in case something goes wrong
+   * @throws NotFoundException
+   *           in case the information are not founded
+   * @throws BadRequestException
+   *           in case a request with problem were made.
    */
-  private void validateUser(User user)
-      throws BadRequestException, NotFoundException, InternalServerErrorException {
+  private void validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
@@ -405,5 +412,19 @@ public class TechnologyServiceImpl implements TechnologyService {
     technology.setLastActivity(new Date());
     technology.setLastActivityUser(user.getEmail());
     technologyDAO.update(technology);
+  }
+
+  @Override
+  public Technology deleteTechnology(String technologyId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+    validateUser(user);
+    Technology technology = technologyDAO.findById(technologyId);
+    if (technology == null) {
+      throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
+    }
+    technology.setActive(Boolean.FALSE);
+    technologyDAO.update(technology);
+    audit(technologyId, user);
+    return technology;
   }
 }
