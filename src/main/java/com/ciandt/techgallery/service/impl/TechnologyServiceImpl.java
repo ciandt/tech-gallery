@@ -142,8 +142,8 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     } else if (technology.getName() == null || technology.getName().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
-    } else if (technology.getShortDescription() == null
-        || technology.getShortDescription().equals("")) {
+    } else
+      if (technology.getShortDescription() == null || technology.getShortDescription().equals("")) {
       throw new BadRequestException(
           ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
     } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
@@ -211,6 +211,14 @@ public class TechnologyServiceImpl implements TechnologyService {
             return Integer.compare(counter2.getEndorsersCounter(), counter1.getEndorsersCounter());
           }
         });
+        break;
+      case LAST_ACTIVITY_DATE:
+//        Collections.sort(techList, new Comparator<Technology>() {
+//          @Override
+//          public int compare(Technology counter1, Technology counter2) {
+//            return counter1.getL().compareTo(counter2.getInactivatedDate());
+//          }
+//        });
         break;
       default:
         break;
