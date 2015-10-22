@@ -12,6 +12,7 @@ var del = require('del');
 var sass = require('gulp-sass');
 var rename = require('gulp-rename');
 var browserify = require('browserify');
+var minifyCss = require('gulp-minify-css');
 
 /**
  * Files path
@@ -45,6 +46,7 @@ var out = {
   },
   styles: {
     file: 'app.min.css',
+    fileMinified: 'app.min.css',
     folder: build
   }
 };
@@ -54,9 +56,22 @@ gulp.task('watch', ['build'], function() {
   gulp.watch(src.scripts.all, ['build:scripts']);
 });
 
-gulp.task('build', ['clean', 'build:stylesheets', 'build:scripts']);
+gulp.task('build', [
+  'clean',
+  'build:stylesheets',
+  'build:scripts',
+  'minify'
+]);
 
-gulp.task('lint', ['jshint', 'csslint']);
+gulp.task('minify', [
+  'minify:stylesheets',
+  'minify:scripts'
+]);
+
+gulp.task('lint', [
+  'jshint',
+  'csslint'
+]);
 
 gulp.task('clean', function () {
   return del([
@@ -70,8 +85,11 @@ gulp.task('build:stylesheets', function () {
       gutil.log(chalk.white.bgRed(' Error '));
       gutil.log(chalk.red(err.message));
     }))
-    // TODO: minify stylesheets
-    .pipe(rename(out.styles.file))
+    .pipe(gulp.dest(out.styles.folder))
+    .pipe(rename(out.styles.fileMinified))
+    .pipe(minifyCss({
+      sourceMap: true
+    }))
     .pipe(gulp.dest(out.styles.folder));
 });
 
