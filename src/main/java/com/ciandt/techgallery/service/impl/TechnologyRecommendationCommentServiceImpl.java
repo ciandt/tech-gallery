@@ -15,6 +15,7 @@ import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.TechnologyCommentService;
 import com.ciandt.techgallery.service.TechnologyRecommendationCommentService;
 import com.ciandt.techgallery.service.TechnologyRecommendationService;
+import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 
 public class TechnologyRecommendationCommentServiceImpl
@@ -27,6 +28,7 @@ public class TechnologyRecommendationCommentServiceImpl
   private TechnologyRecommendationService recService =
       TechnologyRecommendationServiceImpl.getInstance();
   private TechnologyCommentService comService = TechnologyCommentServiceImpl.getInstance();
+  private TechnologyService technologyService = TechnologyServiceImpl.getInstance();
 
   /*
    * Constructors --------------------------------------------
@@ -65,6 +67,7 @@ public class TechnologyRecommendationCommentServiceImpl
     recommendation.setComment(Ref.create(comment));
     recommendation.setTechnology(Ref.create(techKey));
     recommendation = recService.addRecommendation(recommendation, user);
+    technologyService.updateAudit(technology.getId(), user);
 
     return recommendation;
 
@@ -72,7 +75,7 @@ public class TechnologyRecommendationCommentServiceImpl
 
   /**
    * Validates if the comment is not blank and not null.
-   * 
+   *
    * @param comment the comment wrapper
    * @return true if comment is valid, false otherwise
    */

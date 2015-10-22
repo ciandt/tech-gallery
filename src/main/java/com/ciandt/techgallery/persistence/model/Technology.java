@@ -36,6 +36,8 @@ public class Technology extends BaseEntity<String> {
   public static final String NEGATIVE_RECOMMENDATIONS_COUNTER = "negativeRecommendationsCounter";
   public static final String COMMENTARIES_COUNTER = "commentariesCounter";
   public static final String ENDORSERS_COUNTER = "endorsersCounter";
+  public static final String UPDATE = "update";
+  public static final String UPDATE_USER = "updateUser";
 
   /*
    * Attributes --------------------------------------------
@@ -79,6 +81,12 @@ public class Technology extends BaseEntity<String> {
 
   @Unindex
   private Date creationDate;
+
+  @Unindex
+  private Date update;
+
+  @Unindex
+  private String updateUser;
 
   /*
    * Methods --------------------------------------------
@@ -254,5 +262,21 @@ public class Technology extends BaseEntity<String> {
 
   public void setCreationDate(Date creationDate) {
     this.creationDate = creationDate;
+  }
+
+  public Date getUpdate() {
+    return update;
+  }
+
+  public void setUpdate(Date update) {
+    this.update = update;
+  }
+
+  public String getUpdateUser() {
+    return updateUser;
+  }
+
+  public void setUpdateUser(String updateUser) {
+    this.updateUser = updateUser;
   }
 }
