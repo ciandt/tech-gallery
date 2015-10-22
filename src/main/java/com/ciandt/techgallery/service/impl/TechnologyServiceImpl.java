@@ -112,7 +112,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       technology.setAuthor(user.getEmail());
     }
     technology.setCreationDate(new Date());
-    technology.setUpdate(new Date());
+    technology.setLastActivity(new Date());
     technology.setImage(imageLink);
     technology.initCounters();
   }
@@ -186,42 +186,51 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   private List<Technology> sortTechnologies(List<Technology> techList, TechnologyOrderOptionEnum orderBy) {
     switch (orderBy) {
-    case POSITIVE_RECOMMENDATION_AMOUNT:
-      Collections.sort(techList, new Comparator<Technology>() {
-        @Override
-        public int compare(Technology counter1, Technology counter2) {
-          return Integer.compare(counter2.getPositiveRecommendationsCounter(),
-              counter1.getPositiveRecommendationsCounter());
-        }
-      });
-      break;
-    case NEGATIVE_RECOMMENDATION_AMOUNT:
-      Collections.sort(techList, new Comparator<Technology>() {
-        @Override
-        public int compare(Technology counter1, Technology counter2) {
-          return Integer.compare(counter2.getNegativeRecommendationsCounter(),
-              counter1.getNegativeRecommendationsCounter());
-        }
-      });
-      break;
-    case COMMENT_AMOUNT:
-      Collections.sort(techList, new Comparator<Technology>() {
-        @Override
-        public int compare(Technology counter1, Technology counter2) {
-          return Integer.compare(counter2.getCommentariesCounter(), counter1.getCommentariesCounter());
-        }
-      });
-      break;
-    case ENDORSEMENT_AMOUNT:
-      Collections.sort(techList, new Comparator<Technology>() {
-        @Override
-        public int compare(Technology counter1, Technology counter2) {
-          return Integer.compare(counter2.getEndorsersCounter(), counter1.getEndorsersCounter());
-        }
-      });
-      break;
-    default:
-      break;
+          case POSITIVE_RECOMMENDATION_AMOUNT:
+        Collections.sort(techList, new Comparator<Technology>() {
+          @Override
+          public int compare(Technology counter1, Technology counter2) {
+            return Integer.compare(counter2.getPositiveRecommendationsCounter(),
+                counter1.getPositiveRecommendationsCounter());
+          }
+        });
+        break;
+      case NEGATIVE_RECOMMENDATION_AMOUNT:
+        Collections.sort(techList, new Comparator<Technology>() {
+          @Override
+          public int compare(Technology counter1, Technology counter2) {
+            return Integer.compare(counter2.getNegativeRecommendationsCounter(),
+                counter1.getNegativeRecommendationsCounter());
+          }
+        });
+        break;
+      case COMMENT_AMOUNT:
+        Collections.sort(techList, new Comparator<Technology>() {
+          @Override
+          public int compare(Technology counter1, Technology counter2) {
+            return Integer.compare(counter2.getCommentariesCounter(),
+                counter1.getCommentariesCounter());
+          }
+        });
+        break;
+      case ENDORSEMENT_AMOUNT:
+        Collections.sort(techList, new Comparator<Technology>() {
+          @Override
+          public int compare(Technology counter1, Technology counter2) {
+            return Integer.compare(counter2.getEndorsersCounter(), counter1.getEndorsersCounter());
+          }
+        });
+        break;
+      case LAST_ACTIVITY_DATE:
+        Collections.sort(techList, new Comparator<Technology>() {
+          @Override
+          public int compare(Technology counter1, Technology counter2) {
+            return counter2.getLastActivity().compareTo(counter1.getLastActivity());
+          }
+        });
+        break;
+      default:
+        break;
     }
     return techList;
   }
@@ -446,10 +455,10 @@ public class TechnologyServiceImpl implements TechnologyService {
   }
 
   @Override
-  public void updateAudit(String technologyId, User user) throws NotFoundException {
+  public void audit(String technologyId, User user) throws NotFoundException {
     Technology technology = getTechnologyById(technologyId);
-    technology.setUpdate(new Date());
-    technology.setUpdateUser(user.getEmail());
+    technology.setLastActivity(new Date());
+    technology.setLastActivityUser(user.getEmail());
     technologyDAO.update(technology);
   }
 }

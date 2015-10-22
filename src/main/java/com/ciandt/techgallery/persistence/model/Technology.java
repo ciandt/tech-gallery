@@ -36,7 +36,7 @@ public class Technology extends BaseEntity<String> {
   public static final String NEGATIVE_RECOMMENDATIONS_COUNTER = "negativeRecommendationsCounter";
   public static final String COMMENTARIES_COUNTER = "commentariesCounter";
   public static final String ENDORSERS_COUNTER = "endorsersCounter";
-  public static final String UPDATE = "update";
+  public static final String LAST_ACTIVITY = "lastActivity";
   public static final String UPDATE_USER = "updateUser";
 
   /*
@@ -83,10 +83,10 @@ public class Technology extends BaseEntity<String> {
   private Date creationDate;
 
   @Unindex
-  private Date update;
+  private Date lastActivity;
 
   @Unindex
-  private String updateUser;
+  private String lastActivityUser;
 
   /*
    * Methods --------------------------------------------
@@ -264,19 +264,19 @@ public class Technology extends BaseEntity<String> {
     this.creationDate = creationDate;
   }
 
-  public Date getUpdate() {
-    return update;
+  public Date getLastActivity() {
+    return lastActivity;
   }
 
-  public void setUpdate(Date update) {
-    this.update = update;
+  public void setLastActivity(Date lastActivity) {
+    this.lastActivity = lastActivity;
   }
 
-  public String getUpdateUser() {
-    return updateUser;
+  public String getLastActivityUser() {
+    return lastActivityUser;
   }
 
-  public void setUpdateUser(String updateUser) {
-    this.updateUser = updateUser;
+  public void setLastActivityUser(String lastActivityUser) {
+    this.lastActivityUser = lastActivityUser;
   }
 }
