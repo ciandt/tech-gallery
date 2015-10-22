@@ -129,7 +129,7 @@ angular.module('techGallery').controller(
     }
     
     $scope.followTechnology = function(technologyId){
-      var req = {id:technologyId};
+      var req = {technologyId:technologyId};
       gapi.client.rest.followTechnology(req).execute(function(data){
         if(!data.hasOwnProperty('error')){
             var elementId = 'btn-follow-' + data.id;

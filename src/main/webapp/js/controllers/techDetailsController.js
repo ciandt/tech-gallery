@@ -503,9 +503,9 @@ angular.module('techGallery').controller(
       var element = document.getElementById(elementId)
       var oldClass = element.className;
       if(oldClass.indexOf('btn-primary') > 0){
-        element.className = 'btn btn-xs btn-danger';
+        element.className = 'btn btn-danger';
       }else{
-        element.className = 'btn btn-xs btn-primary';
+        element.className = 'btn btn-primary';
       }
     }
     

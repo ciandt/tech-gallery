@@ -1,5 +1,8 @@
 package com.ciandt.techgallery.servlets;
 
+import com.ciandt.techgallery.service.EmailService;
+import com.ciandt.techgallery.service.impl.EmailServiceImpl;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -11,13 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 public class CronMailServlet extends HttpServlet {
 
   public static final Logger _LOG = Logger.getLogger(CronMailServlet.class.getName());
+  private EmailService emailService = new EmailServiceImpl();
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    try {
-      resp.getWriter().println("Teste");
-      _LOG.info("Sending out email");
-    } catch (Exception ex) {
-    }
+    emailService.sendDailyEmailtoFollowers();
+    _LOG.info("Executing schedule task.");
   }
 }
