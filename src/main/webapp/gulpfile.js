@@ -5,9 +5,14 @@ var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var csslint = require('gulp-csslint');
 var gutil = require('gulp-util');
+var chalk = require('chalk');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 var del = require('del');
 var sass = require('gulp-sass');
 var rename = require('gulp-rename');
+var browserify = require('browserify');
+
 /**
  * Files path
  * @type {Object}
@@ -59,6 +64,21 @@ gulp.task('build:stylesheets', function () {
     // TODO: minify stylesheets
     .pipe(rename(out.styles.file))
     .pipe(gulp.dest(out.styles.folder));
+});
+
+gulp.task('build:scripts', function () {
+  return browserify(src.scripts.app, {
+      debug: true,
+      insertGlobals: true
+    })
+    .bundle().on('error', function (err) {
+      gutil.log(chalk.white.bgRed(' Error '));
+      gutil.log(chalk.red(err.message));
+      this.emit('end');
+    })
+    // TODO: minify scripts
+    .pipe(source(out.scripts.file))
+    .pipe(gulp.dest(out.scripts.folder));
 });
 
 gulp.task('jshint', function() {
