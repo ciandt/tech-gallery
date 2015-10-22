@@ -3,7 +3,7 @@ angular.module('techGallery').controller(
   function($scope, $timeout) {
     'use strict';
     $scope.userId = jsUtils.getParameterByName('userId');
-    $scope.defaultUserPhoto = "/images/default-user-image.jpg";
+    $scope.defaultUserPhoto = "/assets/images/default-user-image.jpg";
     $scope.logoutRedirect = function(){
       return jsUtils.logoutRedirect();
     }

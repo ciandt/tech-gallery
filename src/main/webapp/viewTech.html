@@ -5,8 +5,8 @@
   <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
   <title>Tech Gallery</title>
   <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/app.css" />
-  <link rel="stylesheet" href="css/techgallery.css" />
+  <link rel="stylesheet" href="assets/stylesheets/app.css" />
+  <link rel="stylesheet" href="assets/stylesheets/techgallery.css" />
 
   <script src="https://apis.google.com/js/client.js?onload=init"></script>
   <script src="node_modules/angular/angular.js"></script>
@@ -25,7 +25,7 @@
 
   <script type="text/ng-template" id="customTemplate.html">
   <a>
-      <img src={{match.model.photo}} class="autoCompleteImage">
+    <img src={{match.model.photo}} class="autoCompleteImage">
       <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
     <br>
     <span ng-bind-html="match.model.name | uibTypeaheadHighlight:query"></span>
@@ -93,7 +93,7 @@
       </div>
     </div>
     <div>
-      <img ng-show="processEndorse" src="/images/loading.gif"
+      <img ng-show="processEndorse" src="assets/images/loading.gif"
         class="loading">
     </div>
     <div class="endorse-alerts spacingtop">
@@ -113,7 +113,7 @@
     </div>
 
     <div>
-      <img ng-show="loadEndorsements" src="/images/loading.gif"
+      <img ng-show="loadEndorsements" src="assets/images/loading.gif"
         class="loading">
     </div>
 
@@ -126,7 +126,7 @@
 
       <div class="row">
         <div class="overLayer" ng-show="processingEndorse">
-          <img src="/images/loading.gif"
+          <img src="assets/images/loading.gif"
           class="loading">
         </div>
         <div class="spacingtop"
@@ -206,7 +206,7 @@
     <div id="show_comments" class="container">
       <a name="ANC_COMMENTS"></a>
       <div class="overLayer" ng-show="processingComment">
-        <img src="/images/loading.gif" class="loading">
+        <img src="assets/images/loading.gif" class="loading">
       </div>
       <div class="col-xs-9">
         <div class="commentBlock" ng-repeat="comment in techComments track by $index">

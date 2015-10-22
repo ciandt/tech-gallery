@@ -91,7 +91,7 @@ angular.module('techGallery').controller(
               if(f.type != 'image/png' || img.width > 355 || img.height > 355){
                 alert('Esta imagem tem um tamanho ou tipo errado, escolha uma imagem com o tamanho 355x355 e tipo PNG.');
                 document.getElementById('idimage').value = null;
-                document.getElementById('list').innerHTML = ['<img src="/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
+                document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
               }else{
                 var image = e.target.result;
                 $scope.image = image.replace('data:image/png;base64,', '');
@@ -124,7 +124,7 @@ angular.module('techGallery').controller(
       $scope.shortDescription = '';
       $scope.webSite = '';
       document.getElementById('idimage').value = null;
-      document.getElementById('list').innerHTML = ['<img src="/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
+      document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
     }
 
     $scope.addTechnology = function(){

@@ -8,7 +8,7 @@ angular.module('techGallery').controller(
       return gapi.client.rest.usersAutoComplete(req).then(function (data){
         for(var i in data.result.items){
           if(!data.result.items[i].photo){
-            data.result.items[i].photo = "/images/default-user-image.jpg";
+            data.result.items[i].photo = "/assets/images/default-user-image.jpg";
           }
         }
         return data.result.items;
@@ -163,7 +163,7 @@ angular.module('techGallery').controller(
             var endorsersFiltered = fullResponse.slice(0,5);
             response[i].endorsersFiltered = endorsersFiltered;
             if(!response[i].endorsed.photo) {
-              response[i].endorsed.photo = "/images/default-user-image.jpg";
+              response[i].endorsed.photo = "/assets/images/default-user-image.jpg";
             }
             response[i].endorsers = setPlusOneClass(response[i].endorsers);
           }
