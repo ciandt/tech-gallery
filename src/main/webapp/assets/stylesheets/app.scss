@@ -1,4 +1,17 @@
-/* app css stylesheet */
+/**
+ * Configuration variables
+ */
+
+
+/**
+ * Vendor & third party styles
+ */
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+
+/**
+ * App styles
+ */
+@import 'techgallery';
 
 .menu {
   list-style: none;

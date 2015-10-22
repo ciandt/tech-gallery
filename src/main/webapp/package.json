@@ -9,6 +9,9 @@
     "gulp-csslint": "^0.2.0",
     "gulp-jshint": "^1.11.2",
     "jshint-stylish": "^2.0.1"
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "gulp-util": "^3.0.7",
   },
   "dependencies": {
     "angular": "^1.4.7",
