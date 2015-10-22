@@ -10,6 +10,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,6 +83,21 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
     } else {
       return recommendations.get(0);
     }
+  }
+
+  @Override
+  public String findAllRecommendationsIdsStartingFrom(Date date) {
+    final Objectify objectify = OfyService.ofy();
+    final List<TechnologyRecommendation> allRecommendations =
+        objectify.load().type(TechnologyRecommendation.class).list();
+    final String recommendationsIds = "";
+    for (TechnologyRecommendation techRecommendation : allRecommendations) {
+      TechnologyComment techComment = techRecommendation.getComment().get();
+      if (techComment.getTimestamp().after(date)) {
+        recommendationsIds.concat("," + techRecommendation.getId());
+      }
+    }
+    return recommendationsIds;
   }
 
 }

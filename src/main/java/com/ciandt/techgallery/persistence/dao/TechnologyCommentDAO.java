@@ -3,6 +3,7 @@ package com.ciandt.techgallery.persistence.dao;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,5 +23,12 @@ public interface TechnologyCommentDAO extends GenericDAO<TechnologyComment, Long
    * @return all comments of that technology.
    */
   List<TechnologyComment> findAllActivesByTechnology(Technology technology);
-
+  
+  /**
+   * Find all commentsIds starting from date.
+   * 
+   * @param start date.
+   * @return list of commentsIds starting from a specific date concatenated by ",".
+   */
+  public String findAllCommentsIdsStartingFrom(Date date);
 }
