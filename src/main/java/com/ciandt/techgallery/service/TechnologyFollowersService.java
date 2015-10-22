@@ -1,6 +1,9 @@
 package com.ciandt.techgallery.service;
 
 import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
@@ -21,22 +24,26 @@ public interface TechnologyFollowersService {
    * @return technologyFollower info or message error.
    * @throws BadRequestException in case a request with problem were made.
    */
-  public TechnologyFollowers getTechnologyFollowersByTechnology(Technology technology)
+  TechnologyFollowers getTechnologyFollowersByTechnology(Technology technology)
       throws BadRequestException;
+
+  /**
+   * Service for follow or unfollow technology.
+   * 
+   * @param technologyId technology Id.
+   * @return FollowTechnology entity
+   * @throws BadRequestException in case a request with problem were made.
+   * @throws NotFoundException
+   * @throws InternalServerErrorException
+   */
+  Technology followTechnology(String technologyId, User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException;
 
   /**
    * Service for updating technologyFollowers.
    * 
    * @param technologyFollowers new values of the entity.
-   * @throws BadRequestException in case a request with problem were made. 
+   * @throws BadRequestException in case a request with problem were made.
    */
-  public void update(TechnologyFollowers technologyFollowers) throws BadRequestException;
-
-  /**
-   * Service for delete technologyFollowers.
-   * 
-   * @param technologyFollowers to be deleted.
-   * @throws BadRequestException in case a request with problem were made. 
-   */
-  public void delete(TechnologyFollowers technologyFollowers);
+  void update(TechnologyFollowers technologyFollowers) throws BadRequestException;
 }
