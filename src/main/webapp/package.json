@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A living Technology Gallery.",
   "devDependencies": {
+    "bootstrap-sass": "^3.3.5",
     "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-csslint": "^0.2.0",
@@ -15,6 +16,5 @@
     "angular-route": "^1.4.7",
     "angular-sanitize": "^1.4.7",
     "angular-ui-router": "^0.2.15",
-    "bootstrap": "^3.3.5"
   }
 }
