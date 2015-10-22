@@ -53,7 +53,7 @@ gulp.task('clean', function () {
   ]);
 });
 
-gulp.task('sass', function () {
+gulp.task('build:stylesheets', function () {
   gulp.src(src.styles.app)
     .pipe(sass().on('error', gutil.log))
     // TODO: minify stylesheets
