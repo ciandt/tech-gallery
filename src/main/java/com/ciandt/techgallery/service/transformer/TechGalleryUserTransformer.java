@@ -11,10 +11,10 @@ public class TechGalleryUserTransformer implements Transformer<TechGalleryUser, 
   public TechGalleryUser transformFrom(UserResponse arg0) {
     TechGalleryUser product = new TechGalleryUser();
     product.setEmail(arg0.getEmail());
-    product.setGoogleId(arg0.getGoogleId());
     product.setId(arg0.getId());
     product.setName(arg0.getName());
     product.setPhoto(arg0.getPhoto());
+    product.setAdmin(arg0.isAdmin());
     return product;
   }
 
@@ -23,10 +23,10 @@ public class TechGalleryUserTransformer implements Transformer<TechGalleryUser, 
     if (arg0.getInactivatedDate() == null) {
       UserResponse product = new UserResponse();
       product.setEmail(arg0.getEmail());
-      product.setGoogleId(arg0.getGoogleId());
       product.setId(arg0.getId());
       product.setName(arg0.getName());
       product.setPhoto(arg0.getPhoto());
+      product.setAdmin(arg0.isAdmin());
       return product;
     } else {
       return null;

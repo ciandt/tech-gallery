@@ -24,6 +24,8 @@ public class TechnologyTO implements Response {
   private String image;
   /** technology company recommendation. */
   private String recommendation;
+  /** technology company recommendation justification. */
+  private String recommendationJustification;
   /** technology positives recommendations. */
   private Integer positiveRecommendationsCounter;
   /** technology negative recommendations. */
@@ -127,5 +129,13 @@ public class TechnologyTO implements Response {
 
   public void setRecommendation(String recommendation) {
     this.recommendation = recommendation;
+  }
+
+  public String getRecommendationJustification() {
+    return recommendationJustification;
+  }
+
+  public void setRecommendationJustification(String recommendationJustification) {
+    this.recommendationJustification = recommendationJustification;
   }
 }
