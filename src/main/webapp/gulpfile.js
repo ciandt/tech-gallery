@@ -49,6 +49,12 @@ var out = {
   }
 };
 
+gulp.task('watch', ['build'], function() {
+  gulp.watch(src.styles.all, ['build:stylesheets']);
+  gulp.watch(src.scripts.all, ['build:scripts']);
+});
+
+gulp.task('build', ['clean', 'build:stylesheets', 'build:scripts']);
 
 gulp.task('lint', ['jshint', 'csslint']);
 
