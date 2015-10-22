@@ -10,9 +10,11 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var del = require('del');
 var sass = require('gulp-sass');
+var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var browserify = require('browserify');
 var minifyCss = require('gulp-minify-css');
+var streamify = require('gulp-streamify');
 
 /**
  * Files path
@@ -41,7 +43,8 @@ var build = 'build/';
  */
 var out = {
   scripts: {
-    file: 'app.min.js',
+    file: 'app.js',
+    fileMinified: 'app.min.js',
     folder: build
   },
   styles: {
@@ -59,13 +62,7 @@ gulp.task('watch', ['build'], function() {
 gulp.task('build', [
   'clean',
   'build:stylesheets',
-  'build:scripts',
-  'minify'
-]);
-
-gulp.task('minify', [
-  'minify:stylesheets',
-  'minify:scripts'
+  'build:scripts'
 ]);
 
 gulp.task('lint', [
@@ -103,8 +100,13 @@ gulp.task('build:scripts', function () {
       gutil.log(chalk.red(err.message));
       this.emit('end');
     })
-    // TODO: minify scripts
     .pipe(source(out.scripts.file))
+    .pipe(gulp.dest(out.scripts.folder))
+    .pipe(rename(out.scripts.fileMinified))
+    .pipe(streamify(uglify()).on('error', function (err) {
+      gutil.log(chalk.white.bgRed(' Error '));
+      gutil.log(chalk.red(err.message));
+    }))
     .pipe(gulp.dest(out.scripts.folder));
 });
 
