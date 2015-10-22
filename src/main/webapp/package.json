@@ -3,10 +3,17 @@
   "version": "0.0.1",
   "description": "A living Technology Gallery.",
   "devDependencies": {
-    "bower": "1.5.2",
     "gulp": "^3.9.0",
     "gulp-csslint": "^0.2.0",
     "gulp-jshint": "^1.11.2",
     "jshint-stylish": "^2.0.1"
+  },
+  "dependencies": {
+    "angular": "^1.4.7",
+    "angular-bootstrap": "^0.12.2",
+    "angular-route": "^1.4.7",
+    "angular-sanitize": "^1.4.7",
+    "angular-ui-router": "^0.2.15",
+    "bootstrap": "^3.3.5"
   }
 }
