@@ -79,7 +79,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     validateInformations(technology);
     String imageLink = technology.getImage();
-    if (technology.getRecommendation() == null) {
+    if (technology.getRecommendation() == null && technology.getImage() != null) {
       imageLink = storageDAO.insertImage(convertNameToId(technology.getName()),
           new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImage())));
     }
@@ -216,7 +216,7 @@ public class TechnologyServiceImpl implements TechnologyService {
         Collections.sort(techList, new Comparator<Technology>() {
           @Override
           public int compare(Technology counter1, Technology counter2) {
-            return counter1.getLastActivity().compareTo(counter2.getLastActivity());
+            return counter2.getLastActivity().compareTo(counter1.getLastActivity());
           }
         });
         break;
