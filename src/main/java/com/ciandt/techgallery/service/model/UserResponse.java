@@ -19,8 +19,8 @@ public class UserResponse implements Response, Serializable {
   private String email;
   /** user photo url. */
   private String photo;
-  /** user google id. */
-  private String googleId;
+  /** user is admin. */
+  private boolean admin;
   /** Followed technologies. */
   private List<String> followedTechIds;
 
@@ -56,12 +56,12 @@ public class UserResponse implements Response, Serializable {
     this.photo = photo;
   }
 
-  public String getGoogleId() {
-    return googleId;
+  public boolean isAdmin() {
+    return admin;
   }
 
-  public void setGoogleId(String googleId) {
-    this.googleId = googleId;
+  public void setAdmin(boolean admin) {
+    this.admin = admin;
   }
 
   public List<String> getFollowedTechIds() {

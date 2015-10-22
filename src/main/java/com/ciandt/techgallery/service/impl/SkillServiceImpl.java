@@ -24,9 +24,7 @@ import com.ciandt.techgallery.service.model.UserSkillTO;
 import com.ciandt.techgallery.utils.TechGalleryUtil;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -221,7 +219,6 @@ public class SkillServiceImpl implements SkillService {
   @Override
   public String importUserSkill(ImportUserSkillTO importUserSkills, User user)
       throws InternalServerErrorException, BadRequestException {
-    List<String> failTechnologies = new ArrayList<>();
     for (UserSkillTO userSkill : importUserSkills.getUserSkill()) {
       String email = userSkill.getEmail();
       TechGalleryUser techGalleryUser;
@@ -229,22 +226,19 @@ public class SkillServiceImpl implements SkillService {
         techGalleryUser = userService.getUserSyncedWithProvider(email.split("@")[0]);
         for (String techSkill : userSkill.getTechSkill()) {
           String[] splitedTechSkill = techSkill.split(";");
-          if (!failTechnologies.contains(splitedTechSkill[0])) {
-            Technology technology = recoverTechnologyById(splitedTechSkill[0]);
-            if (technology != null) {
-              Skill skillEntity = skillDao.findByUserAndTechnology(techGalleryUser, technology);
-              if (skillEntity != null) {
-                log.info("Inactivating skill: " + skillEntity.getId());
-                skillEntity.setInactivatedDate(new Date());
-                skillEntity.setActive(Boolean.FALSE);
-                skillDao.update(skillEntity);
-              }
-              Skill skill = new Skill();
-              skill.setValue(Integer.parseInt(splitedTechSkill[1]));
-              addNewSkill(skill, techGalleryUser, technology);
-            } else {
-              failTechnologies.add(splitedTechSkill[0]);
+          Technology technology = recoverTechnologyById(splitedTechSkill[0]);
+          if (technology != null) {
+            Skill skillEntity = skillDao.findByUserAndTechnology(techGalleryUser, technology);
+            if (skillEntity != null) {
+              log.info("Inactivating skill: " + skillEntity.getId());
+              skillEntity.setInactivatedDate(new Date());
+              skillEntity.setActive(Boolean.FALSE);
+              skillDao.update(skillEntity);
             }
+            Skill skill = new Skill();
+            skill.setValue(Integer.parseInt(splitedTechSkill[1]));
+            Skill newSkill = addNewSkill(skill, techGalleryUser, technology);
+            UserProfileServiceImpl.getInstance().handleSkillChanges(newSkill);
           }
         }
       } catch (NotFoundException e) {

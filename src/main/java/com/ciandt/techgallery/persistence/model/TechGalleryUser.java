@@ -49,6 +49,9 @@ public class TechGalleryUser extends BaseEntity<Long> {
   @Unindex
   private List<String> followedTechnologyIds;
 
+  @Index
+  private boolean admin;
+
   @Override
   public Long getId() {
     return id;
@@ -97,6 +100,14 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   public void setFollowedTechnologyIds(List<String> followedTechnologyIds) {
     this.followedTechnologyIds = followedTechnologyIds;
+  }
+
+  public boolean isAdmin() {
+    return admin;
+  }
+
+  public void setAdmin(boolean admin) {
+    this.admin = admin;
   }
 
   @Override

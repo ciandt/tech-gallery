@@ -33,6 +33,7 @@ public class Technology extends BaseEntity<String> {
   public static final String AUTHOR = "author";
   public static final String IMAGE = "image";
   public static final String RECOMMENDATION = "recommendation";
+  public static final String RECOMMENDATION_JUSTIFICATION = "recommendationJustification";
   public static final String POSITIVE_RECOMMENDATIONS_COUNTER = "positiveRecommendationsCounter";
   public static final String NEGATIVE_RECOMMENDATIONS_COUNTER = "negativeRecommendationsCounter";
   public static final String COMMENTARIES_COUNTER = "commentariesCounter";
@@ -67,6 +68,9 @@ public class Technology extends BaseEntity<String> {
   /** company recommendation info. */
   @Unindex
   private String recommendation;
+
+  @Unindex
+  private String recommendationJustification;
 
   @Index
   private Integer positiveRecommendationsCounter;
@@ -226,6 +230,14 @@ public class Technology extends BaseEntity<String> {
 
   public void setRecommendation(String recommendation) {
     this.recommendation = recommendation;
+  }
+
+  public String getRecommendationJustification() {
+    return recommendationJustification;
+  }
+
+  public void setRecommendationJustification(String recommendationJustification) {
+    this.recommendationJustification = recommendationJustification;
   }
 
   public Integer getPositiveRecommendationsCounter() {
