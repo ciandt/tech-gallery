@@ -97,5 +97,5 @@ public interface TechnologyService {
    *
    * @throws NotFoundException in case the technology does not exists.
    */
-  void updateAudit(String technologyId, User user) throws NotFoundException;
+  void audit(String technologyId, User user) throws NotFoundException;
 }

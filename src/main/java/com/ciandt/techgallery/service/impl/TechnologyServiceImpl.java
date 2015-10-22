@@ -106,7 +106,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       technology.setAuthor(user.getEmail());
     }
     technology.setCreationDate(new Date());
-    technology.setUpdate(new Date());
+    technology.setLastActivity(new Date());
     technology.setImage(imageLink);
     technology.initCounters();
   }
@@ -143,7 +143,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     } else if (technology.getName() == null || technology.getName().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
     } else
-      if (technology.getShortDescription() == null || technology.getShortDescription().equals("")) {
+      if (technology.getShortDescription() == null || "".equals(technology.getShortDescription())) {
       throw new BadRequestException(
           ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
     } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
@@ -216,7 +216,7 @@ public class TechnologyServiceImpl implements TechnologyService {
         Collections.sort(techList, new Comparator<Technology>() {
           @Override
           public int compare(Technology counter1, Technology counter2) {
-            return counter1.getUpdate().compareTo(counter2.getUpdate());
+            return counter1.getLastActivity().compareTo(counter2.getLastActivity());
           }
         });
         break;
@@ -408,10 +408,10 @@ public class TechnologyServiceImpl implements TechnologyService {
   }
 
   @Override
-  public void updateAudit(String technologyId, User user) throws NotFoundException {
+  public void audit(String technologyId, User user) throws NotFoundException {
     Technology technology = getTechnologyById(technologyId);
-    technology.setUpdate(new Date());
-    technology.setUpdateUser(user.getEmail());
+    technology.setLastActivity(new Date());
+    technology.setLastActivityUser(user.getEmail());
     technologyDAO.update(technology);
   }
 }
