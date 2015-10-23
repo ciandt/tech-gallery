@@ -102,10 +102,11 @@ public class TechnologyEndpoint {
   @ApiMethod(name = "findByFilter", path = "technology/search", httpMethod = "get")
   public Response findTechnologyByFilter(User user, @Named("titleContains") @Nullable String titleContains,
       @Named("shortDescriptionContains") @Nullable String shortDescriptionContains,
-      @Named("recommendationIs") @Nullable String recommendationIs,
+      @Named("recommendationIs") @Nullable String recommendationIs, @Named("dateFilter") @Nullable Integer dateFilter,
       @Named("orderOptionIs") @Nullable String orderOptionIs) throws ServiceException {
     return service.findTechnologiesByFilter(
-        new TechnologyFilter(titleContains, shortDescriptionContains, recommendationIs, orderOptionIs), user);
+        new TechnologyFilter(titleContains, shortDescriptionContains, recommendationIs, dateFilter, orderOptionIs),
+        user);
   }
 
   /**

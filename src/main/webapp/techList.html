@@ -74,6 +74,12 @@
     </div>
     
     <div class="container">
+      <a href="" ng-click="searchTechnology(0)">Último Dia</a>
+      <a href="" ng-click="searchTechnology(1)">Últimos 7 Dias</a>
+      <a href="" ng-click="searchTechnology(2)">Últimos 30 Dias</a>
+    </div>
+    
+    <div class="container">
     	<div ng-show="showLoading">
       		<img class="loading" src="/images/loading.gif">
     	</div>
@@ -99,6 +105,10 @@
                         <span class="glyphicon glyphicon-thumbs-down"><sup>{{tech.negativeRecommendationsCounter}}</sup></span>
                         <span class="glyphicon glyphicon-user"><sup>{{tech.endorsersCounter}}</sup></span>
                         <span class="glyphicon glyphicon-list-alt"><sup>{{tech.commentariesCounter}}</sup></span>
+                    </div>
+                    <div class="lastActivities">
+                        <span class="lastActivityLabel">Última Atividade:</span>
+                        <label>{{tech.lastActivity | date:"dd/MM/yyyy H:mm"}}</label>
                     </div>
                 </div>
             </div>

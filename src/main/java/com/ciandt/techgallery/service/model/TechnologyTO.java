@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import java.util.Date;
+
 /**
  * Response with a technology entity.
  *
@@ -34,6 +36,8 @@ public class TechnologyTO implements Response {
   private Integer commentariesCounter;
   /** technology endorseds. */
   private Integer endorsersCounter;
+
+  private Date lastActivity;
 
   public String getId() {
     return id;
@@ -129,6 +133,14 @@ public class TechnologyTO implements Response {
 
   public void setRecommendation(String recommendation) {
     this.recommendation = recommendation;
+  }
+
+  public Date getLastActivity() {
+    return lastActivity;
+  }
+
+  public void setLastActivity(Date lastActivity) {
+    this.lastActivity = lastActivity;
   }
 
   public String getRecommendationJustification() {

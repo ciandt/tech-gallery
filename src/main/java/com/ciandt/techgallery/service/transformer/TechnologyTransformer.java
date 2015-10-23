@@ -23,6 +23,7 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
     product.setNegativeRecommendationsCounter(baseObject.getNegativeRecommendationsCounter());
     product.setCommentariesCounter(baseObject.getCommentariesCounter());
     product.setEndorsersCounter(baseObject.getEndorsersCounter());
+    product.setLastActivity(baseObject.getLastActivity());
     return product;
   }
 
@@ -43,6 +44,7 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
       product.setNegativeRecommendationsCounter(baseObject.getNegativeRecommendationsCounter());
       product.setCommentariesCounter(baseObject.getCommentariesCounter());
       product.setEndorsersCounter(baseObject.getEndorsersCounter());
+      product.setLastActivity(baseObject.getLastActivity());
       return product;
     } else {
       return null;
