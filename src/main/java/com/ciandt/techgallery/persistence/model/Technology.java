@@ -203,7 +203,11 @@ public class Technology extends BaseEntity<String> {
   }
 
   public void setWebsite(String website) {
-    this.website = website;
+    if (website != null && !website.contains("http://")) {
+      this.website = "http://" + website;
+    } else {
+      this.website = website;
+    }
   }
 
   public String getAuthor() {
