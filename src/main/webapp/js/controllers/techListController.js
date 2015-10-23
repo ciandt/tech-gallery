@@ -89,14 +89,15 @@ angular.module('techGallery').controller(
     	$scope.selectedOrderOption = orderOption;
     }
     
-    $scope.searchTechnology = function (){
-      if($scope.textSearch || $scope.selectedOrderOption || $scope.selectedRecommendation){
+    $scope.searchTechnology = function (dateFilter){
+      if($scope.textSearch || $scope.selectedOrderOption || $scope.selectedRecommendation || dateFilter >= 0){
         $scope.techList = '';
         $scope.showLoading = true;
         var req = {
             titleContains: $scope.textSearch,
             shortDescriptionContains: $scope.textSearch,
             orderOptionIs: $scope.selectedOrderOption,
+            dateFilter : dateFilter,
             recommendationIs: $scope.selectedRecommendation
         }
         gapi.client.rest.findByFilter(req).execute(function(data){
