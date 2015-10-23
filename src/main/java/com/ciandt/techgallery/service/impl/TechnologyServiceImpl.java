@@ -1,9 +1,17 @@
 package com.ciandt.techgallery.service.impl;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
 
 import com.ciandt.techgallery.persistence.dao.StorageDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
@@ -19,18 +27,10 @@ import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.bind.DatatypeConverter;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 /**
  * Services for Technology Endpoint requests.
@@ -142,8 +142,8 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     } else if (technology.getName() == null || technology.getName().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
-    } else if (technology.getShortDescription() == null
-        || "".equals(technology.getShortDescription())) {
+    } else
+      if (technology.getShortDescription() == null || technology.getShortDescription().equals("")) {
       throw new BadRequestException(
           ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
     } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
@@ -212,6 +212,14 @@ public class TechnologyServiceImpl implements TechnologyService {
           }
         });
         break;
+      case LAST_ACTIVITY_DATE:
+        Collections.sort(techList, new Comparator<Technology>() {
+          @Override
+          public int compare(Technology counter1, Technology counter2) {
+            return counter2.getLastActivity().compareTo(counter1.getLastActivity());
+          }
+        });
+        break;
       default:
         break;
     }
@@ -232,6 +240,25 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
+  private List<Technology> setDateFilteredList(List<Technology> completeList, Date dateReference) {
+    List<Technology> dateFilteredList = new ArrayList<>();
+    for (Technology technology : completeList) {
+      if (technology.getLastActivity().after(dateReference)
+          || technology.getLastActivity().equals(dateReference)) {
+        dateFilteredList.add(technology);
+      }
+    }
+    return dateFilteredList;
+  }
+
+  private Date setDateReference(Date currentDate, int daysToSubtract) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(currentDate);
+    cal.add(Calendar.DATE, daysToSubtract);
+    Date dateReference = cal.getTime();
+    return dateReference;
+  }
+
   @Override
   public Response findTechnologiesByFilter(TechnologyFilter techFilter, User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {
@@ -240,8 +267,30 @@ public class TechnologyServiceImpl implements TechnologyService {
         && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())) {
       techFilter.setRecommendationIs("");
     }
-
     List<Technology> completeList = technologyDAO.findAll();
+    List<Technology> dateFilteredList = new ArrayList<>();
+
+    if (techFilter.getDateFilter() != null) {
+      Date currentDate = new Date();
+      switch (techFilter.getDateFilter()) {
+        case LAST_DAY:
+          Date lastDay = setDateReference(currentDate, -1);
+          dateFilteredList = setDateFilteredList(completeList, lastDay);
+          break;
+
+        case LAST_7_DAYS:
+          Date last7Days = setDateReference(currentDate, -7);
+          dateFilteredList = setDateFilteredList(completeList, last7Days);
+          break;
+
+        case LAST_30_DAYS:
+          Date last30Days = setDateReference(currentDate, -30);
+          dateFilteredList = setDateFilteredList(completeList, last30Days);
+          break;
+      }
+      completeList = dateFilteredList;
+    }
+
     List<Technology> filteredList = new ArrayList<>();
     if ((techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty())
         && (techFilter.getRecommendationIs() == null
