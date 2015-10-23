@@ -14,7 +14,6 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var browserify = require('browserify');
 var minifyCss = require('gulp-minify-css');
-var streamify = require('gulp-streamify');
 
 /**
  * Files path
@@ -61,8 +60,12 @@ gulp.task('watch', ['build'], function() {
 
 gulp.task('build', [
   'clean',
-  'build:stylesheets',
-  'build:scripts'
+  'minify'
+]);
+
+gulp.task('minify', [
+  'minify:stylesheets',
+  'minify:scripts'
 ]);
 
 gulp.task('lint', [
@@ -82,11 +85,13 @@ gulp.task('build:stylesheets', function () {
       gutil.log(chalk.white.bgRed(' Error '));
       gutil.log(chalk.red(err.message));
     }))
-    .pipe(gulp.dest(out.styles.folder))
+    .pipe(gulp.dest(out.styles.folder));
+});
+
+gulp.task('minify:stylesheets', ['build:stylesheets'], function () {
+  gulp.src(out.styles.file)
     .pipe(rename(out.styles.fileMinified))
-    .pipe(minifyCss({
-      sourceMap: true
-    }))
+    .pipe(minifyCss())
     .pipe(gulp.dest(out.styles.folder));
 });
 
@@ -101,9 +106,13 @@ gulp.task('build:scripts', function () {
       this.emit('end');
     })
     .pipe(source(out.scripts.file))
-    .pipe(gulp.dest(out.scripts.folder))
+    .pipe(gulp.dest(out.scripts.folder));
+});
+
+gulp.task('minify:scripts', ['build:scripts'], function () {
+  gulp.src(out.scripts.file)
     .pipe(rename(out.scripts.fileMinified))
-    .pipe(streamify(uglify()).on('error', function (err) {
+    .pipe(uglify().on('error', function (err) {
       gutil.log(chalk.white.bgRed(' Error '));
       gutil.log(chalk.red(err.message));
     }))
