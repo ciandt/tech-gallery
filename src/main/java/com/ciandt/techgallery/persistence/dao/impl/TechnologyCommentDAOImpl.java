@@ -56,7 +56,7 @@ public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, 
 
   @Override
   public String findAllCommentsIdsStartingFrom(Date date) {
-    final String commentsIds = "";
+    String commentsIds = "";
     final Objectify objectify = OfyService.ofy();
     final List<TechnologyComment> comments =
         objectify.load().type(TechnologyComment.class)

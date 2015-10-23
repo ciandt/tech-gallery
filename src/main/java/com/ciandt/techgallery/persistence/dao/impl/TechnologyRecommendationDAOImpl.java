@@ -90,7 +90,7 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
     final Objectify objectify = OfyService.ofy();
     final List<TechnologyRecommendation> allRecommendations =
         objectify.load().type(TechnologyRecommendation.class).list();
-    final String recommendationsIds = "";
+    String recommendationsIds = "";
     for (TechnologyRecommendation techRecommendation : allRecommendations) {
       TechnologyComment techComment = techRecommendation.getComment().get();
       if (techComment.getTimestamp().after(date)) {

@@ -7,16 +7,20 @@ import com.google.apphosting.api.ApiProxy;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 
+import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.persistence.dao.CronJobDAO;
 import com.ciandt.techgallery.persistence.dao.EmailNotificationDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyFollowersDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyRecommendationDAO;
+import com.ciandt.techgallery.persistence.dao.impl.CronJobDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.EmailNotificationDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyCommentDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyFollowersDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyRecommendationDAOImpl;
+import com.ciandt.techgallery.persistence.model.CronJob;
 import com.ciandt.techgallery.persistence.model.EmailNotification;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
@@ -50,18 +54,43 @@ import javax.mail.internet.MimeMessage;
 @Transactional
 public class EmailServiceImpl implements EmailService {
 
+  /*
+   * Attributes --------------------------------------------
+   */
+  private static EmailServiceImpl instance;
+  
   private static final Logger log = Logger.getLogger(EmailServiceImpl.class.getName());
   private static final String queueName = "email-queue";
   private static final String queueUrl = "/mail";
-  private static final int scheduledHour = 22;
 
   //TODO: move inside create template.
   private static final String template = "template.example.email";
   private static final String subject = "[Tech Gallery] Resumo do dia";
   private static final String reason = "Resumo do dia para os followers";
   
+  /*
+   * Constructors --------------------------------------------
+   */
+  private EmailServiceImpl() {}
+
+  /**
+   * Singleton method for the service.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 09/10/2015
+   *
+   * @return EmailServiceImpl instance.
+   */
+  public static EmailServiceImpl getInstance() {
+    if (instance == null) {
+      instance = new EmailServiceImpl();
+    }
+    return instance;
+  }
+  
   private InternetAddress from = null;
-  private EmailNotificationDAO emailNotificationDao = new EmailNotificationDAOImpl();
+  private EmailNotificationDAO emailNotificationDao = EmailNotificationDAOImpl.getInstance();
+  private CronJobDAO cronJobsDao = CronJobDAOImpl.getInstance();
   private TechnologyFollowersDAO technologyFollowersDao = TechnologyFollowersDAOImpl.getInstance();
   private TechnologyRecommendationDAO technologyRecommendationDao = TechnologyRecommendationDAOImpl
       .getInstance();
@@ -73,8 +102,8 @@ public class EmailServiceImpl implements EmailService {
     QueueFactory.getQueue(queueName).add(TaskOptions.Builder.withUrl(queueUrl)
         .param("userId", user.getId().toString())
         .param("technologyId", technology.getId())
-        .param("recommendationsIds", recommendationsIds != null ? recommendationsIds : "")
-        .param("commentsIds", commentsIds != null ? commentsIds : ""));
+        .param("recommendationsIds", recommendationsIds)
+        .param("commentsIds", commentsIds));
   }
 
   @Override
@@ -168,35 +197,34 @@ public class EmailServiceImpl implements EmailService {
    * followers.
    */
   public void sendDailyEmailtoFollowers() {
+    CronJob cronJob = new CronJob();
+    cronJob.setName(Constants.CRON_MAIL_JOB);
+    cronJob.setStartTimestamp(new Date());
     List<TechnologyFollowers> techFollowers = technologyFollowersDao.findAll();
     if (techFollowers != null && techFollowers.size() > 0) {
       for (TechnologyFollowers technologyFollowers : techFollowers) {
         Technology technology = technologyFollowers.getTechnology().get();
         if (technologyFollowers.getFollowers().size() > 0) {
-          Date date = getScheduledDate();
+          Date date = new Date();
+          Calendar cal = Calendar.getInstance();
+          cal.setTime(date);
+          cal.add(Calendar.DAY_OF_MONTH, -1);
+          Date dateYesterday = cal.getTime();
           String dailyRecommendationsIds =
-              technologyRecommendationDao.findAllRecommendationsIdsStartingFrom(date);
-          String dailyCommentsIds = technologyCommentDao.findAllCommentsIdsStartingFrom(date);
+              technologyRecommendationDao.findAllRecommendationsIdsStartingFrom(dateYesterday);
+          String dailyCommentsIds =
+              technologyCommentDao.findAllCommentsIdsStartingFrom(dateYesterday);
           List<Ref<TechGalleryUser>> followers = technologyFollowers.getFollowers();
-          for (Ref<TechGalleryUser> ref : followers) {
-            TechGalleryUser follower = ref.get();
-            push(follower, technology, dailyRecommendationsIds, dailyCommentsIds);
+          if (!"".equals(dailyRecommendationsIds) || !"".equals(dailyCommentsIds)) {
+            for (Ref<TechGalleryUser> ref : followers) {
+              TechGalleryUser follower = ref.get();
+              push(follower, technology, dailyRecommendationsIds, dailyCommentsIds);
+            }
           }
         }
       }
     }
-  }
-  
-  private Date getScheduledDate() {
-    Date date = new Date();
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(date);
-    cal.set(Calendar.HOUR_OF_DAY, scheduledHour);
-    cal.set(Calendar.MINUTE, 0);
-    cal.set(Calendar.SECOND, 0);
-    cal.set(Calendar.MILLISECOND, 0);
-    cal.add(Calendar.DAY_OF_MONTH, -1);
-    Date zeroedDate = cal.getTime();
-    return zeroedDate;
+    cronJob.setEndTimestamp(new Date());
+    cronJobsDao.add(cronJob);
   }
 }
