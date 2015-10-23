@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CronMailServlet extends HttpServlet {
 
   public static final Logger _LOG = Logger.getLogger(CronMailServlet.class.getName());
-  private EmailService emailService = new EmailServiceImpl();
+  private EmailService emailService = EmailServiceImpl.getInstance();
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

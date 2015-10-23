@@ -20,7 +20,7 @@ public class TechnologyFollowers extends BaseEntity<String> {
   /*
    * Constants --------------------------------------------
    */
-  public static final String ID = "Id";
+  public static final String ID = "id";
   public static final String TECHNOLOGY = "technology";
   public static final String FOLLOWERS = "followers";
 

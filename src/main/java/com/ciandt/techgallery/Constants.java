@@ -15,5 +15,7 @@ public class Constants {
 
   public static final String EMAIL_SCOPE = "https://www.googleapis.com/auth/userinfo.email";
   public static final String PLUS_SCOPE = "https://www.googleapis.com/auth/plus.me";
+  
+  public static final String CRON_MAIL_JOB = "/cron/email";
 
 }

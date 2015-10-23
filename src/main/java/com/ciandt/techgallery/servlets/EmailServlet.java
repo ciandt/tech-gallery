@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
 public class EmailServlet extends HttpServlet {
-  private EmailService emailService = new EmailServiceImpl();
+  private EmailService emailService = EmailServiceImpl.getInstance();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) {
