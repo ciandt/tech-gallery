@@ -56,4 +56,13 @@ public class UserEndpoint {
     return service.getUsersAutoComplete(query);
   }
 
+  /**
+   * Endpoint for getting informations about the logged user. 
+   * @return Logged user.
+   * @throws NotFoundException in case the information are not founded.
+   */
+  @ApiMethod(name = "getLoggedUser", path = "users/logged", httpMethod = "get")
+  public TechGalleryUser getLoggedUser(User user) throws NotFoundException {
+    return service.getUserByEmail(user.getEmail());
+  }
 }
