@@ -5,5 +5,5 @@ var angular = require('angular');
  */
 angular
   .module('TechGallery', [
-    require('./utils'),
+    require('./modules/utils'),
   ])
