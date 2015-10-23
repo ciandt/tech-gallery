@@ -14,6 +14,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var browserify = require('browserify');
 var minifyCss = require('gulp-minify-css');
+var streamify = require('gulp-streamify');
 
 /**
  * Files path
@@ -53,19 +54,15 @@ var out = {
   }
 };
 
-gulp.task('watch', ['build'], function() {
-  gulp.watch(src.styles.all, ['build:stylesheets']);
-  gulp.watch(src.scripts.all, ['build:scripts']);
+gulp.task('watch', ['clean'], function() {
+  gulp.watch(src.styles.all, ['watch:stylesheets']);
+  gulp.watch(src.scripts.all, ['watch:scripts']);
 });
 
 gulp.task('build', [
   'clean',
-  'minify'
-]);
-
-gulp.task('minify', [
-  'minify:stylesheets',
-  'minify:scripts'
+  'build:stylesheets',
+  'build:scripts'
 ]);
 
 gulp.task('lint', [
@@ -79,17 +76,38 @@ gulp.task('clean', function () {
   ]);
 });
 
+gulp.task('watch:stylesheets', function () {
+  gulp.src(src.styles.app)
+    .pipe(sass().on('error', function (err) {
+      gutil.log(chalk.white.bgRed(' Error '));
+      gutil.log(chalk.red(err.message));
+    }))
+    .pipe(rename(out.styles.fileMinified))
+    .pipe(gulp.dest(out.styles.folder))
+});
+
+gulp.task('watch:scripts', function () {
+  return browserify(src.scripts.app, {
+      debug: true,
+      insertGlobals: true
+    })
+    .bundle().on('error', function (err) {
+      gutil.log(chalk.white.bgRed(' Error '));
+      gutil.log(chalk.red(err.message));
+      this.emit('end');
+    })
+    .pipe(source(out.scripts.file))
+    .pipe(rename(out.scripts.fileMinified))
+    .pipe(gulp.dest(out.scripts.folder));
+});
+
 gulp.task('build:stylesheets', function () {
   gulp.src(src.styles.app)
     .pipe(sass().on('error', function (err) {
       gutil.log(chalk.white.bgRed(' Error '));
       gutil.log(chalk.red(err.message));
     }))
-    .pipe(gulp.dest(out.styles.folder));
-});
-
-gulp.task('minify:stylesheets', ['build:stylesheets'], function () {
-  gulp.src(out.styles.file)
+    .pipe(gulp.dest(out.styles.folder))
     .pipe(rename(out.styles.fileMinified))
     .pipe(minifyCss())
     .pipe(gulp.dest(out.styles.folder));
@@ -106,13 +124,9 @@ gulp.task('build:scripts', function () {
       this.emit('end');
     })
     .pipe(source(out.scripts.file))
-    .pipe(gulp.dest(out.scripts.folder));
-});
-
-gulp.task('minify:scripts', ['build:scripts'], function () {
-  gulp.src(out.scripts.file)
+    .pipe(gulp.dest(out.scripts.folder))
     .pipe(rename(out.scripts.fileMinified))
-    .pipe(uglify().on('error', function (err) {
+    .pipe(streamify(uglify()).on('error', function (err) {
       gutil.log(chalk.white.bgRed(' Error '));
       gutil.log(chalk.red(err.message));
     }))
