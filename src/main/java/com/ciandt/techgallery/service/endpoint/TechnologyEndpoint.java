@@ -18,6 +18,7 @@ import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 /**
@@ -125,6 +126,24 @@ public class TechnologyEndpoint {
   public List<String> getOrderOptions(User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {
     return service.getOrderOptions(user);
+  }
+
+  /**
+   * Endpoint to delete a Technology.
+   *
+   * @param id
+   *          entity id.
+   * @return technology
+   * @throws NotFoundException
+   *           in case the information are not founded
+   * @throws OAuthRequestException
+   * @throws BadRequestException
+   * @throws InternalServerErrorException
+   */
+  @ApiMethod(name = "deleteTechnology", path = "technology-delete", httpMethod = "post")
+  public Technology deleteTechnology(@Named("technologyId") String technologyId, User user)
+      throws NotFoundException, InternalServerErrorException, BadRequestException, OAuthRequestException {
+    return service.deleteTechnology(technologyId, user);
   }
 
 }
