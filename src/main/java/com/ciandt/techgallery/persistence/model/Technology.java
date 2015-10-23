@@ -159,12 +159,6 @@ public class Technology extends BaseEntity<String> {
     positiveRecommendationsCounter = 0;
   }
 
-  public void verifyWebsiteFormat() {
-    if (website != null && !website.contains("http://")) {
-      website = "http://" + website;
-    }
-  }
-
   /*
    * Getter's and Setter's --------------------------------------------
    */
