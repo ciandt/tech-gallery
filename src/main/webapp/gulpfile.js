@@ -54,7 +54,11 @@ var out = {
   }
 };
 
-gulp.task('watch', ['clean'], function() {
+gulp.task('watch', [
+  'clean',
+  'watch:stylesheets',
+  'watch:scripts'
+], function() {
   gulp.watch(src.styles.all, ['watch:stylesheets']);
   gulp.watch(src.scripts.all, ['watch:scripts']);
 });
