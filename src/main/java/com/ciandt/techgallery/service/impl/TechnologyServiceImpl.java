@@ -108,6 +108,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     technology.setCreationDate(new Date());
     technology.setLastActivity(new Date());
     technology.setImage(imageLink);
+    technology.verifyWebsiteFormat();
     technology.initCounters();
   }
 
