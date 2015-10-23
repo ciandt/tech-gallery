@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import java.util.Date;
+
 /**
  * Response with a technology entity.
  *
@@ -36,6 +38,8 @@ public class TechnologyTO implements Response {
   private Integer endorsersCounter;
   /** technology is followed by the logged user. */
   private boolean followedByUser;
+
+  private Date lastActivity;
 
   public String getId() {
     return id;
@@ -139,6 +143,14 @@ public class TechnologyTO implements Response {
 
   public void setFollowedByUser(boolean followedByUser) {
     this.followedByUser = followedByUser;
+  }
+
+  public Date getLastActivity() {
+    return lastActivity;
+  }
+
+  public void setLastActivity(Date lastActivity) {
+    this.lastActivity = lastActivity;
   }
 
   public String getRecommendationJustification() {

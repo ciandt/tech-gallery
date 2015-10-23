@@ -8,6 +8,7 @@ import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.Constants;
@@ -100,9 +101,10 @@ public class TechnologyEndpoint {
       @Named("titleContains") @Nullable String titleContains,
       @Named("shortDescriptionContains") @Nullable String shortDescriptionContains,
       @Named("recommendationIs") @Nullable String recommendationIs,
+      @Named("dateFilter") @Nullable Integer dateFilter,
       @Named("orderOptionIs") @Nullable String orderOptionIs) throws ServiceException {
     return service.findTechnologiesByFilter(new TechnologyFilter(titleContains,
-        shortDescriptionContains, recommendationIs, orderOptionIs), user);
+        shortDescriptionContains, recommendationIs, dateFilter, orderOptionIs), user);
   }
 
   /**
@@ -134,4 +136,22 @@ public class TechnologyEndpoint {
       throws BadRequestException, NotFoundException, InternalServerErrorException {
     return followersService.followTechnology(technologyId, user);
   }
+
+  /**
+   * Endpoint to delete a Technology.
+   *
+   * @param id entity id.
+   * @return technology
+   * @throws NotFoundException in case the information are not founded
+   * @throws OAuthRequestException
+   * @throws BadRequestException
+   * @throws InternalServerErrorException
+   */
+  @ApiMethod(name = "deleteTechnology", path = "technology-delete", httpMethod = "post")
+  public Technology deleteTechnology(@Named("technologyId") String technologyId, User user)
+      throws NotFoundException, InternalServerErrorException, BadRequestException,
+      OAuthRequestException {
+    return service.deleteTechnology(technologyId, user);
+  }
+
 }

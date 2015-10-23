@@ -3,6 +3,7 @@ package com.ciandt.techgallery.service;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.model.Technology;
@@ -45,6 +46,16 @@ public interface TechnologyService {
    */
   Response getTechnologies(User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException;
+
+  /**
+   * 
+   * Service for getting a technology response.
+   *
+   * @param id entity id.
+   * @return .
+   * @throws NotFoundException .
+   */
+  Technology getTechnology(final String id) throws NotFoundException;
 
   /**
    * Service for getting all technologies according a filter.
@@ -97,4 +108,16 @@ public interface TechnologyService {
    */
   void audit(String technologyId, User user)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
+
+  /**
+   * Service to delete a technology.
+   *
+   * @param technology entity id.
+   * @return Technology or message error.
+   * @throws InternalServerErrorException .
+   * @throws BadRequestException .
+   */
+  Technology deleteTechnology(final String technologyId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException;
 }

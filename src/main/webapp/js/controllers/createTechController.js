@@ -76,8 +76,12 @@ angular.module('techGallery').controller(
             }
         };
         gapi.client.rest.getLoggedUser().execute(function(data) {
-              $scope.loggedUserInformation = data;
-            });
+        	$scope.loggedUserInformation = data;
+          });
+        gapi.client.rest.getRecommendations().execute(function(data){
+            $scope.dropDownRecommendation = data.items;
+            $scope.$apply();
+          });
         document.getElementById('idimage').addEventListener('change', handleFileSelect, false);
     	$scope.$apply();
     }

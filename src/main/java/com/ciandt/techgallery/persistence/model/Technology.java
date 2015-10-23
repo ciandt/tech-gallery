@@ -1,16 +1,14 @@
 package com.ciandt.techgallery.persistence.model;
 
-import com.google.api.server.spi.config.ApiTransformer;
+import java.util.Date;
 
+import com.ciandt.techgallery.service.transformer.TechnologyTransformer;
+import com.google.api.server.spi.config.ApiTransformer;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
-
-import com.ciandt.techgallery.service.transformer.TechnologyTransformer;
-
-import java.util.Date;
 
 /**
  * Technology entity.
@@ -40,6 +38,7 @@ public class Technology extends BaseEntity<String> {
   public static final String ENDORSERS_COUNTER = "endorsersCounter";
   public static final String LAST_ACTIVITY = "lastActivity";
   public static final String UPDATE_USER = "updateUser";
+  public static final String ACTIVE = "active";
 
   /*
    * Attributes --------------------------------------------
@@ -95,6 +94,9 @@ public class Technology extends BaseEntity<String> {
 
   @Unindex
   private String lastActivityUser;
+
+  @Index
+  private Boolean active;
 
   /*
    * Methods --------------------------------------------
@@ -205,7 +207,11 @@ public class Technology extends BaseEntity<String> {
   }
 
   public void setWebsite(String website) {
-    this.website = website;
+    if (website != null && !website.contains("http://")) {
+      this.website = "http://" + website;
+    } else {
+      this.website = website;
+    }
   }
 
   public String getAuthor() {
@@ -222,6 +228,14 @@ public class Technology extends BaseEntity<String> {
 
   public void setImage(String image) {
     this.image = image;
+  }
+
+  public Boolean getActive() {
+    return active;
+  }
+
+  public void setActive(Boolean active) {
+    this.active = active;
   }
 
   public String getRecommendation() {
