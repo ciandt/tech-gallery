@@ -324,6 +324,7 @@ angular.module('techGallery').controller(
     				callBackLoaded();
     				$scope.comment = '';
     			});
+    			ga('send', 'event', 'button', 'click', 'comments_add');
     		}else {
     			//Call API to add a comment and a recommendation
     			var req = {
@@ -338,6 +339,7 @@ angular.module('techGallery').controller(
     				$scope.score = undefined;
     				$scope.setClassThumbs('');
     			});
+    			ga('send', 'event', 'button', 'click', 'recommendations_add');
     		}
     	}else{
     		if($scope.score !== undefined){
