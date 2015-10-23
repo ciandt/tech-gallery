@@ -94,7 +94,7 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
     for (TechnologyRecommendation techRecommendation : allRecommendations) {
       TechnologyComment techComment = techRecommendation.getComment().get();
       if (techComment.getTimestamp().after(date)) {
-        recommendationsIds.concat("," + techRecommendation.getId());
+        recommendationsIds = recommendationsIds.concat("," + techRecommendation.getId());
       }
     }
     return recommendationsIds;

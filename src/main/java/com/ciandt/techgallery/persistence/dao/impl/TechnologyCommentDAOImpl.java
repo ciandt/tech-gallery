@@ -62,7 +62,7 @@ public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, 
         objectify.load().type(TechnologyComment.class)
             .filter(TechnologyComment.TIMESTAMP + " >" , date).list();
     for (TechnologyComment technologyComment : comments) {
-      commentsIds.concat("," + technologyComment.getId());
+      commentsIds = commentsIds.concat("," + technologyComment.getId());
     }
     return commentsIds;
   }

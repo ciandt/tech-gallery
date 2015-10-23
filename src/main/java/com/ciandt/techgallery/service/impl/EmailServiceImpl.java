@@ -98,16 +98,17 @@ public class EmailServiceImpl implements EmailService {
 
   @Override
   public void push(TechGalleryUser user, Technology technology, String recommendationsIds,
-      String commentsIds) {
-    QueueFactory.getQueue(queueName)
-        .add(TaskOptions.Builder.withUrl(queueUrl).param("userId", user.getId().toString())
-            .param("technologyId", technology.getId())
-            .param("recommendationsIds", recommendationsIds).param("commentsIds", commentsIds));
+      String commentsIds, String isLastItem, String keyCronJob) {
+    QueueFactory.getQueue(queueName).add(
+        TaskOptions.Builder.withUrl(queueUrl).param("userId", user.getId().toString())
+            .param("technologyId", technology.getId()).param("isLastItem", isLastItem)
+            .param("keyCronJob", keyCronJob).param("recommendationsIds", recommendationsIds)
+            .param("commentsIds", commentsIds));
   }
 
   @Override
   public void execute(String userId, String technologyId, String recommendationsIds,
-      String commentsIds, String serverUrl) {
+      String commentsIds, String isLastItem, String keyCronJob, String serverUrl) {
     if (!commentsIds.isEmpty()) {
       String[] commentIds = commentsIds.split(",");
       List<TechnologyComment> comments = new ArrayList<TechnologyComment>();
@@ -129,10 +130,15 @@ public class EmailServiceImpl implements EmailService {
     Map<String, String> variableValue = new HashMap<String, String>();
     variableValue.put("${receiverName}", user.getName());
     variableValue.put("${user}", user.getName());
-    variableValue.put("${tecnology}", technology.getName());
+    variableValue.put("${technology}", technology.getName());
     EmailConfig email = new EmailConfig(subject, "emailtemplates" + File.separator + template,
         variableValue, null, reason, user.getEmail());
     sendEmail(email);
+    if (Boolean.parseBoolean(isLastItem)) {
+      CronJob cronJob = cronJobsDao.findById(Key.create(keyCronJob).getId());
+      cronJob.setEndTimestamp(new Date());
+      cronJobsDao.update(cronJob);
+    }
   }
 
   private void sendEmail(EmailConfig email) {
@@ -184,7 +190,7 @@ public class EmailServiceImpl implements EmailService {
       }
       String addr = "no-reply@" + appId + ".appspotmail.com";
       log.info("app email from address set to: " + addr);
-      from = new InternetAddress(addr, addr);
+      from = new InternetAddress(addr, "no-reply@google.com");
     }
     return from;
   }
@@ -194,13 +200,16 @@ public class EmailServiceImpl implements EmailService {
    * followers.
    */
   public void sendDailyEmailtoFollowers() {
+    Boolean isLastTech = Boolean.FALSE;
     CronJob cronJob = new CronJob();
     cronJob.setName(Constants.CRON_MAIL_JOB);
     cronJob.setStartTimestamp(new Date());
+    Key<CronJob> keyCronJob = cronJobsDao.add(cronJob);
     List<TechnologyFollowers> techFollowers = technologyFollowersDao.findAll();
     if (techFollowers != null && techFollowers.size() > 0) {
       for (TechnologyFollowers technologyFollowers : techFollowers) {
         Technology technology = technologyFollowers.getTechnology().get();
+        isLastTech = technology.getId().equals(techFollowers.get(techFollowers.size() - 1).getId());
         if (technologyFollowers.getFollowers().size() > 0) {
           Calendar cal = Calendar.getInstance();
           cal.add(Calendar.DAY_OF_MONTH, -1);
@@ -213,13 +222,12 @@ public class EmailServiceImpl implements EmailService {
           if (!dailyRecommendationsIds.isEmpty() || !dailyCommentsIds.isEmpty()) {
             for (Ref<TechGalleryUser> ref : followers) {
               TechGalleryUser follower = ref.get();
-              push(follower, technology, dailyRecommendationsIds, dailyCommentsIds);
+              push(follower, technology, dailyRecommendationsIds, dailyCommentsIds,
+                  isLastTech.toString(), keyCronJob.toWebSafeString());
             }
           }
         }
       }
     }
-    cronJob.setEndTimestamp(new Date());
-    cronJobsDao.add(cronJob);
   }
 }
