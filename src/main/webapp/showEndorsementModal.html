@@ -5,11 +5,14 @@
     <div class="col-xs-6">
         <div ng-repeat="endorser in endorsers">
             <div class="media-left media-middle">
-                <img class="media-object endorsers-image"
-                    src={{endorser.photo}} tooltip={{endorser.name}}>
+              <a href={{redirectUserProfile(endorser.email)}}>
+                <img class="media-object endorsers-image" src="{{endorser.photo}}" tooltip="{{endorser.name}}">
+              </a>
             </div>
             <div class="media-body">
+              <a href={{redirectUserProfile(endorser.email)}}>
                 <h4 class="media-heading">{{endorser.name}}</h4>
+              </a>
             </div>
         </div>
     </div>

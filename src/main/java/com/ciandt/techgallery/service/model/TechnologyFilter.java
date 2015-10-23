@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.service.enums.DateFilterEnum;
+
 /**
  * Response with all technology entities.
  * 
@@ -19,6 +21,9 @@ public class TechnologyFilter implements Response {
 
   /** string for order option. */
   private String orderOptionIs;
+
+  /** string for order option. */
+  private DateFilterEnum dateFilter;
 
   public String getTitleContains() {
     return titleContains;
@@ -40,6 +45,14 @@ public class TechnologyFilter implements Response {
     return shortDescriptionContains;
   }
 
+  public DateFilterEnum getDateFilter() {
+    return dateFilter;
+  }
+
+  public void setDateFilter(DateFilterEnum dateFilter) {
+    this.dateFilter = dateFilter;
+  }
+
   public void setShortDescriptionContains(String shortDescriptionContains) {
     this.shortDescriptionContains = shortDescriptionContains;
   }
@@ -52,22 +65,29 @@ public class TechnologyFilter implements Response {
     this.orderOptionIs = orderOptionIs;
   }
 
-  public TechnologyFilter() {}
+  public TechnologyFilter() {
+  }
 
   /**
    * Construtor for TechnologyFilter.
    * 
-   * @param titleContains part of the technology's title
-   * @param shortDescriptionContains titleContains part of the technology's short description
-   * @param recommendationIs technology's Ci&T Recommendation
-   * @param orderOptionIs for sort the result
+   * @param titleContains
+   *          part of the technology's title
+   * @param shortDescriptionContains
+   *          titleContains part of the technology's short description
+   * @param recommendationIs
+   *          technology's Ci&T Recommendation
+   * @param orderOptionIs
+   *          for sort the result
    */
-  public TechnologyFilter(String titleContains, String shortDescriptionContains,
-      String recommendationIs, String orderOptionIs) {
+  public TechnologyFilter(String titleContains, String shortDescriptionContains, String recommendationIs,
+      Integer dateFilter, String orderOptionIs) {
     this.titleContains = titleContains;
     this.shortDescriptionContains = shortDescriptionContains;
     this.recommendationIs = recommendationIs;
     this.orderOptionIs = orderOptionIs;
+    if (dateFilter != null && (dateFilter >= 0 && dateFilter <= 2)) {
+      this.dateFilter = DateFilterEnum.values()[dateFilter];
+    }
   }
-
 }
