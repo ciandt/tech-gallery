@@ -24,6 +24,7 @@ public class ServiceFactory {
    * @param implementation what implementation will be
    * @return new Service based on the rules above
    */
+  @SuppressWarnings("unchecked")
   public static <T> T createServiceImplementation(Class<T> interfac, Class<?> implementation) {
 
     String key = implementation.getName();
