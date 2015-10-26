@@ -158,4 +158,8 @@ public interface UserServiceTG {
    */
   List<UserResponse> getUsersAutoComplete(final String user)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
+
+  TechGalleryUser saveUserPreference(Boolean postGooglePlusPreference, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException;
+
 }

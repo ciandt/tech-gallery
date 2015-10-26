@@ -84,6 +84,9 @@
       </div>
       <button ng-click="endorse(true)" class="btn btn-primary"
         role="button">Indicar</button>
+      <label class="checkGooglePlus">
+          <input type="checkbox" ng-change="changePreference()" ng-model="postGooglePlus">Permitir postagem no Google+
+      </label>
       <div ng-show="loadingUsers">
         <i class="glyphicon glyphicon-refresh"> Carregando...</i>
       </div>
@@ -185,6 +188,10 @@
     					class="btn glyphicon glyphicon-thumbs-down thumbsFont"></button>
     					
     			<a href="#ANC_COMMENTS" class="recommendations-link" ng-click="filterNoRecommenders()">{{down}}</a>
+          
+          <label class="checkGooglePlus">
+              <input type="checkbox" ng-change="changePreference()" ng-model="postGooglePlus">Permitir postagem no Google+
+          </label>
     		</div>
     	</div>
     </div>

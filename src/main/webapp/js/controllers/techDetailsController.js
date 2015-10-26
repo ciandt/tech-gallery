@@ -3,6 +3,14 @@ angular.module('techGallery').controller(
   function($scope, $timeout, $modal) {
     'use strict';
     
+    var featureEnum = {
+        ENDORSE: 'ENDORSE',
+        COMMENT: 'COMMENT',
+        RECOMMEND: 'RECOMMEND'
+    };
+    
+    $scope.currentPage = document.location.href;
+    
     $scope.getUsersList = function (value){
       var req = {query:value};
       return gapi.client.rest.usersAutoComplete(req).then(function (data){
@@ -83,6 +91,10 @@ angular.module('techGallery').controller(
       var req = {
         id : idTech
       };
+      gapi.client.rest.getLoggedUser().execute(function(data) {
+        $scope.loggedUserInformation = data;
+        $scope.postGooglePlus = data.postGooglePlusPreference;
+      });
       gapi.client.rest.getTechnology(req).execute(function(data) {
         gapi.client.rest.getUserSkill(req).execute(function(dataSkill) {
           $scope.rate = dataSkill.value;
@@ -125,6 +137,18 @@ angular.module('techGallery').controller(
       req.technology = $scope.idTechnology;
       if ($scope.endorsed.email || $scope.endorsed) {
         gapi.client.rest.addEndorsement(req).execute(function(data) {
+          
+          if($scope.postGooglePlus && !data.hasOwnProperty('error')){
+            var req = {
+                feature : featureEnum.ENDORSE,
+                currentUserMail : data.endorser.email,
+                endorsedMail : data.endorsed.email,
+                technologyName : data.technology.name,
+                appLink : $scope.currentPage
+            }
+            gapi.client.rest.postComment(req).execute();
+          }
+          
           if(alertUser){
             var alert;
             if (data.hasOwnProperty('error')) {
@@ -314,7 +338,6 @@ angular.module('techGallery').controller(
     $scope.addComment = function(){
     	if($scope.comment && $scope.comment.trim().length <= 500){
     		if($scope.score == undefined){
-    			//Call API to add a comment
     			var req = {
     					technologyId : $scope.idTechnology,
     					comment : $scope.comment
@@ -323,6 +346,16 @@ angular.module('techGallery').controller(
     				$scope.processingComment = true;
     				callBackLoaded();
     				$scope.comment = '';
+    				if($scope.postGooglePlus && !data.hasOwnProperty('error')){
+              var req = {
+                  feature : featureEnum.COMMENT,
+                  currentUserMail : data.author.email,
+                  technologyName : $scope.name,
+                  comment: data.comment,
+                  appLink: $scope.currentPage
+              }
+              gapi.client.rest.postComment(req).execute();
+            }
     			});
     		}else {
     			//Call API to add a comment and a recommendation
@@ -337,6 +370,16 @@ angular.module('techGallery').controller(
     				$scope.comment = '';
     				$scope.score = undefined;
     				$scope.setClassThumbs('');
+    				if($scope.postGooglePlus && !data.hasOwnProperty('error')){
+              var req = {
+                  feature : featureEnum.RECOMMEND,
+                  score : data.score,
+                  currentUserMail : data.recommender.email,
+                  technologyName : data.technology.name,
+                  appLink: $scope.currentPage
+              }
+              gapi.client.rest.postComment(req).execute();
+            }
     			});
     		}
     	}else{
@@ -483,5 +526,16 @@ angular.module('techGallery').controller(
     		}
     	}
     };
+    
+    $scope.changePreference = function(){
+      var oldValue = !$scope.postGooglePlus;
+      var req = {postGooglePlusPreference: $scope.postGooglePlus}
+      gapi.client.rest.saveUserPreference(req).execute(function(data){
+        if(data.hasOwnProperty('error')){
+          $scope.postGooglePlus = oldValue;
+        }
+      });
+    }
+    
   }
 );
