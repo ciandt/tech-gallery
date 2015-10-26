@@ -86,6 +86,9 @@
         <div>
             <div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
                 <div class="thumbnail">
+                    <div>
+                        <button type="button" ng-click="deleteTechnology(tech.id)" class="btn btn-danger glyphicon glyphicon-trash btn-xs"></button>
+                    </div>
                     <a class="titleThumbnail" href={{redirectUrl(tech.id)}}>
                         <h3>{{tech.name}}</h3>
                     </a>

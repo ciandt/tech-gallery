@@ -1,17 +1,10 @@
 package com.ciandt.techgallery.service.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.bind.DatatypeConverter;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.dao.StorageDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
@@ -27,10 +20,19 @@ import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Services for Technology Endpoint requests.
@@ -105,6 +107,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (user != null && user.getEmail() != null) {
       technology.setAuthor(user.getEmail());
     }
+    technology.setActive(Boolean.TRUE);
     technology.setCreationDate(new Date());
     technology.setLastActivity(new Date());
     technology.setImage(imageLink);
@@ -142,8 +145,8 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     } else if (technology.getName() == null || technology.getName().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
-    } else
-      if (technology.getShortDescription() == null || technology.getShortDescription().equals("")) {
+    } else if (technology.getShortDescription() == null
+        || technology.getShortDescription().isEmpty()) {
       throw new BadRequestException(
           ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
     } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
@@ -163,7 +166,7 @@ public class TechnologyServiceImpl implements TechnologyService {
    */
   @Override
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
-    List<Technology> techEntities = technologyDAO.findAll();
+    List<Technology> techEntities = technologyDAO.findAllActiveTechnologies();
     // if list is null, return a not found exception
     if (techEntities == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
@@ -267,7 +270,7 @@ public class TechnologyServiceImpl implements TechnologyService {
         && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())) {
       techFilter.setRecommendationIs("");
     }
-    List<Technology> completeList = technologyDAO.findAll();
+    List<Technology> completeList = technologyDAO.findAllActives();
     List<Technology> dateFilteredList = new ArrayList<>();
 
     if (techFilter.getDateFilter() != null) {
@@ -286,6 +289,8 @@ public class TechnologyServiceImpl implements TechnologyService {
         case LAST_30_DAYS:
           Date last30Days = setDateReference(currentDate, -30);
           dateFilteredList = setDateFilteredList(completeList, last30Days);
+          break;
+        default:
           break;
       }
       completeList = dateFilteredList;
@@ -454,5 +459,20 @@ public class TechnologyServiceImpl implements TechnologyService {
     technology.setLastActivity(new Date());
     technology.setLastActivityUser(user.getEmail());
     technologyDAO.update(technology);
+  }
+
+  @Override
+  public Technology deleteTechnology(String technologyId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException {
+    validateUser(user);
+    Technology technology = technologyDAO.findById(technologyId);
+    if (technology == null) {
+      throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
+    }
+    technology.setActive(Boolean.FALSE);
+    technologyDAO.update(technology);
+    audit(technologyId, user);
+    return technology;
   }
 }
