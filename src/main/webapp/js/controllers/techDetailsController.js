@@ -103,6 +103,7 @@ angular.module('techGallery').controller(
       $scope.name = technology.name;
       $scope.description = technology.description;
       $scope.recommendation = technology.recommendation;
+      $scope.justification = technology.recommendationJustification;
       $scope.image = technology.image;
       $scope.website = technology.website;
     }

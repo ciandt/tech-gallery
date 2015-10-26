@@ -71,7 +71,7 @@
 	    					placeholder="<Nome>" required="required" aria-describedby="basic-addon2">
         		</div>
       		</div>
-      		<div class="spacingtop row" ng-show="!loggedUserInformation.admin">
+      		<div class="spacingtop row" ng-show="loggedUserInformation.admin">
       		  <div class="btn-group col-md-9" dropdown>
 	            <button id="single-button" type="button" class="btn btn-default" dropdown-toggle>
 	              {{ selectedRecommendation==null ? 'Recomendação Ci&T' : selectedRecommendation }} <span class="caret"></span>
@@ -83,7 +83,7 @@
 	            </ul>
             </div>
           </div>
-      		<div class="spacingtop row" ng-show="!loggedUserInformation.admin">
+      		<div class="spacingtop row" ng-show="loggedUserInformation.admin">
             <div class="col-md-9 text-right">
               <textarea ng-model="justification" class="form-control textarea"  
                id="idjust" maxlength="500" placeholder="<Justificativa da Recomendação Ci&T>" ></textarea>

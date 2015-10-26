@@ -144,6 +144,8 @@ angular.module('techGallery').controller(
 	    			id : slugify($scope.name),
 	    			name : $scope.name,
 	    			shortDescription : $scope.shortDescription, 
+	    			recommendationJustification : $scope.justification,
+	    			recommendation : $scope.selectedRecommendation,
 	    			description : $scope.description,
 	    			website : $scope.webSite,
 	    			image : $scope.image
