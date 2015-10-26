@@ -21,6 +21,8 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -284,9 +286,8 @@ public class TechnologyServiceImpl implements TechnologyService {
     completeList = filterByLastActivityDate(techFilter, completeList);
 
     List<Technology> filteredList = new ArrayList<>();
-    if ((techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty())
-        && (techFilter.getRecommendationIs() == null
-            || techFilter.getRecommendationIs().isEmpty())) {
+    if (StringUtils.isBlank(techFilter.getTitleContains())
+        && StringUtils.isBlank(techFilter.getRecommendationIs())) {
       filteredList.addAll(completeList);
     } else {
       verifyFilters(techFilter, completeList, filteredList);
