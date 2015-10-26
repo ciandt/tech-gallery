@@ -11,5 +11,4 @@ public interface EmailService {
   void execute(String userId, String technologyId, String recommendationsIds, String commentsIds,
       String serverUrl);
 
-  void sendEmailtoFollowers();
 }

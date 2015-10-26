@@ -2,7 +2,6 @@ package com.ciandt.techgallery.persistence.model;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
 
 import java.util.List;
@@ -12,8 +11,6 @@ public class EmailNotification extends BaseEntity<Long> {
 
   @Id
   private Long id;
-  @Index
-  private String technologyId;
   @Unindex
   private List<String> recipients;
   @Unindex
@@ -31,14 +28,6 @@ public class EmailNotification extends BaseEntity<Long> {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public String getTechnologyId() {
-    return technologyId;
-  }
-
-  public void setTechnologyId(String technologyId) {
-    this.technologyId = technologyId;
   }
 
   public List<String> getRecipients() {

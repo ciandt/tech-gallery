@@ -2,10 +2,8 @@ package com.ciandt.techgallery.service.impl;
 
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
-import com.google.apphosting.api.ApiProxy;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.dao.CronJobDAO;
@@ -20,24 +18,19 @@ import com.ciandt.techgallery.persistence.dao.impl.TechnologyCommentDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyFollowersDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyRecommendationDAOImpl;
-import com.ciandt.techgallery.persistence.model.CronJob;
 import com.ciandt.techgallery.persistence.model.EmailNotification;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
-import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.EmailService;
 import com.ciandt.techgallery.service.email.EmailConfig;
-import com.ciandt.techgallery.service.enums.CronStatus;
 import com.ciant.techgallery.transaction.Transactional;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,64 +181,9 @@ public class EmailServiceImpl implements EmailService {
 
   private InternetAddress getFrom() throws UnsupportedEncodingException {
     if (from == null) {
-      String appId = ApiProxy.getCurrentEnvironment().getAppId();
-      int tilde = appId.indexOf('~');
-      if (tilde >= 0) { // TODO make this into an environment property
-        appId = appId.substring(tilde + 1);
-      }
-      String addr = "google-project@ciandt.com";
-      log.info("app email from address set to: " + addr);
-      from = new InternetAddress(addr, "no-reply@google.com");
+      log.info("app email from address set to: " + Constants.APP_EMAIL);
+      from = new InternetAddress(Constants.APP_EMAIL, "no-reply@techgallery.com");
     }
     return from;
-  }
-
-  /**
-   * Push one email to email queue for each follower user in each technology that have
-   * followers.
-   */
-  public void sendEmailtoFollowers() {
-    CronJob cronJob = new CronJob();
-    cronJob.setName(Constants.CRON_MAIL_JOB);
-    cronJob.setStartTimestamp(new Date());
-    try {
-      
-      List<TechnologyFollowers> techFollowers = technologyFollowersDao.findAll();
-      if (techFollowers != null && techFollowers.size() > 0) {
-        for (TechnologyFollowers technologyFollowers : techFollowers) {
-          Technology technology = technologyFollowers.getTechnology().get();
-          if (technologyFollowers.getFollowers().size() > 0) {
-            Date lastCronJobExecDate;
-            CronJob lastCronJob = cronJobsDao.findLastExecutedCronJob(Constants.CRON_MAIL_JOB);
-            if (lastCronJob != null) {
-              lastCronJobExecDate = lastCronJob.getStartTimestamp();
-            } else {
-              Calendar cal = Calendar.getInstance();
-              cal.add(Calendar.DAY_OF_MONTH, -1);
-              lastCronJobExecDate = cal.getTime();
-            }
-            String dailyRecommendationsIds =
-                technologyRecommendationDao
-                    .findAllRecommendationsIdsStartingFrom(lastCronJobExecDate);
-            String dailyCommentsIds =
-                technologyCommentDao.findAllCommentsIdsStartingFrom(lastCronJobExecDate);
-            List<Ref<TechGalleryUser>> followers = technologyFollowers.getFollowers();
-            if (!dailyRecommendationsIds.isEmpty() || !dailyCommentsIds.isEmpty()) {
-              for (Ref<TechGalleryUser> ref : followers) {
-                TechGalleryUser follower = ref.get();
-                push(follower, technology, dailyRecommendationsIds, dailyCommentsIds);
-              }
-            }
-          }
-        }
-      }
-      cronJob.setEndTimestamp(new Date());
-      cronJob.setCronStatus(CronStatus.SUCCESS);
-    } catch (Exception e) {
-      cronJob.setEndTimestamp(new Date());
-      cronJob.setCronStatus(CronStatus.FAILURE);
-      cronJob.setDescription(e.getMessage());
-    }
-    cronJobsDao.add(cronJob);
   }
 }

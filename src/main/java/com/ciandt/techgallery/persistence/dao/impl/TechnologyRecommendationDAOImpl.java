@@ -87,15 +87,13 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
 
   @Override
   public String findAllRecommendationsIdsStartingFrom(Date date) {
-    final Objectify objectify = OfyService.ofy();
-    final List<TechnologyRecommendation> allRecommendations =
-        objectify.load().type(TechnologyRecommendation.class).list();
     String recommendationsIds = "";
-    for (TechnologyRecommendation techRecommendation : allRecommendations) {
-      TechnologyComment techComment = techRecommendation.getComment().get();
-      if (techComment.getTimestamp().after(date)) {
-        recommendationsIds = recommendationsIds.concat("," + techRecommendation.getId());
-      }
+    final Objectify objectify = OfyService.ofy();
+    final List<TechnologyRecommendation> recommendations =
+        objectify.load().type(TechnologyRecommendation.class)
+            .filter(TechnologyRecommendation.TIMESTAMP + " >" , date).list();
+    for (TechnologyRecommendation technologyRecommendation : recommendations) {
+      recommendationsIds = recommendationsIds.concat("," + technologyRecommendation.getId());
     }
     return recommendationsIds;
   }
