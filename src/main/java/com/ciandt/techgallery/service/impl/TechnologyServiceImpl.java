@@ -3,6 +3,7 @@ package com.ciandt.techgallery.service.impl;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.dao.StorageDAO;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -79,7 +81,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     validateInformations(technology);
     String imageLink = technology.getImage();
-    if (technology.getRecommendation() == null) {
+    if (technology.getRecommendation() == null && technology.getImage() != null) {
       imageLink = storageDAO.insertImage(convertNameToId(technology.getName()),
           new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImage())));
     }
@@ -105,7 +107,9 @@ public class TechnologyServiceImpl implements TechnologyService {
     if (user != null && user.getEmail() != null) {
       technology.setAuthor(user.getEmail());
     }
+    technology.setActive(Boolean.TRUE);
     technology.setCreationDate(new Date());
+    technology.setLastActivity(new Date());
     technology.setImage(imageLink);
     technology.initCounters();
   }
@@ -142,7 +146,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     } else if (technology.getName() == null || technology.getName().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
     } else
-      if (technology.getShortDescription() == null || technology.getShortDescription().equals("")) {
+      if (technology.getShortDescription() == null || technology.getShortDescription().isEmpty()) {
       throw new BadRequestException(
           ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
     } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
@@ -162,7 +166,7 @@ public class TechnologyServiceImpl implements TechnologyService {
    */
   @Override
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
-    List<Technology> techEntities = technologyDAO.findAll();
+    List<Technology> techEntities = technologyDAO.findAllActiveTechnologies();
     // if list is null, return a not found exception
     if (techEntities == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
@@ -211,6 +215,14 @@ public class TechnologyServiceImpl implements TechnologyService {
           }
         });
         break;
+      case LAST_ACTIVITY_DATE:
+        Collections.sort(techList, new Comparator<Technology>() {
+          @Override
+          public int compare(Technology counter1, Technology counter2) {
+            return counter2.getLastActivity().compareTo(counter1.getLastActivity());
+          }
+        });
+        break;
       default:
         break;
     }
@@ -231,6 +243,25 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
+  private List<Technology> setDateFilteredList(List<Technology> completeList, Date dateReference) {
+    List<Technology> dateFilteredList = new ArrayList<>();
+    for (Technology technology : completeList) {
+      if (technology.getLastActivity().after(dateReference)
+          || technology.getLastActivity().equals(dateReference)) {
+        dateFilteredList.add(technology);
+      }
+    }
+    return dateFilteredList;
+  }
+
+  private Date setDateReference(Date currentDate, int daysToSubtract) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(currentDate);
+    cal.add(Calendar.DATE, daysToSubtract);
+    Date dateReference = cal.getTime();
+    return dateReference;
+  }
+
   @Override
   public Response findTechnologiesByFilter(TechnologyFilter techFilter, User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {
@@ -239,8 +270,32 @@ public class TechnologyServiceImpl implements TechnologyService {
         && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())) {
       techFilter.setRecommendationIs("");
     }
-
     List<Technology> completeList = technologyDAO.findAll();
+    List<Technology> dateFilteredList = new ArrayList<>();
+
+    if (techFilter.getDateFilter() != null) {
+      Date currentDate = new Date();
+      switch (techFilter.getDateFilter()) {
+        case LAST_DAY:
+          Date lastDay = setDateReference(currentDate, -1);
+          dateFilteredList = setDateFilteredList(completeList, lastDay);
+          break;
+
+        case LAST_7_DAYS:
+          Date last7Days = setDateReference(currentDate, -7);
+          dateFilteredList = setDateFilteredList(completeList, last7Days);
+          break;
+
+        case LAST_30_DAYS:
+          Date last30Days = setDateReference(currentDate, -30);
+          dateFilteredList = setDateFilteredList(completeList, last30Days);
+          break;
+        default:
+          break;
+      }
+      completeList = dateFilteredList;
+    }
+
     List<Technology> filteredList = new ArrayList<>();
     if ((techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty())
         && (techFilter.getRecommendationIs() == null
@@ -396,5 +451,28 @@ public class TechnologyServiceImpl implements TechnologyService {
   public void updateEdorsedsCounter(Technology technology, Integer size) {
     technology.setEndorsersCounter(size);
     technologyDAO.update(technology);
+  }
+
+  @Override
+  public void audit(String technologyId, User user) throws NotFoundException {
+    Technology technology = getTechnologyById(technologyId);
+    technology.setLastActivity(new Date());
+    technology.setLastActivityUser(user.getEmail());
+    technologyDAO.update(technology);
+  }
+
+  @Override
+  public Technology deleteTechnology(String technologyId, User user)
+      throws InternalServerErrorException, BadRequestException, NotFoundException,
+      OAuthRequestException {
+    validateUser(user);
+    Technology technology = technologyDAO.findById(technologyId);
+    if (technology == null) {
+      throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
+    }
+    technology.setActive(Boolean.FALSE);
+    technologyDAO.update(technology);
+    audit(technologyId, user);
+    return technology;
   }
 }

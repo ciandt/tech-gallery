@@ -43,6 +43,9 @@ public class TechGalleryUser extends BaseEntity<Long> {
   @Index
   private String googleId;
 
+  @Index
+  private boolean admin;
+
   @Override
   public Long getId() {
     return id;
@@ -83,6 +86,14 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   public void setGoogleId(String googleId) {
     this.googleId = googleId;
+  }
+
+  public boolean isAdmin() {
+    return admin;
+  }
+
+  public void setAdmin(boolean admin) {
+    this.admin = admin;
   }
 
   @Override

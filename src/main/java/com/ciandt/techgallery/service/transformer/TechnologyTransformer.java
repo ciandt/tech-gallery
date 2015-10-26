@@ -16,12 +16,14 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
     product.setImage(baseObject.getImage());
     product.setName(baseObject.getName());
     product.setRecommendation(baseObject.getRecommendation());
+    product.setRecommendationJustification(baseObject.getRecommendationJustification());
     product.setShortDescription(baseObject.getShortDescription());
     product.setWebsite(baseObject.getWebsite());
     product.setPositiveRecommendationsCounter(baseObject.getPositiveRecommendationsCounter());
     product.setNegativeRecommendationsCounter(baseObject.getNegativeRecommendationsCounter());
     product.setCommentariesCounter(baseObject.getCommentariesCounter());
     product.setEndorsersCounter(baseObject.getEndorsersCounter());
+    product.setLastActivity(baseObject.getLastActivity());
     return product;
   }
 
@@ -35,12 +37,14 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
       product.setImage(baseObject.getImage());
       product.setName(baseObject.getName());
       product.setRecommendation(baseObject.getRecommendation());
+      product.setRecommendationJustification(baseObject.getRecommendationJustification());
       product.setShortDescription(baseObject.getShortDescription());
       product.setWebsite(baseObject.getWebsite());
       product.setPositiveRecommendationsCounter(baseObject.getPositiveRecommendationsCounter());
       product.setNegativeRecommendationsCounter(baseObject.getNegativeRecommendationsCounter());
       product.setCommentariesCounter(baseObject.getCommentariesCounter());
       product.setEndorsersCounter(baseObject.getEndorsersCounter());
+      product.setLastActivity(baseObject.getLastActivity());
       return product;
     } else {
       return null;

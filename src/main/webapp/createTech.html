@@ -40,8 +40,6 @@
       </div>
     </nav>
 
-    <div class="page-header"></div>
-
     <div class="login-Button" ng-show="showLogin">
       <h3 ng-show="!domainError">Para ter acesso ao conteúdo realize seu login...</h3>
       <h3 ng-show="domainError">{{domainError}}</h3>
@@ -58,7 +56,7 @@
           <div class="row">
             <div id="div_image" class="col-xs-6">
                 <output id="list">
-                  <img src="assets/images/no_image.png" title="Insira uma imagem" width="200" >
+                  <img src="/images/no_image.png" title="Insira uma imagem" width="200" >
                 </output>
             </div>
           </div>
@@ -72,11 +70,30 @@
                 placeholder="<Nome>" required="required" aria-describedby="basic-addon2">
             </div>
           </div>
+          <div class="spacingtop row" dropdown>
+            <div class="col-md-9">
+              <button id="single-button" type="button" class="btn btn-default" dropdown-toggle
+               ng-disabled="!loggedUserInformation.admin">
+                {{ selectedRecommendation==null ? 'Recomendação Ci&T' : selectedRecommendation }} <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+                <li role="menuitem" ng-repeat="item in dropDownRecommendation">
+                  <a href="#" ng-show="item != 'Todos'" ng-click="selectRecommendation(item)">{{item}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="spacingtop row">
+            <div class="col-md-9 text-right">
+              <textarea ng-model="justification" class="form-control textarea" ng-disabled="!loggedUserInformation.admin"
+               id="idjust" maxlength="500" placeholder="<Justificativa da Recomendação Ci&T>" ></textarea>
+            </div>
+          </div>
           <div class="spacingtop row" id="div_details">
             <div class="col-md-9 text-right">
-          <textarea ng-model="description" class="form-control textarea" required="required"
-            id="iddesc" maxlength="500" placeholder="<Descrição>" ></textarea>
-          </div>
+              <textarea ng-model="description" class="form-control textarea" required="required"
+               id="iddesc" maxlength="500" placeholder="<Descrição>" ></textarea>
+            </div>
           </div>
           <div class="spacingtop row">
             <div class="col-md-9">
