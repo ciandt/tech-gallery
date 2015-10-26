@@ -13,12 +13,14 @@ import java.util.List;
 
 /**
  * GenericDAOImpl methods implementation.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */
 public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable>
     implements GenericDAO<T, ID> {
+
+  public static final String ACTIVE = "active";
 
   private Class<T> clazz;
 
@@ -32,6 +34,16 @@ public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable>
   public List<T> findAll() {
     Objectify objectify = OfyService.ofy();
     List<T> entities = objectify.load().type(clazz).list();
+    if (entities == null || entities.size() <= 0) {
+      return null;
+    }
+    return entities;
+  }
+
+  @Override
+  public List<T> findAllActives() {
+    Objectify objectify = OfyService.ofy();
+    List<T> entities = objectify.load().type(clazz).filter(ACTIVE, Boolean.TRUE).list();
     if (entities == null || entities.size() <= 0) {
       return null;
     }

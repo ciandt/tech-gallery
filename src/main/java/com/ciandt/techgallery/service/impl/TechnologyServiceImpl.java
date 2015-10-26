@@ -145,8 +145,8 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     } else if (technology.getName() == null || technology.getName().equals("")) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
-    } else
-      if (technology.getShortDescription() == null || technology.getShortDescription().isEmpty()) {
+    } else if (technology.getShortDescription() == null
+        || technology.getShortDescription().isEmpty()) {
       throw new BadRequestException(
           ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
     } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
@@ -270,7 +270,7 @@ public class TechnologyServiceImpl implements TechnologyService {
         && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())) {
       techFilter.setRecommendationIs("");
     }
-    List<Technology> completeList = technologyDAO.findAll();
+    List<Technology> completeList = technologyDAO.findAllActives();
     List<Technology> dateFilteredList = new ArrayList<>();
 
     if (techFilter.getDateFilter() != null) {
