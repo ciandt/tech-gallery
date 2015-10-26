@@ -340,31 +340,39 @@ public class UserServiceTGImpl implements UserServiceTG {
    * @throws InternalServerErrorException if any IO exceptions occur
    */
   @Override
-  public List<UserResponse> getUsersAutoComplete(String userLogin)
+  public List<UserResponse> getUsersByPartialLogin(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
-    userLogin += "*";
-    List<UserResponse> techUsers = (List<UserResponse>) syncCache.get(userLogin);
+    String userLoginFormatted = userLogin + "*";
+    List<UserResponse> techUsers = (List<UserResponse>) syncCache.get(userLoginFormatted);
     if (techUsers == null) {
       techUsers = new ArrayList<>();
-      Map<String, Object> map = peopleApiConnect(userLogin, PEOPLE_ENDPOINT_SEARCH);
+      Map<String, Object> map = peopleApiConnect(userLoginFormatted, PEOPLE_ENDPOINT_SEARCH);
       ArrayList<?> peopleApiResponse = (ArrayList<?>) map.get("data");
       for (int index = 0; index < peopleApiResponse.size(); index++) {
         ArrayList<?> peopleApiUser = (ArrayList<?>) peopleApiResponse.get(index);
-        TechGalleryUser foundUser =
-            userDao.findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
-        UserResponse tgUser = new UserResponse();
-        if (foundUser != null) {
-          tgUser.setEmail(foundUser.getEmail().split("@")[0]);
-          tgUser.setName(foundUser.getName());
-          tgUser.setPhoto(foundUser.getPhoto());
-        } else {
-          tgUser.setEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
-          tgUser.setName((String) peopleApiUser.get(INDEX_PEOPLE_API_NAME));
-          tgUser.setPhoto(null);
+        final String peopleNameLowerCase =
+            peopleApiUser.get(INDEX_PEOPLE_API_NAME).toString().toLowerCase();
+        final String peopleLoginLowerCase =
+            peopleApiUser.get(INDEX_PEOPLE_API_LOGIN).toString().toLowerCase();
+        if (peopleNameLowerCase.contains(userLogin.toLowerCase())
+            || peopleLoginLowerCase.contains(userLogin.toLowerCase())) {
+
+          TechGalleryUser foundUser = userDao
+              .findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
+          UserResponse tgUser = new UserResponse();
+          if (foundUser != null) {
+            tgUser.setEmail(foundUser.getEmail().split("@")[0]);
+            tgUser.setName(foundUser.getName());
+            tgUser.setPhoto(foundUser.getPhoto());
+          } else {
+            tgUser.setEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
+            tgUser.setName((String) peopleApiUser.get(INDEX_PEOPLE_API_NAME));
+            tgUser.setPhoto(null);
+          }
+          techUsers.add(tgUser);
         }
-        techUsers.add(tgUser);
       }
-      syncCache.put(userLogin, techUsers, memCacheTimeExpliration);
+      syncCache.put(userLoginFormatted, techUsers, memCacheTimeExpliration);
     }
     return techUsers;
   }
