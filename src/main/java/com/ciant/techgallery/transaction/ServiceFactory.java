@@ -1,6 +1,6 @@
 package com.ciant.techgallery.transaction;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,11 +37,9 @@ public class ServiceFactory {
       return proxy;
     } else {
       try {
-        Method method = implementation.getDeclaredMethods()[0];
-        T newInstance = (T) method.invoke(null);
-        // Constructor<?> constructor = implementation.getConstructor(null);
-        // constructor.setAccessible(true);
-        // T newInstance = (T) constructor.newInstance();
+        Constructor<T> constructor = (Constructor<T>) implementation.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        T newInstance = (T) constructor.newInstance();
         cache.put(key, newInstance);
         return newInstance;
       } catch (Exception e) {
