@@ -1,12 +1,12 @@
 package com.ciant.techgallery.transaction;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Creates Services intances.
- * All services must be singletons and can be or not Transactional
+ * Creates Services intances. All services must be singletons and can be or not Transactional
  * 
  * @author bcarneiro
  *
@@ -15,18 +15,16 @@ public class ServiceFactory {
 
   private static Map<String, Object> cache = new HashMap<String, Object>();
 
-  /** 
-   * Creates a service instance following the rules below.
-   * -If a service implementation has Transactional annotation should 
-   * be returned a new Transactional Proxy for the implementation
+  /**
+   * Creates a service instance following the rules below. -If a service implementation has
+   * Transactional annotation should be returned a new Transactional Proxy for the implementation
    * -Else create a plain instance of implementation class
    * 
    * @param interfac return type
    * @param implementation what implementation will be
    * @return new Service based on the rules above
    */
-  public static <T> T createServiceImplementation(Class<T> interfac,
-      Class<?> implementation) {
+  public static <T> T createServiceImplementation(Class<T> interfac, Class<?> implementation) {
 
     String key = implementation.getName();
 
@@ -39,7 +37,11 @@ public class ServiceFactory {
       return proxy;
     } else {
       try {
-        T newInstance = (T) implementation.newInstance();
+        Method method = implementation.getDeclaredMethods()[0];
+        T newInstance = (T) method.invoke(null);
+        // Constructor<?> constructor = implementation.getConstructor(null);
+        // constructor.setAccessible(true);
+        // T newInstance = (T) constructor.newInstance();
         cache.put(key, newInstance);
         return newInstance;
       } catch (Exception e) {

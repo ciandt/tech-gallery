@@ -3,7 +3,6 @@ package com.ciandt.techgallery.service.impl;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
 
 import com.googlecode.objectify.Ref;
 
@@ -16,6 +15,7 @@ import com.ciandt.techgallery.service.TechnologyFollowersService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciant.techgallery.transaction.Transactional;
 
 import java.util.ArrayList;
 
@@ -69,14 +69,15 @@ public class TechnologyFollowersServiceImpl implements TechnologyFollowersServic
   }
 
   @Override
-  public Technology followTechnology(String technologyId, User user)
+  @Transactional
+  public Technology followTechnology(String technologyId, TechGalleryUser techUser)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
-    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+
     if (techUser.getFollowedTechnologyIds() == null) {
       techUser.setFollowedTechnologyIds(new ArrayList<String>());
     }
-    Technology technology = techService.getTechnologyById(technologyId, user);
-    TechnologyFollowers technologyFollowers = followersDao.findByTechnology(technology);
+    Technology technology = techService.getTechnologyById(technologyId, null);
+    TechnologyFollowers technologyFollowers = followersDao.findById(technology.getId());
 
     if (technologyFollowers == null
         || !technologyFollowers.getFollowers().contains(Ref.create(techUser))) {
