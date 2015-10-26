@@ -6,10 +6,10 @@ import com.ciandt.techgallery.persistence.model.Technology;
 
 public interface EmailService {
   void push(TechGalleryUser user, Technology technology, String recommendationsIds,
-      String commentsIds, String isLastItem, String keyCronJob);
+      String commentsIds);
 
   void execute(String userId, String technologyId, String recommendationsIds, String commentsIds,
-      String isLastItem, String keyCronJob, String serverUrl);
+      String serverUrl);
 
-  void sendDailyEmailtoFollowers();
+  void sendEmailtoFollowers();
 }

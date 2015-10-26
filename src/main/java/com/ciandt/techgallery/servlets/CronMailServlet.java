@@ -18,7 +18,7 @@ public class CronMailServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    emailService.sendDailyEmailtoFollowers();
+    emailService.sendEmailtoFollowers();
     _LOG.info("Executing schedule task.");
   }
 }

@@ -5,6 +5,8 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
 
+import com.ciandt.techgallery.service.enums.CronStatus;
+
 import java.util.Date;
 
 @Entity
@@ -17,6 +19,8 @@ public class CronJob extends BaseEntity<Long> {
   public static final String NAME = "name";
   public static final String START_TIMESTAMP = "startTimestamp";
   public static final String END_TIMESTAMP = "endTimestamp";
+  public static final String CRON_STATUS = "cronStatus";
+  public static final String DESCRIPTION = "description";
 
   @Id
   Long id;
@@ -29,6 +33,12 @@ public class CronJob extends BaseEntity<Long> {
   
   @Unindex
   private Date endTimestamp;
+  
+  @Index
+  private CronStatus cronStatus;
+  
+  @Unindex
+  private String description;
 
   @Override
   public Long getId() {
@@ -62,5 +72,21 @@ public class CronJob extends BaseEntity<Long> {
 
   public void setEndTimestamp(Date endTimestamp) {
     this.endTimestamp = endTimestamp;
+  }
+
+  public CronStatus getCronStatus() {
+    return cronStatus;
+  }
+
+  public void setCronStatus(CronStatus cronStatus) {
+    this.cronStatus = cronStatus;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 }

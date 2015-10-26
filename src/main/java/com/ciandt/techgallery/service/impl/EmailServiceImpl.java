@@ -29,6 +29,7 @@ import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.EmailService;
 import com.ciandt.techgallery.service.email.EmailConfig;
+import com.ciandt.techgallery.service.enums.CronStatus;
 import com.ciant.techgallery.transaction.Transactional;
 
 import java.io.File;
@@ -96,31 +97,40 @@ public class EmailServiceImpl implements EmailService {
       TechnologyRecommendationDAOImpl.getInstance();
   private TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
 
+  /**
+   * Push email to queue.
+   */
   @Override
   public void push(TechGalleryUser user, Technology technology, String recommendationsIds,
-      String commentsIds, String isLastItem, String keyCronJob) {
+      String commentsIds) {
     QueueFactory.getQueue(queueName).add(
         TaskOptions.Builder.withUrl(queueUrl).param("userId", user.getId().toString())
-            .param("technologyId", technology.getId()).param("isLastItem", isLastItem)
-            .param("keyCronJob", keyCronJob).param("recommendationsIds", recommendationsIds)
-            .param("commentsIds", commentsIds));
+            .param("technologyId", technology.getId())
+            .param("recommendationsIds", recommendationsIds).param("commentsIds", commentsIds));
   }
 
+  /**
+   * Execute email from queue.
+   */
   @Override
   public void execute(String userId, String technologyId, String recommendationsIds,
-      String commentsIds, String isLastItem, String keyCronJob, String serverUrl) {
+      String commentsIds, String serverUrl) {
     if (!commentsIds.isEmpty()) {
       String[] commentIds = commentsIds.split(",");
       List<TechnologyComment> comments = new ArrayList<TechnologyComment>();
       for (String id : commentIds) {
-        comments.add(technologyCommentDao.findById(Long.parseLong(id)));
+        if (!id.isEmpty()) {
+          comments.add(technologyCommentDao.findById(Long.parseLong(id)));
+        }
       }
     }
     if (!recommendationsIds.isEmpty()) {
       String[] recommendIds = recommendationsIds.split(",");
       List<TechnologyRecommendation> recommendations = new ArrayList<TechnologyRecommendation>();
       for (String id : recommendIds) {
-        recommendations.add(technologyRecommendationDao.findById(Long.parseLong(id)));
+        if (!id.isEmpty()) {
+          recommendations.add(technologyRecommendationDao.findById(Long.parseLong(id)));
+        }
       }
     }
     TechGalleryUser user = TechGalleryUserDAOImpl.getInstance().findById(Long.parseLong(userId));
@@ -134,11 +144,6 @@ public class EmailServiceImpl implements EmailService {
     EmailConfig email = new EmailConfig(subject, "emailtemplates" + File.separator + template,
         variableValue, null, reason, user.getEmail());
     sendEmail(email);
-    if (Boolean.parseBoolean(isLastItem)) {
-      CronJob cronJob = cronJobsDao.findById(Key.create(keyCronJob).getId());
-      cronJob.setEndTimestamp(new Date());
-      cronJobsDao.update(cronJob);
-    }
   }
 
   private void sendEmail(EmailConfig email) {
@@ -188,7 +193,7 @@ public class EmailServiceImpl implements EmailService {
       if (tilde >= 0) { // TODO make this into an environment property
         appId = appId.substring(tilde + 1);
       }
-      String addr = "no-reply@" + appId + ".appspotmail.com";
+      String addr = "google-project@ciandt.com";
       log.info("app email from address set to: " + addr);
       from = new InternetAddress(addr, "no-reply@google.com");
     }
@@ -196,38 +201,51 @@ public class EmailServiceImpl implements EmailService {
   }
 
   /**
-   * Push one daily email to email queue for each follower user in each technology that have
+   * Push one email to email queue for each follower user in each technology that have
    * followers.
    */
-  public void sendDailyEmailtoFollowers() {
-    Boolean isLastTech = Boolean.FALSE;
+  public void sendEmailtoFollowers() {
     CronJob cronJob = new CronJob();
     cronJob.setName(Constants.CRON_MAIL_JOB);
     cronJob.setStartTimestamp(new Date());
-    Key<CronJob> keyCronJob = cronJobsDao.add(cronJob);
-    List<TechnologyFollowers> techFollowers = technologyFollowersDao.findAll();
-    if (techFollowers != null && techFollowers.size() > 0) {
-      for (TechnologyFollowers technologyFollowers : techFollowers) {
-        Technology technology = technologyFollowers.getTechnology().get();
-        isLastTech = technology.getId().equals(techFollowers.get(techFollowers.size() - 1).getId());
-        if (technologyFollowers.getFollowers().size() > 0) {
-          Calendar cal = Calendar.getInstance();
-          cal.add(Calendar.DAY_OF_MONTH, -1);
-          Date dateYesterday = cal.getTime();
-          String dailyRecommendationsIds =
-              technologyRecommendationDao.findAllRecommendationsIdsStartingFrom(dateYesterday);
-          String dailyCommentsIds =
-              technologyCommentDao.findAllCommentsIdsStartingFrom(dateYesterday);
-          List<Ref<TechGalleryUser>> followers = technologyFollowers.getFollowers();
-          if (!dailyRecommendationsIds.isEmpty() || !dailyCommentsIds.isEmpty()) {
-            for (Ref<TechGalleryUser> ref : followers) {
-              TechGalleryUser follower = ref.get();
-              push(follower, technology, dailyRecommendationsIds, dailyCommentsIds,
-                  isLastTech.toString(), keyCronJob.toWebSafeString());
+    try {
+      
+      List<TechnologyFollowers> techFollowers = technologyFollowersDao.findAll();
+      if (techFollowers != null && techFollowers.size() > 0) {
+        for (TechnologyFollowers technologyFollowers : techFollowers) {
+          Technology technology = technologyFollowers.getTechnology().get();
+          if (technologyFollowers.getFollowers().size() > 0) {
+            Date lastCronJobExecDate;
+            CronJob lastCronJob = cronJobsDao.findLastExecutedCronJob(Constants.CRON_MAIL_JOB);
+            if (lastCronJob != null) {
+              lastCronJobExecDate = lastCronJob.getStartTimestamp();
+            } else {
+              Calendar cal = Calendar.getInstance();
+              cal.add(Calendar.DAY_OF_MONTH, -1);
+              lastCronJobExecDate = cal.getTime();
+            }
+            String dailyRecommendationsIds =
+                technologyRecommendationDao
+                    .findAllRecommendationsIdsStartingFrom(lastCronJobExecDate);
+            String dailyCommentsIds =
+                technologyCommentDao.findAllCommentsIdsStartingFrom(lastCronJobExecDate);
+            List<Ref<TechGalleryUser>> followers = technologyFollowers.getFollowers();
+            if (!dailyRecommendationsIds.isEmpty() || !dailyCommentsIds.isEmpty()) {
+              for (Ref<TechGalleryUser> ref : followers) {
+                TechGalleryUser follower = ref.get();
+                push(follower, technology, dailyRecommendationsIds, dailyCommentsIds);
+              }
             }
           }
         }
       }
+      cronJob.setEndTimestamp(new Date());
+      cronJob.setCronStatus(CronStatus.SUCCESS);
+    } catch (Exception e) {
+      cronJob.setEndTimestamp(new Date());
+      cronJob.setCronStatus(CronStatus.FAILURE);
+      cronJob.setDescription(e.getMessage());
     }
+    cronJobsDao.add(cronJob);
   }
 }
