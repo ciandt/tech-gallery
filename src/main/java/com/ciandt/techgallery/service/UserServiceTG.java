@@ -147,7 +147,7 @@ public interface UserServiceTG {
    *
    * @param string
    *          to search on provider by name or login
-   * 
+   *
    * @return List of users
    * @throws InternalServerErrorException
    *           in case something goes wrong
@@ -156,10 +156,31 @@ public interface UserServiceTG {
    * @throws BadRequestException
    *           in case a request with problem were made.
    */
-  List<UserResponse> getUsersAutoComplete(final String user)
+  List<UserResponse> getUsersByPartialLogin(final String user)
       throws NotFoundException, BadRequestException, InternalServerErrorException;
 
+  /**
+   * @param postGooglePlusPreference
+   *          is the preference of user to be saved
+   * @param user
+   *          is the user logged in
+   * @return the user updated
+   * @throws NotFoundException
+   * @throws BadRequestException
+   * @throws InternalServerErrorException
+   * @throws IOException
+   * @throws OAuthRequestException
+   */
   TechGalleryUser saveUserPreference(Boolean postGooglePlusPreference, User user)
       throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException;
+
+  /**
+   * @param user
+   *          info about user from google
+   * @throws BadRequestException
+   * @throws NotFoundException
+   * @throws InternalServerErrorException
+   */
+  TechGalleryUser validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException;
 
 }

@@ -16,4 +16,8 @@ public class Constants {
   public static final String PLUS_SCOPE = "https://www.googleapis.com/auth/plus.me";
   public static final String PLUS_STREAM_WRITE = "https://www.googleapis.com/auth/plus.stream.write";
 
+  public static final String POSITIVE_RECOMMENDATION_TEXT = "positivamente a tecnologia ";
+  public static final String NEGATIVE_RECOMMENDATION_TEXT = "negativamente a tecnologia ";
+  public static final String NEW_LINE = System.getProperty("line.separator");
+
 }

@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.service.GooglePlusCommunicationService;
+import com.ciandt.techgallery.service.SocialNetworkCommunicationService;
 import com.ciandt.techgallery.service.enums.FeatureEnum;
 import com.ciandt.techgallery.service.impl.GooglePlusCommunicationServiceImpl;
 import com.google.api.server.spi.config.Api;
@@ -18,7 +18,7 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
 /**
- * Endpoint controller class for Google plus communications requests.
+ * Endpoint controller class for Social networks communications requests.
  * 
  * @author Thulio Ribeiro
  *
@@ -26,9 +26,9 @@ import com.google.appengine.api.users.User;
 @Api(name = "rest", version = "v1", clientIds = { Constants.WEB_CLIENT_ID,
     Constants.API_EXPLORER_CLIENT_ID }, scopes = { Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE,
         Constants.PLUS_STREAM_WRITE })
-public class GooglePlusCommunicationEndpoint {
+public class SocialNetworkCommunicationEndpoint {
 
-  private GooglePlusCommunicationService service = GooglePlusCommunicationServiceImpl.getInstance();
+  private SocialNetworkCommunicationService service = GooglePlusCommunicationServiceImpl.getInstance();
 
   /**
    * Endpoint to post the content in users Google+ according the feature
@@ -64,6 +64,9 @@ public class GooglePlusCommunicationEndpoint {
       @Named("endorsedMail") @Nullable String endorsedMail, @Named("technologyName") String technologyName,
       @Named("appLink") String appLink, User user, HttpServletRequest req)
           throws InternalServerErrorException, BadRequestException, NotFoundException, IOException {
-    service.postGooglePlus(feature, score, comment, currentUserMail, endorsedMail, technologyName, appLink, user, req);
+    String header = req.getHeader("Authorization");
+    String accesstoken = header.substring(header.indexOf(' ')).trim();
+    service.postInUserProfile(feature, score, comment, currentUserMail, endorsedMail, technologyName, appLink, user,
+        accesstoken);
   }
 }

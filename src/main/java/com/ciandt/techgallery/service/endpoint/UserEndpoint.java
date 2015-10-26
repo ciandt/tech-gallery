@@ -56,7 +56,7 @@ public class UserEndpoint {
   @ApiMethod(name = "usersAutoComplete", path = "users/autocomplete/{query}", httpMethod = "get")
   public List<UserResponse> usersAutoComplete(@Named("query") String query)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
-    return service.getUsersAutoComplete(query);
+    return service.getUsersByPartialLogin(query);
   }
 
   /**

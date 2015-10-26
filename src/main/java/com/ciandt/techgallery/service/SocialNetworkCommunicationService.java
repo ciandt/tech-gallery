@@ -2,8 +2,6 @@ package com.ciandt.techgallery.service;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.ciandt.techgallery.service.enums.FeatureEnum;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
@@ -16,11 +14,11 @@ import com.google.appengine.api.users.User;
  * @author Thulio Ribeiro
  *
  */
-public interface GooglePlusCommunicationService {
+public interface SocialNetworkCommunicationService {
 
   /**
-   * Service called by endpoint to post the content in users Google+ according
-   * the feature performed by front-end
+   * Service called by endpoint to post the content in users social network
+   * according the feature performed by front-end
    * 
    * @param feature
    *          is the feature performed by front-end
@@ -39,15 +37,15 @@ public interface GooglePlusCommunicationService {
    *          is the comment in case of comment feature.
    * @param user
    *          is the user logged in
-   * @param req
-   *          is the current http servlet request
+   * @param accessToken
+   *          is the access token passed by endpoint
    * @throws InternalServerErrorException
    * @throws BadRequestException
    * @throws NotFoundException
    * @throws IOException
    */
-  void postGooglePlus(FeatureEnum feature, Boolean score, String comment, String currentUserMail, String endorsedMail,
-      String technologyName, String techgalleryLink, User user, HttpServletRequest req)
+  void postInUserProfile(FeatureEnum feature, Boolean score, String comment, String currentUserMail,
+      String endorsedMail, String technologyName, String techgalleryLink, User user, String accessToken)
           throws InternalServerErrorException, BadRequestException, NotFoundException, IOException;
 
 }

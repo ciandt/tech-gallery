@@ -372,31 +372,37 @@ public class UserServiceTGImpl implements UserServiceTG {
    *           if any IO exceptions occur
    */
   @Override
-  public List<UserResponse> getUsersAutoComplete(String userLogin)
+  public List<UserResponse> getUsersByPartialLogin(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
-    userLogin += "*";
-    List<UserResponse> techUsers = (List<UserResponse>) syncCache.get(userLogin);
+    String userLoginFormatted = userLogin + "*";
+    List<UserResponse> techUsers = (List<UserResponse>) syncCache.get(userLoginFormatted);
     if (techUsers == null) {
       techUsers = new ArrayList<>();
-      Map<String, Object> map = peopleApiConnect(userLogin, PEOPLE_ENDPOINT_SEARCH);
+      Map<String, Object> map = peopleApiConnect(userLoginFormatted, PEOPLE_ENDPOINT_SEARCH);
       ArrayList<?> peopleApiResponse = (ArrayList<?>) map.get("data");
       for (int index = 0; index < peopleApiResponse.size(); index++) {
         ArrayList<?> peopleApiUser = (ArrayList<?>) peopleApiResponse.get(index);
-        TechGalleryUser foundUser = userDao
-            .findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
-        UserResponse tgUser = new UserResponse();
-        if (foundUser != null) {
-          tgUser.setEmail(foundUser.getEmail().split("@")[0]);
-          tgUser.setName(foundUser.getName());
-          tgUser.setPhoto(foundUser.getPhoto());
-        } else {
-          tgUser.setEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
-          tgUser.setName((String) peopleApiUser.get(INDEX_PEOPLE_API_NAME));
-          tgUser.setPhoto(null);
+        final String peopleNameLowerCase = peopleApiUser.get(INDEX_PEOPLE_API_NAME).toString().toLowerCase();
+        final String peopleLoginLowerCase = peopleApiUser.get(INDEX_PEOPLE_API_LOGIN).toString().toLowerCase();
+        if (peopleNameLowerCase.contains(userLogin.toLowerCase())
+            || peopleLoginLowerCase.contains(userLogin.toLowerCase())) {
+
+          TechGalleryUser foundUser = userDao
+              .findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
+          UserResponse tgUser = new UserResponse();
+          if (foundUser != null) {
+            tgUser.setEmail(foundUser.getEmail().split("@")[0]);
+            tgUser.setName(foundUser.getName());
+            tgUser.setPhoto(foundUser.getPhoto());
+          } else {
+            tgUser.setEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
+            tgUser.setName((String) peopleApiUser.get(INDEX_PEOPLE_API_NAME));
+            tgUser.setPhoto(null);
+          }
+          techUsers.add(tgUser);
         }
-        techUsers.add(tgUser);
       }
-      syncCache.put(userLogin, techUsers, memCacheTimeExpliration);
+      syncCache.put(userLoginFormatted, techUsers, memCacheTimeExpliration);
     }
     return techUsers;
   }
@@ -477,6 +483,13 @@ public class UserServiceTGImpl implements UserServiceTG {
     return userDao.findByGoogleId(googleId);
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.ciandt.techgallery.service.UserServiceTG#saveUserPreference(java.lang.
+   * Boolean, com.google.appengine.api.users.User)
+   */
   @Override
   public TechGalleryUser saveUserPreference(Boolean postGooglePlusPreference, User user)
       throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
@@ -491,19 +504,15 @@ public class UserServiceTGImpl implements UserServiceTG {
     return techUser;
   }
 
-  /**
-   * Validate the user logged in.
-   *
-   * @param user
-   *          info about user from google
-   * @throws InternalServerErrorException
-   *           in case something goes wrong
-   * @throws NotFoundException
-   *           in case the information are not founded
-   * @throws BadRequestException
-   *           in case a request with problem were made.
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.ciandt.techgallery.service.UserServiceTG#validateUser(com.google.
+   * appengine.api.users.User)
    */
-  private void validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException {
+  @Override
+  public TechGalleryUser validateUser(User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
@@ -513,6 +522,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     if (techUser == null) {
       throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
+    return techUser;
   }
 
 }

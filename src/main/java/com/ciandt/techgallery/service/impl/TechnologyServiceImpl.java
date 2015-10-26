@@ -166,7 +166,7 @@ public class TechnologyServiceImpl implements TechnologyService {
    */
   @Override
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
-    List<Technology> techEntities = technologyDAO.findAllActiveTechnologies();
+    List<Technology> techEntities = technologyDAO.findAllActives();
     // if list is null, return a not found exception
     if (techEntities == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());

@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.GooglePlusCommunicationService;
+import com.ciandt.techgallery.service.SocialNetworkCommunicationService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.FeatureEnum;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
@@ -29,14 +27,11 @@ import com.google.appengine.api.users.User;
  * @author Thulio Ribeiro
  *
  */
-public class GooglePlusCommunicationServiceImpl implements GooglePlusCommunicationService {
+public class GooglePlusCommunicationServiceImpl implements SocialNetworkCommunicationService {
 
   private static GooglePlusCommunicationServiceImpl instance;
 
-  private static final String POSITIVE_RECOMMENDATION_TEXT = "positivamente a tecnologia ";
-  private static final String NEGATIVE_RECOMMENDATION_TEXT = "negativamente a tecnologia ";
   private UserServiceTG userService = UserServiceTGImpl.getInstance();
-  public static final String NEW_LINE = System.getProperty("line.separator");
 
   private GooglePlusCommunicationServiceImpl() {
   }
@@ -65,12 +60,12 @@ public class GooglePlusCommunicationServiceImpl implements GooglePlusCommunicati
    * com.google.appengine.api.users.User, javax.servlet.http.HttpServletRequest)
    */
   @Override
-  public void postGooglePlus(FeatureEnum feature, Boolean score, String comment, String currentUserMail,
-      String endorsedMail, String technologyName, String techGalleryLink, User user, HttpServletRequest req)
+  public void postInUserProfile(FeatureEnum feature, Boolean score, String comment, String currentUserMail,
+      String endorsedMail, String technologyName, String techGalleryLink, User user, String accessToken)
           throws InternalServerErrorException, BadRequestException, NotFoundException, IOException {
 
-    validateUser(user);
-    verifyRequirements(user);
+    TechGalleryUser techUser = userService.validateUser(user);
+    verifyRequirements(techUser);
 
     // Create a list of ACL entries
     PlusDomainsAclentryResource resource = new PlusDomainsAclentryResource();
@@ -84,7 +79,7 @@ public class GooglePlusCommunicationServiceImpl implements GooglePlusCommunicati
     acl.setDomainRestricted(true); // Required, this does the domain restriction
 
     // Create a new activity object to be executed
-    String content = createContent(feature, currentUserMail, endorsedMail, technologyName, score, comment);
+    String content = feature.createContent(currentUserMail, endorsedMail, technologyName, score, comment);
     Activity activity = new Activity().setObject(new Activity.PlusDomainsObject().setOriginalContent(content))
         .setAccess(acl);
 
@@ -98,9 +93,7 @@ public class GooglePlusCommunicationServiceImpl implements GooglePlusCommunicati
     activity.getObject().setAttachments(attachments);
 
     // Creating a google credential in base of the header authorization
-    String header = req.getHeader("Authorization");
-    String accesstoken = header.substring(header.indexOf(' ')).trim();
-    GoogleCredential credential = new GoogleCredential().setAccessToken(accesstoken);
+    GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
 
     // Create a new authorized API client according the credential
     PlusDomains plusDomains = new PlusDomains.Builder(new NetHttpTransport(), new JacksonFactory(), credential).build();
@@ -119,76 +112,10 @@ public class GooglePlusCommunicationServiceImpl implements GooglePlusCommunicati
    * @throws BadRequestException
    * @throws InternalServerErrorException
    */
-  private void verifyRequirements(User user)
+  private void verifyRequirements(TechGalleryUser user)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
-    final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
-    if (techUser.getPostGooglePlusPreference().equals(Boolean.FALSE)) {
+    if (user.getPostGooglePlusPreference().equals(Boolean.FALSE)) {
       throw new BadRequestException(ValidationMessageEnums.NOT_PERMITTED_BY_USER.message());
-    }
-  }
-
-  /**
-   * Method that create a content for the post on Google+
-   * 
-   * @param feature
-   *          the type of feature performed by user.
-   * @param currentUserMail
-   *          is the email of the user logged in.
-   * @param endorsedMail
-   *          is the email of the endorsed user in case of endorse feature.
-   * @param technologyName
-   *          is the name of technology performed by feature.
-   * @param score
-   *          is the positive or negative recommendation in case of
-   *          recommendation feature.
-   * @return
-   */
-  private String createContent(FeatureEnum feature, String currentUserMail, String endorsedMail, String technologyName,
-      Boolean score, String comment) {
-    String content = new String();
-    switch (feature) {
-    case ENDORSE:
-      content = "+" + currentUserMail + feature.message() + "+" + endorsedMail + " na tecnologia " + technologyName;
-      break;
-
-    case COMMENT:
-      content = "+" + currentUserMail + feature.message() + technologyName + NEW_LINE + NEW_LINE + "\"" + comment
-          + "\"";
-      break;
-
-    case RECOMMEND:
-      if (score) {
-        content = "+" + currentUserMail + feature.message() + POSITIVE_RECOMMENDATION_TEXT + technologyName;
-      } else {
-        content = "+" + currentUserMail + feature.message() + NEGATIVE_RECOMMENDATION_TEXT + technologyName;
-      }
-      break;
-
-    }
-    return content;
-  }
-
-  /**
-   * Validate the user logged in.
-   *
-   * @param user
-   *          info about user from google
-   * @throws InternalServerErrorException
-   *           in case something goes wrong
-   * @throws NotFoundException
-   *           in case the information are not founded
-   * @throws BadRequestException
-   *           in case a request with problem were made.
-   */
-  private void validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException {
-
-    if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
-      throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
-    }
-
-    final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
-    if (techUser == null) {
-      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     }
   }
 
