@@ -86,6 +86,10 @@ angular.module('techGallery').controller(
     	$scope.$apply();
     }
 
+    $scope.selectRecommendation = function(selected){
+        $scope.selectedRecommendation = selected;
+    };
+    
     function handleFileSelect(evt) {
         var files = evt.target.files;
         var f = files[0];
