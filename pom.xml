@@ -88,6 +88,11 @@
             <artifactId>google-oauth-client</artifactId>
             <version>1.18.0-rc</version>
         </dependency>
+        <dependency>
+          <groupId>com.google.apis</groupId>
+          <artifactId>google-api-services-plusDomains</artifactId>
+          <version>v1-rev188-1.20.0</version>
+        </dependency>
 
         <!-- Jackson -->
         <dependency>
