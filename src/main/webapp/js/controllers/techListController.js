@@ -60,6 +60,11 @@ angular.module('techGallery').controller(
       var queryString = '?id=';
       return host + path + servletRedirect + queryString + techId;
     };
+    
+    $scope.redirectToView = function(techId) {
+    	ga('send', 'event', 'TechGalleryEvents', 'technology_acess', techId);
+    	window.location = $scope.redirectUrl(techId);
+    };
 
     function getTechList() {
       var protocol = location.protocol + '//';

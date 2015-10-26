@@ -115,6 +115,7 @@ angular.module('techGallery').controller(
       $scope.name = technology.name;
       $scope.description = technology.description;
       $scope.recommendation = technology.recommendation;
+      $scope.justification = technology.recommendationJustification;
       $scope.image = technology.image;
       $scope.website = technology.website;
     }
@@ -357,6 +358,7 @@ angular.module('techGallery').controller(
               gapi.client.rest.postComment(req).execute();
             }
     			});
+    			ga('send', 'event', 'TechGalleryEvents', 'comment_add', $scope.name);
     		}else {
     			//Call API to add a comment and a recommendation
     			var req = {
@@ -381,6 +383,7 @@ angular.module('techGallery').controller(
               gapi.client.rest.postComment(req).execute();
             }
     			});
+    			ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);
     		}
     	}else{
     		if($scope.score !== undefined){

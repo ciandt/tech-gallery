@@ -86,6 +86,10 @@ angular.module('techGallery').controller(
     	$scope.$apply();
     }
 
+    $scope.selectRecommendation = function(selected){
+        $scope.selectedRecommendation = selected;
+    };
+    
     function handleFileSelect(evt) {
         var files = evt.target.files;
         var f = files[0];
@@ -140,6 +144,8 @@ angular.module('techGallery').controller(
 	    			id : slugify($scope.name),
 	    			name : $scope.name,
 	    			shortDescription : $scope.shortDescription, 
+	    			recommendationJustification : $scope.justification,
+	    			recommendation : $scope.selectedRecommendation,
 	    			description : $scope.description,
 	    			website : $scope.webSite,
 	    			image : $scope.image

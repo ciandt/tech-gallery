@@ -12,7 +12,7 @@ public enum TechnologyOrderOptionEnum {
   NEGATIVE_RECOMMENDATION_AMOUNT("Quantidade de Recomendações Negativas"), 
   COMMENT_AMOUNT("Quantidade de Comentários"), 
   ENDORSEMENT_AMOUNT("Quantidade de Indicações"),
-  LAST_ACTIVITY_DATE("Data da Última Atividade");
+  APHABETIC("Alfabética");
 
   private String option;
 
