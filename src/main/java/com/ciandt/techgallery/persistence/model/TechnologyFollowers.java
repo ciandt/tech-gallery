@@ -24,12 +24,13 @@ public class TechnologyFollowers extends BaseEntity<String> {
   public static final String TECHNOLOGY = "technology";
   public static final String FOLLOWERS = "followers";
 
+  /** Always the same Id as Technology. */
   @Id
   String id;
-
+  /** Followed Technology. */
   @Index
   private Ref<Technology> technology;
-
+  /** List of folowers. */
   @Unindex
   private List<Ref<TechGalleryUser>> followers;
 
