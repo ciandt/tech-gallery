@@ -1,10 +1,11 @@
 package com.ciandt.techgallery.persistence.dao.impl;
 
-import com.googlecode.objectify.Objectify;
+import java.util.List;
 
 import com.ciandt.techgallery.ofy.OfyService;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.googlecode.objectify.Objectify;
 
 /**
  * TechnologyDAOImpl methods implementation.
@@ -12,7 +13,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
  * @author Felipe Goncalves de Castro
  *
  */
-public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String> implements TechnologyDAO {
+public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String>implements TechnologyDAO {
 
   /*
    * Attributes --------------------------------------------
@@ -22,12 +23,14 @@ public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String> implem
   /*
    * Constructor --------------------------------------------
    */
-  private TechnologyDAOImpl() {}
+  private TechnologyDAOImpl() {
+  }
 
   /**
    * Singleton method for the DAO.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 08/10/2015
    *
    * @return TechnologyDAOImpl instance.
@@ -42,9 +45,15 @@ public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String> implem
   @Override
   public Technology findByName(String name) {
     final Objectify objectify = OfyService.ofy();
-    Technology entity =
-        objectify.load().type(Technology.class).filter(Technology.NAME, name).first().now();
+    Technology entity = objectify.load().type(Technology.class).filter(Technology.NAME, name).first().now();
 
     return entity;
+  }
+
+  @Override
+  public List<Technology> findAllActiveTechnologies() {
+    final Objectify objectify = OfyService.ofy();
+    List<Technology> entities = objectify.load().type(Technology.class).filter(Technology.ACTIVE, Boolean.TRUE).list();
+    return entities;
   }
 }
