@@ -60,6 +60,11 @@ angular.module('techGallery').controller(
       var queryString = '?id=';
       return host + path + servletRedirect + queryString + techId;
     };
+    
+    $scope.redirectToView = function(techId) {
+    	ga('send', 'event', 'TechGalleryEvents', 'technology_acess', techId);
+    	window.location = $scope.redirectUrl(techId);
+    };
 
     function getTechList() {
       var protocol = location.protocol + '//';
@@ -70,6 +75,13 @@ angular.module('techGallery').controller(
     }
 
     function callBackLoaded() {
+	  gapi.client.rest.getLoggedUser().execute(function(data){
+	   	if(data.admin){
+	   		$scope.isAdmin = true;
+	   	}else{
+	   		$scope.isAdmin = false;
+	   	}
+	  });
       gapi.client.rest.getTechnologies().execute(function(data) {
         gapi.client.rest.handleLogin().execute();
         gapi.client.rest.getOrderOptions().execute(function(data) {

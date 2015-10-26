@@ -21,14 +21,14 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -140,15 +140,14 @@ public class TechnologyServiceImpl implements TechnologyService {
    * @throws BadRequestException in case a request with problem were made.
    */
   private void validateInformations(Technology technology) throws BadRequestException {
-    if (technology.getId() == null || technology.getId().equals("")) {
+    if (StringUtils.isBlank(technology.getId())) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
-    } else if (technology.getName() == null || technology.getName().equals("")) {
+    } else if (StringUtils.isBlank(technology.getName())) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
-    } else
-      if (technology.getShortDescription() == null || technology.getShortDescription().isEmpty()) {
+    } else if (StringUtils.isBlank(technology.getShortDescription())) {
       throw new BadRequestException(
           ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
-    } else if (technology.getDescription() == null || technology.getDescription().equals("")) {
+    } else if (StringUtils.isBlank(technology.getDescription())) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_DESCRIPTION_BLANK.message());
     }
 
@@ -161,68 +160,17 @@ public class TechnologyServiceImpl implements TechnologyService {
   @Override
   public Response getTechnologies(User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {
-    List<Technology> techEntities = technologyDAO.findAllActiveTechnologies();
+    List<Technology> techEntities = technologyDAO.findAllActives();
     // if list is null, return a not found exception
     if (techEntities == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
       verifyTechnologyFollowedByUser(user, techEntities);
       TechnologiesResponse response = new TechnologiesResponse();
+      Technology.sortTechnologiesDefault(techEntities);
       response.setTechnologies(techEntities);
       return response;
     }
-  }
-
-  private List<Technology> sortTechnologies(List<Technology> techList,
-      TechnologyOrderOptionEnum orderBy) {
-    switch (orderBy) {
-      case POSITIVE_RECOMMENDATION_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getPositiveRecommendationsCounter(),
-                counter1.getPositiveRecommendationsCounter());
-          }
-        });
-        break;
-      case NEGATIVE_RECOMMENDATION_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getNegativeRecommendationsCounter(),
-                counter1.getNegativeRecommendationsCounter());
-          }
-        });
-        break;
-      case COMMENT_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getCommentariesCounter(),
-                counter1.getCommentariesCounter());
-          }
-        });
-        break;
-      case ENDORSEMENT_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getEndorsersCounter(), counter1.getEndorsersCounter());
-          }
-        });
-        break;
-      case LAST_ACTIVITY_DATE:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return counter2.getLastActivity().compareTo(counter1.getLastActivity());
-          }
-        });
-        break;
-      default:
-        break;
-    }
-    return techList;
   }
 
   /**
@@ -266,9 +214,35 @@ public class TechnologyServiceImpl implements TechnologyService {
         && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())) {
       techFilter.setRecommendationIs("");
     }
-    List<Technology> completeList = technologyDAO.findAll();
-    List<Technology> dateFilteredList = new ArrayList<>();
+    List<Technology> completeList = technologyDAO.findAllActives();
+    completeList = filterByLastActivityDate(techFilter, completeList);
 
+    List<Technology> filteredList = new ArrayList<>();
+    if (StringUtils.isBlank(techFilter.getTitleContains())
+        && StringUtils.isBlank(techFilter.getRecommendationIs())) {
+      filteredList.addAll(completeList);
+    } else {
+      verifyFilters(techFilter, completeList, filteredList);
+    }
+
+    if (filteredList.isEmpty()) {
+      return new TechnologiesResponse();
+    } else {
+      if (techFilter.getOrderOptionIs() != null && !techFilter.getOrderOptionIs().isEmpty()) {
+        filteredList = Technology.sortTechnologies(filteredList,
+            TechnologyOrderOptionEnum.fromString(techFilter.getOrderOptionIs()));
+      } else {
+        Technology.sortTechnologiesDefault(filteredList);
+      }
+      TechnologiesResponse response = new TechnologiesResponse();
+      response.setTechnologies(filteredList);
+      return response;
+    }
+  }
+
+  private List<Technology> filterByLastActivityDate(TechnologyFilter techFilter,
+      List<Technology> completeList) {
+    List<Technology> dateFilteredList = new ArrayList<>();
     if (techFilter.getDateFilter() != null) {
       Date currentDate = new Date();
       switch (techFilter.getDateFilter()) {
@@ -291,28 +265,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       }
       completeList = dateFilteredList;
     }
-
-    List<Technology> filteredList = new ArrayList<>();
-    if ((techFilter.getTitleContains() == null || techFilter.getTitleContains().isEmpty())
-        && (techFilter.getRecommendationIs() == null
-            || techFilter.getRecommendationIs().isEmpty())) {
-      filteredList.addAll(completeList);
-    } else {
-      verifyFilters(techFilter, completeList, filteredList);
-    }
-
-    if (filteredList.isEmpty()) {
-      return new TechnologiesResponse();
-    } else {
-      if (techFilter.getOrderOptionIs() != null && !techFilter.getOrderOptionIs().isEmpty()) {
-        filteredList = sortTechnologies(filteredList,
-            TechnologyOrderOptionEnum.fromString(techFilter.getOrderOptionIs()));
-      }
-      verifyTechnologyFollowedByUser(user, filteredList);
-      TechnologiesResponse response = new TechnologiesResponse();
-      response.setTechnologies(filteredList);
-      return response;
-    }
+    return completeList;
   }
 
   private void verifyTechnologyFollowedByUser(User user, List<Technology> filteredList)
