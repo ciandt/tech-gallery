@@ -340,7 +340,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    * @throws InternalServerErrorException if any IO exceptions occur
    */
   @Override
-  public List<UserResponse> getUsersAutoComplete(String userLogin)
+  public List<UserResponse> getUsersByPartialLogin(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     String userLoginFormatted = userLogin + "*";
     List<UserResponse> techUsers = (List<UserResponse>) syncCache.get(userLoginFormatted);
