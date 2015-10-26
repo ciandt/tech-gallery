@@ -1,9 +1,8 @@
 package com.ciandt.techgallery.service.transformer;
 
-import com.google.api.server.spi.config.Transformer;
-
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.service.model.UserResponse;
+import com.google.api.server.spi.config.Transformer;
 
 public class TechGalleryUserTransformer implements Transformer<TechGalleryUser, UserResponse> {
 
@@ -16,6 +15,7 @@ public class TechGalleryUserTransformer implements Transformer<TechGalleryUser, 
     product.setPhoto(arg0.getPhoto());
     product.setFollowedTechnologyIds(arg0.getFollowedTechIds());
     product.setAdmin(arg0.isAdmin());
+    product.setPostGooglePlusPreference(arg0.getPostGooglePlusPreference());
     return product;
   }
 
@@ -29,6 +29,7 @@ public class TechGalleryUserTransformer implements Transformer<TechGalleryUser, 
       product.setPhoto(arg0.getPhoto());
       product.setFollowedTechIds(arg0.getFollowedTechnologyIds());
       product.setAdmin(arg0.isAdmin());
+      product.setPostGooglePlusPreference(arg0.getPostGooglePlusPreference());
       return product;
     } else {
       return null;
