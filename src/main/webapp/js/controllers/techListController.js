@@ -70,6 +70,13 @@ angular.module('techGallery').controller(
     }
 
     function callBackLoaded() {
+	  gapi.client.rest.getLoggedUser().execute(function(data){
+	   	if(data.admin){
+	   		$scope.isAdmin = true;
+	   	}else{
+	   		$scope.isAdmin = false;
+	   	}
+	  });
       gapi.client.rest.getTechnologies().execute(function(data) {
         gapi.client.rest.handleLogin().execute();
         gapi.client.rest.getOrderOptions().execute(function(data) {
