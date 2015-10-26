@@ -23,6 +23,8 @@ public class UserResponse implements Response, Serializable {
   private boolean admin;
   /** Followed technologies. */
   private List<String> followedTechIds;
+  /** save the preference of user. */
+  private Boolean postGooglePlusPreference;
 
   public Long getId() {
     return id;
@@ -30,6 +32,14 @@ public class UserResponse implements Response, Serializable {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Boolean getPostGooglePlusPreference() {
+    return postGooglePlusPreference;
+  }
+
+  public void setPostGooglePlusPreference(Boolean postGooglePlusPreference) {
+    this.postGooglePlusPreference = postGooglePlusPreference;
   }
 
   public String getName() {

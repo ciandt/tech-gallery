@@ -34,9 +34,9 @@ import java.util.List;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1",
-    clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
-    scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE})
+@Api(name = "rest", version = "v1", clientIds = { Constants.WEB_CLIENT_ID,
+    Constants.API_EXPLORER_CLIENT_ID }, scopes = { Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE,
+        Constants.PLUS_STREAM_WRITE })
 public class TechnologyEndpoint {
 
   private TechnologyService service = TechnologyServiceImpl.getInstance();

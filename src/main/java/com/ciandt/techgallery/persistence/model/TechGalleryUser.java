@@ -1,13 +1,11 @@
 package com.ciandt.techgallery.persistence.model;
 
+import com.ciandt.techgallery.service.transformer.TechGalleryUserTransformer;
 import com.google.api.server.spi.config.ApiTransformer;
-
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
-
-import com.ciandt.techgallery.service.transformer.TechGalleryUserTransformer;
 
 import java.util.List;
 
@@ -52,6 +50,9 @@ public class TechGalleryUser extends BaseEntity<Long> {
   @Index
   private boolean admin;
 
+  @Unindex
+  private Boolean postGooglePlusPreference;
+
   @Override
   public Long getId() {
     return id;
@@ -64,6 +65,14 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   public String getName() {
     return name;
+  }
+
+  public Boolean getPostGooglePlusPreference() {
+    return postGooglePlusPreference;
+  }
+
+  public void setPostGooglePlusPreference(Boolean postGooglePlusPreference) {
+    this.postGooglePlusPreference = postGooglePlusPreference;
   }
 
   public void setName(String name) {
@@ -108,6 +117,10 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   public void setAdmin(boolean admin) {
     this.admin = admin;
+  }
+
+  public TechGalleryUser() {
+    this.postGooglePlusPreference = Boolean.TRUE;
   }
 
   @Override
