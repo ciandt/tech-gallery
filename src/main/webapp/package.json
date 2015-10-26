@@ -4,6 +4,7 @@
   "description": "A living Technology Gallery.",
   "private": true,
   "devDependencies": {
+    "angular-ui-bootstrap": "^0.14.2",
     "bootstrap-sass": "^3.3.5",
     "browserify": "^11.2.0",
     "chalk": "^1.1.1",
