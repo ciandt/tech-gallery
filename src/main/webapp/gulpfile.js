@@ -15,6 +15,7 @@ var rename = require('gulp-rename');
 var browserify = require('browserify');
 var minifyCss = require('gulp-minify-css');
 var streamify = require('gulp-streamify');
+var connect = require('gulp-connect');
 
 /**
  * Files path
@@ -78,6 +79,13 @@ gulp.task('clean', function () {
   return del([
     build
   ]);
+});
+
+gulp.task('webserver', function() {
+  connect.server({
+    livereload : true,
+    port : 8088
+  });
 });
 
 gulp.task('watch:stylesheets', function () {
