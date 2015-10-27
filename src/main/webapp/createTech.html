@@ -68,7 +68,7 @@
         		</div>
         		<div class="col-xs-4">
 	        			<input ng-model="name" type="text" class="form-control" id="idnome"
-	    					placeholder="<Nome>" required="required" aria-describedby="basic-addon2">
+	    					placeholder="<Nome>" required="required" aria-describedby="basic-addon2" ng-disabled="id != null">
         		</div>
       		</div>
       		<div class="spacingtop row" ng-show="loggedUserInformation.admin">
@@ -108,8 +108,8 @@
 	      	  	</div>
 	        </div>
 			<div class="spacingtop">
-				<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearTechnology()">Limpar</button>
-				<button id="btn_save" type="submit" class="btn btn-primary" ng-click="addTechnology()">Salvar</button>
+				<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearTechnology()" ng-disabled="id != null">Limpar</button>
+				<button id="btn_save" type="submit" class="btn btn-primary" ng-click="addOrUpdateTechnology()">Salvar</button>
 			</div>
     	</div>
   	</div>

@@ -90,6 +90,9 @@ public class Technology extends BaseEntity<String> {
   @Unindex
   private Date creationDate;
 
+  @Ignore
+  private boolean followedByUser;
+
   @Unindex
   private Date lastActivity;
 
@@ -98,6 +101,9 @@ public class Technology extends BaseEntity<String> {
 
   @Index
   private Boolean active;
+
+  @Ignore
+  private String imageContent;
 
   @Ignore
   private String imageContent;
@@ -237,6 +243,14 @@ public class Technology extends BaseEntity<String> {
 
   public void setCreationDate(Date creationDate) {
     this.creationDate = creationDate;
+  }
+
+  public boolean isFollowedByUser() {
+    return followedByUser;
+  }
+
+  public void setFollowedByUser(boolean followedByUser) {
+    this.followedByUser = followedByUser;
   }
 
   public Date getLastActivity() {

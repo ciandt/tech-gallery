@@ -59,6 +59,9 @@
   </div>
 
   <div ng-show="showContent" class="page-header">
+    <div>
+        <button type="button" ng-click="editTechnology()" class="btn btn-danger glyphicon glyphicon-edit btn-xs"></button>
+    </div>
     <div id="div_container" class="container">
       <div class="row">
         <div id="div_image" class="col-xs-6">
@@ -67,6 +70,7 @@
         <div id="div_teste" class="container">
           <div id="div_image_name" class="col-xs-6">
             <a href="{{website}}" target="_blank"><h1>{{name}}</h1></a>
+            <button id={{generateFollowId()}} type="button" class="btn" ng-click="followTechnology()" ng-class="setFollowedClass(followedByUser)">Seguir</button>
             <h4>{{recommendation}}</h4>
             <h5>{{justification}}</h5>
           </div>

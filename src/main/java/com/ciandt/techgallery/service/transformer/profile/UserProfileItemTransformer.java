@@ -8,7 +8,7 @@ import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
 import com.ciandt.techgallery.service.model.profile.SubItemCommentTo;
 import com.ciandt.techgallery.service.model.profile.UserProfileItemTo;
-import com.ciandt.techgallery.util.Dereferencer;
+import com.ciandt.techgallery.utils.Dereferencer;
 
 import java.util.ArrayList;
 import java.util.Collections;

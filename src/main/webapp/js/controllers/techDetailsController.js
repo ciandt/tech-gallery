@@ -113,11 +113,13 @@ angular.module('techGallery').controller(
 
     function fillTechnology(technology) {
       $scope.name = technology.name;
+      $scope.id = technology.id;
       $scope.description = technology.description;
       $scope.recommendation = technology.recommendation;
       $scope.justification = technology.recommendationJustification;
       $scope.image = technology.image;
       $scope.website = technology.website;
+      $scope.followedByUser = technology.followedByUser;
     }
 
     $scope.closeAlert = function() {
@@ -348,15 +350,15 @@ angular.module('techGallery').controller(
     				callBackLoaded();
     				$scope.comment = '';
     				if($scope.postGooglePlus && !data.hasOwnProperty('error')){
-              var req = {
-                  feature : featureEnum.COMMENT,
-                  currentUserMail : data.author.email,
-                  technologyName : $scope.name,
-                  comment: data.comment,
-                  appLink: $scope.currentPage
-              }
-              gapi.client.rest.postComment(req).execute();
-            }
+		              var req = {
+        	          		feature : featureEnum.COMMENT,
+            	      		currentUserMail : data.author.email,
+	                	  	technologyName : $scope.name,
+					  		comment: data.comment,
+		 					appLink: $scope.currentPage
+        			      }
+		              gapi.client.rest.postComment(req).execute();
+		            }
     			});
     			ga('send', 'event', 'TechGalleryEvents', 'comment_add', $scope.name);
     		}else {
@@ -373,15 +375,15 @@ angular.module('techGallery').controller(
     				$scope.score = undefined;
     				$scope.setClassThumbs('');
     				if($scope.postGooglePlus && !data.hasOwnProperty('error')){
-              var req = {
-                  feature : featureEnum.RECOMMEND,
-                  score : data.score,
-                  currentUserMail : data.recommender.email,
-                  technologyName : data.technology.name,
-                  appLink: $scope.currentPage
-              }
-              gapi.client.rest.postComment(req).execute();
-            }
+		              var req = {
+        		          feature : featureEnum.RECOMMEND,
+                		  score : data.score,
+		                  currentUserMail : data.recommender.email,
+        		          technologyName : data.technology.name,
+                		  appLink: $scope.currentPage
+		              }
+        		      gapi.client.rest.postComment(req).execute();
+		            }
     			});
     			ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);
     		}
@@ -530,6 +532,34 @@ angular.module('techGallery').controller(
     	}
     };
     
+    $scope.setFollowedClass = function(isFollowedByUser){
+      return jsUtils.setFollowedClass(isFollowedByUser);
+    }
+    
+    $scope.followTechnology = function(){
+      var req = {technologyId: $scope.idTechnology}
+      gapi.client.rest.followTechnology(req).execute(function(data){
+        if(!data.hasOwnProperty('error')){
+            var elementId = 'btn-follow-' + data.id;
+            changeFollowedClass(elementId);
+        }
+      });
+    }
+    
+    function changeFollowedClass(elementId){
+      var element = document.getElementById(elementId)
+      var oldClass = element.className;
+      if(oldClass.indexOf('btn-primary') > 0){
+        element.className = 'btn btn-danger';
+      }else{
+        element.className = 'btn btn-primary';
+      }
+    }
+    
+    $scope.generateFollowId = function(){
+      return 'btn-follow-' + $scope.idTechnology;
+    }
+    
     $scope.changePreference = function(){
       var oldValue = !$scope.postGooglePlus;
       var req = {postGooglePlusPreference: $scope.postGooglePlus}
@@ -539,6 +569,18 @@ angular.module('techGallery').controller(
         }
       });
     }
+    
+    $scope.editTechnology = function(){
+    	window.location = $scope.redirectUrl($scope.id, '/createTech');
+    }
+    
+    $scope.redirectUrl = function(techId, servlet) {
+        var protocol = location.protocol + '//';
+        var host = protocol + location.host;
+        var servletRedirect = servlet;
+        var queryString = '?id=';
+        return host + servletRedirect + queryString + techId;
+      };
     
   }
 );

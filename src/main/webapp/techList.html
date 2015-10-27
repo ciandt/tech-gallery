@@ -86,8 +86,12 @@
         <div>
             <div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
                 <div class="thumbnail">
+                    <button type="button" id={{generateFollowId(tech.id)}} ng-click="followTechnology(tech.id)" class="btn btn-xs" ng-class="setFollowedClass(tech.followedByUser)">Seguir</button>
                     <div>
                         <button ng-show="isAdmin" type="button" ng-click="deleteTechnology(tech.id)" class="btn btn-danger glyphicon glyphicon-trash btn-xs"></button>
+                    </div>
+                    <div>
+                        <button type="button" ng-click="editTechnology(tech.id)" class="btn btn-danger glyphicon glyphicon-edit btn-xs"></button>
                     </div>
                     <a class="titleThumbnail" href="#" ng-click="redirectToView(tech.id)">
                         <h3>{{tech.name}}</h3>

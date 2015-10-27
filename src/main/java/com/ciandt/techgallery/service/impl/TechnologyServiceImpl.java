@@ -186,12 +186,14 @@ public class TechnologyServiceImpl implements TechnologyService {
    *           .
    */
   @Override
-  public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
+  public Response getTechnologies(User user)
+      throws InternalServerErrorException, NotFoundException, BadRequestException {
     List<Technology> techEntities = technologyDAO.findAllActives();
     // if list is null, return a not found exception
     if (techEntities == null) {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     } else {
+      verifyTechnologyFollowedByUser(user, techEntities);
       TechnologiesResponse response = new TechnologiesResponse();
       Technology.sortTechnologiesDefault(techEntities);
       response.setTechnologies(techEntities);
@@ -291,6 +293,19 @@ public class TechnologyServiceImpl implements TechnologyService {
     return completeList;
   }
 
+  private void verifyTechnologyFollowedByUser(User user, List<Technology> filteredList)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
+    TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+    if (techUser.getFollowedTechnologyIds() != null
+        && !techUser.getFollowedTechnologyIds().isEmpty()) {
+      for (Technology technology : filteredList) {
+        if (techUser.getFollowedTechnologyIds().contains(technology.getId())) {
+          technology.setFollowedByUser(true);
+        }
+      }
+    }
+  }
+
   private void verifyFilters(TechnologyFilter techFilter, List<Technology> completeList,
       List<Technology> filteredList) {
     for (Technology technology : completeList) {
@@ -333,14 +348,21 @@ public class TechnologyServiceImpl implements TechnologyService {
   }
 
   @Override
-  public Technology getTechnologyById(String id) throws NotFoundException {
+  public Technology getTechnologyById(String id, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
     Technology tech = technologyDAO.findById(id);
     if (tech == null) {
       throw new NotFoundException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     } else {
+      if (user != null) {
+        TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
+        if (techUser.getFollowedTechnologyIds() != null
+            && techUser.getFollowedTechnologyIds().contains(tech.getId())) {
+          tech.setFollowedByUser(true);
+        }
+      }
       return tech;
     }
-
   }
 
   /**
@@ -426,8 +448,9 @@ public class TechnologyServiceImpl implements TechnologyService {
   }
 
   @Override
-  public void audit(String technologyId, User user) throws NotFoundException {
-    Technology technology = getTechnologyById(technologyId);
+  public void audit(String technologyId, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
+    Technology technology = getTechnologyById(technologyId, user);
     technology.setLastActivity(new Date());
     technology.setLastActivityUser(user.getEmail());
     technologyDAO.update(technology);

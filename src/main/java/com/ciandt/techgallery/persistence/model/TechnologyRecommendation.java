@@ -11,6 +11,8 @@ import com.googlecode.objectify.annotation.Unindex;
 
 import com.ciandt.techgallery.service.transformer.TechnologyRecommendationTransformer;
 
+import java.util.Date;
+
 /**
  * Class of Technology Recommendation
  *
@@ -28,6 +30,7 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
   public static final String ACTIVE = "active";
   public static final String RECOMMENDER = "recommender";
   public static final String TECHNOLOGY = "technology";
+  public static final String TIMESTAMP = "timestamp";
 
   /*
    * Attributes --------------------------------------------
@@ -52,6 +55,9 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
   @Index
   @Load
   private Ref<Technology> technology;
+  
+  @Index
+  private Date timestamp;
 
   /*
    * Constructors -----------------------------------------
@@ -130,5 +136,13 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
 
   public void setTechnology(Ref<Technology> technology) {
     this.technology = technology;
+  }
+
+  public Date getTimestamp() {
+    return timestamp;
+  }
+
+  public void setTimestamp(Date timestamp) {
+    this.timestamp = timestamp;
   }
 }

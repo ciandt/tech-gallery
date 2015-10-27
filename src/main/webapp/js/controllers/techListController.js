@@ -49,21 +49,21 @@ angular.module('techGallery').controller(
 
     executeAuth(true);
 
-    $scope.redirectUrl = function(techId) {
+    $scope.redirectUrl = function(techId, servlet) {
       var protocol = location.protocol + '//';
       var host = protocol + location.host;
       var path = location.pathname;
       if (path === '/') {
         path = '';
       }
-      var servletRedirect = '/viewTech';
+      var servletRedirect = servlet;
       var queryString = '?id=';
       return host + path + servletRedirect + queryString + techId;
     };
     
     $scope.redirectToView = function(techId) {
     	ga('send', 'event', 'TechGalleryEvents', 'technology_acess', techId);
-    	window.location = $scope.redirectUrl(techId);
+    	window.location = $scope.redirectUrl(techId, '/viewTech');
     };
 
     function getTechList() {
@@ -137,6 +137,34 @@ angular.module('techGallery').controller(
     	$scope.selectedOrderOption = selected;
     };
     
+    $scope.setFollowedClass = function(isFollowedByUser){
+      return jsUtils.setFollowedClass(isFollowedByUser);
+    }
+    
+    $scope.followTechnology = function(technologyId){
+      var req = {technologyId:technologyId};
+      gapi.client.rest.followTechnology(req).execute(function(data){
+        if(!data.hasOwnProperty('error')){
+            var elementId = 'btn-follow-' + data.id;
+            changeFollowedClass(elementId);
+        }
+      });
+    }
+    
+    function changeFollowedClass(elementId){
+      var element = document.getElementById(elementId)
+      var oldClass = element.className;
+      if(oldClass.indexOf('btn-primary') > 0){
+        element.className = 'btn btn-xs btn-danger';
+      }else{
+        element.className = 'btn btn-xs btn-primary';
+      }
+    }
+    
+    $scope.generateFollowId = function(techId){
+      return 'btn-follow-' + techId;
+    }
+    
     $scope.deleteTechnology = function(technologyId){
       if(confirm('Você realmente quer apagar a tecnologia?')) {
         var req = {technologyId: technologyId};
@@ -146,6 +174,10 @@ angular.module('techGallery').controller(
           }
         });
       }
+    }
+    
+    $scope.editTechnology = function(technologyId){
+    	window.location = $scope.redirectUrl(technologyId, '/createTech');
     }
   }
 );

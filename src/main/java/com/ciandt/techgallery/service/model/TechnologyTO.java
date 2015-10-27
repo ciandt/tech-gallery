@@ -38,6 +38,8 @@ public class TechnologyTO implements Response {
   private Integer endorsersCounter;
   /** technology image byte content. */
   private String imageContent;
+  /** technology is followed by the logged user. */
+  private boolean followedByUser;
 
   private Date lastActivity;
 
@@ -143,6 +145,14 @@ public class TechnologyTO implements Response {
 
   public void setRecommendation(String recommendation) {
     this.recommendation = recommendation;
+  }
+
+  public boolean isFollowedByUser() {
+    return followedByUser;
+  }
+
+  public void setFollowedByUser(boolean followedByUser) {
+    this.followedByUser = followedByUser;
   }
 
   public Date getLastActivity() {
