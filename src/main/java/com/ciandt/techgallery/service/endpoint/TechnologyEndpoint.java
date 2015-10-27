@@ -49,10 +49,10 @@ public class TechnologyEndpoint {
    * @throws GeneralSecurityException
    *           in case a security problem.
    */
-  @ApiMethod(name = "addTechnology", path = "technology", httpMethod = "post")
-  public Technology addTechnology(Technology technology, User user)
+  @ApiMethod(name = "addOrUpdateTechnology", path = "technology", httpMethod = "post")
+  public Technology addOrUpdateTechnology(Technology technology, User user)
       throws InternalServerErrorException, BadRequestException, IOException, GeneralSecurityException {
-    return service.addTechnology(technology, user);
+    return service.addOrUpdateTechnology(technology, user);
   }
 
   /**

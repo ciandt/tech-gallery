@@ -36,7 +36,7 @@ public interface TechnologyService {
    * @throws BadRequestException
    *           in case a request with problem were made.
    */
-  public Technology addTechnology(Technology technology, User user)
+  public Technology addOrUpdateTechnology(Technology technology, User user)
       throws BadRequestException, IOException, GeneralSecurityException;
 
   /**
