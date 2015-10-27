@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.impl.profile;
 
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.users.User;
 
@@ -73,10 +75,11 @@ public class UserProfileServiceImpl implements UserProfileService {
   }
 
   @Override
-  public UserProfile addItem(Technology technology, User user) throws NotFoundException {
+  public UserProfile addItem(Technology technology, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException {
     TechGalleryUser owner = UserServiceTGImpl.getInstance().getUserByEmail(user.getEmail());
     UserProfile profile = findUserProfileByOwner(owner);
-    technology = TechnologyServiceImpl.getInstance().getTechnologyById(technology.getId());
+    technology = TechnologyServiceImpl.getInstance().getTechnologyById(technology.getId(), user);
     UserProfileItem newItem = new UserProfileItem(technology);
     profile.addItem(UserProfile.POSITIVE_RECOMMENDATION, Key.create(technology), newItem);
     profile.addItem(UserProfile.NEGATIVE_RECOMMENDATION, Key.create(technology), newItem);
@@ -178,8 +181,9 @@ public class UserProfileServiceImpl implements UserProfileService {
   }
 
   /**
-   * When a user sets a new skill level, this method is called to propagate such change on
-   * the user's profile.
+   * When a user sets a new skill level, this method is called to propagate such change on the
+   * user's profile.
+   * 
    * @param skill the changed skill
    */
   @Override
@@ -216,8 +220,9 @@ public class UserProfileServiceImpl implements UserProfileService {
   }
 
   /**
-   * When a user endorses another user, this method is called to propagate such change on
-   * the endorsed user profile.
+   * When a user endorses another user, this method is called to propagate such change on the
+   * endorsed user profile.
+   * 
    * @param endorsement the recently changed endorsement
    */
   @Override

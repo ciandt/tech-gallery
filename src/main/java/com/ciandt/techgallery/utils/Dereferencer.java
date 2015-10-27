@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.util;
+package com.ciandt.techgallery.utils;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;

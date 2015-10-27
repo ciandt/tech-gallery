@@ -98,7 +98,7 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   public Response getCommentsByTech(String techId, User user) throws InternalServerErrorException,
       BadRequestException, NotFoundException, OAuthRequestException {
 
-    final Technology technology = techService.getTechnologyById(techId);
+    final Technology technology = techService.getTechnologyById(techId, user);
 
     validateUser(user);
     validateTechnology(technology);

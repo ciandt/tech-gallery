@@ -35,7 +35,8 @@ public enum ValidationMessageEnums {
   RECOMMEND_RECOMMENDER_ERROR("This recommend doesn't belong to this user."), 
   TO_INACTIVE("Inactive transient object is not allowed."), 
   NO_TECHNOLOGY_WAS_FOUND("No technology was found."),
-  // Message for Post
+  FOLLOWERS_CANNOT_EMPTY("Followers cannot be empty"),
+    // Message for Post
   NOT_PERMITTED_BY_USER("The user choosed to not post on your Google+.");
 
 

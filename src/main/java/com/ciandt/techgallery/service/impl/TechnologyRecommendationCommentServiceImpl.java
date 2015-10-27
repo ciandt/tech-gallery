@@ -18,6 +18,8 @@ import com.ciandt.techgallery.service.TechnologyRecommendationService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 
+import java.util.Date;
+
 public class TechnologyRecommendationCommentServiceImpl
     implements TechnologyRecommendationCommentService {
 
@@ -65,6 +67,7 @@ public class TechnologyRecommendationCommentServiceImpl
     comment.setTechnology(Ref.create(techKey));
     comment = comService.addComment(comment, user);
     recommendation.setComment(Ref.create(comment));
+    recommendation.setTimestamp(new Date());
     recommendation.setTechnology(Ref.create(techKey));
     recommendation = recService.addRecommendation(recommendation, user);
     technologyService.audit(technology.getId(), user);

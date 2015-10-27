@@ -113,10 +113,11 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   }
 
   @Override
-  public List<Response> getRecommendations(String technologyId, User user) {
+  public List<Response> getRecommendations(String technologyId, User user)
+      throws BadRequestException, InternalServerErrorException {
     Technology technology;
     try {
-      technology = technologyService.getTechnologyById(technologyId);
+      technology = technologyService.getTechnologyById(technologyId, user);
     } catch (final NotFoundException e) {
       return null;
     }
@@ -136,13 +137,15 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
   }
 
   @Override
-  public List<Response> getRecommendationsUpByTechnologyAndUser(String technologyId, User user) {
+  public List<Response> getRecommendationsUpByTechnologyAndUser(String technologyId, User user)
+      throws BadRequestException, InternalServerErrorException {
     return getRecommendationsByTechnologyUserAndScore(technologyId, user, true);
   }
 
 
   @Override
-  public List<Response> getRecommendationsDownByTechnologyAndUser(String technologyId, User user) {
+  public List<Response> getRecommendationsDownByTechnologyAndUser(String technologyId, User user)
+      throws BadRequestException, InternalServerErrorException {
     return getRecommendationsByTechnologyUserAndScore(technologyId, user, false);
   }
 
@@ -157,9 +160,11 @@ public class TechnologyRecommendationServiceImpl implements TechnologyRecommenda
    * @param score to filter the recommendations
    *
    * @return recommendationsUpTO
+   * @throws InternalServerErrorException
+   * @throws BadRequestException
    */
   private List<Response> getRecommendationsByTechnologyUserAndScore(String technologyId, User user,
-      Boolean score) {
+      Boolean score) throws BadRequestException, InternalServerErrorException {
     final List<Response> recommendationsUpTO = new ArrayList<Response>();
     for (final Response recommendation : getRecommendations(technologyId, user)) {
       final TechnologyRecommendationTO recommendationTO =

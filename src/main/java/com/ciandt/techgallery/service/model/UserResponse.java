@@ -1,6 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Response with an user entity.
@@ -20,6 +21,8 @@ public class UserResponse implements Response, Serializable {
   private String photo;
   /** user is admin. */
   private boolean admin;
+  /** Followed technologies. */
+  private List<String> followedTechIds;
   /** save the preference of user. */
   private Boolean postGooglePlusPreference;
 
@@ -71,4 +74,11 @@ public class UserResponse implements Response, Serializable {
     this.admin = admin;
   }
 
+  public List<String> getFollowedTechIds() {
+    return followedTechIds;
+  }
+
+  public void setFollowedTechIds(List<String> followedTechIds) {
+    this.followedTechIds = followedTechIds;
+  }
 }

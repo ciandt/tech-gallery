@@ -36,6 +36,8 @@ public class TechnologyTO implements Response {
   private Integer commentariesCounter;
   /** technology endorseds. */
   private Integer endorsersCounter;
+  /** technology is followed by the logged user. */
+  private boolean followedByUser;
 
   private Date lastActivity;
 
@@ -133,6 +135,14 @@ public class TechnologyTO implements Response {
 
   public void setRecommendation(String recommendation) {
     this.recommendation = recommendation;
+  }
+
+  public boolean isFollowedByUser() {
+    return followedByUser;
+  }
+
+  public void setFollowedByUser(boolean followedByUser) {
+    this.followedByUser = followedByUser;
   }
 
   public Date getLastActivity() {
