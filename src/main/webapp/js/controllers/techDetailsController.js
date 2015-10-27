@@ -307,6 +307,7 @@ angular.module('techGallery').controller(
           value : newValue
         };
         gapi.client.rest.addSkill(req).execute(function(data) {
+          ga('send', 'event', 'TechGalleryEvents', 'skill_add', $scope.name);
           $scope.processingEndorse = true;
           callBackLoaded();
         });
