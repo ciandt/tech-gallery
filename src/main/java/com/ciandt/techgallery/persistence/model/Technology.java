@@ -335,6 +335,11 @@ public class Technology extends BaseEntity<String> {
     positiveRecommendationsCounter = 0;
   }
 
+  /**
+   * Sort the technology list by Last Activity Date.
+   * 
+   * @param techEntities List of technologies.
+   */
   public static void sortTechnologiesDefault(List<Technology> techEntities) {
     Collections.sort(techEntities, new Comparator<Technology>() {
       @Override
@@ -344,6 +349,13 @@ public class Technology extends BaseEntity<String> {
     });
   }
 
+  /**
+   * Sort the Technology list according to the given enum value.
+   * 
+   * @param techList List of technologies.
+   * @param orderBy Enum value.
+   * @return sorted list.
+   */
   public static List<Technology> sortTechnologies(List<Technology> techList,
       TechnologyOrderOptionEnum orderBy) {
     orderBy.sort(techList);
