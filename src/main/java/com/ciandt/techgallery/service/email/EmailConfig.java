@@ -22,8 +22,6 @@ public class EmailConfig {
   private String subject;
 
   private String body;
-  
-  private String transferId;
 
   private String rule;
 
@@ -42,13 +40,12 @@ public class EmailConfig {
   /**
    * Default constructor if email does not use template email feature.
    */
-  public EmailConfig(String subject, String body, String transferId, String rule,
+  public EmailConfig(String subject, String body, String rule,
       String reason, String ... to) {
     
     this.to = to;
     this.subject = subject;
     this.body = body;
-    this.transferId = transferId;
     this.rule = rule;
     this.reason = reason;
   }
@@ -95,15 +92,6 @@ public class EmailConfig {
 
   public EmailConfig body(String body) {
     this.body = body;
-    return this;
-  }
-
-  public String getTransferId() {
-    return transferId;
-  }
-
-  public EmailConfig transferId(String transferId) {
-    this.transferId = transferId;
     return this;
   }
 
