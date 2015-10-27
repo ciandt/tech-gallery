@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" ng-app="TechGallery">
+<html lang="en" ng-app="TechGallery" ng-controller="AppController as app">
 <head>
   <meta charset="utf-8">
   <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
-  <title>Tech Gallery</title>
+  <title ng-bind="pageTitle +' &ndash; '+ appName">Tech Gallery</title>
   <link href="build/app.min.css" rel="stylesheet">
 </head>
 <body>
