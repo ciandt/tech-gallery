@@ -113,6 +113,7 @@ angular.module('techGallery').controller(
 
     function fillTechnology(technology) {
       $scope.name = technology.name;
+      $scope.id = technology.id;
       $scope.description = technology.description;
       $scope.recommendation = technology.recommendation;
       $scope.justification = technology.recommendationJustification;
@@ -539,6 +540,18 @@ angular.module('techGallery').controller(
         }
       });
     }
+    
+    $scope.editTechnology = function(){
+    	window.location = $scope.redirectUrl($scope.id, '/createTech');
+    }
+    
+    $scope.redirectUrl = function(techId, servlet) {
+        var protocol = location.protocol + '//';
+        var host = protocol + location.host;
+        var servletRedirect = servlet;
+        var queryString = '?id=';
+        return host + servletRedirect + queryString + techId;
+      };
     
   }
 );

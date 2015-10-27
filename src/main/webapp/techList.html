@@ -89,6 +89,9 @@
                     <div>
                         <button ng-show="isAdmin" type="button" ng-click="deleteTechnology(tech.id)" class="btn btn-danger glyphicon glyphicon-trash btn-xs"></button>
                     </div>
+                    <div>
+                        <button type="button" ng-click="editTechnology(tech.id)" class="btn btn-danger glyphicon glyphicon-edit btn-xs"></button>
+                    </div>
                     <a class="titleThumbnail" href="#" ng-click="redirectToView(tech.id)">
                         <h3>{{tech.name}}</h3>
                     </a>

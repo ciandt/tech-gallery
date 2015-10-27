@@ -4,12 +4,16 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.SkillEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint,com.ciandt.techgallery.service.endpoint.profile.UserProfileEndpoint</param-value>
+            <param-value>com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.SkillEndpoint,com.ciandt.techgallery.service.endpoint.SocialNetworkCommunicationEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint,com.ciandt.techgallery.service.endpoint.profile.UserProfileEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet>
         <servlet-name>viewTech</servlet-name>
         <servlet-class>com.ciandt.techgallery.servlets.ViewTech</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>createTech</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.CreateTech</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CronMailServlet</servlet-name>
@@ -22,6 +26,10 @@
     <servlet-mapping>
         <servlet-name>viewTech</servlet-name>
         <url-pattern>/viewTech</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createTech</servlet-name>
+        <url-pattern>/createTech</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CronMailServlet</servlet-name>
