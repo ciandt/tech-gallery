@@ -21,7 +21,7 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
