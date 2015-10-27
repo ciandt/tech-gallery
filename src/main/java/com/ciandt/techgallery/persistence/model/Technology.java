@@ -346,53 +346,7 @@ public class Technology extends BaseEntity<String> {
 
   public static List<Technology> sortTechnologies(List<Technology> techList,
       TechnologyOrderOptionEnum orderBy) {
-    switch (orderBy) {
-      case POSITIVE_RECOMMENDATION_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getPositiveRecommendationsCounter(),
-                counter1.getPositiveRecommendationsCounter());
-          }
-        });
-        break;
-      case NEGATIVE_RECOMMENDATION_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getNegativeRecommendationsCounter(),
-                counter1.getNegativeRecommendationsCounter());
-          }
-        });
-        break;
-      case COMMENT_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getCommentariesCounter(),
-                counter1.getCommentariesCounter());
-          }
-        });
-        break;
-      case ENDORSEMENT_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getEndorsersCounter(), counter1.getEndorsersCounter());
-          }
-        });
-        break;
-      case APHABETIC:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return counter1.getName().compareTo(counter2.getName());
-          }
-        });
-        break;
-      default:
-        break;
-    }
+    orderBy.sort(techList);
     return techList;
   }
 }
