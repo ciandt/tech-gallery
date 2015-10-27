@@ -36,6 +36,15 @@
         <url-pattern>/cron/email</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>EmailServlet</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.EmailServlet</servlet-class>
+    </servlet>   
+    <servlet-mapping>
+        <servlet-name>EmailServlet</servlet-name>
+        <url-pattern>/mail</url-pattern>
+    </servlet-mapping>
+    
     <security-constraint>
 		<web-resource-collection>
 			<web-resource-name>cron</web-resource-name>
@@ -45,6 +54,16 @@
 			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>sendEmailOnlyAdmin</web-resource-name>
+            <url-pattern>/mail</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
     
     <welcome-file-list>
         <welcome-file>techList.html</welcome-file>

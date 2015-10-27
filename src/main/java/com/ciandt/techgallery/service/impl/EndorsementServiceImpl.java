@@ -329,7 +329,7 @@ public class EndorsementServiceImpl implements EndorsementService {
         groupEndorsementByEndorsed(endorsementsByTech, techId);
     Collections.sort(grouped, new EndorsementsGroupedByEndorsedTransient());
 
-    final Technology technology = techService.getTechnologyById(techId);
+    final Technology technology = techService.getTechnologyById(techId, user);
     techService.updateEdorsedsCounter(technology, grouped.size());
 
     final ShowEndorsementsResponse response = new ShowEndorsementsResponse();

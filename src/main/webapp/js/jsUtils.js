@@ -145,6 +145,13 @@
       .replace(/^-+/, '')                     // Trim - from start of text
       .replace(/-+$/, '');                    // Trim - from end of text
   }
+  
+  var setFollowedClass = function(isFollowedByUser){
+    if(isFollowedByUser){
+      return 'btn-danger';
+    }
+    return 'btn-primary';
+  }
 
   window.jsUtils = {
     checkAuth: checkAuth,
@@ -153,7 +160,8 @@
     techAlerts: techAlerts, 
     logoutRedirect: logoutRedirect,
     getUserEmail : getUserEmail,
-    slugify: slugify
+    slugify: slugify,
+    setFollowedClass : setFollowedClass
   };
 
 })(window);
