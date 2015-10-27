@@ -5,6 +5,8 @@ angular.module('techGallery').controller(
     //Fill this property with the domain of your choice
     $scope.domain = '@ciandt.com';
     
+    $scope.idTechnology = jsUtils.getParameterByName('id');
+    
     $scope.logoutRedirect = function(){
       return jsUtils.logoutRedirect();
     }
@@ -54,6 +56,11 @@ angular.module('techGallery').controller(
     };
 
     function callBackLoaded() {
+    	var req = {id: $scope.idTechnology};
+    	gapi.client.rest.getTechnology(req).execute(function(data){
+    		fillTechnology(data);
+    	});
+    	
     	var inputName = document.getElementById("idnome");
     	var inputDescription = document.getElementById("iddesc");
     	var inputShortDesc = document.getElementById("idshortdesc");
@@ -77,6 +84,7 @@ angular.module('techGallery').controller(
         };
         gapi.client.rest.getLoggedUser().execute(function(data) {
         	$scope.loggedUserInformation = data;
+        	$scope.$apply();
           });
         gapi.client.rest.getRecommendations().execute(function(data){
             $scope.dropDownRecommendation = data.items;
@@ -85,6 +93,20 @@ angular.module('techGallery').controller(
         document.getElementById('idimage').addEventListener('change', handleFileSelect, false);
     	$scope.$apply();
     }
+    
+    function fillTechnology(technology) {
+    	$scope.name = technology.name;
+		$scope.id = technology.id;
+		$scope.shortDescription = technology.shortDescription;
+		$scope.description = technology.description;
+		$scope.webSite = technology.website;
+		$scope.image = technology.image;
+		if($scope.image){			
+			document.getElementById('list').innerHTML = ['<img src="', $scope.image,'" title="', $scope.name, '" width="200" />'].join('');
+		}
+		$scope.selectedRecommendation = technology.recommendation;
+		$scope.justification = technology.recommendationJustification;
+      }
 
     $scope.selectRecommendation = function(selected){
         $scope.selectedRecommendation = selected;
@@ -138,9 +160,10 @@ angular.module('techGallery').controller(
     	document.getElementById('list').innerHTML = ['<img src="/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
     }
     
-    $scope.addTechnology = function(){
+    $scope.addOrUpdateTechnology = function(){
     	if($scope.name != null && $scope.description != null && $scope.shortDescription != null) {
-	    	var req = {
+    		if($scope.image &&  $scope.image.startsWith('https://')){
+    			var req = {
 	    			id : slugify($scope.name),
 	    			name : $scope.name,
 	    			shortDescription : $scope.shortDescription, 
@@ -149,8 +172,20 @@ angular.module('techGallery').controller(
 	    			description : $scope.description,
 	    			website : $scope.webSite,
 	    			image : $scope.image
-			};
-	        gapi.client.rest.addTechnology(req).execute(function(data){
+    			};
+    		}else{
+    			var req = {
+					id : slugify($scope.name),
+					name : $scope.name,
+					shortDescription : $scope.shortDescription, 
+					recommendationJustification : $scope.justification,
+					recommendation : $scope.selectedRecommendation,
+					description : $scope.description,
+					website : $scope.webSite,
+					imageContent : $scope.image
+    			};
+    		}
+	        gapi.client.rest.addOrUpdateTechnology(req).execute(function(data){
 	        	var alert;
 	            if (data.hasOwnProperty('error')) {
 	              alert = alerts.failure;
