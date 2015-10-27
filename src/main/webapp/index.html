@@ -9,6 +9,7 @@
 <body>
   <ui-view></ui-view>
   <script src="build/app.min.js"></script>
+  <script>function init () { window.gapiClientLoaded(); }</script>
   <script src="https://apis.google.com/js/client.js?onload=init" defer></script>
 </body>
 </html>
