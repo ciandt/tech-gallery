@@ -6,17 +6,13 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 import com.googlecode.objectify.Key;
 
 import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.persistence.dao.CronJobDAO;
 import com.ciandt.techgallery.persistence.dao.EmailNotificationDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAO;
-import com.ciandt.techgallery.persistence.dao.TechnologyFollowersDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyRecommendationDAO;
-import com.ciandt.techgallery.persistence.dao.impl.CronJobDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.EmailNotificationDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyCommentDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
-import com.ciandt.techgallery.persistence.dao.impl.TechnologyFollowersDAOImpl;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyRecommendationDAOImpl;
 import com.ciandt.techgallery.persistence.model.EmailNotification;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -59,6 +55,7 @@ public class EmailServiceImpl implements EmailService {
 
   // TODO: move inside create template.
   private static final String template = "template.example.email";
+  private static final String templateEndorserment = "templateEndorserment.example.email";
   private static final String subject = "[Tech Gallery] Resumo do dia";
   private static final String reason = "Resumo do dia para os followers";
 
@@ -84,11 +81,11 @@ public class EmailServiceImpl implements EmailService {
 
   private InternetAddress from = null;
   private EmailNotificationDAO emailNotificationDao = EmailNotificationDAOImpl.getInstance();
-  private CronJobDAO cronJobsDao = CronJobDAOImpl.getInstance();
-  private TechnologyFollowersDAO technologyFollowersDao = TechnologyFollowersDAOImpl.getInstance();
   private TechnologyRecommendationDAO technologyRecommendationDao =
       TechnologyRecommendationDAOImpl.getInstance();
   private TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
+  private TechGalleryUserDAOImpl techGalleryUserDao = TechGalleryUserDAOImpl.getInstance();
+  private TechnologyDAOImpl technologyDao = TechnologyDAOImpl.getInstance();
 
   /**
    * Push email to queue.
@@ -100,6 +97,15 @@ public class EmailServiceImpl implements EmailService {
         TaskOptions.Builder.withUrl(queueUrl).param("userId", user.getId().toString())
             .param("technologyId", technology.getId())
             .param("recommendationsIds", recommendationsIds).param("commentsIds", commentsIds));
+  }
+
+  @Override
+  public void push(TechGalleryUser endorserUser, TechGalleryUser endorsedUser,
+      Technology technology) {
+    QueueFactory.getQueue(queueName).add(
+        TaskOptions.Builder.withUrl(queueUrl).param("userId", endorserUser.getId().toString())
+            .param("endorsedUser", endorsedUser.getId().toString())
+            .param("technologyId", technology.getId()));
   }
 
   /**
@@ -126,8 +132,8 @@ public class EmailServiceImpl implements EmailService {
         }
       }
     }
-    TechGalleryUser user = TechGalleryUserDAOImpl.getInstance().findById(Long.parseLong(userId));
-    Technology technology = TechnologyDAOImpl.getInstance().findById(technologyId);
+    TechGalleryUser user = techGalleryUserDao.findById(Long.parseLong(userId));
+    Technology technology = technologyDao.findById(technologyId);
 
     // TODO extract method to build template (mustache).
     Map<String, String> variableValue = new HashMap<String, String>();
@@ -136,6 +142,23 @@ public class EmailServiceImpl implements EmailService {
     variableValue.put("${technology}", technology.getName());
     EmailConfig email = new EmailConfig(subject, "emailtemplates" + File.separator + template,
         variableValue, null, reason, user.getEmail());
+    sendEmail(email);
+  }
+  
+  @Override
+  public void execute(String userId, String endorsedUser, String technologyId) {
+    TechGalleryUser endorser = techGalleryUserDao.findById(Long.parseLong(userId));
+    TechGalleryUser endorsed = techGalleryUserDao.findById(Long.parseLong(endorsedUser));
+    Technology technology = technologyDao.findById(technologyId);
+    
+    // TODO extract method to build template (mustache).
+    Map<String, String> variableValue = new HashMap<String, String>();
+    variableValue.put("${endorser}", endorser.getName());
+    variableValue.put("${endorsed}", endorsed.getName());
+    variableValue.put("${technology}", technology.getName());
+    EmailConfig email =
+        new EmailConfig(subject, "emailtemplates" + File.separator + templateEndorserment,
+            variableValue, null, reason, endorsed.getEmail());
     sendEmail(email);
   }
 

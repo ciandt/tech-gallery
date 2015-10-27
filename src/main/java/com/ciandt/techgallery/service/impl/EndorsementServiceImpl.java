@@ -18,6 +18,7 @@ import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.EmailService;
 import com.ciandt.techgallery.service.EndorsementService;
 import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.TechnologyService;
@@ -67,7 +68,8 @@ public class EndorsementServiceImpl implements EndorsementService {
   SkillService skillService = SkillServiceImpl.getInstance();
   /** Technology service. */
   TechnologyService techService = TechnologyServiceImpl.getInstance();
-
+  /** Email service. */
+  EmailService emailService = EmailServiceImpl.getInstance();
   /*
    * Constructors --------------------------------------------
    */
@@ -173,8 +175,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
-    // return the added entity
-    
+    emailService.push(tgEndorserUser, tgEndorsedUser, technology);
     UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
@@ -276,9 +277,8 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
-    
+    emailService.push(tgEndorserUser, tgEndorsedUser, technology);
     UserProfileServiceImpl.getInstance().handleEndorsement(entity);
-    // return the added entity
     return getEndorsement(entity.getId());
   }
 

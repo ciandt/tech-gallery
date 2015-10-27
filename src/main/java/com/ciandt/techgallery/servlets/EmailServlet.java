@@ -14,8 +14,14 @@ public class EmailServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) {
-    emailService.execute(request.getParameter("userId"), request.getParameter("technologyId"),
-        request.getParameter("recommendationsIds"), request.getParameter("commentsIds"),
-        request.getServerName());
+    
+    if (request.getParameter("endorsedUser") != null) {
+      emailService.execute(request.getParameter("userId"), request.getParameter("endorsedUser"),
+          request.getParameter("technologyId"));
+    } else {
+      emailService.execute(request.getParameter("userId"), request.getParameter("technologyId"),
+          request.getParameter("recommendationsIds"), request.getParameter("commentsIds"),
+          request.getServerName());
+    }
   }
 }

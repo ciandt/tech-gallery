@@ -1,0 +1,7 @@
+Hello, ${endorsed}
+
+This is a example.
+
+User ${endorser} endorsed you on Technology ${technology}.
+
+Something more fancy. Bla bla bla.
