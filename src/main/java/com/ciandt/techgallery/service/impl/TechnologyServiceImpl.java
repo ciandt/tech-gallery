@@ -1,10 +1,17 @@
 package com.ciandt.techgallery.service.impl;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.oauth.OAuthRequestException;
-import com.google.appengine.api.users.User;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.ciandt.techgallery.persistence.dao.StorageDAO;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
@@ -20,19 +27,11 @@ import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologiesResponse;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.bind.DatatypeConverter;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
 
 /**
  * Services for Technology Endpoint requests.
@@ -55,12 +54,14 @@ public class TechnologyServiceImpl implements TechnologyService {
   /*
    * Constructors --------------------------------------------
    */
-  private TechnologyServiceImpl() {}
+  private TechnologyServiceImpl() {
+  }
 
   /**
    * Singleton method for the service.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 07/10/2015
    *
    * @return TechnologyServiceImpl instance.
@@ -76,16 +77,21 @@ public class TechnologyServiceImpl implements TechnologyService {
    * Methods --------------------------------------------
    */
   @Override
-  public Technology addTechnology(Technology technology, User user)
+  public Technology addOrUpdateTechnology(Technology technology, User user)
       throws BadRequestException, IOException, GeneralSecurityException {
 
-    validateInformations(technology);
+    Technology foundTechnology = validateInformations(technology);
+    Boolean isUpdate = foundTechnology.getId().equals(technology.getId())
+        && foundTechnology.getActive().equals(Boolean.TRUE);
+
     String imageLink = technology.getImage();
-    if (technology.getRecommendation() == null && technology.getImage() != null) {
+    if (technology.getImageContent() != null) {
       imageLink = storageDAO.insertImage(convertNameToId(technology.getName()),
-          new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImage())));
+          new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImageContent())));
     }
-    fillTechnology(technology, user, imageLink);
+
+    fillTechnology(technology, user, imageLink, isUpdate);
+
     technologyDAO.add(technology);
 
     return technology;
@@ -94,18 +100,25 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * Fill a few informations about the technology.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 13/10/2015
    *
-   * @param technology to be converted.
-   * @param user to get informations.
-   * @param imageLink returned by the cloud storage.
+   * @param technology
+   *          to be converted.
+   * @param user
+   *          to get informations.
+   * @param imageLink
+   *          returned by the cloud storage.
    *
    */
-  private void fillTechnology(Technology technology, User user, String imageLink) {
+  private void fillTechnology(Technology technology, User user, String imageLink, Boolean isUptate) {
     technology.setId(convertNameToId(technology.getName()));
     if (user != null && user.getEmail() != null) {
-      technology.setAuthor(user.getEmail());
+      if (!isUptate) {
+        technology.setAuthor(user.getEmail());
+      }
+      technology.setLastActivityUser(user.getEmail());
     }
     technology.setActive(Boolean.TRUE);
     technology.setCreationDate(new Date());
@@ -117,10 +130,12 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * Method that gets the name of the technology and creates the id.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 13/10/2015
    *
-   * @param name to format.
+   * @param name
+   *          to format.
    *
    * @return the id formatted.
    */
@@ -133,35 +148,42 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * Method to validade informations of the technology to be added.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 13/10/2015
    *
-   * @param technology to be validated.
+   * @param technology
+   *          to be validated.
    *
-   * @throws BadRequestException in case a request with problem were made.
+   * @throws BadRequestException
+   *           in case a request with problem were made.
    */
-  private void validateInformations(Technology technology) throws BadRequestException {
+  private Technology validateInformations(Technology technology) throws BadRequestException {
     if (StringUtils.isBlank(technology.getId())) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     } else if (StringUtils.isBlank(technology.getName())) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_BLANK.message());
     } else if (StringUtils.isBlank(technology.getShortDescription())) {
-      throw new BadRequestException(
-          ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
     } else if (StringUtils.isBlank(technology.getDescription())) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_DESCRIPTION_BLANK.message());
     }
 
     Technology dbTechnology = technologyDAO.findByName(technology.getName());
-    if (dbTechnology != null) {
+    if (dbTechnology != null && technology.getId() == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_ALREADY_USED.message());
     }
+    if (technology.getId() != null && !dbTechnology.getName().equals(technology.getName())) {
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_CHANGE.message());
+    }
+    return dbTechnology;
   }
 
   /**
    * GET for getting all technologies.
    *
-   * @throws NotFoundException .
+   * @throws NotFoundException
+   *           .
    */
   @Override
   public Response getTechnologies() throws InternalServerErrorException, NotFoundException {
@@ -194,8 +216,7 @@ public class TechnologyServiceImpl implements TechnologyService {
   private List<Technology> setDateFilteredList(List<Technology> completeList, Date dateReference) {
     List<Technology> dateFilteredList = new ArrayList<>();
     for (Technology technology : completeList) {
-      if (technology.getLastActivity().after(dateReference)
-          || technology.getLastActivity().equals(dateReference)) {
+      if (technology.getLastActivity().after(dateReference) || technology.getLastActivity().equals(dateReference)) {
         dateFilteredList.add(technology);
       }
     }
@@ -222,8 +243,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     completeList = filterByLastActivityDate(techFilter, completeList);
 
     List<Technology> filteredList = new ArrayList<>();
-    if (StringUtils.isBlank(techFilter.getTitleContains())
-        && StringUtils.isBlank(techFilter.getRecommendationIs())) {
+    if (StringUtils.isBlank(techFilter.getTitleContains()) && StringUtils.isBlank(techFilter.getRecommendationIs())) {
       filteredList.addAll(completeList);
     } else {
       verifyFilters(techFilter, completeList, filteredList);
@@ -244,28 +264,27 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
   }
 
-  private List<Technology> filterByLastActivityDate(TechnologyFilter techFilter,
-      List<Technology> completeList) {
+  private List<Technology> filterByLastActivityDate(TechnologyFilter techFilter, List<Technology> completeList) {
     List<Technology> dateFilteredList = new ArrayList<>();
     if (techFilter.getDateFilter() != null) {
       Date currentDate = new Date();
       switch (techFilter.getDateFilter()) {
-        case LAST_DAY:
-          Date lastDay = setDateReference(currentDate, -1);
-          dateFilteredList = setDateFilteredList(completeList, lastDay);
-          break;
+      case LAST_DAY:
+        Date lastDay = setDateReference(currentDate, -1);
+        dateFilteredList = setDateFilteredList(completeList, lastDay);
+        break;
 
-        case LAST_7_DAYS:
-          Date last7Days = setDateReference(currentDate, -7);
-          dateFilteredList = setDateFilteredList(completeList, last7Days);
-          break;
+      case LAST_7_DAYS:
+        Date last7Days = setDateReference(currentDate, -7);
+        dateFilteredList = setDateFilteredList(completeList, last7Days);
+        break;
 
-        case LAST_30_DAYS:
-          Date last30Days = setDateReference(currentDate, -30);
-          dateFilteredList = setDateFilteredList(completeList, last30Days);
-          break;
-        default:
-          break;
+      case LAST_30_DAYS:
+        Date last30Days = setDateReference(currentDate, -30);
+        dateFilteredList = setDateFilteredList(completeList, last30Days);
+        break;
+      default:
+        break;
       }
       completeList = dateFilteredList;
     }
@@ -286,8 +305,7 @@ public class TechnologyServiceImpl implements TechnologyService {
           filteredList.add(technology);
           continue;
         }
-      } else if (verifyRecommendationFilter(techFilter, technology)
-          && techFilter.getTitleContains() == null) {
+      } else if (verifyRecommendationFilter(techFilter, technology) && techFilter.getTitleContains() == null) {
         filteredList.add(technology);
         continue;
       }
@@ -297,21 +315,18 @@ public class TechnologyServiceImpl implements TechnologyService {
   private boolean verifyRecommendationFilter(TechnologyFilter techFilter, Technology technology) {
     if (technology.getRecommendation() == null) {
       return true;
-    } else if (techFilter.getRecommendationIs() != null && (technology.getRecommendation()
-        .toLowerCase().equals(techFilter.getRecommendationIs().toLowerCase())
-        || techFilter.getRecommendationIs().toLowerCase()
-            .equals(RecommendationEnums.ANY.message().toLowerCase()))) {
+    } else if (techFilter.getRecommendationIs() != null && (technology.getRecommendation().toLowerCase()
+        .equals(techFilter.getRecommendationIs().toLowerCase())
+        || techFilter.getRecommendationIs().toLowerCase().equals(RecommendationEnums.ANY.message().toLowerCase()))) {
       return true;
     }
     return false;
   }
 
-  private boolean verifyTitleAndShortDescriptionFilter(TechnologyFilter techFilter,
-      Technology technology) {
+  private boolean verifyTitleAndShortDescriptionFilter(TechnologyFilter techFilter, Technology technology) {
     if (techFilter.getTitleContains() != null
-        && (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase())
-            || technology.getShortDescription().toLowerCase()
-                .contains(techFilter.getShortDescriptionContains().toLowerCase()))) {
+        && (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase()) || technology
+            .getShortDescription().toLowerCase().contains(techFilter.getShortDescriptionContains().toLowerCase()))) {
       return true;
     }
     return false;
@@ -331,13 +346,16 @@ public class TechnologyServiceImpl implements TechnologyService {
   /**
    * Validate the user logged in.
    *
-   * @param user info about user from google
-   * @throws InternalServerErrorException in case something goes wrong
-   * @throws NotFoundException in case the information are not founded
-   * @throws BadRequestException in case a request with problem were made.
+   * @param user
+   *          info about user from google
+   * @throws InternalServerErrorException
+   *           in case something goes wrong
+   * @throws NotFoundException
+   *           in case the information are not founded
+   * @throws BadRequestException
+   *           in case a request with problem were made.
    */
-  private void validateUser(User user)
-      throws BadRequestException, NotFoundException, InternalServerErrorException {
+  private void validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException {
 
     if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
       throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
@@ -417,8 +435,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
   @Override
   public Technology deleteTechnology(String technologyId, User user)
-      throws InternalServerErrorException, BadRequestException, NotFoundException,
-      OAuthRequestException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     validateUser(user);
     Technology technology = technologyDAO.findById(technologyId);
     if (technology == null) {
