@@ -571,7 +571,7 @@ angular.module('techGallery').controller(
     }
     
     $scope.editTechnology = function(){
-    	window.location = $scope.redirectUrl($scope.id, '/createTech');
+    	window.location = $scope.redirectUrl($scope.id, '/createTech.html');
     }
     
     $scope.redirectUrl = function(techId, servlet) {

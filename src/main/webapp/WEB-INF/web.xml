@@ -12,10 +12,6 @@
         <servlet-class>com.ciandt.techgallery.servlets.ViewTech</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>createTech</servlet-name>
-        <servlet-class>com.ciandt.techgallery.servlets.CreateTech</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>CronMailServlet</servlet-name>
         <servlet-class>com.ciandt.techgallery.servlets.CronMailServlet</servlet-class>
     </servlet>
@@ -26,10 +22,6 @@
     <servlet-mapping>
         <servlet-name>viewTech</servlet-name>
         <url-pattern>/viewTech</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>createTech</servlet-name>
-        <url-pattern>/createTech</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CronMailServlet</servlet-name>

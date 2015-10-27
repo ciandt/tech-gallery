@@ -101,7 +101,9 @@ angular.module('techGallery').controller(
 		$scope.description = technology.description;
 		$scope.webSite = technology.website;
 		$scope.image = technology.image;
-		document.getElementById('list').innerHTML = ['<img src="', $scope.image,'" title="', $scope.name, '" width="200" />'].join('');
+		if($scope.image){			
+			document.getElementById('list').innerHTML = ['<img src="', $scope.image,'" title="', $scope.name, '" width="200" />'].join('');
+		}
 		$scope.selectedRecommendation = technology.recommendation;
 		$scope.justification = technology.recommendationJustification;
       }
@@ -160,7 +162,7 @@ angular.module('techGallery').controller(
     
     $scope.addOrUpdateTechnology = function(){
     	if($scope.name != null && $scope.description != null && $scope.shortDescription != null) {
-    		if($scope.image.startsWith('https://')){
+    		if($scope.image &&  $scope.image.startsWith('https://')){
     			var req = {
 	    			id : slugify($scope.name),
 	    			name : $scope.name,
