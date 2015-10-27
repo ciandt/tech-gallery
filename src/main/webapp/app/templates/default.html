@@ -1,0 +1,42 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="navbar-header">
+        <h1><a class="navbar-brand" href="#/"><img src="assets/images/tech-gallery.png" alt="Tech Gallery"> Tech Gallery</a></h1>
+      </div>
+      <div class="navbar-form navbar-right" ng-if="isLogged">
+        <div class="form-group">
+          <form ng-submit="searchTechnology()">
+            <input type="text" ng-model="textSearch" class="form-control" placeholder="Digite sua busca&hellip;">
+            <div class="btn-group" dropdown>
+              <button id="single-button" type="button" class="btn btn-default" dropdown-toggle ng-disabled=showLogin>
+                {{ selectedRecommendation==null ? 'Filtrar Por:' : selectedRecommendation }} <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+                <li role="menuitem" ng-repeat="item in dropDownRecommendation">
+                  <a href="#" ng-click="selectRecommendation(item)">{{item}}</a>
+                </li>
+              </ul>
+            </div>
+            <div class="btn-group" dropdown>
+              <button id="opt" type="button" class="btn btn-default" dropdown-toggle ng-disabled=showLogin>
+                {{ selectedOrderOption==null ? 'Ordenar Por:' : selectedOrderOption }} <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="opt">
+                <li role="menuitem" ng-repeat="item in orderOptions">
+                  <a href="#" ng-click="selectOrderOption(item)">{{item}}</a>
+                </li>
+              </ul>
+            </div>
+            <button type="submit" ng-click="searchTechnology()" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Search</button>
+            <button ng-click="searchClear()" class="btn btn-danger" ng-show="textSearch || selectedRecommendation || selectedOrderOption"><span class="glyphicon glyphicon-remove"></span></button>
+          </form>
+        </div>
+        <a ng-show="showLogin && !domainError" href="#" ng-click="login()" class="whiteText">Login <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></a>
+        <a ng-show="domainError || userLogged" href={{logoutRedirect()}} class="whiteText">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main id="content" class="container" ui-view></main>

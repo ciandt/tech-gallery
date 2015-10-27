@@ -2,6 +2,9 @@
  * Configuration variables
  */
 $icon-font-path: '../assets/fonts/';
+$navbar-default-link-color: #fff;
+$navbar-default-brand-hover-color: #fff;
+$navbar-default-bg: #EE4C6A;
 
 /**
  * Vendor & third party styles
@@ -11,7 +14,29 @@ $icon-font-path: '../assets/fonts/';
 /**
  * App styles
  */
+@import 'base';
 @import 'techgallery';
+
+#content {
+  margin-top: 71px;
+}
+
+.navbar-header h1 {
+  margin: 0;
+}
+
+.navbar-brand {
+  position: relative;
+  padding-left: 55px;
+
+  img {
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    height: 30px;
+    width: auto;
+  }
+}
 
 .menu {
   list-style: none;
