@@ -5,11 +5,10 @@
   <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
   <title ng-bind="pageTitle +' &ndash; '+ appName">Tech Gallery</title>
   <link href="build/app.min.css" rel="stylesheet">
+  <script src="https://apis.google.com/js/client.js"></script>
 </head>
 <body class="tech-gallery">
   <ui-view></ui-view>
   <script src="build/app.min.js"></script>
-  <script>function init () { window.gapiClientLoaded(); }</script>
-  <script src="https://apis.google.com/js/client.js?onload=init" defer></script>
 </body>
 </html>

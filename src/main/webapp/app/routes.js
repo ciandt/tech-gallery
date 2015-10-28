@@ -12,7 +12,25 @@ module.exports = function(
   $stateProvider
     .state('root', {
       abstract: true,
-      templateUrl: 'app/templates/default.html'
+      templateUrl: 'app/templates/default.html',
+      resolve: {
+        loadEndpoints: function ($rootScope, API, $q) {
+          var deferred = $q.defer();
+          var gapiInterval = window.setInterval(function() {
+            if ($rootScope.isApiLoaded) {
+              window.clearInterval(gapiInterval);
+              return;
+            }
+
+            gapi.client.load(API.NAME, API.VERSION, function (data) {
+              $rootScope.isApiLoaded = true;
+              deferred.resolve();
+            }, API.URL);
+          }, 200);
+
+          return deferred.promise;
+        }
+      }
     })
     .state('404', {
       url: '/404',

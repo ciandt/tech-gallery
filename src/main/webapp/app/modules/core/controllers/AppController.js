@@ -37,16 +37,6 @@ module.exports = function ($window, $rootScope, AuthService) {
   $rootScope.isUserLogged = true;
 
   /**
-   * Ìnitialize AuthService if the API isn't loaded yet
-   * @return {Void}
-   */
-  $window.gapiClientLoaded = function () {
-    if (!$rootScope.isApiLoaded) {
-      AuthService.init();
-    }
-  }
-
-  /**
    * Return loading state
    * @return {Boolean}
    */
