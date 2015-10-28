@@ -106,6 +106,7 @@ angular.module('techGallery').controller(
 		}
 		$scope.selectedRecommendation = technology.recommendation;
 		$scope.justification = technology.recommendationJustification;
+		$scope.$apply();
       }
 
     $scope.selectRecommendation = function(selected){
