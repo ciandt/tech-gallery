@@ -113,6 +113,7 @@ angular.module('techGallery').controller(
 
     function fillTechnology(technology) {
       $scope.name = technology.name;
+      $scope.id = technology.id;
       $scope.description = technology.description;
       $scope.recommendation = technology.recommendation;
       $scope.justification = technology.recommendationJustification;
@@ -306,6 +307,7 @@ angular.module('techGallery').controller(
           value : newValue
         };
         gapi.client.rest.addSkill(req).execute(function(data) {
+          ga('send', 'event', 'TechGalleryEvents', 'skill_add', $scope.name);
           $scope.processingEndorse = true;
           callBackLoaded();
         });
@@ -568,6 +570,18 @@ angular.module('techGallery').controller(
         }
       });
     }
+    
+    $scope.editTechnology = function(){
+    	window.location = $scope.redirectUrl($scope.id, '/createTech.html');
+    }
+    
+    $scope.redirectUrl = function(techId, servlet) {
+        var protocol = location.protocol + '//';
+        var host = protocol + location.host;
+        var servletRedirect = servlet;
+        var queryString = '?id=';
+        return host + servletRedirect + queryString + techId;
+      };
     
   }
 );
