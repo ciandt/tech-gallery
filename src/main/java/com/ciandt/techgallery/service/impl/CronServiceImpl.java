@@ -83,10 +83,11 @@ public class CronServiceImpl implements CronService {
               lastCronJobExecDate = cal.getTime();
             }
             String dailyRecommendationsIds =
-                technologyRecommendationDao
-                    .findAllRecommendationsIdsStartingFrom(lastCronJobExecDate);
+                technologyRecommendationDao.findAllRecommendationsIdsStartingFrom(technology,
+                    lastCronJobExecDate);
             String dailyCommentsIds =
-                technologyCommentDao.findAllCommentsIdsStartingFrom(lastCronJobExecDate);
+                technologyCommentDao
+                    .findAllCommentsIdsStartingFrom(technology, lastCronJobExecDate);
             List<Ref<TechGalleryUser>> followers = technologyFollowers.getFollowers();
             if (!dailyRecommendationsIds.isEmpty() || !dailyCommentsIds.isEmpty()) {
               for (Ref<TechGalleryUser> ref : followers) {

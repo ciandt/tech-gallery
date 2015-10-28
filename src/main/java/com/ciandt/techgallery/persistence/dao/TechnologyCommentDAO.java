@@ -25,10 +25,11 @@ public interface TechnologyCommentDAO extends GenericDAO<TechnologyComment, Long
   List<TechnologyComment> findAllActivesByTechnology(Technology technology);
   
   /**
-   * Find all commentsIds starting from date.
+   * Find all commentsIds of a technology starting from date.
    * 
+   * @param technology. 
    * @param start date.
    * @return list of commentsIds starting from a specific date concatenated by ",".
    */
-  public String findAllCommentsIdsStartingFrom(Date date);
+  public String findAllCommentsIdsStartingFrom(Technology technology, Date date);
 }
