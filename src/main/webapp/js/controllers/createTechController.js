@@ -6,6 +6,7 @@ angular.module('techGallery').controller(
     $scope.domain = '@ciandt.com';
     
     $scope.idTechnology = jsUtils.getParameterByName('id');
+    $scope.showTechNotExists = false;
     
     $scope.logoutRedirect = function(){
       return jsUtils.logoutRedirect();
@@ -58,6 +59,12 @@ angular.module('techGallery').controller(
     function callBackLoaded() {
     	var req = {id: $scope.idTechnology};
     	gapi.client.rest.getTechnology(req).execute(function(data){
+    		if(data.code !== undefined && data.code === 404){
+    			$scope.showContent = false;
+    			$scope.showTechNotExists = true;
+        		$scope.$apply();
+        		return;
+    		}
     		fillTechnology(data);
     	});
     	

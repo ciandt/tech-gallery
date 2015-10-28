@@ -48,16 +48,6 @@ public interface TechnologyService {
       throws InternalServerErrorException, NotFoundException, BadRequestException;
 
   /**
-   * 
-   * Service for getting a technology response.
-   *
-   * @param id entity id.
-   * @return .
-   * @throws NotFoundException .
-   */
-  Technology getTechnology(final String id) throws NotFoundException;
-
-  /**
    * Service for getting all technologies according a filter.
    *
    * @param filter entity filter.
