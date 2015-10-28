@@ -56,19 +56,21 @@ public class EmailServiceImpl implements EmailService {
 
   // TODO: move inside create template.
   private static final String templateEndorserment = "templateEndorserment.example.email";
-  private static final String template = "technologyactivitiesresume.template";
+  private static final String template = "TechnologyActivitiesResumeEmailTemplate";
   private static final String subject = "[Tech Gallery] Resumo diário sobre ";
   private static final String reason = "Resumo do dia para os followers";
 
   /*
    * Constructors --------------------------------------------
    */
-  private EmailServiceImpl() {}
+  private EmailServiceImpl() {
+  }
 
   /**
    * Singleton method for the service.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 09/10/2015
    *
    * @return EmailServiceImpl instance.
@@ -82,8 +84,7 @@ public class EmailServiceImpl implements EmailService {
 
   private InternetAddress from = null;
   private EmailNotificationDAO emailNotificationDao = EmailNotificationDAOImpl.getInstance();
-  private TechnologyRecommendationDAO technologyRecommendationDao =
-      TechnologyRecommendationDAOImpl.getInstance();
+  private TechnologyRecommendationDAO technologyRecommendationDao = TechnologyRecommendationDAOImpl.getInstance();
   private TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
   private TechGalleryUserDAOImpl techGalleryUserDao = TechGalleryUserDAOImpl.getInstance();
   private TechnologyDAOImpl technologyDao = TechnologyDAOImpl.getInstance();
@@ -92,29 +93,26 @@ public class EmailServiceImpl implements EmailService {
    * Push email to queue.
    */
   @Override
-  public void push(TechGalleryUser user, Technology technology, String recommendationsIds,
-      String commentsIds) {
-    QueueFactory.getQueue(queueName).add(
-        TaskOptions.Builder.withUrl(queueUrl).param("userId", user.getId().toString())
-            .param("technologyId", technology.getId())
-            .param("recommendationsIds", recommendationsIds).param("commentsIds", commentsIds));
+  public void push(TechGalleryUser user, Technology technology, String recommendationsIds, String commentsIds) {
+    QueueFactory.getQueue(queueName)
+        .add(TaskOptions.Builder.withUrl(queueUrl).param("userId", user.getId().toString())
+            .param("technologyId", technology.getId()).param("recommendationsIds", recommendationsIds)
+            .param("commentsIds", commentsIds));
   }
 
   @Override
-  public void push(TechGalleryUser endorserUser, TechGalleryUser endorsedUser,
-      Technology technology) {
-    QueueFactory.getQueue(queueName).add(
-        TaskOptions.Builder.withUrl(queueUrl).param("userId", endorserUser.getId().toString())
-            .param("endorsedUser", endorsedUser.getId().toString())
-            .param("technologyId", technology.getId()));
+  public void push(TechGalleryUser endorserUser, TechGalleryUser endorsedUser, Technology technology) {
+    QueueFactory.getQueue(queueName)
+        .add(TaskOptions.Builder.withUrl(queueUrl).param("userId", endorserUser.getId().toString())
+            .param("endorsedUser", endorsedUser.getId().toString()).param("technologyId", technology.getId()));
   }
 
   /**
    * Execute email from queue.
    */
   @Override
-  public void execute(String userId, String technologyId, String recommendationsIds,
-      String commentsIds, String serverUrl) {
+  public void execute(String userId, String technologyId, String recommendationsIds, String commentsIds,
+      String serverUrl) {
     List<TechnologyComment> comments = new ArrayList<TechnologyComment>();
     if (!commentsIds.isEmpty()) {
       String[] commentIds = commentsIds.split(",");
@@ -129,8 +127,7 @@ public class EmailServiceImpl implements EmailService {
       String[] recommendIds = recommendationsIds.split(",");
       for (String id : recommendIds) {
         if (!id.isEmpty()) {
-          TechnologyRecommendation recommedation =
-              technologyRecommendationDao.findById(Long.parseLong(id));
+          TechnologyRecommendation recommedation = technologyRecommendationDao.findById(Long.parseLong(id));
           recommendations.add(recommedation);
           comments.remove(recommedation.getCommentEntity());
         }
@@ -146,27 +143,24 @@ public class EmailServiceImpl implements EmailService {
     techActivities.setTimestamp(new Date());
     techActivities.setAppName("Tech Gallery");
 
-    EmailConfig email =
-        new EmailConfig(subject + technology.getName() + " - "
-            + techActivities.getFormattedTimestamp(), "emailtemplates" + File.separator + template,
-            techActivities, null, reason, user.getEmail());
+    EmailConfig email = new EmailConfig(subject + technology.getName() + " - " + techActivities.getFormattedTimestamp(),
+        "emailtemplates" + File.separator + template, techActivities, null, reason, user.getEmail());
     sendEmail(email);
   }
-  
+
   @Override
   public void execute(String userId, String endorsedUser, String technologyId) {
     TechGalleryUser endorser = techGalleryUserDao.findById(Long.parseLong(userId));
     TechGalleryUser endorsed = techGalleryUserDao.findById(Long.parseLong(endorsedUser));
     Technology technology = technologyDao.findById(technologyId);
-    
+
     // TODO extract method to build template (mustache).
     Map<String, String> variableValue = new HashMap<String, String>();
     variableValue.put("${endorser}", endorser.getName());
     variableValue.put("${endorsed}", endorsed.getName());
     variableValue.put("${technology}", technology.getName());
-    EmailConfig email =
-        new EmailConfig(subject, "emailtemplates" + File.separator + templateEndorserment,
-            variableValue, null, reason, endorsed.getEmail());
+    EmailConfig email = new EmailConfig(subject, "emailtemplates" + File.separator + templateEndorserment,
+        variableValue, null, reason, endorsed.getEmail());
     sendEmail(email);
   }
 
@@ -182,8 +176,7 @@ public class EmailServiceImpl implements EmailService {
     }
   }
 
-  private Message prepareMessage(EmailConfig email)
-      throws UnsupportedEncodingException, MessagingException {
+  private Message prepareMessage(EmailConfig email) throws UnsupportedEncodingException, MessagingException {
 
     email.processTemplate();
     Properties props = new Properties();
@@ -214,7 +207,7 @@ public class EmailServiceImpl implements EmailService {
     if (from == null) {
       String appId = ApiProxy.getCurrentEnvironment().getAppId();
       int tilde = appId.indexOf('~');
-      if (tilde >= 0) { //TODO make this into an environment property
+      if (tilde >= 0) { // TODO make this into an environment property
         appId = appId.substring(tilde + 1);
       }
       String addr = "no-reply@" + appId + ".com";
