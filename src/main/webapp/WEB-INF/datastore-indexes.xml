@@ -6,6 +6,14 @@
         <property name="technology" direction="asc" />
         <property name="timestamp" direction="desc" />
     </datastore-index>
+    <datastore-index kind="TechnologyComment" ancestor="false" source="manual">
+        <property name="active" direction="asc" />
+        <property name="timestamp" direction="asc" />
+    </datastore-index>
+    <datastore-index kind="TechnologyRecommendation" ancestor="false" source="manual">
+        <property name="active" direction="asc" />
+        <property name="timestamp" direction="asc" />
+    </datastore-index>
     <datastore-index kind="CronJob" ancestor="false" source="manual">
         <property name="cronStatus" direction="asc" />
         <property name="name" direction="asc" />
