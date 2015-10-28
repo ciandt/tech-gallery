@@ -1,13 +1,18 @@
 package com.ciandt.techgallery.service.email;
 
-import org.apache.commons.io.IOUtils;
+import com.ciandt.techgallery.service.model.TechnologyActivitiesTO;
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Email configuration object. 
@@ -28,6 +33,8 @@ public class EmailConfig {
   private String reason;
   
   private String resource;
+  
+  private TechnologyActivitiesTO techActivities;
   
   /**
    * Variable and value to be replaced in template. 
@@ -65,8 +72,21 @@ public class EmailConfig {
     if (getResource() == null) {
       throw new IllegalArgumentException("Resource field is required.");
     }
-    processTemplate();
   }
+
+  public EmailConfig(String subject, String resource, TechnologyActivitiesTO techActivities,
+      String rule, String reason, String... to) {
+    this.to = to;
+    this.subject = subject;
+    this.rule = rule;
+    this.reason = reason;
+    this.resource = resource;
+    this.techActivities = techActivities;
+    if (getResource() == null) {
+      throw new IllegalArgumentException("Resource field is required.");
+    }
+  }
+
 
   public String[] getTo() {
     return to;
@@ -151,29 +171,23 @@ public class EmailConfig {
    * Resource and dynamic data must not be null.
    */
   public void processTemplate() {
-    
     if (resource != null) {
+      MustacheFactory mf = new DefaultMustacheFactory();
+      Mustache mustache = mf.compile(this.resource);
+  
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      Writer writer = new OutputStreamWriter(baos, StandardCharsets.UTF_8);
       try {
-        String bodyTemplate = 
-            IOUtils.toString(Thread.currentThread()
-                .getContextClassLoader()
-                .getResourceAsStream(resource), "UTF-8");
-        
-        if (bodyTemplate != null && dynamicData != null && !dynamicData.isEmpty()) {
-          
-          for (Entry<String, String> keyValue : dynamicData.entrySet()) {
-            String value = keyValue.getValue();
-            bodyTemplate =
-                bodyTemplate.replaceAll(Pattern.quote(keyValue.getKey()).toString(),
-                    value == null ? "" : Matcher.quoteReplacement(value));
-          }
-        }
-        this.body = bodyTemplate;
-        
-      } catch (IOException io) {
-        throw new RuntimeException("Could not find resource file");
+        mustache.execute(writer, techActivities).flush();
+      } catch (IOException e) {
+        throw new RuntimeException("Could not mount template file");
       }
-    }   
+      try {
+        this.body = new String(baos.toByteArray(), "UTF-8");
+      } catch (UnsupportedEncodingException e) {
+        throw new RuntimeException("Could not encode template file");
+      }
+    }
   }
   
 }

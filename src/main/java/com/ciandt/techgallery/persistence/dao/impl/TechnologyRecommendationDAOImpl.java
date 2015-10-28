@@ -91,7 +91,8 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
     final Objectify objectify = OfyService.ofy();
     final List<TechnologyRecommendation> recommendations =
         objectify.load().type(TechnologyRecommendation.class)
-            .filter(TechnologyRecommendation.TIMESTAMP + " >" , date).list();
+            .filter(TechnologyRecommendation.TIMESTAMP + " >", date)
+            .filter(TechnologyRecommendation.ACTIVE, Boolean.TRUE).list();
     for (TechnologyRecommendation technologyRecommendation : recommendations) {
       recommendationsIds = recommendationsIds.concat("," + technologyRecommendation.getId());
     }
