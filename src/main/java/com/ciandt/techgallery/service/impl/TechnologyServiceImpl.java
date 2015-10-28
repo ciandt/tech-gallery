@@ -76,15 +76,22 @@ public class TechnologyServiceImpl implements TechnologyService {
    * Methods --------------------------------------------
    */
   @Override
-  public Technology addTechnology(Technology technology, User user)
+  public Technology addOrUpdateTechnology(Technology technology, User user)
       throws BadRequestException, IOException, GeneralSecurityException {
-    validateInformations(technology);
+
+    Technology foundTechnology = validateInformations(technology);
+    Boolean isUpdate = foundTechnology != null && foundTechnology.getId().equals(technology.getId())
+        && foundTechnology.getActive().equals(Boolean.TRUE);
+
     String imageLink = technology.getImage();
-    if (technology.getRecommendation() == null && technology.getImage() != null) {
-      imageLink = storageDAO.insertImage(convertNameToId(technology.getName()),
-          new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImage())));
+    if (technology.getImageContent() != null) {
+      imageLink =
+          storageDAO.insertImage(convertNameToId(technology.getName()), new ByteArrayInputStream(
+              DatatypeConverter.parseBase64Binary(technology.getImageContent())));
     }
-    fillTechnology(technology, user, imageLink);
+
+    fillTechnology(technology, user, imageLink, isUpdate);
+
     technologyDAO.add(technology);
 
     return technology;
@@ -101,10 +108,14 @@ public class TechnologyServiceImpl implements TechnologyService {
    * @param imageLink returned by the cloud storage.
    *
    */
-  private void fillTechnology(Technology technology, User user, String imageLink) {
+  private void fillTechnology(Technology technology, User user, String imageLink,
+      Boolean isUptate) {
     technology.setId(convertNameToId(technology.getName()));
     if (user != null && user.getEmail() != null) {
-      technology.setAuthor(user.getEmail());
+      if (!isUptate) {
+        technology.setAuthor(user.getEmail());
+      }
+      technology.setLastActivityUser(user.getEmail());
     }
     technology.setActive(Boolean.TRUE);
     technology.setCreationDate(new Date());
@@ -139,7 +150,7 @@ public class TechnologyServiceImpl implements TechnologyService {
    *
    * @throws BadRequestException in case a request with problem were made.
    */
-  private void validateInformations(Technology technology) throws BadRequestException {
+  private Technology validateInformations(Technology technology) throws BadRequestException {
     if (StringUtils.isBlank(technology.getId())) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_ID_CANNOT_BLANK.message());
     } else if (StringUtils.isBlank(technology.getName())) {
@@ -152,11 +163,21 @@ public class TechnologyServiceImpl implements TechnologyService {
     }
 
     Technology dbTechnology = technologyDAO.findByName(technology.getName());
-    if (dbTechnology != null) {
+    if (dbTechnology != null && technology.getId() == null) {
       throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_ALREADY_USED.message());
     }
+    if (technology.getId() != null && dbTechnology != null
+        && !dbTechnology.getName().equals(technology.getName())) {
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NAME_CANNOT_CHANGE.message());
+    }
+    return dbTechnology;
   }
 
+  /**
+   * GET for getting all technologies.
+   *
+   * @throws NotFoundException .
+   */
   @Override
   public Response getTechnologies(User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {

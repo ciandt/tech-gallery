@@ -1,15 +1,8 @@
 package com.ciandt.techgallery.service.endpoint;
 
-import com.google.api.server.spi.ServiceException;
-import com.google.api.server.spi.config.Api;
-import com.google.api.server.spi.config.ApiMethod;
-import com.google.api.server.spi.config.Named;
-import com.google.api.server.spi.config.Nullable;
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.oauth.OAuthRequestException;
-import com.google.appengine.api.users.User;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.List;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -23,10 +16,16 @@ import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
 import com.ciant.techgallery.transaction.ServiceFactory;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.List;
+import com.google.api.server.spi.ServiceException;
+import com.google.api.server.spi.config.Api;
+import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.config.Nullable;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
 
 /**
  * Endpoint controller class for Technology requests.
@@ -34,9 +33,9 @@ import java.util.List;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1", clientIds = { Constants.WEB_CLIENT_ID,
-    Constants.API_EXPLORER_CLIENT_ID }, scopes = { Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE,
-        Constants.PLUS_STREAM_WRITE })
+@Api(name = "rest", version = "v1",
+    clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
+    scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE, Constants.PLUS_STREAM_WRITE})
 public class TechnologyEndpoint {
 
   private TechnologyService service = TechnologyServiceImpl.getInstance();
@@ -54,11 +53,11 @@ public class TechnologyEndpoint {
    * @throws IOException in case a IO problem.
    * @throws GeneralSecurityException in case a security problem.
    */
-  @ApiMethod(name = "addTechnology", path = "technology", httpMethod = "post")
-  public Technology addTechnology(Technology technology, User user)
+  @ApiMethod(name = "addOrUpdateTechnology", path = "technology", httpMethod = "post")
+  public Technology addOrUpdateTechnology(Technology technology, User user)
       throws InternalServerErrorException, BadRequestException, IOException,
       GeneralSecurityException {
-    return service.addTechnology(technology, user);
+    return service.addOrUpdateTechnology(technology, user);
   }
 
   /**

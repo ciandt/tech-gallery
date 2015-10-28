@@ -104,6 +104,9 @@ public class Technology extends BaseEntity<String> {
   @Index
   private Boolean active;
 
+  @Ignore
+  private String imageContent;
+
   /*
    * Getter's and Setter's --------------------------------------------
    */
@@ -119,6 +122,14 @@ public class Technology extends BaseEntity<String> {
 
   public String getName() {
     return name;
+  }
+
+  public String getImageContent() {
+    return imageContent;
+  }
+
+  public void setImageContent(String imageContent) {
+    this.imageContent = imageContent;
   }
 
   public void setName(String name) {
@@ -324,6 +335,11 @@ public class Technology extends BaseEntity<String> {
     positiveRecommendationsCounter = 0;
   }
 
+  /**
+   * Sort the technology list by Last Activity Date.
+   * 
+   * @param techEntities List of technologies.
+   */
   public static void sortTechnologiesDefault(List<Technology> techEntities) {
     Collections.sort(techEntities, new Comparator<Technology>() {
       @Override
@@ -333,55 +349,16 @@ public class Technology extends BaseEntity<String> {
     });
   }
 
+  /**
+   * Sort the Technology list according to the given enum value.
+   * 
+   * @param techList List of technologies.
+   * @param orderBy Enum value.
+   * @return sorted list.
+   */
   public static List<Technology> sortTechnologies(List<Technology> techList,
       TechnologyOrderOptionEnum orderBy) {
-    switch (orderBy) {
-      case POSITIVE_RECOMMENDATION_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getPositiveRecommendationsCounter(),
-                counter1.getPositiveRecommendationsCounter());
-          }
-        });
-        break;
-      case NEGATIVE_RECOMMENDATION_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getNegativeRecommendationsCounter(),
-                counter1.getNegativeRecommendationsCounter());
-          }
-        });
-        break;
-      case COMMENT_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getCommentariesCounter(),
-                counter1.getCommentariesCounter());
-          }
-        });
-        break;
-      case ENDORSEMENT_AMOUNT:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return Integer.compare(counter2.getEndorsersCounter(), counter1.getEndorsersCounter());
-          }
-        });
-        break;
-      case APHABETIC:
-        Collections.sort(techList, new Comparator<Technology>() {
-          @Override
-          public int compare(Technology counter1, Technology counter2) {
-            return counter1.getName().compareTo(counter2.getName());
-          }
-        });
-        break;
-      default:
-        break;
-    }
+    orderBy.sort(techList);
     return techList;
   }
 }
