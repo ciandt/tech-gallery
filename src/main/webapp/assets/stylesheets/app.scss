@@ -9,6 +9,7 @@ $navbar-default-brand-hover-color: #fff;
 $navbar-default-bg: #EE4C6A;
 $border-radius-base: 3px;
 $border-radius-large: 4px;
+$link-color: #1497CC;
 
 $brand-primary: #427fed;
 $brand-danger: #d73d32;
@@ -30,8 +31,8 @@ $brand-success: #1c9e0a;
 @import 'base';
 @import 'techgallery';
 
-#content {
-  margin-top: 71px;
+#app-header {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .3);
 }
 
 #app-search {
@@ -41,14 +42,116 @@ $brand-success: #1c9e0a;
     border: none;
     padding-right: 32px;
     width: 250px;
+    opacity: .8;
+    transition: all .3s;
+
+    &:focus {
+      opacity: 1;
+      width: 300px;
+    }
   }
 
   button[type=submit] {
     position: absolute;
-    top: 1px;
+    top: 0;
+    padding-top: 7px;
     right: 15px;
     color: $gray-light;
   }
+}
+
+#app-content {
+  margin-top: 51px;
+  position: relative;
+}
+
+.toolbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  z-index: 2;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .5);
+
+  & + .content-wrapper {
+    top: 71px;
+    z-index: 1;
+  }
+}
+.content-wrapper {
+  position: relative;
+}
+
+$card-spacing: 15px;
+.card {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-bottom-width: 2px;
+  border-radius: $border-radius-base;
+  overflow: hidden;
+  margin-bottom: $card-spacing * 2;
+
+  // height: 380px;
+}
+.card-actions {
+  // display: none;
+}
+.card-header {
+  padding: $card-spacing;
+  overflow: hidden;
+
+  // background-color: lightblue;
+  height: 235px;
+}
+.card-title {
+  font-size: 20px;
+  margin: 0 0 5px;
+
+  &,
+  & a {
+    color: $text-color;
+  }
+}
+.card-content {
+  padding: $card-spacing;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  // background-color: pink;
+  height: 125px;
+}
+.card-meta {
+  // position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $card-spacing;
+  border-top: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.technology-image {
+  border: 1px solid #ddd;
+  border-radius: 100%;
+  overflow: hidden;
+  margin: 0 auto 10px;
+  display: block;
+  background-color: #fff;
+  // -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+  //         box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+
+  &,
+  & img {
+    width: 125px;
+    height: 125px;
+  }
+}
+.technology-last-activity {
+  color: $gray-light;
 }
 
 /**
@@ -90,6 +193,10 @@ $brand-success: #1c9e0a;
   .btn-success,
   .btn-info {
     border-color: transparent;
+  }
+
+  .btn-group + .btn-group {
+    margin-left: 10px;
   }
 
   .menu {

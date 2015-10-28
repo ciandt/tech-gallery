@@ -1,6 +1,68 @@
-<div ng-controller="TechnologiesController as technologies">
-  <loading ng-if="technologies.isLoading()"></loading>
-  <div ng-if="!technologies.isLoading()">
-    {{ pageTitle }}
+<loading ng-if="technologies.isLoading()"></loading>
+<div class="technologies" ng-if="!technologies.isLoading()">
+  <!-- TECHNOLOGIES TOOLBAR -->
+  <div class="toolbar btn-toolbar" role="toolbar">
+    <div class="container">
+      <div class="pull-left">
+        <div class="btn-group" role="group" uib-dropdown>
+          <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+            Filtrar por: <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="menuitem" ng-repeat="item in dropDownRecommendation">
+              <a href="#" ng-click="selectRecommendation(item)">{{item}}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="btn-group" role="group" uib-dropdown>
+          <button id="opt" type="button" class="btn btn-default" uib-dropdown-toggle>
+            Ordenar Por: <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="menuitem" ng-repeat="item in orderOptions">
+              <a href="#" ng-click="selectOrderOption(item)">{{item}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="btn-group pull-right" role="group" ng-if="isUserLogged">
+        <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar tecnologia</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrapper container">
+    <div class="col-sm-6 col-md-3" ng-repeat="technology in technologies.items">
+      <div class="card">
+        <!-- <div class="card-actions">
+          <button type="button" ng-click="deleteTechnology(technology.id)" class="btn btn-danger glyphicon glyphicon-trash btn-xs"></button>
+        </div> -->
+        <div class="card-header">
+          <div class="technology-image">
+            <a href="#/technologies/{{ technology.id }}"><img ng-src="{{ technology.image }}" alt="{{ technology.name }}" data-holder-rendered="true"></a>
+          </div>
+          <h3 class="card-title"><a href="#/technologies/{{ technology.id }}">{{ technology.name }}</a></h3>
+          <span class="label label-default">{{ technology.recommendation }}</span>
+        </div>
+        <div class="card-content">
+          <div class="technology-description">
+            <p>{{ technology.shortDescription }}</p>
+          </div>
+        </div>
+        <div class="card-meta">
+          <div class="titleThumbnail">
+            <span class="glyphicon glyphicon-thumbs-up">{{ technology.positiveRecommendationsCounter }}</span>
+            <span class="glyphicon glyphicon-thumbs-down">{{ technology.negativeRecommendationsCounter }}</span>
+            <span class="glyphicon glyphicon-user">{{ technology.endorsersCounter }}</span>
+            <span class="glyphicon glyphicon-list-alt">{{ technology.commentariesCounter }}</span>
+          </div>
+          <small class="technology-last-activity">
+            <span class="lastActivityLabel">Última Atividade:</span>
+            <time>{{ technology.lastActivity | date:"dd/MM/yyyy H:mm" }}</time>
+          </small>
+        </div>
+      </div>
+  </div>
   </div>
 </div>

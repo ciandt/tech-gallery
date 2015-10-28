@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav id="app-header" class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <div class="col-md-12">
       <div class="navbar-header">
@@ -31,8 +31,6 @@
                 </li>
               </ul>
             </div> -->
-            <!-- <button type="submit" ng-click="searchTechnology()" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Search</button> -->
-            <!-- <button ng-click="searchClear()" class="btn btn-danger" ng-show="textSearch || selectedRecommendation || selectedOrderOption"><span class="glyphicon glyphicon-remove"></span></button> -->
           </div>
         </form>
 
@@ -43,18 +41,18 @@
             <ul class="uib-dropdown-menu">
               <li><a href="#">Meu perfil</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="{{ logoutRedirect() }}">Logout <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
+              <li><a href="{{ logoutRedirect() }}">Sair</a></li>
             </ul>
           </li>
         </ul>
 
         <!-- USER LOGIN -->
         <div class="nav navbar-form navbar-right" ng-if="!isUserLogged">
-          <button class="btn btn-primary">Login <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></button>
+          <button class="btn btn-primary"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Login</button>
         </div>
       </div>
     </div>
   </div>
 </nav>
 
-<main id="content" class="container" ui-view></main>
+<main id="app-content" ui-view></main>

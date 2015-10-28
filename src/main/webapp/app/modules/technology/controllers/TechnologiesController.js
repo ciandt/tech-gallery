@@ -16,7 +16,7 @@ module.exports = function ($rootScope, TechnologyService) {
    * Page title
    * @type {String}
    */
-  $rootScope.pageTitle = 'Technologies';
+  $rootScope.pageTitle = 'Tecnologias';
 
   /**
    * List of technologies
