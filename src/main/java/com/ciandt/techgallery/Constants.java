@@ -24,4 +24,7 @@ public class Constants {
   public static final String NEGATIVE_RECOMMENDATION_TEXT = "negativamente a tecnologia ";
   public static final String NEW_LINE = System.getProperty("line.separator");
 
+  public static final String THUMBS_UP = "https://storage.googleapis.com/tech-gallery-assets/email/thumbs-up.png";
+  public static final String THUMBS_DOWN = "https://storage.googleapis.com/tech-gallery-assets/email/thumbs-down.png";
+  
 }

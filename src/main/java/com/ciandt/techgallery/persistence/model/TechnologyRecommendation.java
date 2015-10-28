@@ -9,8 +9,10 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
 
+import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.transformer.TechnologyRecommendationTransformer;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -109,6 +111,10 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
   public Ref<TechnologyComment> getComment() {
     return comment;
   }
+  
+  public TechnologyComment getCommentEntity() {
+    return comment.get();
+  }
 
   public void setComment(Ref<TechnologyComment> comment) {
     this.comment = comment;
@@ -129,7 +135,11 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
   public void setRecommender(Ref<TechGalleryUser> recommender) {
     this.recommender = recommender;
   }
-
+  
+  public TechGalleryUser getRecommenderEntity() {
+    return recommender.get();
+  }
+  
   public Ref<Technology> getTechnology() {
     return technology;
   }
@@ -142,7 +152,17 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
     return timestamp;
   }
 
+  public String getFormattedTimestamp() {
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm:ss");
+    return formatter.format(this.timestamp);
+  }
+
   public void setTimestamp(Date timestamp) {
     this.timestamp = timestamp;
   }
+  
+  public String getScoreImg() {
+    return this.score ? Constants.THUMBS_UP : Constants.THUMBS_DOWN;
+  }
+  
 }
