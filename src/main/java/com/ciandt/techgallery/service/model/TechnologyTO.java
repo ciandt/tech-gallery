@@ -36,6 +36,8 @@ public class TechnologyTO implements Response {
   private Integer commentariesCounter;
   /** technology endorseds. */
   private Integer endorsersCounter;
+  /** technology image byte content. */
+  private String imageContent;
   /** technology is followed by the logged user. */
   private boolean followedByUser;
 
@@ -59,6 +61,14 @@ public class TechnologyTO implements Response {
 
   public String getShortDescription() {
     return shortDescription;
+  }
+
+  public String getImageContent() {
+    return imageContent;
+  }
+
+  public void setImageContent(String imageContent) {
+    this.imageContent = imageContent;
   }
 
   public Integer getPositiveRecommendationsCounter() {
