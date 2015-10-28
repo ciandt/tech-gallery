@@ -1,0 +1,6 @@
+<div ng-controller="TechnologiesController as technologies">
+  <loading ng-if="technologies.isLoading()"></loading>
+  <div ng-if="!technologies.isLoading()">
+    {{ pageTitle }}
+  </div>
+</div>
