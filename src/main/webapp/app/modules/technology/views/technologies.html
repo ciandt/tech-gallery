@@ -4,26 +4,30 @@
   <div class="toolbar btn-toolbar" role="toolbar">
     <div class="container">
       <div class="pull-left">
-        <div class="btn-group" role="group" uib-dropdown>
-          <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
-            Filtrar por: <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li role="menuitem" ng-repeat="item in dropDownRecommendation">
-              <a href="#" ng-click="selectRecommendation(item)">{{item}}</a>
-            </li>
-          </ul>
-        </div>
-        <div class="btn-group" role="group" uib-dropdown>
-          <button id="opt" type="button" class="btn btn-default" uib-dropdown-toggle>
-            Ordenar Por: <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li role="menuitem" ng-repeat="item in orderOptions">
-              <a href="#" ng-click="selectOrderOption(item)">{{item}}</a>
-            </li>
-          </ul>
-        </div>
+        <form class="form-inline">
+          <div class="form-group">
+            <label for="technology-filter"><span class="glyphicon glyphicon-filter"></span></label>
+            <select class="form-control" id="technology-filter">
+              <option value="">Todos</option>
+              <option value="">Recomendada</option>
+              <option value="">Recomendada alternativa</option>
+              <option value="">Usar e aprender</option>
+              <option value="">Observar e fazer provas de conceito</option>
+              <option value="">Não recomendadas ou aposentar</option>
+              <option value="">Não informado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="technology-order"><span class="glyphicon glyphicon-sort"></span></label>
+            <select class="form-control" id="technology-order">
+              <option value="">Alfabética</option>
+              <option value="">Recomendações positivas</option>
+              <option value="">Recomendações negativas</option>
+              <option value="">Comentários</option>
+              <option value="">Indicações</option>
+            </select>
+          </div>
+        </form>
       </div>
 
       <div class="btn-group pull-right" role="group" ng-if="isUserLogged">
@@ -33,36 +37,44 @@
   </div>
 
   <div class="content-wrapper container">
-    <div class="col-sm-6 col-md-3" ng-repeat="technology in technologies.items">
-      <div class="card">
-        <!-- <div class="card-actions">
-          <button type="button" ng-click="deleteTechnology(technology.id)" class="btn btn-danger glyphicon glyphicon-trash btn-xs"></button>
-        </div> -->
-        <div class="card-header">
-          <div class="technology-image">
-            <a href="#/technologies/{{ technology.id }}"><img ng-src="{{ technology.image }}" alt="{{ technology.name }}" data-holder-rendered="true"></a>
+    <div class="row">
+      <div class="col-sm-6 col-md-3" ng-repeat="technology in technologies.items">
+        <div class="card">
+          <div class="card-header card-section">
+            <div class="technology-image">
+              <a href="#/technologies/{{ technology.id }}"><img ng-src="{{ technology.image }}" alt="{{ technology.name }}" data-holder-rendered="true"></a>
+            </div>
+            <h3 class="card-title"><a href="#/technologies/{{ technology.id }}">{{ technology.name }}</a></h3>
+            <span class="label label-default">{{ technology.recommendation }}</span>
           </div>
-          <h3 class="card-title"><a href="#/technologies/{{ technology.id }}">{{ technology.name }}</a></h3>
-          <span class="label label-default">{{ technology.recommendation }}</span>
-        </div>
-        <div class="card-content">
-          <div class="technology-description">
-            <p>{{ technology.shortDescription }}</p>
+          <div class="card-content card-section">
+            <div class="technology-description">
+              <p>{{ technology.shortDescription }}</p>
+            </div>
           </div>
-        </div>
-        <div class="card-meta">
-          <div class="titleThumbnail">
-            <span class="glyphicon glyphicon-thumbs-up">{{ technology.positiveRecommendationsCounter }}</span>
-            <span class="glyphicon glyphicon-thumbs-down">{{ technology.negativeRecommendationsCounter }}</span>
-            <span class="glyphicon glyphicon-user">{{ technology.endorsersCounter }}</span>
-            <span class="glyphicon glyphicon-list-alt">{{ technology.commentariesCounter }}</span>
+          <div class="card-actions card-section" ng-if="isUserLogged">
+            <div class="pull-left">
+              <button type="button" ng-click="deleteTechnology(technology.id)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button>
+            </div>
+            <div class="pull-right">
+              <a href="#/technologies/{{ technology.id }}/edit" class="btn btn-default btn-xs" title="Editar {{ technology.name }}"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
+              <!-- <button type="button" ng-click="deleteTechnology(technology.id)" class="btn btn-danger btn-xs" title="Deletar {{ technology.name }}"><span class="glyphicon glyphicon-trash"></span></button> -->
+            </div>
           </div>
-          <small class="technology-last-activity">
-            <span class="lastActivityLabel">Última Atividade:</span>
-            <time>{{ technology.lastActivity | date:"dd/MM/yyyy H:mm" }}</time>
-          </small>
+          <div class="card-meta card-section">
+            <div class="titleThumbnail">
+              <span class="glyphicon glyphicon-thumbs-up"></span> {{ technology.positiveRecommendationsCounter }}
+              <span class="glyphicon glyphicon-thumbs-down"></span> {{ technology.negativeRecommendationsCounter }}
+              <span class="glyphicon glyphicon-user"></span> {{ technology.endorsersCounter }}
+              <span class="glyphicon glyphicon-list-alt"></span> {{ technology.commentariesCounter }}
+            </div>
+            <small class="technology-last-activity">
+              <span class="lastActivityLabel">Última Atividade:</span>
+              <time>{{ technology.lastActivity | date:"dd/MM/yyyy H:mm" }}</time>
+            </small>
+          </div>
         </div>
       </div>
-  </div>
+    </div>
   </div>
 </div>

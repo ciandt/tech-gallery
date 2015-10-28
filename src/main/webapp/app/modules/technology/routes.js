@@ -19,11 +19,15 @@ module.exports = function(
       controller: 'TechnologiesController as technologies',
       templateUrl: viewsFolder + 'technologies.html'
     })
-    .state('root.technologies.view', {
+    .state('root.technologies-view', {
       url: '/technologies/:slug',
       controller: 'TechnologyController as technology'
     })
-    .state('root.technologies.add', {
+    .state('root.technologies-edit', {
+      url: '/technologies/:slug/edit',
+      controller: 'TechnologyController as technology'
+    })
+    .state('root.technologies-add', {
       url: '/technologies/new',
       controller: 'TechnologyAddController as technology'
     });

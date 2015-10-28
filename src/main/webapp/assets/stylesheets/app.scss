@@ -80,6 +80,11 @@ $brand-success: #1c9e0a;
     top: 71px;
     z-index: 1;
   }
+
+  .form-control {
+    width: 200px;
+    margin-left: 2px;
+  }
 }
 .content-wrapper {
   position: relative;
@@ -97,14 +102,18 @@ $card-spacing: 15px;
 
   // height: 380px;
 }
+.card-section {
+  padding: $card-spacing;
+  border-top: 1px solid #eee;
+}
 .card-actions {
-  // display: none;
+  padding: ($card-spacing/2) $card-spacing;
+  overflow: hidden;
 }
 .card-header {
-  padding: $card-spacing;
+  border: none;
   overflow: hidden;
 
-  // background-color: lightblue;
   height: 235px;
 }
 .card-title {
@@ -117,20 +126,14 @@ $card-spacing: 15px;
   }
 }
 .card-content {
-  padding: $card-spacing;
+  border: none;
+  padding-top: 0;
   text-overflow: ellipsis;
   overflow: hidden;
 
-  // background-color: pink;
   height: 125px;
 }
 .card-meta {
-  // position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: $card-spacing;
-  border-top: 1px solid #ddd;
   background-color: #f9f9f9;
 }
 
@@ -197,6 +200,12 @@ $card-spacing: 15px;
 
   .btn-group + .btn-group {
     margin-left: 10px;
+  }
+
+  .form-inline {
+    .form-group + .form-group {
+      margin-left: 10px;
+    }
   }
 
   .menu {
