@@ -36,6 +36,26 @@
             </select>
           </div>
         </form>
+        <!-- <div class="btn-group" dropdown>
+          <button id="single-button" type="button" class="btn btn-default" dropdown-toggle ng-disabled=showLogin>
+            {{ selectedRecommendation==null ? 'Filtrar Por:' : selectedRecommendation }} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+            <li role="menuitem" ng-repeat="item in dropDownRecommendation">
+              <a href="#" ng-click="selectRecommendation(item)">{{item}}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="btn-group" dropdown>
+          <button id="opt" type="button" class="btn btn-default" dropdown-toggle ng-disabled=showLogin>
+            {{ selectedOrderOption==null ? 'Ordenar Por:' : selectedOrderOption }} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="opt">
+            <li role="menuitem" ng-repeat="item in orderOptions">
+              <a href="#" ng-click="selectOrderOption(item)">{{item}}</a>
+            </li>
+          </ul>
+        </div> -->
       </div>
 
       <div class="btn-group pull-right" role="group" ng-if="isUserLogged">
@@ -44,7 +64,7 @@
     </div>
   </div>
 
-  <div class="content-wrapper container">
+  <div class="content container">
     <div class="row">
       <div class="col-sm-6 col-md-3" ng-repeat="technology in technologies.items">
         <div class="card">
