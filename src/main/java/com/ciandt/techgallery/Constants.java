@@ -26,6 +26,4 @@ public class Constants {
   public static final String THUMBS_UP = "https://storage.googleapis.com/tech-gallery-assets/email/thumbs-up.png";
   public static final String THUMBS_DOWN = "https://storage.googleapis.com/tech-gallery-assets/email/thumbs-down.png";
 
-  public static final String APP_NAME = "Tech Gallery";
-
 }

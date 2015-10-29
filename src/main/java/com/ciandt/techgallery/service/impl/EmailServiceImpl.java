@@ -37,6 +37,8 @@ import com.ciandt.techgallery.service.EmailService;
 import com.ciandt.techgallery.service.email.EmailConfig;
 import com.ciandt.techgallery.service.enums.EmailTypeEnum;
 import com.ciandt.techgallery.service.model.TechnologyActivitiesTO;
+import com.ciandt.techgallery.utils.TechGalleryUtil;
+import com.ciandt.techgallery.utils.TechGalleryUtil;
 import com.ciant.techgallery.transaction.Transactional;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -139,7 +141,7 @@ public class EmailServiceImpl implements EmailService {
     Technology technology = technologyDao.findById(technologyId);
 
     TechnologyActivitiesTO techActivities = createEmailTO(user, null, technology, comments, recommendations, new Date(),
-        Constants.APP_NAME);
+        TechGalleryUtil.getAppId());
 
     EmailConfig email = new EmailConfig(
         EmailTypeEnum.DAILY_RESUME_MAIL.getSubject() + technology.getName() + " - "
@@ -186,7 +188,7 @@ public class EmailServiceImpl implements EmailService {
     Technology technology = technologyDao.findById(technologyId);
 
     TechnologyActivitiesTO techActivities = createEmailTO(null, endorser, technology, null, null, new Date(),
-        Constants.APP_NAME);
+        TechGalleryUtil.getAppId());
 
     EmailConfig email = new EmailConfig(EmailTypeEnum.ENDORSED_MAIL.getSubject() + technology.getName(),
         "emailtemplates" + File.separator + EmailTypeEnum.ENDORSED_MAIL.getTemplate(), techActivities, null,
