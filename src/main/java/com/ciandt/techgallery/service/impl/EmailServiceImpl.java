@@ -47,16 +47,18 @@ import com.googlecode.objectify.Key;
 public class EmailServiceImpl implements EmailService {
 
   private static final String PRODUCTION_PROPERTY = "Production";
-
   private static final String APPLICATION_VERSION_PROPERTY = "com.google.appengine.application.version";
-
   private static final String APPLICATION_ID_PROPERTY = "com.google.appengine.application.id";
-
   private static final String RUNTIME_ENVIRONMENT_PROPERTY = "com.google.appengine.runtime.environment";
-
   private static final String LINK_LOCALHOST = "http://localhost:8888/";
-
   private static final String PATH_VIEW_TECH_HTML = "viewTech.html";
+
+  private InternetAddress from = null;
+  private EmailNotificationDAO emailNotificationDao = EmailNotificationDAOImpl.getInstance();
+  private TechnologyRecommendationDAO technologyRecommendationDao = TechnologyRecommendationDAOImpl.getInstance();
+  private TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
+  private TechGalleryUserDAOImpl techGalleryUserDao = TechGalleryUserDAOImpl.getInstance();
+  private TechnologyDAOImpl technologyDao = TechnologyDAOImpl.getInstance();
 
   /*
    * Attributes --------------------------------------------
@@ -88,13 +90,6 @@ public class EmailServiceImpl implements EmailService {
     }
     return instance;
   }
-
-  private InternetAddress from = null;
-  private EmailNotificationDAO emailNotificationDao = EmailNotificationDAOImpl.getInstance();
-  private TechnologyRecommendationDAO technologyRecommendationDao = TechnologyRecommendationDAOImpl.getInstance();
-  private TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
-  private TechGalleryUserDAOImpl techGalleryUserDao = TechGalleryUserDAOImpl.getInstance();
-  private TechnologyDAOImpl technologyDao = TechnologyDAOImpl.getInstance();
 
   /**
    * Push email to queue.
