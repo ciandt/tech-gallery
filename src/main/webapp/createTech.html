@@ -46,7 +46,7 @@
     </div>
 
   <form id="data" method="post" enctype="multipart/form-data">
-  <div ng-show="showContent" class="page-header">
+    <div ng-show="showContent" class="page-header">
       <div id="div_container" class="container">
           <div class="row">
             <div class="endorse-alerts spacingtop">
@@ -67,13 +67,12 @@
             </div>
             <div class="col-xs-4">
                 <input ng-model="name" type="text" class="form-control" id="idnome"
-                placeholder="<Nome>" required="required" aria-describedby="basic-addon2">
+                placeholder="<Nome>" required="required" aria-describedby="basic-addon2" ng-disabled="id != null">
             </div>
           </div>
-          <div class="spacingtop row" dropdown>
-            <div class="col-md-9">
-              <button id="single-button" type="button" class="btn btn-default" dropdown-toggle
-               ng-disabled="!loggedUserInformation.admin">
+          <div class="spacingtop row" ng-show="loggedUserInformation.admin">
+            <div class="btn-group col-md-9" dropdown>
+              <button id="single-button" type="button" class="btn btn-default" dropdown-toggle>
                 {{ selectedRecommendation==null ? 'Recomendação Ci&T' : selectedRecommendation }} <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
@@ -83,9 +82,9 @@
               </ul>
             </div>
           </div>
-          <div class="spacingtop row">
+          <div class="spacingtop row" ng-show="loggedUserInformation.admin">
             <div class="col-md-9 text-right">
-              <textarea ng-model="justification" class="form-control textarea" ng-disabled="!loggedUserInformation.admin"
+              <textarea ng-model="justification" class="form-control textarea"
                id="idjust" maxlength="500" placeholder="<Justificativa da Recomendação Ci&T>" ></textarea>
             </div>
           </div>
@@ -108,8 +107,8 @@
               </div>
           </div>
       <div class="spacingtop">
-        <button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearTechnology()">Limpar</button>
-        <button id="btn_save" type="submit" class="btn btn-primary" ng-click="addTechnology()">Salvar</button>
+        <button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearTechnology()" ng-disabled="id != null">Limpar</button>
+        <button id="btn_save" type="submit" class="btn btn-primary" ng-click="addOrUpdateTechnology()">Salvar</button>
       </div>
       </div>
     </div>

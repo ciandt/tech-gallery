@@ -1,13 +1,20 @@
 package com.ciandt.techgallery.persistence.model;
 
-import java.util.Date;
-
-import com.ciandt.techgallery.service.transformer.TechnologyTransformer;
 import com.google.api.server.spi.config.ApiTransformer;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
+
+import com.ciandt.techgallery.service.enums.TechnologyOrderOptionEnum;
+import com.ciandt.techgallery.service.transformer.TechnologyTransformer;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Technology entity.
@@ -85,6 +92,9 @@ public class Technology extends BaseEntity<String> {
   @Unindex
   private Date creationDate;
 
+  @Ignore
+  private boolean followedByUser;
+
   @Unindex
   private Date lastActivity;
 
@@ -94,72 +104,8 @@ public class Technology extends BaseEntity<String> {
   @Index
   private Boolean active;
 
-  /*
-   * Methods --------------------------------------------
-   */
-  /**
-   * Add 1 to the positive recomndations counter.
-   */
-  public void addPositiveRecommendationsCounter() {
-    positiveRecommendationsCounter++;
-  }
-
-  /**
-   * Remove 1 to the positive recomndations counter.
-   */
-  public void removePositiveRecommendationsCounter() {
-    if (positiveRecommendationsCounter > 0) {
-      positiveRecommendationsCounter--;
-    } else {
-      positiveRecommendationsCounter = 0;
-    }
-  }
-
-  /**
-   * Add 1 to the negative recomndations counter.
-   */
-  public void addNegativeRecommendationsCounter() {
-    negativeRecommendationsCounter++;
-  }
-
-  /**
-   * Remove 1 to the negative recomndations counter.
-   */
-  public void removeNegativeRecommendationsCounter() {
-    if (negativeRecommendationsCounter > 0) {
-      negativeRecommendationsCounter--;
-    } else {
-      negativeRecommendationsCounter = 0;
-    }
-  }
-
-  /**
-   * Add 1 to the commentary counter.
-   */
-  public void addCommentariesCounter() {
-    commentariesCounter++;
-  }
-
-  /**
-   * Remove 1 to the commentary counter.
-   */
-  public void removeCommentariesCounter() {
-    if (commentariesCounter > 0) {
-      commentariesCounter--;
-    } else {
-      commentariesCounter = 0;
-    }
-  }
-
-  /**
-   * Initialize the technology counters.
-   */
-  public void initCounters() {
-    commentariesCounter = 0;
-    endorsersCounter = 0;
-    negativeRecommendationsCounter = 0;
-    positiveRecommendationsCounter = 0;
-  }
+  @Ignore
+  private String imageContent;
 
   /*
    * Getter's and Setter's --------------------------------------------
@@ -176,6 +122,14 @@ public class Technology extends BaseEntity<String> {
 
   public String getName() {
     return name;
+  }
+
+  public String getImageContent() {
+    return imageContent;
+  }
+
+  public void setImageContent(String imageContent) {
+    this.imageContent = imageContent;
   }
 
   public void setName(String name) {
@@ -290,6 +244,14 @@ public class Technology extends BaseEntity<String> {
     this.creationDate = creationDate;
   }
 
+  public boolean isFollowedByUser() {
+    return followedByUser;
+  }
+
+  public void setFollowedByUser(boolean followedByUser) {
+    this.followedByUser = followedByUser;
+  }
+
   public Date getLastActivity() {
     return lastActivity;
   }
@@ -304,5 +266,99 @@ public class Technology extends BaseEntity<String> {
 
   public void setLastActivityUser(String lastActivityUser) {
     this.lastActivityUser = lastActivityUser;
+  }
+
+  /*
+   * Methods --------------------------------------------
+   */
+  /**
+   * Add 1 to the positive recomndations counter.
+   */
+  public void addPositiveRecommendationsCounter() {
+    positiveRecommendationsCounter++;
+  }
+
+  /**
+   * Remove 1 to the positive recomndations counter.
+   */
+  public void removePositiveRecommendationsCounter() {
+    if (positiveRecommendationsCounter > 0) {
+      positiveRecommendationsCounter--;
+    } else {
+      positiveRecommendationsCounter = 0;
+    }
+  }
+
+  /**
+   * Add 1 to the negative recomndations counter.
+   */
+  public void addNegativeRecommendationsCounter() {
+    negativeRecommendationsCounter++;
+  }
+
+  /**
+   * Remove 1 to the negative recomndations counter.
+   */
+  public void removeNegativeRecommendationsCounter() {
+    if (negativeRecommendationsCounter > 0) {
+      negativeRecommendationsCounter--;
+    } else {
+      negativeRecommendationsCounter = 0;
+    }
+  }
+
+  /**
+   * Add 1 to the commentary counter.
+   */
+  public void addCommentariesCounter() {
+    commentariesCounter++;
+  }
+
+  /**
+   * Remove 1 to the commentary counter.
+   */
+  public void removeCommentariesCounter() {
+    if (commentariesCounter > 0) {
+      commentariesCounter--;
+    } else {
+      commentariesCounter = 0;
+    }
+  }
+
+  /**
+   * Initialize the technology counters.
+   */
+  public void initCounters() {
+    commentariesCounter = 0;
+    endorsersCounter = 0;
+    negativeRecommendationsCounter = 0;
+    positiveRecommendationsCounter = 0;
+  }
+
+  /**
+   * Sort the technology list by Last Activity Date.
+   * 
+   * @param techEntities List of technologies.
+   */
+  public static void sortTechnologiesDefault(List<Technology> techEntities) {
+    Collections.sort(techEntities, new Comparator<Technology>() {
+      @Override
+      public int compare(Technology counter1, Technology counter2) {
+        return counter2.getLastActivity().compareTo(counter1.getLastActivity());
+      }
+    });
+  }
+
+  /**
+   * Sort the Technology list according to the given enum value.
+   * 
+   * @param techList List of technologies.
+   * @param orderBy Enum value.
+   * @return sorted list.
+   */
+  public static List<Technology> sortTechnologies(List<Technology> techList,
+      TechnologyOrderOptionEnum orderBy) {
+    orderBy.sort(techList);
+    return techList;
   }
 }

@@ -20,6 +20,7 @@ public enum ValidationMessageEnums {
   TECHNOLOGY_DESCRIPTION_BLANK("Technology's description cannot be null or blank."),
   TECHNOLOGY_NAME_ALREADY_USED("Technology already exists with this name."),
   TECHNOLOGY_NOT_EXIST("Technology doesn't exist."),
+  TECHNOLOGY_NAME_CANNOT_CHANGE("Technology's name cannot be changed."),
   // Message for users
   USER_CANNOT_BLANK("User or user's id cannot be null or blank."), 
   USER_NOT_EXIST("User doesn't exist."), 
@@ -34,7 +35,10 @@ public enum ValidationMessageEnums {
   RECOMMEND_NOT_EXIST("Recommend doesn't exist."), 
   RECOMMEND_RECOMMENDER_ERROR("This recommend doesn't belong to this user."), 
   TO_INACTIVE("Inactive transient object is not allowed."), 
-  NO_TECHNOLOGY_WAS_FOUND("No technology was found.");
+  NO_TECHNOLOGY_WAS_FOUND("No technology was found."),
+  FOLLOWERS_CANNOT_EMPTY("Followers cannot be empty"),
+    // Message for Post
+  NOT_PERMITTED_BY_USER("The user choosed to not post on your Google+.");
 
 
   private String message;

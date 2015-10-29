@@ -88,12 +88,23 @@
             <artifactId>google-oauth-client</artifactId>
             <version>1.18.0-rc</version>
         </dependency>
+        <dependency>
+          <groupId>com.google.apis</groupId>
+          <artifactId>google-api-services-plusDomains</artifactId>
+          <version>v1-rev188-1.20.0</version>
+        </dependency>
 
         <!-- Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.databind-version}</version>
+        </dependency>
+        <!-- Mail -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
         <!-- Test Dependencies -->
         <dependency>
@@ -126,12 +137,18 @@
             <artifactId>google-api-services-plus</artifactId>
             <version>v1-rev255-1.20.0</version>
         </dependency>
-		<!-- Mustache -->
+		    <!-- Mustache -->
         <dependency>
-		  <groupId>com.github.spullara.mustache.java</groupId>
-		  <artifactId>compiler</artifactId>
-		  <version>0.8.18</version>
-		</dependency>
+		        <groupId>com.github.spullara.mustache.java</groupId>
+		        <artifactId>compiler</artifactId>
+		        <version>0.8.18</version>
+		    </dependency>
+        <!-- apache.commons.lang -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
     </dependencies>
     <build>
         <!-- for hot reload of the web application -->

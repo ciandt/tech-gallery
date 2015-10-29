@@ -4,7 +4,7 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.SkillEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint,com.ciandt.techgallery.service.endpoint.profile.UserProfileEndpoint</param-value>
+            <param-value>com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.SkillEndpoint,com.ciandt.techgallery.service.endpoint.SocialNetworkCommunicationEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint,com.ciandt.techgallery.service.endpoint.profile.UserProfileEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet>
@@ -28,15 +28,34 @@
         <url-pattern>/cron/email</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>EmailServlet</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.EmailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EmailServlet</servlet-name>
+        <url-pattern>/mail</url-pattern>
+    </servlet-mapping>
+
     <security-constraint>
-		<web-resource-collection>
-			<web-resource-name>cron</web-resource-name>
-			<url-pattern>/cron/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>admin</role-name>
-		</auth-constraint>
-	</security-constraint>
+      <web-resource-collection>
+        <web-resource-name>cron</web-resource-name>
+        <url-pattern>/cron/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+        <role-name>admin</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>sendEmailOnlyAdmin</web-resource-name>
+            <url-pattern>/mail</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
 
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

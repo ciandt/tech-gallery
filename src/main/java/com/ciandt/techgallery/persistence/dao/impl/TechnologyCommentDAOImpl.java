@@ -8,6 +8,7 @@ import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAO;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,5 +52,18 @@ public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, 
             .filter(TechnologyComment.ACTIVE, Boolean.TRUE).list();
 
     return entities;
+  }
+
+  @Override
+  public String findAllCommentsIdsStartingFrom(Date date) {
+    String commentsIds = "";
+    final Objectify objectify = OfyService.ofy();
+    final List<TechnologyComment> comments =
+        objectify.load().type(TechnologyComment.class)
+            .filter(TechnologyComment.TIMESTAMP + " >" , date).list();
+    for (TechnologyComment technologyComment : comments) {
+      commentsIds = commentsIds.concat("," + technologyComment.getId());
+    }
+    return commentsIds;
   }
 }

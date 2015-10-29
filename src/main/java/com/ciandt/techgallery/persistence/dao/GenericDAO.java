@@ -22,6 +22,16 @@ public interface GenericDAO<T, ID extends Serializable> {
   List<T> findAll();
 
   /**
+   * Method that return a list with all Entities actives.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 26/10/2015
+   *
+   * @return list of entities actives.
+   */
+  List<T> findAllActives();
+
+  /**
    * Method that return a Entity by its Id/Name.
    *
    * @param id entity.

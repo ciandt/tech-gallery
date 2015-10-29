@@ -1,13 +1,13 @@
 package com.ciandt.techgallery.persistence.model;
 
+import com.ciandt.techgallery.service.transformer.TechGalleryUserTransformer;
 import com.google.api.server.spi.config.ApiTransformer;
-
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
 
-import com.ciandt.techgallery.service.transformer.TechGalleryUserTransformer;
+import java.util.List;
 
 /**
  * Technology entity.
@@ -27,6 +27,7 @@ public class TechGalleryUser extends BaseEntity<Long> {
   public static final String EMAIL = "email";
   public static final String PHOTO = "photo";
   public static final String GOOGLE_ID = "googleId";
+  public static final String FOLLOWED_TECHNOLOGY_IDS = "followedTechnologyIds";
 
   @Id
   Long id;
@@ -43,8 +44,14 @@ public class TechGalleryUser extends BaseEntity<Long> {
   @Index
   private String googleId;
 
+  @Unindex
+  private List<String> followedTechnologyIds;
+
   @Index
   private boolean admin;
+
+  @Unindex
+  private Boolean postGooglePlusPreference;
 
   @Override
   public Long getId() {
@@ -58,6 +65,14 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   public String getName() {
     return name;
+  }
+
+  public Boolean getPostGooglePlusPreference() {
+    return postGooglePlusPreference;
+  }
+
+  public void setPostGooglePlusPreference(Boolean postGooglePlusPreference) {
+    this.postGooglePlusPreference = postGooglePlusPreference;
   }
 
   public void setName(String name) {
@@ -88,12 +103,24 @@ public class TechGalleryUser extends BaseEntity<Long> {
     this.googleId = googleId;
   }
 
+  public List<String> getFollowedTechnologyIds() {
+    return followedTechnologyIds;
+  }
+
+  public void setFollowedTechnologyIds(List<String> followedTechnologyIds) {
+    this.followedTechnologyIds = followedTechnologyIds;
+  }
+
   public boolean isAdmin() {
     return admin;
   }
 
   public void setAdmin(boolean admin) {
     this.admin = admin;
+  }
+
+  public TechGalleryUser() {
+    this.postGooglePlusPreference = Boolean.TRUE;
   }
 
   @Override

@@ -5,6 +5,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,4 +45,13 @@ public interface TechnologyRecommendationDAO extends GenericDAO<TechnologyRecomm
    * @param comment comment
    */
   TechnologyRecommendation findByComment(TechnologyComment comment);
+  
+
+  /**
+   * Find all recommendationsIds starting from date.
+   * 
+   * @param start date.
+   * @return list of recommendationsIds starting from a specific date concatenated by ",".
+   */
+  public String findAllRecommendationsIdsStartingFrom(Date date);
 }

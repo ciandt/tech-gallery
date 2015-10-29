@@ -1,32 +1,5 @@
 package com.ciandt.techgallery.service.impl;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.api.services.plus.Plus;
-import com.google.api.services.plus.model.Person;
-import com.google.appengine.api.memcache.Expiration;
-import com.google.appengine.api.memcache.MemcacheService;
-import com.google.appengine.api.memcache.MemcacheServiceFactory;
-import com.google.appengine.api.oauth.OAuthRequestException;
-import com.google.appengine.api.users.User;
-
-import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
-import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.UserServiceTG;
-import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
-import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.UserResponse;
-import com.ciandt.techgallery.service.model.UsersResponse;
-import com.ciandt.techgallery.utils.i18n.I18n;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -41,6 +14,32 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
+import com.ciandt.techgallery.persistence.dao.impl.TechGalleryUserDAOImpl;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.UserServiceTG;
+import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
+import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.UserResponse;
+import com.ciandt.techgallery.service.model.UsersResponse;
+import com.ciandt.techgallery.utils.i18n.I18n;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.api.services.plus.Plus;
+import com.google.api.services.plus.model.Person;
+import com.google.appengine.api.memcache.Expiration;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
+import com.google.appengine.api.oauth.OAuthRequestException;
+import com.google.appengine.api.users.User;
 
 public class UserServiceTGImpl implements UserServiceTG {
 
@@ -70,17 +69,20 @@ public class UserServiceTGImpl implements UserServiceTG {
   /*
    * Constructors --------------------------------------------
    */
-  private UserServiceTGImpl() {}
+  private UserServiceTGImpl() {
+  }
 
   /**
    * For singleton
    *
-   * @return the current instance, if it exists. The recently created instance, if not.
+   * @return the current instance, if it exists. The recently created instance,
+   *         if not.
    */
   /**
    * Singleton method for the service.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
    * @since 08/10/2015
    *
    * @return UserServiceTGImpl instance.
@@ -126,8 +128,10 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Gets a TechGalleryUser by id.
    *
-   * @param id the user's id
-   * @throws NotFoundException if the user is not found
+   * @param id
+   *          the user's id
+   * @throws NotFoundException
+   *           if the user is not found
    */
   @Override
   public TechGalleryUser getUser(final Long id) throws NotFoundException {
@@ -143,9 +147,11 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Adds a new user to Tech Gallery.
    *
-   * @param user the TechGallery user to be added
+   * @param user
+   *          the TechGallery user to be added
    * @return added user
-   * @throws BadRequestException when the user email parameter is missing
+   * @throws BadRequestException
+   *           when the user email parameter is missing
    */
   @Override
   public TechGalleryUser addUser(final TechGalleryUser user) throws BadRequestException {
@@ -159,23 +165,28 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * This method should be executed whenever a user logs in It check whether the user exists on TG's
-   * datastore and create them, if not. It also checks if the user's email has been changed and
-   * update it, in case it was changed.
+   * This method should be executed whenever a user logs in It check whether the
+   * user exists on TG's datastore and create them, if not. It also checks if
+   * the user's email has been changed and update it, in case it was changed.
    *
-   * @param user A Google AppEngine API user
+   * @param user
+   *          A Google AppEngine API user
    * @return A response with the user data as it is on TG datastore
    *
-   * @throws InternalServerErrorException in case something goes wrong
-   * @throws NotFoundException in case the information are not founded
-   * @throws BadRequestException in case a request with problem were made.
-   * @throws OAuthRequestException in case of authentication problem
-   * @throws IOException in case of a IO exception
+   * @throws InternalServerErrorException
+   *           in case something goes wrong
+   * @throws NotFoundException
+   *           in case the information are not founded
+   * @throws BadRequestException
+   *           in case a request with problem were made.
+   * @throws OAuthRequestException
+   *           in case of authentication problem
+   * @throws IOException
+   *           in case of a IO exception
    */
   @Override
   public TechGalleryUser handleLogin(final User user, HttpServletRequest req)
-      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException,
-      OAuthRequestException {
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
     if (user == null) {
       throw new OAuthRequestException(i18n.t("Authorization error"));
     }
@@ -204,11 +215,15 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * Updates current Tech Gallery user information with user data found on Google.
+   * Updates current Tech Gallery user information with user data found on
+   * Google.
    *
-   * @param user Google user
-   * @param person Google Plus person information
-   * @param tgUser Tech Gallery user
+   * @param user
+   *          Google user
+   * @param person
+   *          Google Plus person information
+   * @param tgUser
+   *          Tech Gallery user
    */
   private void updateUserInformation(final User user, Person person, TechGalleryUser tgUser) {
     String plusEmail = user.getEmail();
@@ -236,7 +251,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Updates a user, with validation.
    *
-   * @throws BadRequestException in case of a missing parameter
+   * @throws BadRequestException
+   *           in case of a missing parameter
    * @return the updated user
    */
   @Override
@@ -252,7 +268,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * GET for getting an user by its login.
    *
-   * @param login the user's login
+   * @param login
+   *          the user's login
    * @return the user found
    */
   @Override
@@ -268,8 +285,10 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Finds a TechGalleryUser by his/her email.
    *
-   * @param email the user's email
-   * @throws NotFoundException if the user is not found
+   * @param email
+   *          the user's email
+   * @throws NotFoundException
+   *           if the user is not found
    */
   @Override
   public TechGalleryUser getUserByEmail(final String email) throws NotFoundException {
@@ -282,14 +301,18 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * Checks if user exists on provider, syncs with tech gallery's datastore. If user exists, adds to
-   * TG's datastore (if not there). Returns the user.
+   * Checks if user exists on provider, syncs with tech gallery's datastore. If
+   * user exists, adds to TG's datastore (if not there). Returns the user.
    *
-   * @param userLogin userLogin
+   * @param userLogin
+   *          userLogin
    * @return the user saved on the datastore
-   * @throws InternalServerErrorException in case something goes wrong
-   * @throws NotFoundException in case the information are not founded
-   * @throws BadRequestException in case a request with problem were made.
+   * @throws InternalServerErrorException
+   *           in case something goes wrong
+   * @throws NotFoundException
+   *           in case the information are not founded
+   * @throws BadRequestException
+   *           in case a request with problem were made.
    * @return user sinchronized in provider.
    */
   @Override
@@ -312,12 +335,16 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * GET Calls the provider API passing a login to obtain user information.
    *
-   * @param userlogin the user login to pass to the provider API
-   * @throws NotFoundException in case the user is not found on provider
-   * @throws BadRequestException in case of JSON or URL error
-   * @throws InternalServerErrorException if any IO exceptions occur
+   * @param userlogin
+   *          the user login to pass to the provider API
+   * @throws NotFoundException
+   *           in case the user is not found on provider
+   * @throws BadRequestException
+   *           in case of JSON or URL error
+   * @throws InternalServerErrorException
+   *           if any IO exceptions occur
    */
-  @SuppressWarnings({"unchecked", "rawtypes"})
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   @Override
   public TechGalleryUser getUserFromProvider(final String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
@@ -331,40 +358,51 @@ public class UserServiceTGImpl implements UserServiceTG {
   }
 
   /**
-   * GET Calls the provider API passing a login to obtain a list of users information.
+   * GET Calls the provider API passing a login to obtain a list of users
+   * information.
    *
-   * @param string to search on provider by name or login
+   * @param string
+   *          to search on provider by name or login
    *
-   * @throws NotFoundException in case the user is not found on provider
-   * @throws BadRequestException in case of JSON or URL error
-   * @throws InternalServerErrorException if any IO exceptions occur
+   * @throws NotFoundException
+   *           in case the user is not found on provider
+   * @throws BadRequestException
+   *           in case of JSON or URL error
+   * @throws InternalServerErrorException
+   *           if any IO exceptions occur
    */
   @Override
-  public List<UserResponse> getUsersAutoComplete(String userLogin)
+  public List<UserResponse> getUsersByPartialLogin(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
-    userLogin += "*";
-    List<UserResponse> techUsers = (List<UserResponse>) syncCache.get(userLogin);
+    String userLoginFormatted = userLogin + "*";
+    List<UserResponse> techUsers = (List<UserResponse>) syncCache.get(userLoginFormatted);
     if (techUsers == null) {
       techUsers = new ArrayList<>();
-      Map<String, Object> map = peopleApiConnect(userLogin, PEOPLE_ENDPOINT_SEARCH);
+      Map<String, Object> map = peopleApiConnect(userLoginFormatted, PEOPLE_ENDPOINT_SEARCH);
       ArrayList<?> peopleApiResponse = (ArrayList<?>) map.get("data");
       for (int index = 0; index < peopleApiResponse.size(); index++) {
         ArrayList<?> peopleApiUser = (ArrayList<?>) peopleApiResponse.get(index);
-        TechGalleryUser foundUser =
-            userDao.findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
-        UserResponse tgUser = new UserResponse();
-        if (foundUser != null) {
-          tgUser.setEmail(foundUser.getEmail().split("@")[0]);
-          tgUser.setName(foundUser.getName());
-          tgUser.setPhoto(foundUser.getPhoto());
-        } else {
-          tgUser.setEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
-          tgUser.setName((String) peopleApiUser.get(INDEX_PEOPLE_API_NAME));
-          tgUser.setPhoto(null);
+        final String peopleNameLowerCase = peopleApiUser.get(INDEX_PEOPLE_API_NAME).toString().toLowerCase();
+        final String peopleLoginLowerCase = peopleApiUser.get(INDEX_PEOPLE_API_LOGIN).toString().toLowerCase();
+        if (peopleNameLowerCase.contains(userLogin.toLowerCase())
+            || peopleLoginLowerCase.contains(userLogin.toLowerCase())) {
+
+          TechGalleryUser foundUser = userDao
+              .findByEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN) + EMAIL_DOMAIN);
+          UserResponse tgUser = new UserResponse();
+          if (foundUser != null) {
+            tgUser.setEmail(foundUser.getEmail().split("@")[0]);
+            tgUser.setName(foundUser.getName());
+            tgUser.setPhoto(foundUser.getPhoto());
+          } else {
+            tgUser.setEmail((String) peopleApiUser.get(INDEX_PEOPLE_API_LOGIN));
+            tgUser.setName((String) peopleApiUser.get(INDEX_PEOPLE_API_NAME));
+            tgUser.setPhoto(null);
+          }
+          techUsers.add(tgUser);
         }
-        techUsers.add(tgUser);
       }
-      syncCache.put(userLogin, techUsers, memCacheTimeExpliration);
+      syncCache.put(userLoginFormatted, techUsers, memCacheTimeExpliration);
     }
     return techUsers;
   }
@@ -376,8 +414,8 @@ public class UserServiceTGImpl implements UserServiceTG {
       fullRequest += "?format=json";
     }
     try {
-      InputStream resourceStream =
-          UserServiceTGImpl.class.getClassLoader().getResourceAsStream("people_basic_auth.txt");
+      InputStream resourceStream = UserServiceTGImpl.class.getClassLoader()
+          .getResourceAsStream("people_basic_auth.txt");
 
       String auth = convertStreamToString(resourceStream);
 
@@ -417,7 +455,8 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * Validates user data.
    *
-   * @param user the TechGalleryUser entity
+   * @param user
+   *          the TechGalleryUser entity
    * @return true if data is valid, false otherwise
    */
   private static boolean userDataIsValid(TechGalleryUser user) {
@@ -442,6 +481,48 @@ public class UserServiceTGImpl implements UserServiceTG {
   @Override
   public TechGalleryUser getUserByGoogleId(String googleId) {
     return userDao.findByGoogleId(googleId);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * com.ciandt.techgallery.service.UserServiceTG#saveUserPreference(java.lang.
+   * Boolean, com.google.appengine.api.users.User)
+   */
+  @Override
+  public TechGalleryUser saveUserPreference(Boolean postGooglePlusPreference, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
+
+    validateUser(user);
+
+    TechGalleryUser techUser = userDao.findByEmail(user.getEmail());
+    if (postGooglePlusPreference != null) {
+      techUser.setPostGooglePlusPreference(postGooglePlusPreference);
+      userDao.update(techUser);
+    }
+    return techUser;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.ciandt.techgallery.service.UserServiceTG#validateUser(com.google.
+   * appengine.api.users.User)
+   */
+  @Override
+  public TechGalleryUser validateUser(User user)
+      throws BadRequestException, NotFoundException, InternalServerErrorException {
+
+    if (user == null || user.getUserId() == null || user.getUserId().isEmpty()) {
+      throw new BadRequestException(ValidationMessageEnums.USER_GOOGLE_ENDPOINT_NULL.message());
+    }
+
+    final TechGalleryUser techUser = getUserByGoogleId(user.getUserId());
+    if (techUser == null) {
+      throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
+    }
+    return techUser;
   }
 
 }

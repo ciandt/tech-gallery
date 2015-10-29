@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<queue-entries>
+    <queue>
+        <name>default</name>
+        <rate>20/s</rate>
+        <bucket-size>100</bucket-size>
+    </queue>
+    <queue>
+        <name>email-queue</name>
+        <rate>1/s</rate>
+        <bucket-size>1</bucket-size>
+    </queue>
+</queue-entries>
