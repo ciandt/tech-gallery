@@ -40,46 +40,47 @@
       </div>
     </nav>
 
-    <div class="login-Button" ng-show="showLogin">
-      <h3 ng-show="!domainError">Para ter acesso ao conteúdo realize seu login...</h3>
-      <h3 ng-show="domainError">{{domainError}}</h3>
-    </div>
+  	<div class="login-Button" ng-show="showLogin">
+    	<h3 ng-show="!domainError">Para ter acesso ao conteúdo realize seu login...</h3>
+    	<h3 ng-show="domainError">{{domainError}}</h3>
+  	</div>
 
-  <form id="data" method="post" enctype="multipart/form-data">
-    <div ng-show="showContent" class="page-header">
-      <div id="div_container" class="container">
-          <div class="row">
-            <div class="endorse-alerts spacingtop">
-              <alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
-          </div>
-          </div>
-          <div class="row">
-            <div id="div_image" class="col-xs-6">
-                <output id="list">
-                  <img src="/images/no_image.png" title="Insira uma imagem" width="200" >
-                </output>
-            </div>
-          </div>
-          <div class="spacingtop row">
-            <div id="div_image" class="col-xs-5">
-                <input id="idimage" ng-model="image" type="file" class="form-control"
-                    accept="image/png" placeholder="<Imagem>">
-            </div>
-            <div class="col-xs-4">
-                <input ng-model="name" type="text" class="form-control" id="idnome"
-                placeholder="<Nome>" required="required" aria-describedby="basic-addon2" ng-disabled="id != null">
-            </div>
-          </div>
-          <div class="spacingtop row" ng-show="loggedUserInformation.admin">
-            <div class="btn-group col-md-9" dropdown>
-              <button id="single-button" type="button" class="btn btn-default" dropdown-toggle>
-                {{ selectedRecommendation==null ? 'Recomendação Ci&T' : selectedRecommendation }} <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-                <li role="menuitem" ng-repeat="item in dropDownRecommendation">
-                  <a href="#" ng-show="item != 'Todos'" ng-click="selectRecommendation(item)">{{item}}</a>
-                </li>
-              </ul>
+	<form id="data" method="post" enctype="multipart/form-data">
+	<h3 ng-show="showTechNotExists">Essa tecnologia não existe! Favor selecionar outra.</h3>
+	<div ng-show="showContent" class="page-header">
+  		<div id="div_container" class="container">
+       		<div class="row">
+	       		<div class="endorse-alerts spacingtop">
+	      			<alert ng-show="alert" type={{alert.type}} close="closeAlert()">{{alert.msg}}</alert>
+	    		</div>
+       		</div>
+       		<div class="row">
+       			<div id="div_image" class="col-xs-6">
+          			<output id="list">
+          				<img src="/images/no_image.png" title="Insira uma imagem" width="200" >
+          			</output>
+        		</div>
+        	</div>
+        	<div class="spacingtop row">
+        		<div id="div_image" class="col-xs-5">
+	          		<input id="idimage" ng-model="image" type="file" class="form-control"
+    	      				accept="image/png" placeholder="<Imagem>">
+        		</div>
+        		<div class="col-xs-4">
+	        			<input ng-model="name" type="text" class="form-control" id="idnome"
+	    					placeholder="<Nome>" required="required" aria-describedby="basic-addon2" ng-disabled="id != null">
+        		</div>
+      		</div>
+      		<div class="spacingtop row" ng-show="loggedUserInformation.admin">
+      		  <div class="btn-group col-md-9" dropdown>
+	            <button id="single-button" type="button" class="btn btn-default" dropdown-toggle>
+	              {{ selectedRecommendation==null ? 'Recomendação Ci&T' : selectedRecommendation }} <span class="caret"></span>
+	            </button>
+	            <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+	              <li role="menuitem" ng-repeat="item in dropDownRecommendation">
+	                <a href="#" ng-show="item != 'Todos'" ng-click="selectRecommendation(item)">{{item}}</a>
+	              </li>
+	            </ul>
             </div>
           </div>
           <div class="spacingtop row" ng-show="loggedUserInformation.admin">

@@ -157,7 +157,7 @@ public class Technology extends BaseEntity<String> {
   }
 
   public void setWebsite(String website) {
-    if (website != null && !website.contains("http://")) {
+    if (website != null && !website.contains("http")) {
       this.website = "http://" + website;
     } else {
       this.website = website;
@@ -337,7 +337,7 @@ public class Technology extends BaseEntity<String> {
 
   /**
    * Sort the technology list by Last Activity Date.
-   * 
+   *
    * @param techEntities List of technologies.
    */
   public static void sortTechnologiesDefault(List<Technology> techEntities) {
@@ -351,7 +351,7 @@ public class Technology extends BaseEntity<String> {
 
   /**
    * Sort the Technology list according to the given enum value.
-   * 
+   *
    * @param techList List of technologies.
    * @param orderBy Enum value.
    * @return sorted list.

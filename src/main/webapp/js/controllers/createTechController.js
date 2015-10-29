@@ -7,6 +7,8 @@ angular.module('techGallery').controller(
 
     $scope.idTechnology = jsUtils.getParameterByName('id');
 
+    $scope.showTechNotExists = false;
+
     $scope.logoutRedirect = function(){
       return jsUtils.logoutRedirect();
     }
@@ -56,15 +58,20 @@ angular.module('techGallery').controller(
     };
 
     function callBackLoaded() {
-      var req = {id: $scope.idTechnology};
-      gapi.client.rest.getTechnology(req).execute(function(data){
-        fillTechnology(data);
-      });
+    	var req = {id: $scope.idTechnology};
+    	gapi.client.rest.getTechnology(req).execute(function(data){
+    		if(data.code !== undefined && data.code === 404){
+    			$scope.showContent = false;
+    			$scope.showTechNotExists = true;
+        		$scope.$apply();
+        		return;
+    		}
+    		fillTechnology(data);
+    	});
 
-      var inputName = document.getElementById("idnome");
-      var inputDescription = document.getElementById("iddesc");
-      var inputShortDesc = document.getElementById("idshortdesc");
-
+    	var inputName = document.getElementById("idnome");
+    	var inputDescription = document.getElementById("iddesc");
+    	var inputShortDesc = document.getElementById("idshortdesc");
         inputName.oninvalid = function (e) {
           e.target.setCustomValidity("");
             if (!e.target.validity.valid) {
@@ -96,17 +103,18 @@ angular.module('techGallery').controller(
     }
 
     function fillTechnology(technology) {
-      $scope.name = technology.name;
-    $scope.id = technology.id;
-    $scope.shortDescription = technology.shortDescription;
-    $scope.description = technology.description;
-    $scope.webSite = technology.website;
-    $scope.image = technology.image;
-    if($scope.image){
-      document.getElementById('list').innerHTML = ['<img src="', $scope.image,'" title="', $scope.name, '" width="200" />'].join('');
-    }
-    $scope.selectedRecommendation = technology.recommendation;
-    $scope.justification = technology.recommendationJustification;
+    	$scope.name = technology.name;
+		$scope.id = technology.id;
+		$scope.shortDescription = technology.shortDescription;
+		$scope.description = technology.description;
+		$scope.webSite = technology.website;
+		$scope.image = technology.image;
+		if($scope.image){
+			document.getElementById('list').innerHTML = ['<img src="', $scope.image,'" title="', $scope.name, '" width="200" />'].join('');
+		}
+		$scope.selectedRecommendation = technology.recommendation;
+		$scope.justification = technology.recommendationJustification;
+		$scope.$apply();
       }
 
     $scope.selectRecommendation = function(selected){

@@ -21,4 +21,16 @@ public interface TechnologyDAO extends GenericDAO<Technology, String> {
    * @return the technology founded.
    */
   public Technology findByName(String name);
+
+  /**
+   * Method to get the technology by id active.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
+   * @since 28/10/2015
+   *
+   * @param id to find the technology.
+   *
+   * @return the technology if is active.
+   */
+  public Technology findByIdActive(String id);
 }

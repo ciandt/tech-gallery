@@ -60,7 +60,8 @@ public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, 
     final Objectify objectify = OfyService.ofy();
     final List<TechnologyComment> comments =
         objectify.load().type(TechnologyComment.class)
-            .filter(TechnologyComment.TIMESTAMP + " >" , date).list();
+            .filter(TechnologyComment.TIMESTAMP + " >", date)
+            .filter(TechnologyComment.ACTIVE, Boolean.TRUE).list();
     for (TechnologyComment technologyComment : comments) {
       commentsIds = commentsIds.concat("," + technologyComment.getId());
     }
