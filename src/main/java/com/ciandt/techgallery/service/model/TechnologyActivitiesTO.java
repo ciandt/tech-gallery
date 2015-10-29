@@ -1,13 +1,13 @@
 package com.ciandt.techgallery.service.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Used for sending emails.
@@ -18,9 +18,11 @@ import java.util.List;
 public class TechnologyActivitiesTO {
 
   TechGalleryUser user;
+  TechGalleryUser endorserUser;
   Technology technology;
   List<TechnologyComment> comments;
   List<TechnologyRecommendation> recommendations;
+  String technologyLink;
   Date timestamp;
   String appName;
 
@@ -32,8 +34,24 @@ public class TechnologyActivitiesTO {
     this.user = user;
   }
 
+  public String getTechnologyLink() {
+    return technologyLink;
+  }
+
+  public void setTechnologyLink(String technologyLink) {
+    this.technologyLink = technologyLink;
+  }
+
   public Technology getTechnology() {
     return technology;
+  }
+
+  public TechGalleryUser getEndorserUser() {
+    return endorserUser;
+  }
+
+  public void setEndorserUser(TechGalleryUser endorserUser) {
+    this.endorserUser = endorserUser;
   }
 
   public void setTechnology(Technology technology) {
@@ -43,7 +61,7 @@ public class TechnologyActivitiesTO {
   public Boolean getHasComments() {
     return !this.comments.isEmpty();
   }
-  
+
   public List<TechnologyComment> getComments() {
     return comments;
   }
@@ -55,7 +73,7 @@ public class TechnologyActivitiesTO {
   public Boolean getHasRecommendations() {
     return !this.recommendations.isEmpty();
   }
-  
+
   public List<TechnologyRecommendation> getRecommendations() {
     return recommendations;
   }
