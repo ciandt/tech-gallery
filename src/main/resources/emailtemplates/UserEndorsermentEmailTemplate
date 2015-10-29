@@ -14,7 +14,7 @@
           <table style="background-color: #ededed; border-radius: 5px 5px 0 0; width: 670px;" cellpadding="0" cellspacing="0">
             <tr>
               <td style="padding: 30px 0 30px 30px; font-size: 20px; line-height: 24px;">
-                Você foi indicado na tecnologia <a href="#" style="color: #337ab7; text-decoration: none;">{{technology.name}}</a>
+                Você foi indicado na tecnologia <a href="{{technologyLink}}" style="color: #337ab7; text-decoration: none;">{{technology.name}}</a>
               </td>
               <td style="padding: 30px 30px 30px 0;">
                 <img src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png" style="max-height: 36px; height: 36px; display: inline-block; border: 0;">
@@ -28,9 +28,9 @@
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding-right: 15px; vertical-align: top;">
-                    <img src="{{technology.image}}" alt="" style="height: 70px;">
+                    <img src="{{technology.image}}" alt="" style="max-height: 150px;">
                   </td>
-                  <td style="text-align: left; font-size: 14px; padding-bottom: 20px;"><strong>{{endorserUser.name}}</strong> te indicou em <a href="#" style="color: #337ab7; text-decoration: none;"><strong>{{technology.name}}</strong></a>
+                  <td style="text-align: left; font-size: 14px; padding-bottom: 20px;"><strong>{{endorserUser.name}}</strong> te indicou em <a href="{{technologyLink}}" style="color: #337ab7; text-decoration: none;"><strong>{{technology.name}}</strong></a>
                     <p style="margin-bottom: 10px;"> Você foi indicado nesta tecnologia, para ver mais pessoas que conhecem deste assunto ou mais informações, acesse o link da tecnologia. </p>
                   </td>
                 </tr>
