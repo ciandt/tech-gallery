@@ -59,13 +59,13 @@
       </div>
 
       <div class="btn-group pull-right" role="group" ng-if="isUserLogged">
-        <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar tecnologia</button>
+        <a href="#/technologies/new" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar tecnologia</a>
       </div>
     </div>
   </div>
 
   <div class="content container">
-    <div class="row">
+    <div class="row" ng-if="technologies.items.length">
       <div class="col-sm-6 col-md-3" ng-repeat="technology in technologies.items">
         <div class="card">
           <div class="card-header card-section">
@@ -103,6 +103,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="row" ng-if="!technologies.items.length">
+      Nenhuma tecnologia encontrada.
     </div>
   </div>
 </div>
