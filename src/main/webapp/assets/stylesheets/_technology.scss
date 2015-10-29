@@ -1,0 +1,19 @@
+.technology-image {
+  border: 1px solid #ddd;
+  border-radius: 100%;
+  overflow: hidden;
+  margin: 0 auto 10px;
+  display: block;
+  background-color: #fff;
+  // -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+  //         box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+
+  &,
+  & img {
+    width: 125px;
+    height: 125px;
+  }
+}
+.technology-last-activity {
+  color: $gray-light;
+}
