@@ -21,14 +21,17 @@ module.exports = function(
     })
     .state('root.technologies-view', {
       url: '/technologies/:slug',
-      controller: 'TechnologyController as technology'
+      controller: 'TechnologyController as technology',
+      templateUrl: viewsFolder + 'technology.html'
     })
     .state('root.technologies-edit', {
       url: '/technologies/:slug/edit',
-      controller: 'TechnologyController as technology'
+      controller: 'TechnologyEditController as technology',
+      templateUrl: viewsFolder + 'technology-add.html'
     })
     .state('root.technologies-add', {
       url: '/technologies/new',
-      controller: 'TechnologyAddController as technology'
+      controller: 'TechnologyAddController as technology',
+      templateUrl: viewsFolder + 'technology-add.html'
     });
 };
