@@ -6,7 +6,7 @@
       <div class="pull-left">
         <form class="form-inline">
           <div class="form-group">
-            <label for="technology-filter"><span class="glyphicon glyphicon-filter"></span></label>
+            <label for="technology-filter" tabindex="0" tooltip-placement="bottom" uib-tooltip="Filtrar por"><span class="glyphicon glyphicon-filter"></span></label>
             <select class="form-control" id="technology-filter">
               <option value="">Todos</option>
               <option value="">Recomendada</option>
@@ -18,13 +18,21 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="technology-order"><span class="glyphicon glyphicon-sort"></span></label>
+            <label for="technology-order" tabindex="0" tooltip-placement="bottom" uib-tooltip="Ordenar por"><span class="glyphicon glyphicon-sort"></span></label>
             <select class="form-control" id="technology-order">
               <option value="">Alfabética</option>
               <option value="">Recomendações positivas</option>
               <option value="">Recomendações negativas</option>
               <option value="">Comentários</option>
               <option value="">Indicações</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="technology-order" tabindex="0" tooltip-placement="bottom" uib-tooltip="Última atividade"><span class="glyphicon glyphicon-time"></span></label>
+            <select class="form-control" id="technology-order">
+              <option value="">Último Dia</option>
+              <option value="">Últimos 7 Dias</option>
+              <option value="">Últimos 30 Dias</option>
             </select>
           </div>
         </form>
