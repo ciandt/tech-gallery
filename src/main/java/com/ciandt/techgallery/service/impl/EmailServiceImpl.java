@@ -5,9 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +16,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.dao.EmailNotificationDAO;
@@ -35,6 +35,7 @@ import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.EmailService;
 import com.ciandt.techgallery.service.email.EmailConfig;
+import com.ciandt.techgallery.service.enums.EmailTypeEnum;
 import com.ciandt.techgallery.service.model.TechnologyActivitiesTO;
 import com.ciant.techgallery.transaction.Transactional;
 import com.google.appengine.api.taskqueue.QueueFactory;
@@ -45,6 +46,18 @@ import com.googlecode.objectify.Key;
 @Transactional
 public class EmailServiceImpl implements EmailService {
 
+  private static final String PRODUCTION_PROPERTY = "Production";
+
+  private static final String APPLICATION_VERSION_PROPERTY = "com.google.appengine.application.version";
+
+  private static final String APPLICATION_ID_PROPERTY = "com.google.appengine.application.id";
+
+  private static final String RUNTIME_ENVIRONMENT_PROPERTY = "com.google.appengine.runtime.environment";
+
+  private static final String LINK_LOCALHOST = "http://localhost:8888/";
+
+  private static final String PATH_VIEW_TECH_HTML = "viewTech.html";
+
   /*
    * Attributes --------------------------------------------
    */
@@ -53,12 +66,6 @@ public class EmailServiceImpl implements EmailService {
   private static final Logger log = Logger.getLogger(EmailServiceImpl.class.getName());
   private static final String queueName = "email-queue";
   private static final String queueUrl = "/mail";
-
-  // TODO: move inside create template.
-  private static final String templateEndorserment = "templateEndorserment.example.email";
-  private static final String template = "TechnologyActivitiesResumeEmailTemplate";
-  private static final String subject = "[Tech Gallery] Resumo diário sobre ";
-  private static final String reason = "Resumo do dia para os followers";
 
   /*
    * Constructors --------------------------------------------
@@ -136,16 +143,45 @@ public class EmailServiceImpl implements EmailService {
     TechGalleryUser user = techGalleryUserDao.findById(Long.parseLong(userId));
     Technology technology = technologyDao.findById(technologyId);
 
+    TechnologyActivitiesTO techActivities = createEmailTO(user, null, technology, comments, recommendations, new Date(),
+        Constants.APP_NAME);
+
+    EmailConfig email = new EmailConfig(
+        EmailTypeEnum.DAILY_RESUME_MAIL.getSubject() + technology.getName() + " - "
+            + techActivities.getFormattedTimestamp(),
+        "emailtemplates" + File.separator + EmailTypeEnum.DAILY_RESUME_MAIL.getTemplate(), techActivities, null,
+        EmailTypeEnum.DAILY_RESUME_MAIL.getReason(), user.getEmail());
+    sendEmail(email);
+  }
+
+  private TechnologyActivitiesTO createEmailTO(TechGalleryUser user, TechGalleryUser endorserUser,
+      Technology technology, List<TechnologyComment> comments, List<TechnologyRecommendation> recommendations,
+      Date timestamp, String appName) {
     TechnologyActivitiesTO techActivities = new TechnologyActivitiesTO();
+    techActivities.setUser(user);
     techActivities.setComments(comments);
     techActivities.setRecommendations(recommendations);
     techActivities.setTechnology(technology);
     techActivities.setTimestamp(new Date());
-    techActivities.setAppName("Tech Gallery");
+    techActivities.setAppName(appName);
+    techActivities.setEndorserUser(endorserUser);
+    techActivities.setTechnologyLink(generateTechnologyLink(technology));
+    return techActivities;
+  }
 
-    EmailConfig email = new EmailConfig(subject + technology.getName() + " - " + techActivities.getFormattedTimestamp(),
-        "emailtemplates" + File.separator + template, techActivities, null, reason, user.getEmail());
-    sendEmail(email);
+  private String generateTechnologyLink(Technology tech) {
+    String linkTechnology;
+    String queryString = "?id=" + tech.getId();
+    String environment = System.getProperty(RUNTIME_ENVIRONMENT_PROPERTY);
+    if (StringUtils.equals(PRODUCTION_PROPERTY, environment)) {
+      String applicationId = System.getProperty(APPLICATION_ID_PROPERTY);
+      String version = System.getProperty(APPLICATION_VERSION_PROPERTY);
+      String versionName = version.split("\\.")[0];
+      linkTechnology = "https://" + versionName + "-dot-" + applicationId + ".appspot.com/";
+    } else {
+      linkTechnology = LINK_LOCALHOST;
+    }
+    return linkTechnology + PATH_VIEW_TECH_HTML + queryString;
   }
 
   @Override
@@ -154,13 +190,12 @@ public class EmailServiceImpl implements EmailService {
     TechGalleryUser endorsed = techGalleryUserDao.findById(Long.parseLong(endorsedUser));
     Technology technology = technologyDao.findById(technologyId);
 
-    // TODO extract method to build template (mustache).
-    Map<String, String> variableValue = new HashMap<String, String>();
-    variableValue.put("${endorser}", endorser.getName());
-    variableValue.put("${endorsed}", endorsed.getName());
-    variableValue.put("${technology}", technology.getName());
-    EmailConfig email = new EmailConfig(subject, "emailtemplates" + File.separator + templateEndorserment,
-        variableValue, null, reason, endorsed.getEmail());
+    TechnologyActivitiesTO techActivities = createEmailTO(null, endorser, technology, null, null, new Date(),
+        Constants.APP_NAME);
+
+    EmailConfig email = new EmailConfig(EmailTypeEnum.ENDORSED_MAIL.getSubject() + technology.getName(),
+        "emailtemplates" + File.separator + EmailTypeEnum.ENDORSED_MAIL.getTemplate(), techActivities, null,
+        EmailTypeEnum.ENDORSED_MAIL.getReason(), endorsed.getEmail());
     sendEmail(email);
   }
 

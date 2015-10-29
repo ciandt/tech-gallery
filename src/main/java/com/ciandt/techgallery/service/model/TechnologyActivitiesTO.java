@@ -22,6 +22,7 @@ public class TechnologyActivitiesTO {
   Technology technology;
   List<TechnologyComment> comments;
   List<TechnologyRecommendation> recommendations;
+  String technologyLink;
   Date timestamp;
   String appName;
 
@@ -31,6 +32,14 @@ public class TechnologyActivitiesTO {
 
   public void setUser(TechGalleryUser user) {
     this.user = user;
+  }
+
+  public String getTechnologyLink() {
+    return technologyLink;
+  }
+
+  public void setTechnologyLink(String technologyLink) {
+    this.technologyLink = technologyLink;
   }
 
   public Technology getTechnology() {
