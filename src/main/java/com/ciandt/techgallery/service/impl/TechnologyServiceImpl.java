@@ -183,8 +183,8 @@ public class TechnologyServiceImpl implements TechnologyService {
       throws InternalServerErrorException, NotFoundException, BadRequestException {
     List<Technology> techEntities = technologyDAO.findAllActives();
     // if list is null, return a not found exception
-    if (techEntities == null) {
-      throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
+    if (techEntities == null || techEntities.isEmpty()) {
+      return new TechnologiesResponse();
     } else {
       verifyTechnologyFollowedByUser(user, techEntities);
       TechnologiesResponse response = new TechnologiesResponse();
