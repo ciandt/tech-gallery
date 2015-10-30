@@ -17,7 +17,7 @@
                 Resumo diário - {{formattedTimestamp}}
               </td>
               <td style="padding: 30px 30px 30px 0;">
-                <a href="#"><img src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png" style="max-height: 36px; height: 36px; display: inline-block; border: 0;"></a>
+                <a href="{{techgalleryLink}}"><img src="https://storage.googleapis.com/tech-gallery-assets/appLogo/tech-gallery.png" style="max-height: 36px; height: 36px; display: inline-block; border: 0;"></a>
               </td>
             </tr>
           </table>
@@ -30,13 +30,13 @@
               
                 <tr>
                   <td style="padding-right: 15px; vertical-align: top;"><a href="#"><img src="{{technology.image}}" style="max-height: 36px; height: 36px; display: inline-block; border: 0;"></a></td>
-                  <td colspan="2" style="text-align: left; font-size: 20px; padding-bottom: 20px;"><a href="{{technologyLink}}" style="color: #337ab7; text-decoration: none;"><strong>{{technology.name}}</strong></a></td>
+                  <td colspan="2" style="text-align: left; font-size: 20px;"><a href="{{technologyLink}}" style="color: #337ab7; text-decoration: none;"><strong>{{technology.name}}</strong></a></td>
                 </tr>
               
                 {{#hasRecommendations}}
                 <tr>
                   <td style="padding-right: 15px; vertical-align: top;">&nbsp;</td>
-                  <th colspan="2" style="text-align: left; font-size: 14px; padding-bottom: 20px;">Recomendações</th>
+                  <th colspan="2" style="text-align: left; font-size: 14px; padding: 20px 0px;">Recomendações</th>
                 </tr>
                 {{/hasRecommendations}}
 
@@ -76,7 +76,7 @@
             </div>
             {{/technologyActivitiesTo}}
             <div style="padding: 30px; border-top: solid 1px #dfdfdf; border-radius: 0 0 5px 5px;">
-              Você está recebendo este email porque está seguindo as tecnologias acima no <a href="#" style="color: #337ab7; text-decoration: none;">{{appName}}</a>.
+              Você está recebendo este email porque está seguindo as tecnologias acima no <a href="{{techgalleryLink}}" style="color: #337ab7; text-decoration: none;">{{appName}}</a>.
             </div>
           </div>
         </div>

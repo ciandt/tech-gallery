@@ -1,6 +1,9 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +21,7 @@ public class TechGalleryActivitiesTO {
   List<TechnologyActivitiesTO> technologyActivitiesTo;
   Date timestamp;
   String appName;
+  String techgalleryLink;
 
   public TechGalleryUser getFollower() {
     return follower;
@@ -54,6 +58,23 @@ public class TechGalleryActivitiesTO {
 
   public void setAppName(String appName) {
     this.appName = appName;
+  }
+  
+  /**
+   * Get link to application page according to runtime enviroment. Ex.: localhost, version-dot-.
+   * 
+   * @return link to application page.
+   */
+  public String getTechgalleryLink() {
+    String environment = System.getProperty(Constants.RUNTIME_ENVIRONMENT_PROPERTY);
+    if (StringUtils.equals(Constants.PRODUCTION_PROPERTY, environment)) {
+      String applicationId = System.getProperty(Constants.APPLICATION_ID_PROPERTY);
+      String version = System.getProperty(Constants.APPLICATION_VERSION_PROPERTY);
+      String versionName = version.split("\\.")[0];
+      return "https://" + versionName + "-dot-" + applicationId + ".appspot.com/";
+    } else {
+      return Constants.LINK_LOCALHOST;
+    }
   }
   
 }

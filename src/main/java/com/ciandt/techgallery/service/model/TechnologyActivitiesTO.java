@@ -24,14 +24,26 @@ public class TechnologyActivitiesTO {
   List<TechnologyRecommendation> recommendations;
   String technologyLink;
 
-  public TechnologyActivitiesTO() {
-    this.technologyLink = generateTechnologyLink();
-  }
-  
+  /**
+   * Get link to view technology page according to runtime enviroment. Ex.: localhost, version-dot-.
+   * 
+   * @return link to technology page.
+   */
   public String getTechnologyLink() {
-    return this.technologyLink;
+    String linkTechnology;
+    String queryString = "?id=" + technology.getId();
+    String environment = System.getProperty(Constants.RUNTIME_ENVIRONMENT_PROPERTY);
+    if (StringUtils.equals(Constants.PRODUCTION_PROPERTY, environment)) {
+      String applicationId = System.getProperty(Constants.APPLICATION_ID_PROPERTY);
+      String version = System.getProperty(Constants.APPLICATION_VERSION_PROPERTY);
+      String versionName = version.split("\\.")[0];
+      linkTechnology = "https://" + versionName + "-dot-" + applicationId + ".appspot.com/";
+    } else {
+      linkTechnology = Constants.LINK_LOCALHOST;
+    }
+    return linkTechnology + Constants.PATH_VIEW_TECH_HTML + queryString;
   }
-  
+
   public Technology getTechnology() {
     return technology;
   }
@@ -49,7 +61,7 @@ public class TechnologyActivitiesTO {
   }
 
   public Boolean getHasComments() {
-    return !this.comments.isEmpty();
+    return this.comments != null ? !this.comments.isEmpty() : false;
   }
 
   public List<TechnologyComment> getComments() {
@@ -61,7 +73,7 @@ public class TechnologyActivitiesTO {
   }
 
   public Boolean getHasRecommendations() {
-    return !this.recommendations.isEmpty();
+    return this.recommendations != null ? !this.recommendations.isEmpty() : false;
   }
 
   public List<TechnologyRecommendation> getRecommendations() {
@@ -70,25 +82,5 @@ public class TechnologyActivitiesTO {
 
   public void setRecommendations(List<TechnologyRecommendation> recommendations) {
     this.recommendations = recommendations;
-  }
-  
-  /**
-   * Get link to view technology page according to runtime enviroment. Ex.: localhost, version-dot-.
-   * 
-   * @return link to technology page.
-   */
-  public String generateTechnologyLink() {
-    String linkTechnology;
-    String queryString = "?id=" + technology.getId();
-    String environment = System.getProperty(Constants.RUNTIME_ENVIRONMENT_PROPERTY);
-    if (StringUtils.equals(Constants.PRODUCTION_PROPERTY, environment)) {
-      String applicationId = System.getProperty(Constants.APPLICATION_ID_PROPERTY);
-      String version = System.getProperty(Constants.APPLICATION_VERSION_PROPERTY);
-      String versionName = version.split("\\.")[0];
-      linkTechnology = "https://" + versionName + "-dot-" + applicationId + ".appspot.com/";
-    } else {
-      linkTechnology = Constants.LINK_LOCALHOST;
-    }
-    return linkTechnology + Constants.PATH_VIEW_TECH_HTML + queryString;
   }
 }

@@ -94,6 +94,9 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
             .filter(TechnologyRecommendation.TIMESTAMP + " >", date)
             .filter(TechnologyRecommendation.TECHNOLOGY, technology)
             .filter(TechnologyRecommendation.ACTIVE, Boolean.TRUE).list();
+    if (recommendations == null || recommendations.size() <= 0) {
+      return null;
+    }
     return recommendations;
   }
 

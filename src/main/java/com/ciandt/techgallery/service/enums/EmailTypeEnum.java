@@ -9,7 +9,7 @@ package com.ciandt.techgallery.service.enums;
  */
 public enum EmailTypeEnum {
 
-  DAILY_RESUME("[Tech Gallery] Resumo diário -",
+  DAILY_RESUME("[Tech Gallery] Resumo diário - ",
       "TechnologyActivitiesResume",
       "Resumo do dia para os followers"),
   ENDORSED("[Tech Gallery] Você foi indicado em ",

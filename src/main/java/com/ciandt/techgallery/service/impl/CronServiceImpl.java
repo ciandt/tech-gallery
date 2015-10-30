@@ -78,10 +78,9 @@ public class CronServiceImpl implements CronService {
     cronJob.setStartTimestamp(new Date());
     
     try {
-      List<TechGalleryUser> followers = techGalleryUserDao.findAll();
+      List<TechGalleryUser> followers = techGalleryUserDao.findAllFollowers();
       if (followers != null && followers.size() > 0) {
         for (TechGalleryUser follower : followers) {
-
           // TO used in mustache template
           TechGalleryActivitiesTO techGalleryActivitiesTo = new TechGalleryActivitiesTO();
           techGalleryActivitiesTo.setTimestamp(new Date());
@@ -92,7 +91,6 @@ public class CronServiceImpl implements CronService {
 
           for (String id : follower.getFollowedTechnologyIds()) {
             Technology technology = technologyDao.findById(id);
-
             // Find the last executed cronJob time
             Date lastCronJobExecDate;
             CronJob lastCronJob = cronJobsDao.findLastExecutedCronJob(Constants.CRON_MAIL_JOB);
@@ -110,8 +108,17 @@ public class CronServiceImpl implements CronService {
                     lastCronJobExecDate);
             List<TechnologyComment> dailyComments =
                 technologyCommentDao.findAllCommentsStartingFrom(technology, lastCronJobExecDate);
-
-            if (!dailyRecommendations.isEmpty() || !dailyComments.isEmpty()) {
+            
+            // Remove Recommendations' comments. For avoid duplication
+            if (dailyRecommendations != null) {
+              for (TechnologyRecommendation recommendation : dailyRecommendations) {
+                if (dailyComments != null) {
+                  dailyComments.remove(recommendation.getComment().get());
+                }
+              }
+            }
+            
+            if (dailyRecommendations != null || dailyComments != null) {
               // Create a TO to each technology
               TechnologyActivitiesTO techActivitiesTo =
                   createTechnologyActivitiesTo(technology, dailyRecommendations, dailyComments);
@@ -122,8 +129,8 @@ public class CronServiceImpl implements CronService {
 
           EmailConfig email =
               new EmailConfig(EmailTypeEnum.DAILY_RESUME, EmailTypeEnum.DAILY_RESUME.getSubject()
-                  + " - " + techGalleryActivitiesTo.getFormattedTimestamp(),
-                  techGalleryActivitiesTo, follower.getEmail());
+                  + techGalleryActivitiesTo.getFormattedTimestamp(), techGalleryActivitiesTo,
+                  follower.getEmail());
 
           // Push email to queue if has new activities
           if (!techActivitiesToList.isEmpty()) {
@@ -145,9 +152,9 @@ public class CronServiceImpl implements CronService {
   private TechnologyActivitiesTO createTechnologyActivitiesTo(Technology technology,
       List<TechnologyRecommendation> dailyRecommendations, List<TechnologyComment> dailyComments) {
     TechnologyActivitiesTO techActivitiesTo = new TechnologyActivitiesTO();
+    techActivitiesTo.setTechnology(technology);
     techActivitiesTo.setComments(dailyComments);
     techActivitiesTo.setRecommendations(dailyRecommendations);
-    techActivitiesTo.setTechnology(technology);
     return techActivitiesTo;
   }
 }
