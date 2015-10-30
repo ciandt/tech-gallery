@@ -62,6 +62,18 @@ public class GenericDAOImpl<T extends BaseEntity<ID>, ID extends Serializable>
     }
     return entity;
   }
+  
+  /*
+   * (non-Javadoc)
+   * 
+   * @see com.google.swapbudget.persistence.dao.GenericDAO#findByProperty(java.lang.Object)
+   */
+  @Override
+  public T findByProperty(String property, Object value) {
+    Objectify objectify = OfyService.ofy();
+    T entity = objectify.load().type(clazz).filter(property, value).first().now();
+    return entity;
+  }
 
   @Override
   public Key<T> add(T entity) {
