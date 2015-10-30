@@ -48,10 +48,12 @@ public interface TechnologyRecommendationDAO extends GenericDAO<TechnologyRecomm
   
 
   /**
-   * Find all recommendationsIds starting from date.
+   * Find all recommendations of a technology starting from date.
    * 
+   * @param technology.
    * @param start date.
-   * @return list of recommendationsIds starting from a specific date concatenated by ",".
+   * @return list of recommendations starting from a specific date.
    */
-  public String findAllRecommendationsIdsStartingFrom(Date date);
+  List<TechnologyRecommendation> findAllRecommendationsStartingFrom(Technology technology,
+      Date date);
 }

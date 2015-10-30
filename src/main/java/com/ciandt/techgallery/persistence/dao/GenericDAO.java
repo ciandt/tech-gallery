@@ -40,6 +40,15 @@ public interface GenericDAO<T, ID extends Serializable> {
   T findById(ID id);
 
   /**
+   * Method that finds an entity by one of its properties.
+   * 
+   * @param property property name.
+   * @param value property value.
+   * @return entity.
+   */
+  T findByProperty(String property, Object value);
+  
+  /**
    * Method that adds a new entity.
    *
    * @param entity.

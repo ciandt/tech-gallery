@@ -1,18 +1,13 @@
 package com.ciandt.techgallery.service;
 
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.email.EmailConfig;
+
 
 
 public interface EmailService {
-  void push(TechGalleryUser user, Technology technology, String recommendationsIds,
-      String commentsIds);
 
-  void push(TechGalleryUser endorserUser, TechGalleryUser endorsedUser, Technology technology);
+  void push(EmailConfig email);
 
-  void execute(String userId, String technologyId, String recommendationsIds, String commentsIds,
-      String serverUrl);
-
-  void execute(String userId, String endorsedUser, String technologyId);
+  void execute(String subject, String body, String reason, String to);
 
 }
