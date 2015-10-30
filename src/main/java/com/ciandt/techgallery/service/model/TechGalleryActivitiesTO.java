@@ -2,6 +2,7 @@ package com.ciandt.techgallery.service.model;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.utils.TechGalleryUtil;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -69,9 +70,7 @@ public class TechGalleryActivitiesTO {
     String environment = System.getProperty(Constants.RUNTIME_ENVIRONMENT_PROPERTY);
     if (StringUtils.equals(Constants.PRODUCTION_PROPERTY, environment)) {
       String applicationId = System.getProperty(Constants.APPLICATION_ID_PROPERTY);
-      String version = System.getProperty(Constants.APPLICATION_VERSION_PROPERTY);
-      String versionName = version.split("\\.")[0];
-      return "https://" + versionName + "-dot-" + applicationId + ".appspot.com/";
+      return "https://" + TechGalleryUtil.getApplicationVersion() + "-dot-" + applicationId + ".appspot.com/";
     } else {
       return Constants.LINK_LOCALHOST;
     }

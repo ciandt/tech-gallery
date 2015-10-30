@@ -5,6 +5,7 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
+import com.ciandt.techgallery.utils.TechGalleryUtil;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -35,9 +36,7 @@ public class TechnologyActivitiesTO {
     String environment = System.getProperty(Constants.RUNTIME_ENVIRONMENT_PROPERTY);
     if (StringUtils.equals(Constants.PRODUCTION_PROPERTY, environment)) {
       String applicationId = System.getProperty(Constants.APPLICATION_ID_PROPERTY);
-      String version = System.getProperty(Constants.APPLICATION_VERSION_PROPERTY);
-      String versionName = version.split("\\.")[0];
-      linkTechnology = "https://" + versionName + "-dot-" + applicationId + ".appspot.com/";
+      linkTechnology = "https://" + TechGalleryUtil.getApplicationVersion() + "-dot-" + applicationId + ".appspot.com/";
     } else {
       linkTechnology = Constants.LINK_LOCALHOST;
     }

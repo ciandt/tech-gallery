@@ -18,6 +18,7 @@ import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.CronService;
 import com.ciandt.techgallery.service.EmailService;
+import com.ciandt.techgallery.service.TechnologyActivitiesService;
 import com.ciandt.techgallery.service.email.EmailConfig;
 import com.ciandt.techgallery.service.enums.CronStatus;
 import com.ciandt.techgallery.service.enums.EmailTypeEnum;
@@ -41,6 +42,8 @@ public class CronServiceImpl implements CronService {
   public static final Logger _LOG = Logger.getLogger(CronMailServlet.class.getName());
   private static CronServiceImpl instance;
   private EmailService emailService = EmailServiceImpl.getInstance();
+  private TechnologyActivitiesService technologyActivitiesService = TechnologyActivitiesServiceImpl
+      .getInstance();
   private CronJobDAO cronJobsDao = CronJobDAOImpl.getInstance();
   private TechnologyRecommendationDAO technologyRecommendationDao =
       TechnologyRecommendationDAOImpl.getInstance();
@@ -91,39 +94,8 @@ public class CronServiceImpl implements CronService {
 
           for (String id : follower.getFollowedTechnologyIds()) {
             Technology technology = technologyDao.findById(id);
-            // Find the last executed cronJob time
-            Date lastCronJobExecDate;
-            CronJob lastCronJob = cronJobsDao.findLastExecutedCronJob(Constants.CRON_MAIL_JOB);
-            if (lastCronJob != null) {
-              lastCronJobExecDate = lastCronJob.getStartTimestamp();
-            } else {
-              Calendar cal = Calendar.getInstance();
-              cal.add(Calendar.DAY_OF_MONTH, -1);
-              lastCronJobExecDate = cal.getTime();
-            }
-
-            // Find new Activities in a technology
-            List<TechnologyRecommendation> dailyRecommendations =
-                technologyRecommendationDao.findAllRecommendationsStartingFrom(technology,
-                    lastCronJobExecDate);
-            List<TechnologyComment> dailyComments =
-                technologyCommentDao.findAllCommentsStartingFrom(technology, lastCronJobExecDate);
-            
-            // Remove Recommendations' comments. For avoid duplication
-            if (dailyRecommendations != null) {
-              for (TechnologyRecommendation recommendation : dailyRecommendations) {
-                if (dailyComments != null) {
-                  dailyComments.remove(recommendation.getComment().get());
-                }
-              }
-            }
-            
-            if (dailyRecommendations != null || dailyComments != null) {
-              // Create a TO to each technology
-              TechnologyActivitiesTO techActivitiesTo =
-                  createTechnologyActivitiesTo(technology, dailyRecommendations, dailyComments);
-              techActivitiesToList.add(techActivitiesTo);
-            }
+            Date lastCronJobExecDate = findLastExecutedCronJob();
+            findNewActivitiesInATechnology(techActivitiesToList, technology, lastCronJobExecDate);
           }
           techGalleryActivitiesTo.setTechnologyActivitiesTo(techActivitiesToList);
 
@@ -149,12 +121,45 @@ public class CronServiceImpl implements CronService {
     cronJobsDao.add(cronJob);
   }
 
-  private TechnologyActivitiesTO createTechnologyActivitiesTo(Technology technology,
-      List<TechnologyRecommendation> dailyRecommendations, List<TechnologyComment> dailyComments) {
-    TechnologyActivitiesTO techActivitiesTo = new TechnologyActivitiesTO();
-    techActivitiesTo.setTechnology(technology);
-    techActivitiesTo.setComments(dailyComments);
-    techActivitiesTo.setRecommendations(dailyRecommendations);
-    return techActivitiesTo;
+  private void findNewActivitiesInATechnology(List<TechnologyActivitiesTO> techActivitiesToList,
+      Technology technology, Date lastCronJobExecDate) {
+    // Find new Activities in a technology
+    List<TechnologyRecommendation> dailyRecommendations =
+        technologyRecommendationDao.findAllRecommendationsStartingFrom(technology,
+            lastCronJobExecDate);
+    List<TechnologyComment> dailyComments =
+        technologyCommentDao.findAllCommentsStartingFrom(technology, lastCronJobExecDate);
+    
+    // Remove Recommendations' comments. For avoid duplication
+    if (dailyRecommendations != null) {
+      for (TechnologyRecommendation recommendation : dailyRecommendations) {
+        if (dailyComments != null) {
+          dailyComments.remove(recommendation.getComment().get());
+        }
+      }
+    }
+
+    if (dailyRecommendations != null || dailyComments != null) {
+      // Create a TO to each technology
+      TechnologyActivitiesTO techActivitiesTo =
+          technologyActivitiesService.createTechnologyActivitiesTo(technology,
+              dailyRecommendations, dailyComments);
+      techActivitiesToList.add(techActivitiesTo);
+    }
   }
+
+  private Date findLastExecutedCronJob() {
+    Date lastCronJobExecDate;
+    CronJob lastCronJob = cronJobsDao.findLastExecutedCronJob(Constants.CRON_MAIL_JOB);
+    if (lastCronJob != null) {
+      lastCronJobExecDate = lastCronJob.getStartTimestamp();
+    } else {
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.DAY_OF_MONTH, -1);
+      lastCronJobExecDate = cal.getTime();
+    }
+    return lastCronJobExecDate;
+  }
+
+
 }
