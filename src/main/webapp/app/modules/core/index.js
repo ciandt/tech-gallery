@@ -1,6 +1,5 @@
 angular
   .module('TechGallery.Core', [])
-  .service('AppService', require('./services/AppService'))
-  .controller('AppController', require('./controllers/AppController'));
+  .service('AppService', require('./services/AppService'));
 
 module.exports = 'TechGallery.Core';
