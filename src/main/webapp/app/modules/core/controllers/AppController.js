@@ -1,4 +1,4 @@
-module.exports = function ($window, $rootScope, AuthService) {
+module.exports = function ($window, $rootScope, AppService, AuthService) {
 
   /**
    * Object context
@@ -7,22 +7,10 @@ module.exports = function ($window, $rootScope, AuthService) {
   var context = this;
 
   /**
-   * Loading state
-   * @type {Boolean}
-   */
-  this._loading = true;
-
-  /**
-   * The app name
-   * @type {String}
-   */
-  $rootScope.appName = 'Tech Gallery';
-
-  /**
    * The page title
    * @type {String}
    */
-  $rootScope.pageTitle = 'Index';
+  $rootScope.pageTitle = AppService.getPageTitle();
 
   /**
    * gapi api loaded state
@@ -34,21 +22,17 @@ module.exports = function ($window, $rootScope, AuthService) {
    * User login state
    * @type {Boolean}
    */
-  $rootScope.isUserLogged = true;
+  $rootScope.isUserLogged = AuthService.isLogged();
 
   /**
    * Return loading state
    * @return {Boolean}
    */
-  this.isLoading = function () {
-    return context._loading;
-  }
+  $rootScope.isLoading = AppService.isLoading();
 
   /**
    * Set loading state
    * @param {Boolean} state The state to be set
    */
-  this.setLoading = function (state) {
-    context._loading = !!state;
-  }
+  $rootScope.setLoading = AppService.setLoading;
 }
