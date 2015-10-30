@@ -1,9 +1,4 @@
-module.exports = function (
-  API,
-  CLIENT_ID,
-  USER_SCOPES,
-  $rootScope
-) {
+module.exports = function () {
 
   /**
    * Object context

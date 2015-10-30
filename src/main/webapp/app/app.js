@@ -20,7 +20,7 @@ angular
     require('./modules/core'),
     require('./modules/auth'),
     require('./modules/utils'),
-    require('./modules/technology'),
+    require('./modules/technology')
   ])
   .config(require('./routes'))
   .constant('API', {

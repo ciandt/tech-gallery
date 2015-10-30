@@ -5,34 +5,33 @@
         <h1><a class="navbar-brand" href="#/"><img src="assets/images/tech-gallery.png" alt="Tech Gallery"> Tech Gallery</a></h1>
       </div>
 
-      <div class="navbar-right">
+      <div class="navbar-right" ng-if="isUserLogged">
         <!-- SEARCH -->
         <form id="app-search" ng-submit="searchTechnology()" class="navbar-form navbar-left">
           <div class="form-group">
-            <input type="text" ng-model="textSearch" class="form-control" placeholder="Digite sua busca&hellip;">
+            <input type="text" ng-disabled="isLoading" ng-model="textSearch" class="form-control" placeholder="Digite sua busca&hellip;">
             <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-search"></span></button>
           </div>
         </form>
 
         <!-- USER DROPDOWN -->
-        <ul class="nav navbar-nav navbar-right" ng-if="isUserLogged">
+        <ul class="nav navbar-nav navbar-right">
           <li uib-dropdown uib-keyboard-nav>
             <a href="#"  role="button" uib-dropdown-toggle>Gabriel Izaias <span class="caret"></span></a>
             <ul class="uib-dropdown-menu">
               <li><a href="#">Meu perfil</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="{{ logoutRedirect() }}">Sair</a></li>
+              <li><a href="#" ng-click="logout()">Sair</a></li>
             </ul>
           </li>
         </ul>
-
-        <!-- USER LOGIN -->
-        <div class="nav navbar-form navbar-right" ng-if="!isUserLogged">
-          <button class="btn btn-primary"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Login</button>
-        </div>
       </div>
     </div>
   </div>
 </nav>
 
-<main id="app-content" ui-view></main>
+<main id="app-content">
+  <loading ng-if="isLoading"></loading>
+  <login ng-if="!isLoading && !isUserLogged"></login>
+  <ui-view ng-if="!isLoading && isUserLogged"></ui-view>
+</main>
