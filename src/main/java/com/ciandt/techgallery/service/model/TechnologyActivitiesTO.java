@@ -1,13 +1,14 @@
 package com.ciandt.techgallery.service.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
+import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.util.List;
 
 /**
  * Used for sending emails.
@@ -17,31 +18,20 @@ import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
  */
 public class TechnologyActivitiesTO {
 
-  TechGalleryUser user;
   TechGalleryUser endorserUser;
   Technology technology;
   List<TechnologyComment> comments;
   List<TechnologyRecommendation> recommendations;
   String technologyLink;
-  Date timestamp;
-  String appName;
 
-  public TechGalleryUser getUser() {
-    return user;
+  public TechnologyActivitiesTO() {
+    this.technologyLink = generateTechnologyLink();
   }
-
-  public void setUser(TechGalleryUser user) {
-    this.user = user;
-  }
-
+  
   public String getTechnologyLink() {
-    return technologyLink;
+    return this.technologyLink;
   }
-
-  public void setTechnologyLink(String technologyLink) {
-    this.technologyLink = technologyLink;
-  }
-
+  
   public Technology getTechnology() {
     return technology;
   }
@@ -81,25 +71,24 @@ public class TechnologyActivitiesTO {
   public void setRecommendations(List<TechnologyRecommendation> recommendations) {
     this.recommendations = recommendations;
   }
-
-  public Date getTimestamp() {
-    return timestamp;
-  }
-
-  public String getFormattedTimestamp() {
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-    return formatter.format(this.timestamp);
-  }
-
-  public void setTimestamp(Date timestamp) {
-    this.timestamp = timestamp;
-  }
-
-  public String getAppName() {
-    return appName;
-  }
-
-  public void setAppName(String appName) {
-    this.appName = appName;
+  
+  /**
+   * Get link to view technology page according to runtime enviroment. Ex.: localhost, version-dot-.
+   * 
+   * @return link to technology page.
+   */
+  public String generateTechnologyLink() {
+    String linkTechnology;
+    String queryString = "?id=" + technology.getId();
+    String environment = System.getProperty(Constants.RUNTIME_ENVIRONMENT_PROPERTY);
+    if (StringUtils.equals(Constants.PRODUCTION_PROPERTY, environment)) {
+      String applicationId = System.getProperty(Constants.APPLICATION_ID_PROPERTY);
+      String version = System.getProperty(Constants.APPLICATION_VERSION_PROPERTY);
+      String versionName = version.split("\\.")[0];
+      linkTechnology = "https://" + versionName + "-dot-" + applicationId + ".appspot.com/";
+    } else {
+      linkTechnology = Constants.LINK_LOCALHOST;
+    }
+    return linkTechnology + Constants.PATH_VIEW_TECH_HTML + queryString;
   }
 }

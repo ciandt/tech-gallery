@@ -55,17 +55,13 @@ public class TechnologyCommentDAOImpl extends GenericDAOImpl<TechnologyComment, 
   }
 
   @Override
-  public String findAllCommentsIdsStartingFrom(Technology technology, Date date) {
-    String commentsIds = "";
+  public List<TechnologyComment> findAllCommentsStartingFrom(Technology technology, Date date) {
     final Objectify objectify = OfyService.ofy();
     final List<TechnologyComment> comments =
         objectify.load().type(TechnologyComment.class)
             .filter(TechnologyComment.TIMESTAMP + " >", date)
             .filter(TechnologyComment.TECHNOLOGY, technology)
             .filter(TechnologyComment.ACTIVE, Boolean.TRUE).list();
-    for (TechnologyComment technologyComment : comments) {
-      commentsIds = commentsIds.concat("," + technologyComment.getId());
-    }
-    return commentsIds;
+    return comments;
   }
 }

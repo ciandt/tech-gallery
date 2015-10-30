@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.service.enums;
 
+
 /**
  * Enum to set email configurations.
  * 
@@ -8,8 +9,12 @@ package com.ciandt.techgallery.service.enums;
  */
 public enum EmailTypeEnum {
 
-  DAILY_RESUME_MAIL("[Tech Gallery] Resumo diário sobre ", "TechnologyActivitiesResumeEmailTemplate", "Resumo do dia para os followers"), 
-  ENDORSED_MAIL("[Tech Gallery] Você foi indicado em ", "UserEndorsermentEmailTemplate", "Notificação de indicação");
+  DAILY_RESUME("[Tech Gallery] Resumo diário -",
+      "TechnologyActivitiesResume",
+      "Resumo do dia para os followers"),
+  ENDORSED("[Tech Gallery] Você foi indicado em ",
+      "UserEndorserment",
+      "Notificação de indicação");
 
   private String subject;
   private String template;

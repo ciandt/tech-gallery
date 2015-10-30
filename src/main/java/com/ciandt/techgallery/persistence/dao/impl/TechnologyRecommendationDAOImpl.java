@@ -86,18 +86,15 @@ public class TechnologyRecommendationDAOImpl extends GenericDAOImpl<TechnologyRe
   }
 
   @Override
-  public String findAllRecommendationsIdsStartingFrom(Technology technology, Date date) {
-    String recommendationsIds = "";
+  public List<TechnologyRecommendation> findAllRecommendationsStartingFrom(Technology technology,
+      Date date) {
     final Objectify objectify = OfyService.ofy();
     final List<TechnologyRecommendation> recommendations =
         objectify.load().type(TechnologyRecommendation.class)
             .filter(TechnologyRecommendation.TIMESTAMP + " >", date)
             .filter(TechnologyRecommendation.TECHNOLOGY, technology)
             .filter(TechnologyRecommendation.ACTIVE, Boolean.TRUE).list();
-    for (TechnologyRecommendation technologyRecommendation : recommendations) {
-      recommendationsIds = recommendationsIds.concat("," + technologyRecommendation.getId());
-    }
-    return recommendationsIds;
+    return recommendations;
   }
 
 }
