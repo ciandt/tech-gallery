@@ -183,28 +183,14 @@ public class TechnologyServiceImpl implements TechnologyService {
       throws InternalServerErrorException, NotFoundException, BadRequestException {
     List<Technology> techEntities = technologyDAO.findAllActives();
     // if list is null, return a not found exception
-    if (techEntities == null) {
-      throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
+    if (techEntities == null || techEntities.isEmpty()) {
+      return new TechnologiesResponse();
     } else {
       verifyTechnologyFollowedByUser(user, techEntities);
       TechnologiesResponse response = new TechnologiesResponse();
       Technology.sortTechnologiesDefault(techEntities);
       response.setTechnologies(techEntities);
       return response;
-    }
-  }
-
-  /**
-   * GET for getting one technology.
-   */
-  @Override
-  public Technology getTechnology(final String id) throws NotFoundException {
-    Technology techEntity = technologyDAO.findById(id);
-    // if technology is null, return a not found exception
-    if (techEntity == null) {
-      throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
-    } else {
-      return techEntity;
     }
   }
 
@@ -350,7 +336,7 @@ public class TechnologyServiceImpl implements TechnologyService {
   @Override
   public Technology getTechnologyById(String id, User user)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
-    Technology tech = technologyDAO.findById(id);
+    Technology tech = technologyDAO.findByIdActive(id);
     if (tech == null) {
       throw new NotFoundException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
     } else {
@@ -463,8 +449,9 @@ public class TechnologyServiceImpl implements TechnologyService {
       throw new NotFoundException(ValidationMessageEnums.NO_TECHNOLOGY_WAS_FOUND.message());
     }
     technology.setActive(Boolean.FALSE);
+    technology.setLastActivity(new Date());
+    technology.setLastActivityUser(user.getEmail());
     technologyDAO.update(technology);
-    audit(technologyId, user);
     return technology;
   }
 }
