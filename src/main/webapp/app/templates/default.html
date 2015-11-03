@@ -5,11 +5,11 @@
         <h1><a class="navbar-brand" href="#/"><img src="assets/images/tech-gallery.png" alt="Tech Gallery"> Tech Gallery</a></h1>
       </div>
 
-      <div class="navbar-right" ng-if="isUserLogged">
+      <div class="navbar-right" ng-if="app.isUserLogged">
         <!-- SEARCH -->
         <form id="app-search" ng-submit="searchTechnology()" class="navbar-form navbar-left">
           <div class="form-group">
-            <input type="text" ng-disabled="isLoading" ng-model="textSearch" class="form-control" placeholder="Digite sua busca&hellip;">
+            <input type="text" ng-disabled="app.isLoading" ng-model="textSearch" class="form-control" placeholder="Digite sua busca&hellip;">
             <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-search"></span></button>
           </div>
         </form>
@@ -31,7 +31,6 @@
 </nav>
 
 <main id="app-content">
-  <loading ng-if="isLoading"></loading>
-  <login ng-if="!isLoading && !isUserLogged"></login>
-  <ui-view ng-if="!isLoading && isUserLogged"></ui-view>
+  <login ng-if="!app.isUserLogged"></login>
+  <ui-view ng-if="app.isUserLogged"></ui-view>
 </main>

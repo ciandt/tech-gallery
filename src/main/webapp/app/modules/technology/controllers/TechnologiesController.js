@@ -1,4 +1,4 @@
-module.exports = function ($scope, $rootScope, TechnologyService) {
+module.exports = function ($scope, $rootScope, AppService, TechnologyService) {
 
   /**
    * Object context
@@ -10,25 +10,16 @@ module.exports = function ($scope, $rootScope, TechnologyService) {
    * Loading state
    * @type {Boolean}
    */
-  this._loading = false;
+  this.loading = false;
 
   /**
    * Page title
-   * @type {String}
    */
-  $rootScope.pageTitle = 'Tecnologias';
+  AppService.setPageTitle('Tecnologias');
 
   /**
    * List of technologies
    * @type {Array}
    */
   this.items = TechnologyService.getTechnologies();
-
-  /**
-   * Return loading state
-   * @return {Boolean}
-   */
-  this.isLoading = function () {
-    return context._loading;
-  }
 }

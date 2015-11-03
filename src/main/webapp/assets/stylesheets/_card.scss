@@ -2,7 +2,7 @@ $card-spacing: 15px;
 .card {
   position: relative;
   background-color: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid $border-color;
   border-bottom-width: 2px;
   border-radius: $border-radius-base;
   overflow: hidden;

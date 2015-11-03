@@ -15,10 +15,7 @@ $brand-primary: #427fed;
 $brand-danger: #d73d32;
 $brand-success: #1c9e0a;
 
-// $btn-default-border: none;
-// $btn-primary-border: none;
-// $btn-danger-border: none;
-// $btn-success-border: none;
+$border-color: #ddd;
 
 /**
  * Vendor & third party styles
@@ -71,10 +68,24 @@ $brand-success: #1c9e0a;
   position: relative;
 }
 
+#app-login {
+  max-width: 350px;
+  padding: 20px;
+  margin: 100px auto;
+  background-color: #fff;
+  border-radius: $border-radius-base;
+  border: 1px solid $border-color;
+}
+
 /**
  * Override bootstrap default styles
  */
 .tech-gallery {
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin-top: 0;
+  }
+
   .nav,
   .pagination,
   .carousel,
