@@ -6,6 +6,7 @@ import com.googlecode.objectify.Work;
 import com.ciant.techgallery.transaction.idempotency.IdempotencyHandler;
 import com.ciant.techgallery.transaction.idempotency.IdempotencyHandlerFactory;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
@@ -29,7 +30,9 @@ public class TransactionalInvocationHandler implements InvocationHandler {
    */
   public TransactionalInvocationHandler(Class<?> implementation) {
     try {
-      this.implementation = implementation.newInstance();
+      Constructor<?> constructor = implementation.getDeclaredConstructor();
+      constructor.setAccessible(true);
+      this.implementation = constructor.newInstance();
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -42,23 +45,23 @@ public class TransactionalInvocationHandler implements InvocationHandler {
       final Method implementationMethod =
           implementation.getClass().getMethod(method.getName(), method.getParameterTypes());
       final Transactional transactional = implementationMethod.getAnnotation(Transactional.class);
-  
+
       if (transactional != null) {
-        
-        final IdempotencyHandler idempotencyHandler = 
+
+        final IdempotencyHandler idempotencyHandler =
             IdempotencyHandlerFactory.createHandlerAnnotationBased(transactional);
-        
+
         return ObjectifyService.ofy().execute(transactional.type(), new Work() {
           @Override
           public Object run() {
             if (idempotencyHandler.shouldTransactionProceed(proxy, method, args)) {
               Object result = invokeMethod(args, implementationMethod);
               idempotencyHandler.setReturn(result);
-            } 
+            }
             return idempotencyHandler.getReturn();
           }
         });
-  
+
       } else {
         return invokeMethod(args, implementationMethod);
       }
@@ -68,7 +71,7 @@ public class TransactionalInvocationHandler implements InvocationHandler {
   }
 
   private Throwable getRootCause(Throwable err, int level) {
-    return level > 0 && err.getCause() != null ? getRootCause(err.getCause(), level - 1) : err; 
+    return level > 0 && err.getCause() != null ? getRootCause(err.getCause(), level - 1) : err;
   }
 
   private Object invokeMethod(final Object[] args, final Method implementationMethod) {
@@ -79,11 +82,11 @@ public class TransactionalInvocationHandler implements InvocationHandler {
       if (e.getCause() != null) {
         e = (Exception) e.getCause();
       }
-      
+
       if (e instanceof RuntimeException) {
         throw (RuntimeException) e;
-      } 
-      
+      }
+
       throw new RuntimeException(e);
     }
   }
