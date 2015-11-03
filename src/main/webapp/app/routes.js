@@ -15,15 +15,16 @@ module.exports = function(
       templateUrl: 'app/templates/default.html',
       resolve: {
         loadEndpoints: function ($rootScope, API, $q) {
+          var isApiLoaded = false;
           var deferred = $q.defer();
           var gapiInterval = window.setInterval(function() {
-            if ($rootScope.isApiLoaded) {
+            if (isApiLoaded) {
               window.clearInterval(gapiInterval);
               return;
             }
 
             gapi.client.load(API.NAME, API.VERSION, function (data) {
-              $rootScope.isApiLoaded = true;
+              isApiLoaded = true;
               deferred.resolve();
             }, API.URL);
           }, 200);
