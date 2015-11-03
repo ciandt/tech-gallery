@@ -2,6 +2,8 @@ package com.ciandt.techgallery.persistence.dao;
 
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 
+import java.util.List;
+
 /**
  * UserDAOImpl methods interface.
  *
@@ -40,4 +42,11 @@ public interface TechGalleryUserDAO extends GenericDAO<TechGalleryUser, Long> {
    * @return the user by his e-mail
    */
   TechGalleryUser findByEmail(String email);
+  
+  /**
+   * Searches for a list of users that follow one or more technologies.
+   * 
+   * @return list of followers.
+   */
+  List<TechGalleryUser> findAllFollowers();
 }

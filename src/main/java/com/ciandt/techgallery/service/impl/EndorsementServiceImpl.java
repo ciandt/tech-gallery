@@ -23,12 +23,15 @@ import com.ciandt.techgallery.service.EndorsementService;
 import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
+import com.ciandt.techgallery.service.email.EmailConfig;
+import com.ciandt.techgallery.service.enums.EmailTypeEnum;
 import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementsResponse;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
+import com.ciandt.techgallery.service.model.TechnologyActivitiesTO;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
 import java.util.ArrayList;
@@ -175,7 +178,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
-    emailService.push(tgEndorserUser, tgEndorsedUser, technology);
+    notifyEndorsedUser(tgEndorserUser, tgEndorsedUser, technology);
     UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
@@ -277,11 +280,22 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
-    emailService.push(tgEndorserUser, tgEndorsedUser, technology);
+    notifyEndorsedUser(tgEndorserUser, tgEndorsedUser, technology);
     UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
 
+  private void notifyEndorsedUser(TechGalleryUser tgEndorserUser, TechGalleryUser tgEndorsedUser,
+      Technology technology) {
+    TechnologyActivitiesTO techActivities = new TechnologyActivitiesTO();
+    techActivities.setTechnology(technology);
+    techActivities.setEndorserUser(tgEndorserUser);
+    EmailConfig email =
+        new EmailConfig(EmailTypeEnum.ENDORSED, EmailTypeEnum.ENDORSED.getSubject()
+            + technology.getName(), techActivities, tgEndorsedUser.getEmail());
+    emailService.push(email);
+  }
+  
   /**
    * GET for getting all endorsements.
    */

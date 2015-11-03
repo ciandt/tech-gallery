@@ -25,6 +25,7 @@ import java.util.ArrayList;
  * @author felipers
  *
  */
+@Transactional
 public class TechnologyFollowersServiceImpl implements TechnologyFollowersService {
 
   /*

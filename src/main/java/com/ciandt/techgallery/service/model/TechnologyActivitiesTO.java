@@ -1,13 +1,15 @@
 package com.ciandt.techgallery.service.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
+import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
+import com.ciandt.techgallery.utils.TechGalleryUtil;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.util.List;
 
 /**
  * Used for sending emails.
@@ -17,29 +19,28 @@ import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
  */
 public class TechnologyActivitiesTO {
 
-  TechGalleryUser user;
   TechGalleryUser endorserUser;
   Technology technology;
   List<TechnologyComment> comments;
   List<TechnologyRecommendation> recommendations;
   String technologyLink;
-  Date timestamp;
-  String appName;
 
-  public TechGalleryUser getUser() {
-    return user;
-  }
-
-  public void setUser(TechGalleryUser user) {
-    this.user = user;
-  }
-
+  /**
+   * Get link to view technology page according to runtime enviroment. Ex.: localhost, version-dot-.
+   * 
+   * @return link to technology page.
+   */
   public String getTechnologyLink() {
-    return technologyLink;
-  }
-
-  public void setTechnologyLink(String technologyLink) {
-    this.technologyLink = technologyLink;
+    String linkTechnology;
+    String queryString = "?id=" + technology.getId();
+    String environment = System.getProperty(Constants.RUNTIME_ENVIRONMENT_PROPERTY);
+    if (StringUtils.equals(Constants.PRODUCTION_PROPERTY, environment)) {
+      String applicationId = System.getProperty(Constants.APPLICATION_ID_PROPERTY);
+      linkTechnology = "https://" + TechGalleryUtil.getApplicationVersion() + "-dot-" + applicationId + ".appspot.com/";
+    } else {
+      linkTechnology = Constants.LINK_LOCALHOST;
+    }
+    return linkTechnology + Constants.PATH_VIEW_TECH_HTML + queryString;
   }
 
   public Technology getTechnology() {
@@ -59,7 +60,7 @@ public class TechnologyActivitiesTO {
   }
 
   public Boolean getHasComments() {
-    return !this.comments.isEmpty();
+    return this.comments != null ? !this.comments.isEmpty() : false;
   }
 
   public List<TechnologyComment> getComments() {
@@ -71,7 +72,7 @@ public class TechnologyActivitiesTO {
   }
 
   public Boolean getHasRecommendations() {
-    return !this.recommendations.isEmpty();
+    return this.recommendations != null ? !this.recommendations.isEmpty() : false;
   }
 
   public List<TechnologyRecommendation> getRecommendations() {
@@ -80,26 +81,5 @@ public class TechnologyActivitiesTO {
 
   public void setRecommendations(List<TechnologyRecommendation> recommendations) {
     this.recommendations = recommendations;
-  }
-
-  public Date getTimestamp() {
-    return timestamp;
-  }
-
-  public String getFormattedTimestamp() {
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-    return formatter.format(this.timestamp);
-  }
-
-  public void setTimestamp(Date timestamp) {
-    this.timestamp = timestamp;
-  }
-
-  public String getAppName() {
-    return appName;
-  }
-
-  public void setAppName(String appName) {
-    this.appName = appName;
   }
 }
