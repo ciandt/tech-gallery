@@ -178,7 +178,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
-    notifyEndorsedUser(tgEndorserUser, tgEndorsedUser, technology);
+    //notifyEndorsedUser(tgEndorserUser, tgEndorsedUser, technology);
     UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
@@ -280,7 +280,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
-    notifyEndorsedUser(tgEndorserUser, tgEndorsedUser, technology);
+    //notifyEndorsedUser(tgEndorserUser, tgEndorsedUser, technology);
     UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
