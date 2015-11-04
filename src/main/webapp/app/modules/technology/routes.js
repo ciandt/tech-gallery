@@ -25,12 +25,12 @@ module.exports = function(
       templateUrl: viewsFolder + 'technology-add.html'
     })
     .state('root.technologies-view', {
-      url: '/technologies/:slug',
+      url: '/technologies/:id',
       controller: 'TechnologyController as technology',
       templateUrl: viewsFolder + 'technology.html'
     })
     .state('root.technologies-edit', {
-      url: '/technologies/:slug/edit',
+      url: '/technologies/:id/edit',
       controller: 'TechnologyEditController as technology',
       templateUrl: viewsFolder + 'technology-add.html'
     })

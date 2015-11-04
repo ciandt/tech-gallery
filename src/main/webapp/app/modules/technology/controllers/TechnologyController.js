@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, TechnologyService) {
+module.exports = function ($rootScope, $stateParams, AppService, TechnologyService) {
 
   /**
    * Object context
@@ -10,27 +10,26 @@ module.exports = function ($rootScope, TechnologyService) {
    * Loading state
    * @type {Boolean}
    */
-  this._loading = false;
+  this.loading = true;
 
   /**
-   * Page title
-   * @type {String}
+   * Technology details
+   * @type {Object}
    */
-  $rootScope.pageTitle = '';
+  this.item = {};
 
-  /**
-   * Return loading state
-   * @return {Boolean}
-   */
-  this.isLoading = function () {
-    return context._loading;
-  }
+  // Load techonlogy based on URL param
+  TechnologyService.getTechnology($stateParams.id, function (technology) {
+    AppService.setPageTitle(technology.name);
+    context.item = technology;
+    context.loading = false;
+  });
 
-  /**
-   * Set loading state
-   * @param {Boolean} state The state to be set
-   */
-  this.setLoading = function (state) {
-    context._loading = !!state;
+  this.ratings = TechnologyService.getRatings();
+
+  this.rating = 0;
+
+  this.setSkill = function (technology, rating) {
+    context.rating = rating;
   }
 }

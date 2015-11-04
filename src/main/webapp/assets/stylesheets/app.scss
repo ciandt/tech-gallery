@@ -28,6 +28,7 @@ $border-color: #ddd;
 @import 'base';
 @import 'loading';
 @import 'toolbar';
+@import 'media';
 @import 'card';
 @import 'content';
 @import 'technology';
@@ -68,6 +69,7 @@ $border-color: #ddd;
   position: relative;
   background-color: #efefef;
   overflow: hidden;
+  padding-top: 10px;
   padding-bottom: 100px;
 }
 
