@@ -1,17 +1,50 @@
+$technology-spacing: 20px;
+
+.technology-header {
+  overflow: hidden;
+  margin-bottom: $technology-spacing;
+
+  .technology-image {
+    float: left;
+    margin: 0 $technology-spacing 0 0;
+  }
+}
 .technology-image {
   border: 1px solid #ddd;
   border-radius: 100%;
   overflow: hidden;
-  margin: 0 auto 10px;
+  margin: 0 auto ($technology-spacing / 2);
   display: block;
   background-color: #fff;
-  // -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
-  //         box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
 
   &,
   & img {
     width: 125px;
     height: 125px;
+  }
+}
+.technology-name {
+  display: inline-block;
+  margin: 0 0 ($technology-spacing / 2);
+}
+.technology-meta {
+  margin: 0;
+  padding: 0;
+  font-style: 12px;
+
+  li {
+    list-style: none;
+    // display: inline;
+    margin-bottom: ($technology-spacing / 2);
+
+    &:last-of-type {
+      margin: 0;
+    }
+  }
+
+  &,
+  & a {
+    @extend .technology-last-activity;
   }
 }
 .technology-last-activity {

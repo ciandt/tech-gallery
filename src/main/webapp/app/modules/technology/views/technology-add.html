@@ -1,6 +1,39 @@
-<loading ng-if="technology.isLoading()"></loading>
-<div class="technology" ng-if="!technology.isLoading()">
+<loading ng-if="technology.loading"></loading>
+<div class="technology" ng-if="!technology.loading">
   <div class="content container">
-    Technology add
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <section class="card">
+          <header class="card-section card-section--no-border">
+            <h3 class="no-margin">Adicionar nova tecnologia</h3>
+            <!-- <p>Informe as características da tecnologia</p> -->
+          </header>
+          <form class="card-section">
+            <div class="form-group">
+              <label for="technology[name]">Nome da tecnologia</label>
+              <input type="text" class="form-control" id="technology[name]" autofocus placeholder="Nome">
+            </div>
+            <div class="form-group">
+              <label for="technology[description]">Descrição</label>
+              <textarea class="form-control" id="technology[description]" placeholder="Descrição"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="technology[shortDescription]">Descrição curta</label>
+              <textarea class="form-control" id="technology[shortDescription]" placeholder="Descrição curta"></textarea>
+              <p class="help-block">Utilizada na listagem das techonogias.</p>
+            </div>
+            <div class="form-group">
+              <label for="technology[website]">Website</label>
+              <input type="text" class="form-control" id="technology[website]" placeholder="http://">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputFile">Imagem</label>
+              <input type="file" id="exampleInputFile">
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar tecnologia</button>
+          </form>
+        </section>
+      </div>
+    </div>
   </div>
 </div>

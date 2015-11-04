@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, TechnologyService) {
+module.exports = function ($rootScope, AppService, TechnologyService) {
 
   /**
    * Object context
@@ -10,27 +10,7 @@ module.exports = function ($rootScope, TechnologyService) {
    * Loading state
    * @type {Boolean}
    */
-  this._loading = false;
+  this.loading = false;
 
-  /**
-   * Page title
-   * @type {String}
-   */
-  $rootScope.pageTitle = '';
-
-  /**
-   * Return loading state
-   * @return {Boolean}
-   */
-  this.isLoading = function () {
-    return context._loading;
-  }
-
-  /**
-   * Set loading state
-   * @param {Boolean} state The state to be set
-   */
-  this.setLoading = function (state) {
-    context._loading = !!state;
-  }
+  AppService.setPageTitle('Adicionar nova tecnologia');
 }
