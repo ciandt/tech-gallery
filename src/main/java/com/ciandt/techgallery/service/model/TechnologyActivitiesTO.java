@@ -25,6 +25,19 @@ public class TechnologyActivitiesTO {
   List<TechnologyRecommendation> recommendations;
   String technologyLink;
 
+  public TechnologyActivitiesTO(TechGalleryUser endorserUser, Technology technology, List<TechnologyComment> comments,
+      List<TechnologyRecommendation> recommendations, String technologyLink) {
+    super();
+    this.endorserUser = endorserUser;
+    this.technology = technology;
+    this.comments = comments;
+    this.recommendations = recommendations;
+    this.technologyLink = technologyLink;
+  }
+  
+  public TechnologyActivitiesTO() {
+  }
+
   /**
    * Get link to view technology page according to runtime enviroment. Ex.: localhost, version-dot-.
    * 
@@ -42,7 +55,7 @@ public class TechnologyActivitiesTO {
     }
     return linkTechnology + Constants.PATH_VIEW_TECH_HTML + queryString;
   }
-
+  
   public Technology getTechnology() {
     return technology;
   }
