@@ -46,4 +46,23 @@ public interface TechnologyFollowersService {
    * @throws BadRequestException in case a request with problem were made.
    */
   void update(TechnologyFollowers technologyFollowers) throws BadRequestException;
+
+  /**
+   * Service for follow a technology.
+   * 
+   * @param technologyFollowers entity with the technology and the list of followers.
+   * @param techUser user who is going to follow.
+   * @param technology followed technology.
+   * @return entity.
+   */
+  TechnologyFollowers follow(TechnologyFollowers technologyFollowers, TechGalleryUser techUser,
+      Technology technology);
+
+  /**
+   * Service for getting a technologyFollowers bys it´s Id.
+   * 
+   * @param id Id for search the entity.
+   * @return TechnologyFollowers entity
+   */
+  TechnologyFollowers findById(String id);
 }
