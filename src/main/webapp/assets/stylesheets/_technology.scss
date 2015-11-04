@@ -50,3 +50,8 @@ $technology-spacing: 20px;
 .technology-last-activity {
   color: $gray-light;
 }
+
+.card-title + .technology-recommendation {
+  position: relative;
+  top: 5px;
+}

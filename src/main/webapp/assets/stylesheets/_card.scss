@@ -13,6 +13,10 @@ $card-spacing: 15px;
 .card-section {
   padding: $card-spacing;
   border-top: 1px solid #eee;
+
+  &:first-of-type {
+    @extend .card-section--no-border;
+  }
 }
 .card-section--no-border {
   border: none;
@@ -29,7 +33,7 @@ $card-spacing: 15px;
 }
 .card-title {
   font-size: 20px;
-  margin: 0 0 5px;
+  margin: 0;
 
   &,
   & a {

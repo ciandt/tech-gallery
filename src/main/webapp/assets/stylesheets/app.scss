@@ -66,6 +66,9 @@ $border-color: #ddd;
 #app-content {
   margin-top: 51px;
   position: relative;
+  background-color: #efefef;
+  overflow: hidden;
+  padding-bottom: 100px;
 }
 
 #app-login {
@@ -75,6 +78,19 @@ $border-color: #ddd;
   background-color: #fff;
   border-radius: $border-radius-base;
   border: 1px solid $border-color;
+}
+
+#app-footer {
+  font-size: 12px;
+  border-top: 1px solid $border-color;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  .app-logo {
+    width: 40px;
+    height: auto;
+    // opacity: .7;
+  }
 }
 
 /**
