@@ -24,6 +24,17 @@ public class TechGalleryActivitiesTO {
   String appName;
   String techgalleryLink;
 
+  public TechGalleryActivitiesTO(String applicationName, TechGalleryUser followerUser, List<TechnologyActivitiesTO> activitiesList) {
+    super();
+    this.timestamp = new Date();
+    this.appName = applicationName;
+    this.follower = followerUser;
+    this.technologyActivitiesTo = activitiesList;
+  }
+  
+  public TechGalleryActivitiesTO() {
+  }
+
   public TechGalleryUser getFollower() {
     return follower;
   }

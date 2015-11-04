@@ -19,6 +19,6 @@ public class CronEndorsementResumeServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     cronService.sendEmailToEndorseds();
-    _LOG.info("Executing schedule task.");
+    _LOG.info("Endorsement Resume schedule task executed");
   }
 }

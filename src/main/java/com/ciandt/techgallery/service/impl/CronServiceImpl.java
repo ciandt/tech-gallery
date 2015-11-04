@@ -89,10 +89,7 @@ public class CronServiceImpl implements CronService {
       if (followers != null && followers.size() > 0) {
         for (TechGalleryUser follower : followers) {
           // TO used in mustache template
-          TechGalleryActivitiesTO techGalleryActivitiesTo = new TechGalleryActivitiesTO();
-          techGalleryActivitiesTo.setTimestamp(new Date());
-          techGalleryActivitiesTo.setFollower(follower);
-          techGalleryActivitiesTo.setAppName(Constants.APP_NAME);
+          TechGalleryActivitiesTO techGalleryActivitiesTo = new TechGalleryActivitiesTO(Constants.APP_NAME, follower, new ArrayList<TechnologyActivitiesTO>());
           List<TechnologyActivitiesTO> techActivitiesToList = new ArrayList<TechnologyActivitiesTO>();
 
           for (String id : follower.getFollowedTechnologyIds()) {
@@ -165,21 +162,16 @@ public class CronServiceImpl implements CronService {
     CronJob cronJob = new CronJob();
     cronJob.setName(Constants.CRON_MAIL_ENDORSEMENT_JOB);
     cronJob.setStartTimestamp(new Date());
-
+    Date lastExecutedCronJob = findLastExecutedCronJob(Constants.CRON_MAIL_ENDORSEMENT_JOB);
     try {
       List<TechGalleryUser> usersList = techGalleryUserDao.findAll();
       for (TechGalleryUser techGalleryUser : usersList) {
         List<Endorsement> endorsementsList = endorsementDao.findAllEndorsementsStartingFrom(techGalleryUser,
-            findLastExecutedCronJob(Constants.CRON_MAIL_ENDORSEMENT_JOB));
+            lastExecutedCronJob);
         if (endorsementsList != null) {
-          TechGalleryActivitiesTO activities = new TechGalleryActivitiesTO();
-          activities.setTechnologyActivitiesTo(new ArrayList<TechnologyActivitiesTO>());
-          activities.setAppName(Constants.APP_NAME);
-          activities.setTimestamp(new Date());
+          TechGalleryActivitiesTO activities = new TechGalleryActivitiesTO(Constants.APP_NAME, null, new ArrayList<TechnologyActivitiesTO>());
           for (Endorsement endorsement : endorsementsList) {
-            TechnologyActivitiesTO endorsementActivity = new TechnologyActivitiesTO();
-            endorsementActivity.setEndorserUser(endorsement.getEndorserEntity());
-            endorsementActivity.setTechnology(endorsement.getTechnologyEntity());
+            TechnologyActivitiesTO endorsementActivity = new TechnologyActivitiesTO(endorsement.getEndorserEntity(), endorsement.getTechnologyEntity(), null, null, null);
             activities.getTechnologyActivitiesTo().add(endorsementActivity);
           }
           // Push email to queue if has new activities
