@@ -9,7 +9,7 @@ $navbar-default-brand-hover-color: #fff;
 $navbar-default-bg: #EE4C6A;
 $border-radius-base: 3px;
 $border-radius-large: 4px;
-$link-color: #1497CC;
+$link-color: #427fed;
 
 $brand-primary: #427fed;
 $brand-danger: #d73d32;
@@ -134,6 +134,10 @@ $border-color: #ddd;
   .form-inline {
     .form-group + .form-group {
       margin-left: 10px;
+    }
+
+    &.text-right .checkbox {
+      margin-right: 10px;
     }
   }
 
