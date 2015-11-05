@@ -4,6 +4,5 @@
     <url>/cron/email</url>
     <description>Send email with resume of the day for each technology followers</description>
     <schedule>every day 22:00</schedule>
-    <target>${app.version}</target>
   </cron>
 </cronentries>
