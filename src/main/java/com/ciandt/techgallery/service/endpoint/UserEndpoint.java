@@ -1,15 +1,5 @@
 package com.ciandt.techgallery.service.endpoint;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.UserServiceTG;
-import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
-import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
@@ -18,6 +8,17 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.UserServiceTG;
+import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
+import com.ciandt.techgallery.service.model.UserResponse;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Endpoint controller class for User requests.
@@ -33,9 +34,10 @@ public class UserEndpoint {
   private UserServiceTG service = UserServiceTGImpl.getInstance();
 
   @ApiMethod(name = "handleLogin", path = "handleLogin", httpMethod = "post")
-  public TechGalleryUser handleLogin(User user, HttpServletRequest req)
-      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
-    return service.handleLogin(user, req);
+  public TechGalleryUser handleLogin(@Named("timezone") Integer timezoneOffset, User user,
+      HttpServletRequest req) throws NotFoundException, BadRequestException,
+      InternalServerErrorException, IOException, OAuthRequestException {
+    return service.handleLogin(timezoneOffset, user, req);
   }
 
   /**

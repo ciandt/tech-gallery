@@ -1,18 +1,19 @@
 package com.ciandt.techgallery.service;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.service.model.Response;
-import com.ciandt.techgallery.service.model.UserResponse;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
+
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.service.model.Response;
+import com.ciandt.techgallery.service.model.UserResponse;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Services for Users.
@@ -139,8 +140,9 @@ public interface UserServiceTG {
    *          A Google AppEngine API user
    * @return A response with the user data as it is on TG datastore
    */
-  TechGalleryUser handleLogin(User user, HttpServletRequest req)
-      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException;
+  TechGalleryUser handleLogin(Integer timezoneOffset, User user, HttpServletRequest req)
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException,
+      OAuthRequestException;
 
   /**
    * Service for getting Users from an external provider by its Login.

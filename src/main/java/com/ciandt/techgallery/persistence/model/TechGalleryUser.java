@@ -30,6 +30,7 @@ public class TechGalleryUser extends BaseEntity<Long> {
   public static final String PHOTO = "photo";
   public static final String GOOGLE_ID = "googleId";
   public static final String FOLLOWED_TECHNOLOGY_IDS = "followedTechnologyIds";
+  public static final String TIMEZONE_OFFSET = "timezoneOffset";
 
   @Id
   Long id;
@@ -54,6 +55,9 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   @Unindex
   private Boolean postGooglePlusPreference;
+  
+  @Unindex
+  private Integer timezoneOffset;
 
   @Override
   public Long getId() {
@@ -111,6 +115,14 @@ public class TechGalleryUser extends BaseEntity<Long> {
 
   public void setFollowedTechnologyIds(List<String> followedTechnologyIds) {
     this.followedTechnologyIds = followedTechnologyIds;
+  }
+
+  public Integer getTimezoneOffset() {
+    return timezoneOffset;
+  }
+
+  public void setTimezoneOffset(Integer timezoneOffset) {
+    this.timezoneOffset = timezoneOffset;
   }
 
   public boolean isAdmin() {
