@@ -83,7 +83,7 @@ angular.module('techGallery').controller(
 	   	}
 	  });
       gapi.client.rest.getTechnologies().execute(function(data) {
-    	var req = {timezone: new Date().getTimezoneOffset()/60 * (-1)};
+    	var req = {timezone: new Date().getTimezoneOffset() * (-1)};
         gapi.client.rest.handleLogin(req).execute();
         gapi.client.rest.getOrderOptions().execute(function(data) {
         	$scope.orderOptions = data.items;
