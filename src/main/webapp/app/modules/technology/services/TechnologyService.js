@@ -26,7 +26,7 @@ module.exports = function($sce) {
     context.technologies = [
       {
         'id': 'vagrant',
-        'name': 'Vagrant Lorem Ipsum Dolor Sit Amet',
+        'name': 'Vagrant',
         'recommendation': 'Observar e fazer provas de conceito',
         'image': 'https://storage.googleapis.com/tech-gallery-assets/imagesLogo/vagrant.png',
         'shortDescription': 'O Vagrant tem a finalidade de gerenciar scripts de criação de ambientes.',
@@ -283,5 +283,10 @@ module.exports = function($sce) {
         title : 'Jedi'
       },
     ];
+  }
+
+  this.getRecommended = function () {
+    // Mock
+    return false;
   }
 };

@@ -32,4 +32,16 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   this.setSkill = function (technology, rating) {
     context.rating = rating;
   }
+
+  this.recommended = TechnologyService.getRecommended();
+
+  this.setRecommendation = function (recommendation) {
+    context.recommended = recommendation;
+    document.getElementById('recommendation-comment-input').focus();
+  }
+
+  // @todo Move this to UserService
+  this.share = {
+    gplus : true
+  }
 }
