@@ -170,7 +170,7 @@ angular.module('techGallery').controller(
     
     $scope.addOrUpdateTechnology = function(){
     	if($scope.name != null && $scope.description != null && $scope.shortDescription != null) {
-    		if($scope.image &&  $scope.image.startsWith('https://')){
+    		if($scope.image && $scope.image.startsWith('https://')){
     			var req = {
 	    			id : slugify($scope.name),
 	    			name : $scope.name,
@@ -199,7 +199,12 @@ angular.module('techGallery').controller(
 	              alert = alerts.failure;
 	              alert.msg = data.error.message;
 	            }else{
-	              alert = alerts.success;
+	              if($scope.id) {
+	            	alert = alerts.successUpdate;
+	              }
+	              else {
+	            	  alert = alerts.successAdd;
+	              }
 	              $scope.clearTechnology();
 	            }
 	            $scope.alert = alert;
