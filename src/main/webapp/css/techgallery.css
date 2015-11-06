@@ -1,0 +1,117 @@
+/* Tech Gallery css stylesheet */
+.technologydescription {
+  text-align: justify;
+  height: 80px;
+  width: 100%;
+  display: block;
+}
+
+.techGalleryFixedBar{
+	background-color:#FF6666;
+	opacity:0.8
+}
+
+.alignBar{
+	margin-top:-20px
+}
+
+.logoBar{
+	width:30px;
+	float:left;
+	margin-top:15px;
+	margin-right:10px
+}
+
+.headerBar{
+	float:right;
+	color:white
+}
+
+.rightSideBar{
+	margin-top:8px
+}
+
+.whiteText{
+	color:white
+}
+
+.overLayer{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+
+.loading{
+  display: block;
+  margin: 0 auto;
+}
+
+.img-tech-view{
+  height: 355px;
+  width: 355px;
+}
+
+.thumbnail{
+  min-height: 380px;
+}
+
+.spacingtop {
+  margin-top: 2%;
+}
+
+body, html {
+  background-color: #ddd;
+}
+
+.thumbnail-Image {
+  width: 200px;
+  display: block !important;
+  max-height: 355px;
+  max-width: 355px;
+  margin: 0 auto;
+}
+
+.login-Button {
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.endorsed-image {
+  width: 64px;
+  height: 64px;
+}
+
+.endorsers-image {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+
+.endorse-input {
+  width: 30%;
+  float: left;
+  margin-right: 10%;
+}
+
+.endorse-alerts {
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.caption {
+height: 80px;
+}
