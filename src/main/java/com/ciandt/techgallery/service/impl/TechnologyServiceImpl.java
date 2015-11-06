@@ -80,7 +80,7 @@ public class TechnologyServiceImpl implements TechnologyService {
       throws BadRequestException, IOException, GeneralSecurityException {
 
     Technology foundTechnology = validateInformations(technology);
-    Boolean isUpdate = foundTechnology.getId().equals(technology.getId())
+    Boolean isUpdate = foundTechnology != null && foundTechnology.getId().equals(technology.getId())
         && foundTechnology.getActive().equals(Boolean.TRUE);
 
     String imageLink = technology.getImage();

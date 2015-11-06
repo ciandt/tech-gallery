@@ -109,10 +109,14 @@
   };
   
   var techAlerts = {
-    success : {
+    successAdd : {
       type : 'success',
       msg : 'Tecnologia criada com sucesso!'
     },
+    successUpdate : {
+        type : 'success',
+        msg : 'Tecnologia editada com sucesso!'
+      },
     failure : {
       type : 'danger',
       msg : 'Erro ao criar Tecnologia!'
