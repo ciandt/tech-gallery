@@ -7,7 +7,6 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
-import com.ciant.techgallery.transaction.Transactional;
 
 /**
  * Services for Technologies.
@@ -37,7 +36,6 @@ public interface TechnologyFollowersService {
    * @throws NotFoundException in case the information are not founded.
    * @throws InternalServerErrorException in case something goes wrong.
    */
-  @Transactional
   Technology followTechnology(String technologyId, TechGalleryUser techUser)
       throws BadRequestException, NotFoundException, InternalServerErrorException;
 
@@ -48,4 +46,23 @@ public interface TechnologyFollowersService {
    * @throws BadRequestException in case a request with problem were made.
    */
   void update(TechnologyFollowers technologyFollowers) throws BadRequestException;
+
+  /**
+   * Service for follow a technology.
+   * 
+   * @param technologyFollowers entity with the technology and the list of followers.
+   * @param techUser user who is going to follow.
+   * @param technology followed technology.
+   * @return entity.
+   */
+  TechnologyFollowers follow(TechnologyFollowers technologyFollowers, TechGalleryUser techUser,
+      Technology technology);
+
+  /**
+   * Service for getting a technologyFollowers bys it´s Id.
+   * 
+   * @param id Id for search the entity.
+   * @return TechnologyFollowers entity
+   */
+  TechnologyFollowers findById(String id);
 }

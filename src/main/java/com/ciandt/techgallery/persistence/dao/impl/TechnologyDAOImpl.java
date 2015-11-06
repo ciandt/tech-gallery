@@ -47,4 +47,13 @@ public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String> implem
 
     return entity;
   }
+
+  @Override
+  public Technology findByIdActive(String id) {
+    Technology technology = super.findById(id);
+    if (technology.getActive()) {
+      return technology;
+    }
+    return null;
+  }
 }

@@ -1,7 +1,0 @@
-Hello, ${receiverName}
-
-This is a example.
-
-User ${user} did a comment on Technology ${technology}
-
-Something more fancy. Bla bla bla.

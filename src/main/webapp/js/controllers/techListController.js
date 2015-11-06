@@ -177,7 +177,7 @@ angular.module('techGallery').controller(
     }
     
     $scope.editTechnology = function(technologyId){
-    	window.location = $scope.redirectUrl(technologyId, '/createTech');
+    	window.location = $scope.redirectUrl(technologyId, '/createTech.html');
     }
   }
 );

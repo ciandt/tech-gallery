@@ -11,6 +11,7 @@ import com.googlecode.objectify.annotation.Unindex;
 
 import com.ciandt.techgallery.service.transformer.TechnologyCommentTransformer;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -111,6 +112,10 @@ public class TechnologyComment extends BaseEntity<Long> {
   public Ref<TechGalleryUser> getAuthor() {
     return author;
   }
+  
+  public TechGalleryUser getAuthorEntity() {
+    return author.get();
+  }
 
   public void setAuthor(Ref<TechGalleryUser> author) {
     this.author = author;
@@ -120,6 +125,11 @@ public class TechnologyComment extends BaseEntity<Long> {
     return timestamp;
   }
 
+  public String getFormattedTimestamp() {
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm:ss");
+    return formatter.format(this.timestamp);
+  }
+  
   public void setTimestamp(Date timestamp) {
     this.timestamp = timestamp;
   }

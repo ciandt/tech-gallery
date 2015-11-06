@@ -1,16 +1,21 @@
 package com.ciandt.techgallery.service.email;
 
-import org.apache.commons.io.IOUtils;
+import com.ciandt.techgallery.Constants;
+import com.ciandt.techgallery.service.enums.EmailTypeEnum;
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 /**
- * Email configuration object. 
+ * Email configuration object.
  * 
  * @author bcarneiro
  *
@@ -18,162 +23,101 @@ import java.util.regex.Pattern;
 public class EmailConfig {
 
   private String[] to;
-  
+
   private String subject;
 
   private String body;
 
-  private String rule;
-
   private String reason;
-  
-  private String resource;
-  
-  /**
-   * Variable and value to be replaced in template. 
-   */
-  private Map<String, String> dynamicData;
 
-  public EmailConfig(){}
-  
-  
+  private String template;
+
   /**
    * Default constructor if email does not use template email feature.
    */
-  public EmailConfig(String subject, String body, String rule,
-      String reason, String ... to) {
-    
+  public EmailConfig(String subject, String body, String reason, String... to) {
     this.to = to;
     this.subject = subject;
     this.body = body;
-    this.rule = rule;
     this.reason = reason;
   }
 
   /**
-   * Default constructor if email use template email feature.
-   * You must supply resource and dynamicData fields.
+   * Constructor used in sending emails with mustache templates.
+   * 
+   * @param EnumEmailType.
+   * @param mustacheTo - Object to be passed to mustache to fill the template.
+   * @param to - receiver.
    */
-  public EmailConfig(String subject, String resource, Map<String, String> dynamicData, String rule, String reason, String ... to) {
-    
-    this.to = to;
+  public EmailConfig(EmailTypeEnum emailType, String subject, Object mustacheTo, String... to) {
+    this.template = emailType.getTemplate();
+    this.reason = emailType.getReason();
     this.subject = subject;
-    this.rule = rule;
-    this.reason = reason;
-    this.resource = resource;
-    this.dynamicData = dynamicData;
-    if (getResource() == null) {
-      throw new IllegalArgumentException("Resource field is required.");
-    }
-    processTemplate();
+    this.to = to;
+    processTemplate(mustacheTo);
   }
 
   public String[] getTo() {
     return to;
   }
 
-  public EmailConfig to(String ... to) {
+  public void setTo(String[] to) {
     this.to = to;
-    return this;
   }
 
   public String getSubject() {
     return subject;
   }
 
-  public EmailConfig subject(String subject) {
+  public void setSubject(String subject) {
     this.subject = subject;
-    return this;
   }
 
   public String getBody() {
     return body;
   }
 
-  public EmailConfig body(String body) {
+  public void setBody(String body) {
     this.body = body;
-    return this;
-  }
-
-  public String getRule() {
-    return rule;
-  }
-
-  public EmailConfig rule(String rule) {
-    this.rule = rule;
-    return this;
   }
 
   public String getReason() {
     return reason;
   }
 
-  public EmailConfig reason(String reason) {
+  public void setReason(String reason) {
     this.reason = reason;
-    return this;
   }
 
-  public Map<String, String> getDynamicData() {
-    return dynamicData;
+  public String getTemplate() {
+    return template;
+  }
+
+  public void setTemplate(String template) {
+    this.template = template;
   }
 
   /**
-   * Adds variable and value to be overwritten
-   * in the resource content.
-   *  
-   * @param variable - variable in the resource including prefixes 
-   * @param value - value to be overwritten
-   * @return dynamic map to be used inline.
+   * Must be called if email is a template email. Resource and dynamic data must not be null.
    */
-  public Map<String, String> putVariableAndValue(String variable, String value) {
-    if (dynamicData == null) {
-      dynamicData = new HashMap<String, String>();
-    }
-    dynamicData.put(variable, value);
-    return dynamicData;
-  }
-  
-  public EmailConfig setDynamicData(Map<String, String> dynamicData) {
-    this.dynamicData = dynamicData;
-    return this;
-  }
+  public void processTemplate(Object mustacheTo) {
+    if (template != null) {
+      MustacheFactory mf = new DefaultMustacheFactory();
+      Mustache mustache = mf.compile(Constants.TEMPLATES_FOLDER + File.separator + this.template);
 
-  public String getResource() {
-    return resource;
-  }
-
-  public void resource(String resource) {
-    this.resource = resource;
-  }
-  
-  /**
-   * Must be called if email is a template email.
-   * Resource and dynamic data must not be null.
-   */
-  public void processTemplate() {
-    
-    if (resource != null) {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      Writer writer = new OutputStreamWriter(baos, StandardCharsets.UTF_8);
       try {
-        String bodyTemplate = 
-            IOUtils.toString(Thread.currentThread()
-                .getContextClassLoader()
-                .getResourceAsStream(resource), "UTF-8");
-        
-        if (bodyTemplate != null && dynamicData != null && !dynamicData.isEmpty()) {
-          
-          for (Entry<String, String> keyValue : dynamicData.entrySet()) {
-            String value = keyValue.getValue();
-            bodyTemplate =
-                bodyTemplate.replaceAll(Pattern.quote(keyValue.getKey()).toString(),
-                    value == null ? "" : Matcher.quoteReplacement(value));
-          }
-        }
-        this.body = bodyTemplate;
-        
-      } catch (IOException io) {
-        throw new RuntimeException("Could not find resource file");
+        mustache.execute(writer, mustacheTo).flush();
+      } catch (IOException e) {
+        throw new RuntimeException("Could not mount template file");
       }
-    }   
+      try {
+        this.body = new String(baos.toByteArray(), "UTF-8");
+      } catch (UnsupportedEncodingException e) {
+        throw new RuntimeException("Could not encode template file");
+      }
+    }
   }
-  
+
 }

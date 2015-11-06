@@ -12,12 +12,12 @@
         <servlet-class>com.ciandt.techgallery.servlets.ViewTech</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>createTech</servlet-name>
-        <servlet-class>com.ciandt.techgallery.servlets.CreateTech</servlet-class>
+        <servlet-name>CronMailServlet</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.CronActivityResumeServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CronMailServlet</servlet-name>
-        <servlet-class>com.ciandt.techgallery.servlets.CronMailServlet</servlet-class>
+        <servlet-name>CronEndorsedResumeServlet</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.CronEndorsementResumeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SystemServiceServlet</servlet-name>
@@ -28,12 +28,12 @@
         <url-pattern>/viewTech</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>createTech</servlet-name>
-        <url-pattern>/createTech</url-pattern>
+        <servlet-name>CronMailServlet</servlet-name>
+        <url-pattern>/cron/activityresume</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CronMailServlet</servlet-name>
-        <url-pattern>/cron/email</url-pattern>
+        <servlet-name>CronEndorsedResumeServlet</servlet-name>
+        <url-pattern>/cron/endorsementresume</url-pattern>
     </servlet-mapping>
     
     <servlet>

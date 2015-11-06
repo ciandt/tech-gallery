@@ -6,6 +6,8 @@ import com.ciandt.techgallery.ofy.OfyService;
 import com.ciandt.techgallery.persistence.dao.TechGalleryUserDAO;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 
+import java.util.List;
+
 /**
  * UserDAOImpl methods implementation.
  *
@@ -93,6 +95,18 @@ public class TechGalleryUserDAOImpl extends GenericDAOImpl<TechGalleryUser, Long
         .filter(TechGalleryUser.NAME, name).first().now();
 
     return entity;
+  }
+  
+  /**
+   * {@inheritDoc}.
+   */
+  @Override
+  public List<TechGalleryUser> findAllFollowers() {
+    final Objectify objectify = OfyService.ofy();
+    List<TechGalleryUser> followers =
+        objectify.load().type(TechGalleryUser.class)
+            .filter(TechGalleryUser.FOLLOWED_TECHNOLOGY_IDS + " !=", null).list();
+    return followers;
   }
 
 }

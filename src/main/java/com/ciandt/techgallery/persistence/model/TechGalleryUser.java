@@ -1,11 +1,13 @@
 package com.ciandt.techgallery.persistence.model;
 
-import com.ciandt.techgallery.service.transformer.TechGalleryUserTransformer;
 import com.google.api.server.spi.config.ApiTransformer;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
+
+import com.ciandt.techgallery.service.transformer.TechGalleryUserTransformer;
 
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class TechGalleryUser extends BaseEntity<Long> {
   @Index
   private String googleId;
 
-  @Unindex
+  @Index
   private List<String> followedTechnologyIds;
 
   @Index

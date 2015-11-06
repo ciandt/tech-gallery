@@ -25,6 +25,7 @@ angular.module('techGallery').controller(
     
     $scope.idTechnology = jsUtils.getParameterByName('id');
     $scope.loadEndorsements = true;
+    $scope.showTechNotExists = false;
 
     //Fill this property with the domain of your choice
     $scope.domain = '@ciandt.com';
@@ -96,6 +97,12 @@ angular.module('techGallery').controller(
         $scope.postGooglePlus = data.postGooglePlusPreference;
       });
       gapi.client.rest.getTechnology(req).execute(function(data) {
+    	if(data.code !== undefined && data.code === 404){
+    		$scope.showContent = false;
+    		$scope.showTechNotExists = true;
+    		$scope.$apply();
+    		return;
+	    }
         gapi.client.rest.getUserSkill(req).execute(function(dataSkill) {
           $scope.rate = dataSkill.value;
           $scope.skillLevel = returnSkillLevel(dataSkill.value);
@@ -307,6 +314,7 @@ angular.module('techGallery').controller(
           value : newValue
         };
         gapi.client.rest.addSkill(req).execute(function(data) {
+          ga('send', 'event', 'TechGalleryEvents', 'skill_add', $scope.name);
           $scope.processingEndorse = true;
           callBackLoaded();
         });
@@ -571,7 +579,7 @@ angular.module('techGallery').controller(
     }
     
     $scope.editTechnology = function(){
-    	window.location = $scope.redirectUrl($scope.id, '/createTech');
+    	window.location = $scope.redirectUrl($scope.id, '/createTech.html');
     }
     
     $scope.redirectUrl = function(techId, servlet) {
