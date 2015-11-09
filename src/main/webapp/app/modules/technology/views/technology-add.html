@@ -9,11 +9,11 @@
             <!-- <p>Informe as características da tecnologia</p> -->
           </div>
           <div class="card-section">
-            <form action="">
+            <form action="" ng-submit="addOrUpdateTechnology()">
               <div class="row">
                 <div class="form-group col-md-7">
                   <label for="technology-name">Nome da tecnologia</label>
-                  <input type="text" class="form-control" id="technology-name" name="technology[name]" autofocus placeholder="Ex.: AngularJS">
+                  <input type="text" class="form-control" id="technology-name" ng-model="name" autofocus placeholder="Ex.: AngularJS">
                 </div>
                 <div class="form-group col-md-5">
                   <label for="technology-image">Imagem</label>
@@ -21,16 +21,16 @@
                 </div>
                 <div class="form-group col-md-12">
                   <label for="technology-description">Descrição</label>
-                  <textarea class="form-control" id="technology-description" name="technology[description]" placeholder="Descrição"></textarea>
+                  <textarea class="form-control" id="technology-description" ng-model="description" placeholder="Descrição"></textarea>
                 </div>
                 <div class="form-group col-md-12">
                   <label for="technology-shortDescription">Descrição curta</label>
-                  <textarea class="form-control" id="technology-shortDescription" name="technology[shortDescription]" placeholder="Descrição curta"></textarea>
+                  <textarea class="form-control" id="technology-shortDescription" ng-model="shortDescription" placeholder="Descrição curta"></textarea>
                   <p class="help-block">Utilizada na listagem das techonogias.</p>
                 </div>
                 <div class="form-group col-md-12">
                   <label for="technology-website">Website</label>
-                  <input type="text" class="form-control" id="technology-website" name="technology[website]" placeholder="http://">
+                  <input type="text" class="form-control" id="technology-website" ng-model="webSite" placeholder="http://">
                 </div>
                 <div class="form-inline col-md-12 text-right">
                   <div class="checkbox">

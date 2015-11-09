@@ -220,6 +220,12 @@ module.exports = function($sce) {
 
     return context.technologies;
   };
+  
+  this.addOrUpdate = function(req){
+	  gapi.client.rest.addOrUpdateTechnology(req).execute(function(data){
+		  
+      });
+  };
 
   /**
    * The single technology
