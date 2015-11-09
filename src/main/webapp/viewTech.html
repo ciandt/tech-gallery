@@ -156,7 +156,7 @@
           </div>
 
           <div id="div_image_recomendations" class="container">
-            <div class="col-xs-6">
+            <div class="col-xs-6" ng-show="response.endorsersFiltered.length > 0">
               <button ng-show="!showSelfInformations(response.endorsed.email)"
                 type="button" id={{generateId($index,response.endorsed.email)}}
                 ng-disabled=disablePlusOne

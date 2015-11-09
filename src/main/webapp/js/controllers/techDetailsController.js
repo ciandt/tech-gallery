@@ -194,12 +194,14 @@ angular.module('techGallery').controller(
           var response = data.result.endorsements;
           for(var i in response){
             var fullResponse = response[i].endorsers;
-            var endorsersFiltered = fullResponse.slice(0,5);
-            response[i].endorsersFiltered = endorsersFiltered;
-            if(!response[i].endorsed.photo) {
-              response[i].endorsed.photo = "/images/default-user-image.jpg";
+            if(fullResponse) {
+            	var endorsersFiltered = fullResponse.slice(0,5);
+            	response[i].endorsersFiltered = endorsersFiltered;
+            	if(!response[i].endorsed.photo) {
+            		response[i].endorsed.photo = "/images/default-user-image.jpg";
+            	}
+            	response[i].endorsers = setPlusOneClass(response[i].endorsers);
             }
-            response[i].endorsers = setPlusOneClass(response[i].endorsers);
           }
         }
         $scope.showEndorsementResponse = response;
