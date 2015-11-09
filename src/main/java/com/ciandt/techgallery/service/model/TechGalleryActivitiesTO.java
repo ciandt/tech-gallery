@@ -3,6 +3,7 @@ package com.ciandt.techgallery.service.model;
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.utils.TechGalleryUtil;
+import com.ciandt.techgallery.utils.timezone.TimezoneManager;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -53,7 +54,7 @@ public class TechGalleryActivitiesTO {
   
   public String getFormattedTimestamp() {
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-    return formatter.format(this.timestamp);
+    return formatter.format(TimezoneManager.getInstance().convertToUserTimezone(this.timestamp));
   }
 
   public Date getTimestamp() {
