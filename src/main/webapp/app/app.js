@@ -5,7 +5,7 @@ var apiUrl =  [
   window.location.protocol,
   '//',
   window.location.hostname,
-  //':8080',
+  ':8080',
   '/_ah/api/'
 ].join('');
 
