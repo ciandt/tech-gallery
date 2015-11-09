@@ -185,8 +185,9 @@ public class UserServiceTGImpl implements UserServiceTG {
    *           in case of a IO exception
    */
   @Override
-  public TechGalleryUser handleLogin(final User user, HttpServletRequest req)
-      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
+  public TechGalleryUser handleLogin(Integer timezoneOffset, final User user, HttpServletRequest req)
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException,
+      OAuthRequestException {
     if (user == null) {
       throw new OAuthRequestException(i18n.t("Authorization error"));
     }
@@ -209,6 +210,7 @@ public class UserServiceTGImpl implements UserServiceTG {
       tgUser = new TechGalleryUser();
     }
     updateUserInformation(user, person, tgUser);
+    tgUser.setTimezoneOffset(timezoneOffset);
     addUser(tgUser);
     log.info("User " + tgUser.getName() + " added/updated");
     return tgUser;

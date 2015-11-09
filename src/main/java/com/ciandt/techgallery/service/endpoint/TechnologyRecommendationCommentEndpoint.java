@@ -15,9 +15,9 @@ import com.ciandt.techgallery.service.TechnologyRecommendationCommentService;
 import com.ciandt.techgallery.service.impl.TechnologyRecommendationCommentServiceImpl;
 import com.ciandt.techgallery.service.model.TechnologyRecommendationCommentTO;
 
-@Api(name = "rest", version = "v1",
-    clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
-    scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE, Constants.PLUS_STREAM_WRITE})
+@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
+    Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE,
+    Constants.PLUS_STREAM_WRITE})
 public class TechnologyRecommendationCommentEndpoint {
 
   private TechnologyRecommendationCommentService service =
@@ -38,7 +38,7 @@ public class TechnologyRecommendationCommentEndpoint {
       httpMethod = "post")
   public TechnologyRecommendation addRecommendationComment(
       TechnologyRecommendationCommentTO recCommentTo, User user)
-          throws InternalServerErrorException, BadRequestException, NotFoundException {
+      throws InternalServerErrorException, BadRequestException, NotFoundException {
     return service.addRecommendationComment(recCommentTo.getRecommendation(),
         recCommentTo.getComment(), recCommentTo.getTechnology(), user);
   }
@@ -58,7 +58,7 @@ public class TechnologyRecommendationCommentEndpoint {
       httpMethod = "post")
   public void deleteCommentAndRecommendation(@Named("recommendId") Long recommendId,
       @Named("commentId") Long commentId, User user) throws InternalServerErrorException,
-          BadRequestException, NotFoundException, OAuthRequestException {
+      BadRequestException, NotFoundException, OAuthRequestException {
     service.deleteCommentAndRecommendationById(recommendId, commentId, user);
   }
 

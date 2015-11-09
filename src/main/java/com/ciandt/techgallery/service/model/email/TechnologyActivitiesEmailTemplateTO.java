@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.service.model;
+package com.ciandt.techgallery.service.model.email;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -12,12 +12,12 @@ import org.apache.commons.lang.StringUtils;
 import java.util.List;
 
 /**
- * Used for sending emails.
+ * TO used for sending emails with mustache template.
  * 
  * @author bliberal
  *
  */
-public class TechnologyActivitiesTO {
+public class TechnologyActivitiesEmailTemplateTO {
 
   TechGalleryUser endorserUser;
   Technology technology;
@@ -25,8 +25,9 @@ public class TechnologyActivitiesTO {
   List<TechnologyRecommendation> recommendations;
   String technologyLink;
 
-  public TechnologyActivitiesTO(TechGalleryUser endorserUser, Technology technology, List<TechnologyComment> comments,
-      List<TechnologyRecommendation> recommendations, String technologyLink) {
+  public TechnologyActivitiesEmailTemplateTO(TechGalleryUser endorserUser, Technology technology,
+      List<TechnologyComment> comments, List<TechnologyRecommendation> recommendations,
+      String technologyLink) {
     super();
     this.endorserUser = endorserUser;
     this.technology = technology;
@@ -35,7 +36,7 @@ public class TechnologyActivitiesTO {
     this.technologyLink = technologyLink;
   }
   
-  public TechnologyActivitiesTO() {
+  public TechnologyActivitiesEmailTemplateTO() {
   }
 
   /**
