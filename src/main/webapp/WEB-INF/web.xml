@@ -13,7 +13,11 @@
     </servlet>
     <servlet>
         <servlet-name>CronMailServlet</servlet-name>
-        <servlet-class>com.ciandt.techgallery.servlets.CronMailServlet</servlet-class>
+        <servlet-class>com.ciandt.techgallery.servlets.CronActivityResumeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CronEndorsedResumeServlet</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.CronEndorsementResumeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SystemServiceServlet</servlet-name>
@@ -25,7 +29,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CronMailServlet</servlet-name>
-        <url-pattern>/cron/email</url-pattern>
+        <url-pattern>/cron/activityresume</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CronEndorsedResumeServlet</servlet-name>
+        <url-pattern>/cron/endorsementresume</url-pattern>
     </servlet-mapping>
     
     <servlet>

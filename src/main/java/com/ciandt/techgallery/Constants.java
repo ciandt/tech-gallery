@@ -17,7 +17,8 @@ public class Constants {
   public static final String PLUS_SCOPE = "https://www.googleapis.com/auth/plus.me";
   public static final String PLUS_STREAM_WRITE = "https://www.googleapis.com/auth/plus.stream.write";
 
-  public static final String CRON_MAIL_JOB = "/cron/email";
+  public static final String CRON_MAIL_ACTIVITY_JOB = "/cron/activityresume";
+  public static final String CRON_MAIL_ENDORSEMENT_JOB = "/cron/endorsementresume";
 
   public static final String POSITIVE_RECOMMENDATION_TEXT = "positivamente a tecnologia ";
   public static final String NEGATIVE_RECOMMENDATION_TEXT = "negativamente a tecnologia ";

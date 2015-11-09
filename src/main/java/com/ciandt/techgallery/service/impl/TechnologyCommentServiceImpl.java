@@ -7,19 +7,23 @@ import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
 
 import com.ciandt.techgallery.persistence.dao.TechnologyCommentDAO;
 import com.ciandt.techgallery.persistence.dao.impl.TechnologyCommentDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
+import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
 import com.ciandt.techgallery.service.TechnologyCommentService;
+import com.ciandt.techgallery.service.TechnologyFollowersService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyCommentsTO;
+import com.ciant.techgallery.transaction.ServiceFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -44,10 +48,10 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
   private static TechnologyCommentServiceImpl instance;
 
   TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
-
   UserServiceTG userService = UserServiceTGImpl.getInstance();
-
   TechnologyService techService = TechnologyServiceImpl.getInstance();
+  private TechnologyFollowersService followersService = ServiceFactory.createServiceImplementation(
+      TechnologyFollowersService.class, TechnologyFollowersServiceImpl.class);
 
   /*
    * Constructors --------------------------------------------
@@ -84,14 +88,25 @@ public class TechnologyCommentServiceImpl implements TechnologyCommentService {
     validateTechnology(technology);
 
     final TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
-
     final TechnologyComment newComment = addNewComment(comment, techUser, technology);
     techService.addCommentariesCounter(technology);
-
     techService.audit(technology.getId(), user);
+
+    followTechnology(technology, techUser);
 
     UserProfileServiceImpl.getInstance().handleCommentChanges(newComment);
     return newComment;
+  }
+
+  private void followTechnology(final Technology technology, final TechGalleryUser techUser)
+      throws BadRequestException {
+    TechnologyFollowers technologyFollowers = followersService.findById(technology.getId());
+    if (technologyFollowers == null
+        || !technologyFollowers.getFollowers().contains(Ref.create(techUser))) {
+      technologyFollowers = followersService.follow(technologyFollowers, techUser, technology);
+      followersService.update(technologyFollowers);
+      userService.updateUser(techUser);
+    }
   }
 
   @Override

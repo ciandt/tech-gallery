@@ -32,6 +32,7 @@ import com.ciandt.techgallery.service.model.EndorsementsResponse;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
 import com.ciandt.techgallery.service.model.TechnologyActivitiesTO;
+import com.ciandt.techgallery.service.profile.UserProfileService;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
 import java.util.ArrayList;
@@ -73,6 +74,8 @@ public class EndorsementServiceImpl implements EndorsementService {
   TechnologyService techService = TechnologyServiceImpl.getInstance();
   /** Email service. */
   EmailService emailService = EmailServiceImpl.getInstance();
+  /** User Profile service. */
+  UserProfileService userProfileService =  UserProfileServiceImpl.getInstance();
   /*
    * Constructors --------------------------------------------
    */
@@ -178,8 +181,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
-    notifyEndorsedUser(tgEndorserUser, tgEndorsedUser, technology);
-    UserProfileServiceImpl.getInstance().handleEndorsement(entity);
+    userProfileService.handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
 
@@ -280,22 +282,10 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
-    notifyEndorsedUser(tgEndorserUser, tgEndorsedUser, technology);
     UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
 
-  private void notifyEndorsedUser(TechGalleryUser tgEndorserUser, TechGalleryUser tgEndorsedUser,
-      Technology technology) {
-    TechnologyActivitiesTO techActivities = new TechnologyActivitiesTO();
-    techActivities.setTechnology(technology);
-    techActivities.setEndorserUser(tgEndorserUser);
-    EmailConfig email =
-        new EmailConfig(EmailTypeEnum.ENDORSED, EmailTypeEnum.ENDORSED.getSubject()
-            + technology.getName(), techActivities, tgEndorsedUser.getEmail());
-    emailService.push(email);
-  }
-  
   /**
    * GET for getting all endorsements.
    */
