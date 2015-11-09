@@ -23,15 +23,12 @@ import com.ciandt.techgallery.service.EndorsementService;
 import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
-import com.ciandt.techgallery.service.email.EmailConfig;
-import com.ciandt.techgallery.service.enums.EmailTypeEnum;
 import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementsResponse;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
-import com.ciandt.techgallery.service.model.TechnologyActivitiesTO;
 import com.ciandt.techgallery.service.profile.UserProfileService;
 import com.ciandt.techgallery.utils.i18n.I18n;
 

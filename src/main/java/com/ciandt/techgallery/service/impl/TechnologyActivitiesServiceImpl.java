@@ -4,7 +4,7 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.service.TechnologyActivitiesService;
-import com.ciandt.techgallery.service.model.TechnologyActivitiesTO;
+import com.ciandt.techgallery.service.model.email.TechnologyActivitiesEmailTemplateTO;
 
 import java.util.List;
 
@@ -44,9 +44,10 @@ public class TechnologyActivitiesServiceImpl implements TechnologyActivitiesServ
    * @return TechnologyActivitiesTO.
    */
   @Override
-  public TechnologyActivitiesTO createTechnologyActivitiesTo(Technology technology,
+  public TechnologyActivitiesEmailTemplateTO createTechnologyActivitiesTo(Technology technology,
       List<TechnologyRecommendation> dailyRecommendations, List<TechnologyComment> dailyComments) {
-    TechnologyActivitiesTO techActivitiesTo = new TechnologyActivitiesTO();
+    TechnologyActivitiesEmailTemplateTO techActivitiesTo =
+        new TechnologyActivitiesEmailTemplateTO();
     techActivitiesTo.setTechnology(technology);
     techActivitiesTo.setComments(dailyComments);
     techActivitiesTo.setRecommendations(dailyRecommendations);

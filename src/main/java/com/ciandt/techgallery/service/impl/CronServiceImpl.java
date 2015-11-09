@@ -25,8 +25,8 @@ import com.ciandt.techgallery.service.TechnologyActivitiesService;
 import com.ciandt.techgallery.service.email.EmailConfig;
 import com.ciandt.techgallery.service.enums.CronStatus;
 import com.ciandt.techgallery.service.enums.EmailTypeEnum;
-import com.ciandt.techgallery.service.model.TechGalleryActivitiesTO;
-import com.ciandt.techgallery.service.model.TechnologyActivitiesTO;
+import com.ciandt.techgallery.service.model.email.TechGalleryActivitiesEmailTemplateTO;
+import com.ciandt.techgallery.service.model.email.TechnologyActivitiesEmailTemplateTO;
 import com.ciandt.techgallery.servlets.CronActivityResumeServlet;
 import com.ciandt.techgallery.utils.timezone.TimezoneManager;
 import com.ciant.techgallery.transaction.Transactional;
@@ -95,12 +95,13 @@ public class CronServiceImpl implements CronService {
           TimezoneManager.getInstance().setOffset(follower.getTimezoneOffset());
           
           // TO used in mustache template
-          TechGalleryActivitiesTO techGalleryActivitiesTo = new TechGalleryActivitiesTO();
+          TechGalleryActivitiesEmailTemplateTO techGalleryActivitiesTo =
+              new TechGalleryActivitiesEmailTemplateTO();
           techGalleryActivitiesTo.setTimestamp(new Date());
           techGalleryActivitiesTo.setFollower(follower);
           techGalleryActivitiesTo.setAppName(Constants.APP_NAME);
-          List<TechnologyActivitiesTO> techActivitiesToList =
-              new ArrayList<TechnologyActivitiesTO>();
+          List<TechnologyActivitiesEmailTemplateTO> techActivitiesToList =
+              new ArrayList<TechnologyActivitiesEmailTemplateTO>();
 
           for (String id : follower.getFollowedTechnologyIds()) {
             Technology technology = technologyDao.findById(id);
@@ -130,8 +131,9 @@ public class CronServiceImpl implements CronService {
     cronJobsDao.add(cronJob);
   }
 
-  private void findNewActivitiesInATechnology(List<TechnologyActivitiesTO> techActivitiesToList,
-      Technology technology, Date lastCronJobExecDate) {
+  private void findNewActivitiesInATechnology(
+      List<TechnologyActivitiesEmailTemplateTO> techActivitiesToList, Technology technology,
+      Date lastCronJobExecDate) {
     // Find new Activities in a technology
     List<TechnologyRecommendation> dailyRecommendations =
         technologyRecommendationDao.findAllRecommendationsStartingFrom(technology,
@@ -150,7 +152,7 @@ public class CronServiceImpl implements CronService {
 
     if (dailyRecommendations != null || dailyComments != null) {
       // Create a TO to each technology
-      TechnologyActivitiesTO techActivitiesTo =
+      TechnologyActivitiesEmailTemplateTO techActivitiesTo =
           technologyActivitiesService.createTechnologyActivitiesTo(technology,
               dailyRecommendations, dailyComments);
       techActivitiesToList.add(techActivitiesTo);
@@ -182,12 +184,12 @@ public class CronServiceImpl implements CronService {
         List<Endorsement> endorsementsList =
             endorsementDao.findAllEndorsementsStartingFrom(techGalleryUser, lastExecutedCronJob);
         if (endorsementsList != null) {
-          TechGalleryActivitiesTO activities =
-              new TechGalleryActivitiesTO(Constants.APP_NAME, null,
-                  new ArrayList<TechnologyActivitiesTO>());
+          TechGalleryActivitiesEmailTemplateTO activities =
+              new TechGalleryActivitiesEmailTemplateTO(Constants.APP_NAME, null,
+                  new ArrayList<TechnologyActivitiesEmailTemplateTO>());
           for (Endorsement endorsement : endorsementsList) {
-            TechnologyActivitiesTO endorsementActivity =
-                new TechnologyActivitiesTO(endorsement.getEndorserEntity(),
+            TechnologyActivitiesEmailTemplateTO endorsementActivity =
+                new TechnologyActivitiesEmailTemplateTO(endorsement.getEndorserEntity(),
                     endorsement.getTechnologyEntity(), null, null, null);
             activities.getTechnologyActivitiesTo().add(endorsementActivity);
           }

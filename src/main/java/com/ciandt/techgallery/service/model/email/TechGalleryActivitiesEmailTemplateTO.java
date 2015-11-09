@@ -1,4 +1,4 @@
-package com.ciandt.techgallery.service.model;
+package com.ciandt.techgallery.service.model.email;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
@@ -12,20 +12,21 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Used for sending emails.
+ * TO used for sending emails with mustache template.
  * 
  * @author bliberal
  *
  */
-public class TechGalleryActivitiesTO {
+public class TechGalleryActivitiesEmailTemplateTO {
 
   TechGalleryUser follower;
-  List<TechnologyActivitiesTO> technologyActivitiesTo;
+  List<TechnologyActivitiesEmailTemplateTO> technologyActivitiesTo;
   Date timestamp;
   String appName;
   String techgalleryLink;
 
-  public TechGalleryActivitiesTO(String applicationName, TechGalleryUser followerUser, List<TechnologyActivitiesTO> activitiesList) {
+  public TechGalleryActivitiesEmailTemplateTO(String applicationName, TechGalleryUser followerUser,
+      List<TechnologyActivitiesEmailTemplateTO> activitiesList) {
     super();
     this.timestamp = new Date();
     this.appName = applicationName;
@@ -33,7 +34,7 @@ public class TechGalleryActivitiesTO {
     this.technologyActivitiesTo = activitiesList;
   }
   
-  public TechGalleryActivitiesTO() {
+  public TechGalleryActivitiesEmailTemplateTO() {
   }
   
   public TechGalleryUser getFollower() {
@@ -44,11 +45,12 @@ public class TechGalleryActivitiesTO {
     this.follower = follower;
   }
 
-  public List<TechnologyActivitiesTO> getTechnologyActivitiesTo() {
+  public List<TechnologyActivitiesEmailTemplateTO> getTechnologyActivitiesTo() {
     return technologyActivitiesTo;
   }
 
-  public void setTechnologyActivitiesTo(List<TechnologyActivitiesTO> technologyActivitiesTo) {
+  public void setTechnologyActivitiesTo(
+      List<TechnologyActivitiesEmailTemplateTO> technologyActivitiesTo) {
     this.technologyActivitiesTo = technologyActivitiesTo;
   }
   

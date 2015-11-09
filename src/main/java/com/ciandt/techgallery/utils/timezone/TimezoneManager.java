@@ -3,6 +3,12 @@ package com.ciandt.techgallery.utils.timezone;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Used to show a Date in user's timezone offset. Dates saved in datastore are in UTC, so we must
+ * convert it with the offset of the user saved in user's profile when it log in. This class saves
+ * a ThreadLocal variable timezone to be used in converted Dates.
+ * 
+ */
 public class TimezoneManager {
 
   private static final ThreadLocal<Integer> timezone = new ThreadLocal<Integer>();
