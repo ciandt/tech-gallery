@@ -270,8 +270,7 @@
                         </goals>
                         <!-- optional: default phase is "generate-resources" -->
                         <phase>generate-resources</phase>
-                        <configuration>.
-                        +
+                        <configuration>
                             <nodeVersion>v5.0.0</nodeVersion>
                             <npmVersion>3.3.9</npmVersion>
                         </configuration>
