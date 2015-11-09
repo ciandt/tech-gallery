@@ -55,7 +55,7 @@ public class TechnologyActivitiesTO {
     }
     return linkTechnology + Constants.PATH_VIEW_TECH_HTML + queryString;
   }
-
+  
   public Technology getTechnology() {
     return technology;
   }

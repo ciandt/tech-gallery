@@ -26,9 +26,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1", clientIds = { Constants.WEB_CLIENT_ID,
-    Constants.API_EXPLORER_CLIENT_ID }, scopes = { Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE,
-        Constants.PLUS_STREAM_WRITE })
+@Api(name = "rest", version = "v1", clientIds = {Constants.WEB_CLIENT_ID,
+    Constants.API_EXPLORER_CLIENT_ID}, scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE,
+    Constants.PLUS_STREAM_WRITE})
 public class UserEndpoint {
 
   private UserServiceTG service = UserServiceTGImpl.getInstance();
@@ -41,19 +41,15 @@ public class UserEndpoint {
   }
 
   /**
-   * Endpoint for getting a users from a user provider. The interface with the
-   * provider is made by the service
+   * Endpoint for getting a users from a user provider. The interface with the provider is made by
+   * the service
    *
-   * @param string
-   *          to search on provider by name or login
+   * @param string to search on provider by name or login
    *
    * @return list of users
-   * @throws InternalServerErrorException
-   *           in case something goes wrong
-   * @throws NotFoundException
-   *           in case the information are not founded
-   * @throws BadRequestException
-   *           in case a request with problem were made.
+   * @throws InternalServerErrorException in case something goes wrong
+   * @throws NotFoundException in case the information are not founded
+   * @throws BadRequestException in case a request with problem were made.
    */
   @ApiMethod(name = "usersAutoComplete", path = "users/autocomplete/{query}", httpMethod = "get")
   public List<UserResponse> usersAutoComplete(@Named("query") String query)
@@ -65,8 +61,7 @@ public class UserEndpoint {
    * Endpoint for getting informations about the logged user.
    * 
    * @return Logged user.
-   * @throws NotFoundException
-   *           in case the information are not founded.
+   * @throws NotFoundException in case the information are not founded.
    */
   @ApiMethod(name = "getLoggedUser", path = "users/logged", httpMethod = "get")
   public TechGalleryUser getLoggedUser(User user) throws NotFoundException {
@@ -74,9 +69,10 @@ public class UserEndpoint {
   }
 
   @ApiMethod(name = "saveUserPreference", path = "users/savePreference", httpMethod = "post")
-  public TechGalleryUser saveUserPreference(@Named("postGooglePlusPreference") Boolean postGooglePlusPreference,
-      User user) throws NotFoundException, BadRequestException, InternalServerErrorException, IOException,
-          OAuthRequestException {
+  public TechGalleryUser saveUserPreference(
+      @Named("postGooglePlusPreference") Boolean postGooglePlusPreference, User user)
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException,
+      OAuthRequestException {
     return service.saveUserPreference(postGooglePlusPreference, user);
   }
 }
