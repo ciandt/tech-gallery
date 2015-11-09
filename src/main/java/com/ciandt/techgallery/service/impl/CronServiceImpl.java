@@ -25,6 +25,7 @@ import com.ciandt.techgallery.service.enums.EmailTypeEnum;
 import com.ciandt.techgallery.service.model.TechGalleryActivitiesTO;
 import com.ciandt.techgallery.service.model.TechnologyActivitiesTO;
 import com.ciandt.techgallery.servlets.CronMailServlet;
+import com.ciandt.techgallery.utils.timezone.TimezoneManager;
 import com.ciant.techgallery.transaction.Transactional;
 
 import java.util.ArrayList;
@@ -84,6 +85,9 @@ public class CronServiceImpl implements CronService {
       List<TechGalleryUser> followers = techGalleryUserDao.findAllFollowers();
       if (followers != null && followers.size() > 0) {
         for (TechGalleryUser follower : followers) {
+          //Set user's timezone offset. To be used in converted dates.
+          TimezoneManager.getInstance().setOffset(follower.getTimezoneOffset());
+          
           // TO used in mustache template
           TechGalleryActivitiesTO techGalleryActivitiesTo = new TechGalleryActivitiesTO();
           techGalleryActivitiesTo.setTimestamp(new Date());
