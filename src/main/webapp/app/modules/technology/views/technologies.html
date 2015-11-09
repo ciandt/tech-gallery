@@ -58,7 +58,7 @@
         </div> -->
       </div>
 
-      <div class="btn-group pull-right" role="group" ng-if="app.isUserLogged">
+      <div class="btn-group pull-right" role="group" ng-if="isUserLogged">
         <a href="#/technologies/new" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar tecnologia</a>
       </div>
     </div>
@@ -80,7 +80,7 @@
               <p>{{ technology.shortDescription }}</p>
             </div>
           </div>
-          <div class="card-actions card-section" ng-if="app.isUserLogged">
+          <div class="card-actions card-section" ng-if="isUserLogged">
             <div class="pull-left">
               <button type="button" ng-click="deleteTechnology(technology.id)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button>
             </div>
