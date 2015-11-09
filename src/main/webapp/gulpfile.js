@@ -136,13 +136,14 @@ gulp.task('build:scripts', function () {
       this.emit('end');
     })
     .pipe(source(out.scripts.file))
-    .pipe(gulp.dest(out.scripts.folder))
     .pipe(rename(out.scripts.fileMinified))
-    .pipe(streamify(uglify()).on('error', function (err) {
-      gutil.log(chalk.white.bgRed(' Error '));
-      gutil.log(chalk.red(err.message));
-    }))
     .pipe(gulp.dest(out.scripts.folder));
+    //Disable the minification while ng-anotate is not working
+    // .pipe(streamify(uglify()).on('error', function (err) {
+    //   gutil.log(chalk.white.bgRed(' Error '));
+    //   gutil.log(chalk.red(err.message));
+    // }))
+    // .pipe(gulp.dest(out.scripts.folder));
 });
 
 gulp.task('jshint', function() {

@@ -5,7 +5,7 @@ var apiUrl =  [
   window.location.protocol,
   '//',
   window.location.hostname,
-  ':8080',
+  //':8080',
   '/_ah/api/'
 ].join('');
 
@@ -20,7 +20,8 @@ angular
     require('./modules/core'),
     require('./modules/auth'),
     require('./modules/utils'),
-    require('./modules/technology')
+    require('./modules/technology'),
+    require('./modules/user')
   ])
   .config(require('./routes'))
   .constant('API', {
