@@ -21,6 +21,7 @@ public class AutoIdempotencyHandler implements IdempotencyHandler {
   
   private static final Logger LOG = Logger.getLogger(AutoIdempotencyHandler.class.getName());
   
+  @SuppressWarnings("unchecked")
   @Override
   public boolean shouldTransactionProceed(Object target, Method method, Object[] args) {
     

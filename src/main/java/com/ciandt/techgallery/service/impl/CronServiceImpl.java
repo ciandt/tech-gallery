@@ -34,7 +34,10 @@ import com.ciant.techgallery.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Transactional
@@ -213,12 +216,10 @@ public class CronServiceImpl implements CronService {
           TechGalleryActivitiesEmailTemplateTO activities =
               new TechGalleryActivitiesEmailTemplateTO(Constants.APP_NAME, null,
                   new ArrayList<TechnologyActivitiesEmailTemplateTO>());
-          for (Endorsement endorsement : endorsementsList) {
-            TechnologyActivitiesEmailTemplateTO endorsementActivity =
-                new TechnologyActivitiesEmailTemplateTO(endorsement.getEndorserEntity(),
-                    endorsement.getTechnologyEntity(), null, null, null);
-            activities.getTechnologyActivitiesTo().add(endorsementActivity);
-          }
+
+          // group and define user's activities
+          setUserActivities(endorsementsList, activities);
+
           // Push email to queue if has new activities
           if (!activities.getTechnologyActivitiesTo().isEmpty()) {
             EmailConfig email = new EmailConfig(EmailTypeEnum.ENDORSED,
@@ -231,12 +232,75 @@ public class CronServiceImpl implements CronService {
       cronJob.setEndTimestamp(new Date());
       cronJob.setCronStatus(CronStatus.SUCCESS);
     } catch (Exception e) {
-      _LOG.info(e.getMessage());
+      _LOG.log(Level.SEVERE, "Cron exception: ", e);
       cronJob.setEndTimestamp(new Date());
       cronJob.setCronStatus(CronStatus.FAILURE);
       cronJob.setDescription(e.getMessage());
     }
     cronJobsDao.add(cronJob);
+  }
+
+  /**
+   * Method that groups endorsements by technologies.
+   * 
+   * @param endorsementsList list of endorsements.
+   * @return map with grouped endorsements.
+   */
+  private Map<String, List<Endorsement>> groupEndorsementsByTechnology(
+      List<Endorsement> endorsementsList) {
+    Map<String, List<Endorsement>> groupedEndorsements = new HashMap<String, List<Endorsement>>();
+    for (Endorsement endorsement : endorsementsList) {
+      String key = endorsement.getTechnologyEntity().getName();
+
+      List<Endorsement> group = groupedEndorsements.get(key);
+      if (group == null) {
+        group = new ArrayList<Endorsement>();
+        groupedEndorsements.put(key, group);
+      }
+      group.add(endorsement);
+    }
+    return groupedEndorsements;
+  }
+
+  /**
+   * Method that set the user activities by grouping endorsements by technology.
+   * 
+   * @param endorsementsList list of user endorsements.
+   * @param activities activities for the email.
+   */
+  private void setUserActivities(List<Endorsement> endorsementsList,
+      TechGalleryActivitiesEmailTemplateTO activities) {
+    Map<String, List<Endorsement>> groupedEndorsements =
+        groupEndorsementsByTechnology(endorsementsList);
+    _LOG.info("Technology hashmap size: " + groupedEndorsements.size());
+
+    for (Map.Entry<String, List<Endorsement>> entry : groupedEndorsements.entrySet()) {
+      List<Endorsement> technologyEndorsements = entry.getValue();
+      if (technologyEndorsements != null && technologyEndorsements.size() > 0) {
+        TechnologyActivitiesEmailTemplateTO endorsementActivity;
+
+        Endorsement endorsement = technologyEndorsements.get(0);
+        endorsementActivity = new TechnologyActivitiesEmailTemplateTO(
+            endorsement.getEndorserEntity().getName(), endorsement.getTechnologyEntity(),
+            Constants.EMAIL_CONTEXT_SINGLE, null, null, null);
+
+        if (technologyEndorsements.size() > 1) {
+          endorsementActivity.setContext(Constants.EMAIL_CONTEXT_PLURAL);
+          _LOG.info("Endorsement for Technology: " + entry.getKey() + " qty: "
+              + technologyEndorsements.size());
+
+          for (int i = 1; i < technologyEndorsements.size(); i++) {
+            endorsement = technologyEndorsements.get(i);
+            if (i == technologyEndorsements.size() - 1) {
+              endorsementActivity.addEndorser(endorsement.getEndorserEntity().getName(), true);
+            } else {
+              endorsementActivity.addEndorser(endorsement.getEndorserEntity().getName(), false);
+            }
+          }
+        }
+        activities.getTechnologyActivitiesTo().add(endorsementActivity);
+      }
+    }
   }
 
 }
