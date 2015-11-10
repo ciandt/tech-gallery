@@ -16,6 +16,7 @@ var browserify = require('browserify');
 var minifyCss = require('gulp-minify-css');
 var streamify = require('gulp-streamify');
 var connect = require('gulp-connect');
+var chmod = require('gulp-chmod');
 
 /**
  * Files path
@@ -95,6 +96,7 @@ gulp.task('watch:stylesheets', function () {
       gutil.log(chalk.red(err.message));
     }))
     .pipe(rename(out.styles.fileMinified))
+    .pipe(chmod(755))
     .pipe(gulp.dest(out.styles.folder))
 });
 
@@ -110,6 +112,7 @@ gulp.task('watch:scripts', function () {
     })
     .pipe(source(out.scripts.file))
     .pipe(rename(out.scripts.fileMinified))
+    .pipe(chmod(755))
     .pipe(gulp.dest(out.scripts.folder));
 });
 
@@ -119,9 +122,11 @@ gulp.task('build:stylesheets', function () {
       gutil.log(chalk.white.bgRed(' Error '));
       gutil.log(chalk.red(err.message));
     }))
+    .pipe(chmod(755))
     .pipe(gulp.dest(out.styles.folder))
     .pipe(rename(out.styles.fileMinified))
     .pipe(minifyCss())
+    .pipe(chmod(755))
     .pipe(gulp.dest(out.styles.folder));
 });
 
@@ -137,6 +142,7 @@ gulp.task('build:scripts', function () {
     })
     .pipe(source(out.scripts.file))
     .pipe(rename(out.scripts.fileMinified))
+    .pipe(chmod(755))
     .pipe(gulp.dest(out.scripts.folder));
     //Disable the minification while ng-anotate is not working
     // .pipe(streamify(uglify()).on('error', function (err) {
