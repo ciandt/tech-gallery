@@ -5,7 +5,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
    * @type {Object}
    */
   var context = this;
-  
+
   var alerts = {
 	  success : {
 		  type : 'success',
@@ -23,29 +23,25 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
    * @type {Boolean}
    */
   this.loading = false;
-  
+
   this.login = function(){
 	  checkLogin(false);
   };
-  
+
   AppService.setPageTitle('Adicionar nova tecnologia');
-  
-  var req = {id: $stateParams.id};
-  
-  TechnologyService.getTechnology(req).then(function(data){
+
+  TechnologyService.getTechnology($stateParams.id).then(function(data){
 	  if (data.hasOwnProperty('error')) {
 		  context.showContent = false;
 		  context.showTechNotExists = true;
-		  context.$apply();
 		  return;
 	  }
 	  fillTechnology(data);
   });
-  
+
   this.addOrUpdateTechnology = function(){
       if(context.name != null && context.description != null && context.shortDescription != null) {
-    	  var req = fillRequestToSave();
-    	  TechnologyService.addOrUpdate(req).then(function(data){
+    	  TechnologyService.addOrUpdate(context).then(function(data){
     		  var alert;
     		  if (data.hasOwnProperty('error')) {
     			  alert = alerts.failure;
@@ -55,62 +51,22 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
     			  clearTechnology();
     		  }
     		  context.alert = alert;
-    		  context.$apply();
     	  });
       }
-      callBackLoaded();
   };
-  
-  /*
-   * Function to fill the request to save the technology.
-   */
-  function fillRequestToSave() {
-	  if(context.image && context.image.startsWith('https://')){
-          var req = {
-        		  id : slugify(context.name),
-        		  name : context.name,
-        		  shortDescription : context.shortDescription,
-        		  recommendationJustification : context.justification,
-        		  recommendation : context.selectedRecommendation,
-        		  description : context.description,
-        		  website : context.webSite,
-        		  image : context.image
-          };
-          return req;
-        }else{
-          var req = {
-        		  id : slugify(context.name),
-        		  name : context.name,
-        		  shortDescription : context.shortDescription,
-        		  recommendationJustification : context.justification,
-        		  recommendation : context.selectedRecommendation,
-        		  description : context.description,
-        		  website : context.webSite,
-        		  imageContent : context.image
-          };
-          return req;
-        }
-  }
-  
+
   /*
    * Function to clean the technology informations
    */
-  this.clearTechnology = function(){
+  function clearTechnology() {
 	  context.name = '';
 	  context.description = '';
 	  context.shortDescription = '';
 	  context.webSite = '';
-      document.getElementById('idimage').value = null;
-      document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
+    document.getElementById('technology-name').value = null;
+    //document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
   }
-  
-  /*
-   * Function to define the informations loaded on page.
-   */
-  function callBackLoaded() {
-  	
-  }
-  
+
   function fillTechnology(technology) {
 	  context.name = technology.name;
 	  context.id = technology.id;
@@ -123,13 +79,12 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
 	  }
 	  context.selectedRecommendation = technology.recommendation;
 	  context.justification = technology.recommendationJustification;
-	  context.$apply();
   }
-  
+
   this.selectRecommendation = function(selected){
 	  context.selectedRecommendation = selected;
   };
-  
+
   function handleFileSelect(evt) {
       var files = evt.target.files;
       var f = files[0];
@@ -153,11 +108,11 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
       })(f);
       reader.readAsDataURL(f);
   }
-  
+
   this.closeAlert = function() {
 	  context.alert = undefined;
   };
-  
+
   function setClassElement(id){
 	  var elementClassIncrease = 'btn GPlusDefault';
       var elementClassDecrease = 'btn GPlusAdded';
