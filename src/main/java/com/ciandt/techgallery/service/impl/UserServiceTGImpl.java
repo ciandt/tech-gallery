@@ -373,6 +373,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    * @throws InternalServerErrorException
    *           if any IO exceptions occur
    */
+  @SuppressWarnings("unchecked")
   @Override
   public List<UserResponse> getUsersByPartialLogin(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
@@ -409,6 +410,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     return techUsers;
   }
 
+  @SuppressWarnings("unchecked")
   private Map<String, Object> peopleApiConnect(final String userLogin, final String urlEndPoint)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     String fullRequest = urlEndPoint + userLogin;

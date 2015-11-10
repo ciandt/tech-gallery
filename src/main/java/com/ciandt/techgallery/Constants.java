@@ -45,5 +45,9 @@ public class Constants {
   public static final String LINK_LOCALHOST = "http://localhost:8888/";
 
   public static final String PATH_VIEW_TECH_HTML = "viewTech.html";
+  
+  public static final String EMAIL_CONTEXT_SINGLE = "te indicou em";
+  
+  public static final String EMAIL_CONTEXT_PLURAL = "te indicaram em";
 
 }

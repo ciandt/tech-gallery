@@ -31,7 +31,7 @@
                   <td style="padding-right: 15px; vertical-align: top;">
                     <img src="{{technology.image}}" alt="" style="max-height: 150px;">
                   </td>
-                  <td style="text-align: left; font-size: 16px; padding-bottom: 20px;"><strong>{{endorserUser.name}}</strong> te indicou em <a href="{{technologyLink}}" style="color: #337ab7; text-decoration: none;"><strong>{{technology.name}}</strong></a>
+                  <td style="text-align: left; font-size: 16px; padding-bottom: 20px;"><strong>{{endorsers}}</strong> {{context}} <a href="{{technologyLink}}" style="color: #337ab7; text-decoration: none;"><strong>{{technology.name}}</strong></a>
                   </td>
                 </tr>
               {{/technologyActivitiesTo}}

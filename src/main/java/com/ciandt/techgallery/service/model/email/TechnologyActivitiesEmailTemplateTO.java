@@ -1,7 +1,6 @@
 package com.ciandt.techgallery.service.model.email;
 
 import com.ciandt.techgallery.Constants;
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
@@ -19,25 +18,28 @@ import java.util.List;
  */
 public class TechnologyActivitiesEmailTemplateTO {
 
-  TechGalleryUser endorserUser;
+  StringBuilder endorsersList;
   Technology technology;
   List<TechnologyComment> comments;
   List<TechnologyRecommendation> recommendations;
   String technologyLink;
+  String context;
+  String endorsers;
 
-  public TechnologyActivitiesEmailTemplateTO(TechGalleryUser endorserUser, Technology technology,
-      List<TechnologyComment> comments, List<TechnologyRecommendation> recommendations,
-      String technologyLink) {
+  public TechnologyActivitiesEmailTemplateTO(String endorsers, Technology technology,
+      String context, List<TechnologyComment> comments,
+      List<TechnologyRecommendation> recommendations, String technologyLink) {
     super();
-    this.endorserUser = endorserUser;
+    this.endorsers = endorsers;
     this.technology = technology;
+    this.context = context;
     this.comments = comments;
     this.recommendations = recommendations;
     this.technologyLink = technologyLink;
+    this.endorsersList = new StringBuilder(endorsers);
   }
-  
-  public TechnologyActivitiesEmailTemplateTO() {
-  }
+
+  public TechnologyActivitiesEmailTemplateTO() {}
 
   /**
    * Get link to view technology page according to runtime enviroment. Ex.: localhost, version-dot-.
@@ -50,23 +52,24 @@ public class TechnologyActivitiesEmailTemplateTO {
     String environment = System.getProperty(Constants.RUNTIME_ENVIRONMENT_PROPERTY);
     if (StringUtils.equals(Constants.PRODUCTION_PROPERTY, environment)) {
       String applicationId = System.getProperty(Constants.APPLICATION_ID_PROPERTY);
-      linkTechnology = "https://" + TechGalleryUtil.getApplicationVersion() + "-dot-" + applicationId + ".appspot.com/";
+      linkTechnology = "https://" + TechGalleryUtil.getApplicationVersion() + "-dot-"
+          + applicationId + ".appspot.com/";
     } else {
       linkTechnology = Constants.LINK_LOCALHOST;
     }
     return linkTechnology + Constants.PATH_VIEW_TECH_HTML + queryString;
   }
-  
+
   public Technology getTechnology() {
     return technology;
   }
 
-  public TechGalleryUser getEndorserUser() {
-    return endorserUser;
+  public String getEndorsers() {
+    return endorsers;
   }
 
-  public void setEndorserUser(TechGalleryUser endorserUser) {
-    this.endorserUser = endorserUser;
+  public void setEndorsers(String endorsers) {
+    this.endorsers = endorsers;
   }
 
   public void setTechnology(Technology technology) {
@@ -96,4 +99,28 @@ public class TechnologyActivitiesEmailTemplateTO {
   public void setRecommendations(List<TechnologyRecommendation> recommendations) {
     this.recommendations = recommendations;
   }
+
+  public String getContext() {
+    return context;
+  }
+
+  public void setContext(String context) {
+    this.context = context;
+  }
+
+  /**
+   * Method that appends an endorser name to the existing 'set' of endorsers.
+   * 
+   * @param endorserName name to be added.
+   * @param last flag for differing ',' or 'e'.
+   */
+  public void addEndorser(String endorserName, boolean last) {
+    if (last) {
+      endorsersList.append(" e ").append(endorserName);
+      endorsers = endorsersList.toString();
+    } else {
+      endorsersList.append(", ").append(endorserName);
+    }
+  }
+
 }

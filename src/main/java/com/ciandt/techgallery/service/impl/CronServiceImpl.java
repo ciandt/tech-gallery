@@ -34,7 +34,10 @@ import com.ciant.techgallery.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Transactional
@@ -46,11 +49,11 @@ public class CronServiceImpl implements CronService {
   public static final Logger _LOG = Logger.getLogger(CronActivityResumeServlet.class.getName());
   private static CronServiceImpl instance;
   private EmailService emailService = EmailServiceImpl.getInstance();
-  private TechnologyActivitiesService technologyActivitiesService = TechnologyActivitiesServiceImpl
-      .getInstance();
+  private TechnologyActivitiesService technologyActivitiesService =
+      TechnologyActivitiesServiceImpl.getInstance();
   private CronJobDAO cronJobsDao = CronJobDAOImpl.getInstance();
-  private TechnologyRecommendationDAO technologyRecommendationDao = TechnologyRecommendationDAOImpl
-      .getInstance();
+  private TechnologyRecommendationDAO technologyRecommendationDao =
+      TechnologyRecommendationDAOImpl.getInstance();
   private TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
   private TechGalleryUserDAO techGalleryUserDao = TechGalleryUserDAOImpl.getInstance();
   private TechnologyDAO technologyDao = TechnologyDAOImpl.getInstance();
@@ -59,14 +62,12 @@ public class CronServiceImpl implements CronService {
   /*
    * Constructors --------------------------------------------
    */
-  private CronServiceImpl() {
-  }
+  private CronServiceImpl() {}
 
   /**
    * Singleton method for the service.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
-   *         Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 09/10/2015
    *
    * @return EmailServiceImpl instance.
@@ -79,8 +80,7 @@ public class CronServiceImpl implements CronService {
   }
 
   /**
-   * Push one email to email queue for each follower user in each technology
-   * that have followers.
+   * Push one email to email queue for each follower user in each technology that have followers.
    */
   public void sendEmailtoFollowers() {
     CronJob cronJob = new CronJob();
@@ -91,9 +91,9 @@ public class CronServiceImpl implements CronService {
       List<TechGalleryUser> followers = techGalleryUserDao.findAllFollowers();
       if (followers != null && followers.size() > 0) {
         for (TechGalleryUser follower : followers) {
-          //Set user's timezone offset. To be used in converted dates.
+          // Set user's timezone offset. To be used in converted dates.
           TimezoneManager.getInstance().setOffset(follower.getTimezoneOffset());
-          
+
           // TO used in mustache template
           TechGalleryActivitiesEmailTemplateTO techGalleryActivitiesTo =
               new TechGalleryActivitiesEmailTemplateTO();
@@ -112,8 +112,8 @@ public class CronServiceImpl implements CronService {
 
           // Push email to queue if has new activities
           if (!techActivitiesToList.isEmpty()) {
-            EmailConfig email =
-                new EmailConfig(EmailTypeEnum.DAILY_RESUME, EmailTypeEnum.DAILY_RESUME.getSubject()
+            EmailConfig email = new EmailConfig(EmailTypeEnum.DAILY_RESUME,
+                EmailTypeEnum.DAILY_RESUME.getSubject()
                     + techGalleryActivitiesTo.getFormattedTimestamp(),
                 techGalleryActivitiesTo, follower.getEmail());
             emailService.push(email);
@@ -135,12 +135,11 @@ public class CronServiceImpl implements CronService {
       List<TechnologyActivitiesEmailTemplateTO> techActivitiesToList, Technology technology,
       Date lastCronJobExecDate) {
     // Find new Activities in a technology
-    List<TechnologyRecommendation> dailyRecommendations =
-        technologyRecommendationDao.findAllRecommendationsStartingFrom(technology,
-            lastCronJobExecDate);
+    List<TechnologyRecommendation> dailyRecommendations = technologyRecommendationDao
+        .findAllRecommendationsStartingFrom(technology, lastCronJobExecDate);
     List<TechnologyComment> dailyComments =
         technologyCommentDao.findAllCommentsStartingFrom(technology, lastCronJobExecDate);
-    
+
     // Remove Recommendations' comments. For avoid duplication
     if (dailyRecommendations != null) {
       for (TechnologyRecommendation recommendation : dailyRecommendations) {
@@ -152,9 +151,8 @@ public class CronServiceImpl implements CronService {
 
     if (dailyRecommendations != null || dailyComments != null) {
       // Create a TO to each technology
-      TechnologyActivitiesEmailTemplateTO techActivitiesTo =
-          technologyActivitiesService.createTechnologyActivitiesTo(technology,
-              dailyRecommendations, dailyComments);
+      TechnologyActivitiesEmailTemplateTO techActivitiesTo = technologyActivitiesService
+          .createTechnologyActivitiesTo(technology, dailyRecommendations, dailyComments);
       techActivitiesToList.add(techActivitiesTo);
     }
   }
@@ -187,18 +185,15 @@ public class CronServiceImpl implements CronService {
           TechGalleryActivitiesEmailTemplateTO activities =
               new TechGalleryActivitiesEmailTemplateTO(Constants.APP_NAME, null,
                   new ArrayList<TechnologyActivitiesEmailTemplateTO>());
-          for (Endorsement endorsement : endorsementsList) {
-            TechnologyActivitiesEmailTemplateTO endorsementActivity =
-                new TechnologyActivitiesEmailTemplateTO(endorsement.getEndorserEntity(),
-                    endorsement.getTechnologyEntity(), null, null, null);
-            activities.getTechnologyActivitiesTo().add(endorsementActivity);
-          }
+
+          // group and define user's activities
+          setUserActivities(endorsementsList, activities);
+
           // Push email to queue if has new activities
           if (!activities.getTechnologyActivitiesTo().isEmpty()) {
-            EmailConfig email =
-                new EmailConfig(EmailTypeEnum.ENDORSED, EmailTypeEnum.ENDORSED.getSubject()
-                    + activities.getFormattedTimestamp(), activities,
-                techGalleryUser.getEmail());
+            EmailConfig email = new EmailConfig(EmailTypeEnum.ENDORSED,
+                EmailTypeEnum.ENDORSED.getSubject() + activities.getFormattedTimestamp(),
+                activities, techGalleryUser.getEmail());
             emailService.push(email);
           }
         }
@@ -206,12 +201,81 @@ public class CronServiceImpl implements CronService {
       cronJob.setEndTimestamp(new Date());
       cronJob.setCronStatus(CronStatus.SUCCESS);
     } catch (Exception e) {
-      _LOG.info(e.getMessage());
+      _LOG.log(Level.SEVERE, "Cron exception: ", e);
       cronJob.setEndTimestamp(new Date());
       cronJob.setCronStatus(CronStatus.FAILURE);
       cronJob.setDescription(e.getMessage());
     }
     cronJobsDao.add(cronJob);
+  }
+
+  /**
+   * Method that groups endorsements by technologies.
+   * 
+   * @param endorsementsList list of endorsements.
+   * @return map with grouped endorsements.
+   */
+  private Map<String, List<Endorsement>> groupEndorsementsByTechnology(
+      List<Endorsement> endorsementsList) {
+    Map<String, List<Endorsement>> groupedEndorsements = new HashMap<String, List<Endorsement>>();
+    for (Endorsement endorsement : endorsementsList) {
+      String key = endorsement.getTechnologyEntity().getName();
+
+      List<Endorsement> group = groupedEndorsements.get(key);
+      if (group == null) {
+        group = new ArrayList<Endorsement>();
+      }
+      group.add(endorsement);
+      // add or update the Map
+      groupedEndorsements.put(key, group);
+    }
+    return groupedEndorsements;
+  }
+
+  /**
+   * Method that set the user activities by grouping endorsements by technology.
+   * 
+   * @param endorsementsList list of user endorsements.
+   * @param activities activities for the email.
+   */
+  private void setUserActivities(List<Endorsement> endorsementsList,
+      TechGalleryActivitiesEmailTemplateTO activities) {
+    Map<String, List<Endorsement>> groupedEndorsements =
+        groupEndorsementsByTechnology(endorsementsList);
+    _LOG.info("Technology hashmap size: " + groupedEndorsements.size());
+
+    for (Map.Entry<String, List<Endorsement>> entry : groupedEndorsements.entrySet()) {
+      List<Endorsement> technologyEndorsements = entry.getValue();
+      if (technologyEndorsements != null && technologyEndorsements.size() > 0) {
+        TechnologyActivitiesEmailTemplateTO endorsementActivity;
+        // single endorsement
+        if (technologyEndorsements.size() == 1) {
+          _LOG.info("Only one endorsement for Technology: " + entry.getKey());
+          Endorsement endorsement = technologyEndorsements.get(0);
+          endorsementActivity = new TechnologyActivitiesEmailTemplateTO(
+              endorsement.getEndorserEntity().getName(), endorsement.getTechnologyEntity(),
+              Constants.EMAIL_CONTEXT_SINGLE, null, null, null);
+        } else {
+          // multiple endorsements
+          _LOG.info("Endorsement for Technology: " + entry.getKey() + " qty: "
+              + technologyEndorsements.size());
+          Endorsement endorsement = technologyEndorsements.get(0);
+          endorsementActivity = new TechnologyActivitiesEmailTemplateTO(
+              endorsement.getEndorserEntity().getName(), endorsement.getTechnologyEntity(),
+              Constants.EMAIL_CONTEXT_PLURAL, null, null, null);
+
+          for (int i = 1; i < technologyEndorsements.size(); i++) {
+            endorsement = technologyEndorsements.get(i);
+            if (i == technologyEndorsements.size() - 1) {
+              endorsementActivity.addEndorser(endorsement.getEndorserEntity().getName(), true);
+            } else {
+              endorsementActivity.addEndorser(endorsement.getEndorserEntity().getName(), false);
+            }
+          }
+        }
+        activities.getTechnologyActivitiesTo().add(endorsementActivity);
+      }
+    }
   }
 
 }
