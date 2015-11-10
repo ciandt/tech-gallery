@@ -255,10 +255,9 @@ public class CronServiceImpl implements CronService {
       List<Endorsement> group = groupedEndorsements.get(key);
       if (group == null) {
         group = new ArrayList<Endorsement>();
+        groupedEndorsements.put(key, group);
       }
       group.add(endorsement);
-      // add or update the Map
-      groupedEndorsements.put(key, group);
     }
     return groupedEndorsements;
   }
@@ -279,21 +278,16 @@ public class CronServiceImpl implements CronService {
       List<Endorsement> technologyEndorsements = entry.getValue();
       if (technologyEndorsements != null && technologyEndorsements.size() > 0) {
         TechnologyActivitiesEmailTemplateTO endorsementActivity;
-        // single endorsement
-        if (technologyEndorsements.size() == 1) {
-          _LOG.info("Only one endorsement for Technology: " + entry.getKey());
-          Endorsement endorsement = technologyEndorsements.get(0);
-          endorsementActivity = new TechnologyActivitiesEmailTemplateTO(
-              endorsement.getEndorserEntity().getName(), endorsement.getTechnologyEntity(),
-              Constants.EMAIL_CONTEXT_SINGLE, null, null, null);
-        } else {
-          // multiple endorsements
+
+        Endorsement endorsement = technologyEndorsements.get(0);
+        endorsementActivity = new TechnologyActivitiesEmailTemplateTO(
+            endorsement.getEndorserEntity().getName(), endorsement.getTechnologyEntity(),
+            Constants.EMAIL_CONTEXT_SINGLE, null, null, null);
+
+        if (technologyEndorsements.size() > 1) {
+          endorsementActivity.setContext(Constants.EMAIL_CONTEXT_PLURAL);
           _LOG.info("Endorsement for Technology: " + entry.getKey() + " qty: "
               + technologyEndorsements.size());
-          Endorsement endorsement = technologyEndorsements.get(0);
-          endorsementActivity = new TechnologyActivitiesEmailTemplateTO(
-              endorsement.getEndorserEntity().getName(), endorsement.getTechnologyEntity(),
-              Constants.EMAIL_CONTEXT_PLURAL, null, null, null);
 
           for (int i = 1; i < technologyEndorsements.size(); i++) {
             endorsement = technologyEndorsements.get(i);
