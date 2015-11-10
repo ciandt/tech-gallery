@@ -46,11 +46,11 @@ public class CronServiceImpl implements CronService {
   public static final Logger _LOG = Logger.getLogger(CronActivityResumeServlet.class.getName());
   private static CronServiceImpl instance;
   private EmailService emailService = EmailServiceImpl.getInstance();
-  private TechnologyActivitiesService technologyActivitiesService = TechnologyActivitiesServiceImpl
-      .getInstance();
+  private TechnologyActivitiesService technologyActivitiesService =
+      TechnologyActivitiesServiceImpl.getInstance();
   private CronJobDAO cronJobsDao = CronJobDAOImpl.getInstance();
-  private TechnologyRecommendationDAO technologyRecommendationDao = TechnologyRecommendationDAOImpl
-      .getInstance();
+  private TechnologyRecommendationDAO technologyRecommendationDao =
+      TechnologyRecommendationDAOImpl.getInstance();
   private TechnologyCommentDAO technologyCommentDao = TechnologyCommentDAOImpl.getInstance();
   private TechGalleryUserDAO techGalleryUserDao = TechGalleryUserDAOImpl.getInstance();
   private TechnologyDAO technologyDao = TechnologyDAOImpl.getInstance();
@@ -59,14 +59,12 @@ public class CronServiceImpl implements CronService {
   /*
    * Constructors --------------------------------------------
    */
-  private CronServiceImpl() {
-  }
+  private CronServiceImpl() {}
 
   /**
    * Singleton method for the service.
    *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
-   *         Moreira </a>
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros Moreira </a>
    * @since 09/10/2015
    *
    * @return EmailServiceImpl instance.
@@ -79,8 +77,7 @@ public class CronServiceImpl implements CronService {
   }
 
   /**
-   * Push one email to email queue for each follower user in each technology
-   * that have followers.
+   * Push one email to email queue for each follower user in each technology that have followers.
    */
   public void sendEmailtoFollowers() {
     CronJob cronJob = new CronJob();
@@ -91,9 +88,9 @@ public class CronServiceImpl implements CronService {
       List<TechGalleryUser> followers = techGalleryUserDao.findAllFollowers();
       if (followers != null && followers.size() > 0) {
         for (TechGalleryUser follower : followers) {
-          //Set user's timezone offset. To be used in converted dates.
+          // Set user's timezone offset. To be used in converted dates.
           TimezoneManager.getInstance().setOffset(follower.getTimezoneOffset());
-          
+
           // TO used in mustache template
           TechGalleryActivitiesEmailTemplateTO techGalleryActivitiesTo =
               new TechGalleryActivitiesEmailTemplateTO();
@@ -106,14 +103,15 @@ public class CronServiceImpl implements CronService {
           for (String id : follower.getFollowedTechnologyIds()) {
             Technology technology = technologyDao.findById(id);
             Date lastCronJobExecDate = findLastExecutedCronJob(Constants.CRON_MAIL_ACTIVITY_JOB);
-            findNewActivitiesInATechnology(techActivitiesToList, technology, lastCronJobExecDate);
+            findNewActivitiesInATechnology(techActivitiesToList, follower, technology,
+                lastCronJobExecDate);
           }
           techGalleryActivitiesTo.setTechnologyActivitiesTo(techActivitiesToList);
 
           // Push email to queue if has new activities
           if (!techActivitiesToList.isEmpty()) {
-            EmailConfig email =
-                new EmailConfig(EmailTypeEnum.DAILY_RESUME, EmailTypeEnum.DAILY_RESUME.getSubject()
+            EmailConfig email = new EmailConfig(EmailTypeEnum.DAILY_RESUME,
+                EmailTypeEnum.DAILY_RESUME.getSubject()
                     + techGalleryActivitiesTo.getFormattedTimestamp(),
                 techGalleryActivitiesTo, follower.getEmail());
             emailService.push(email);
@@ -132,31 +130,59 @@ public class CronServiceImpl implements CronService {
   }
 
   private void findNewActivitiesInATechnology(
-      List<TechnologyActivitiesEmailTemplateTO> techActivitiesToList, Technology technology,
-      Date lastCronJobExecDate) {
+      List<TechnologyActivitiesEmailTemplateTO> techActivitiesToList, TechGalleryUser follower,
+      Technology technology, Date lastCronJobExecDate) {
     // Find new Activities in a technology
-    List<TechnologyRecommendation> dailyRecommendations =
-        technologyRecommendationDao.findAllRecommendationsStartingFrom(technology,
-            lastCronJobExecDate);
+    List<TechnologyRecommendation> dailyRecommendations = technologyRecommendationDao
+        .findAllRecommendationsStartingFrom(technology, lastCronJobExecDate);
+    dailyRecommendations = removeUserRecommendations(follower, dailyRecommendations);
+
     List<TechnologyComment> dailyComments =
         technologyCommentDao.findAllCommentsStartingFrom(technology, lastCronJobExecDate);
-    
+    dailyComments = removeUserComments(follower, dailyComments);
+
     // Remove Recommendations' comments. For avoid duplication
-    if (dailyRecommendations != null) {
+    if (!dailyRecommendations.isEmpty()) {
       for (TechnologyRecommendation recommendation : dailyRecommendations) {
-        if (dailyComments != null) {
+        if (!dailyComments.isEmpty()) {
           dailyComments.remove(recommendation.getComment().get());
         }
       }
     }
 
-    if (dailyRecommendations != null || dailyComments != null) {
+    if (!dailyRecommendations.isEmpty() || !dailyComments.isEmpty()) {
       // Create a TO to each technology
-      TechnologyActivitiesEmailTemplateTO techActivitiesTo =
-          technologyActivitiesService.createTechnologyActivitiesTo(technology,
-              dailyRecommendations, dailyComments);
+      TechnologyActivitiesEmailTemplateTO techActivitiesTo = technologyActivitiesService
+          .createTechnologyActivitiesTo(technology, dailyRecommendations, dailyComments);
       techActivitiesToList.add(techActivitiesTo);
     }
+  }
+
+  private List<TechnologyComment> removeUserComments(TechGalleryUser follower,
+      List<TechnologyComment> dailyComments) {
+    List<TechnologyComment> dailyCommentsWithoutUser = new ArrayList<TechnologyComment>();
+    if (dailyComments != null) {
+      for (TechnologyComment technologyComment : dailyComments) {
+        if (!technologyComment.getAuthor().get().equals(follower)) {
+          dailyCommentsWithoutUser.add(technologyComment);
+        }
+      }
+    }
+    return dailyCommentsWithoutUser;
+  }
+
+  private List<TechnologyRecommendation> removeUserRecommendations(TechGalleryUser follower,
+      List<TechnologyRecommendation> dailyRecommendations) {
+    List<TechnologyRecommendation> dailyRecommendationsWithoutUser =
+        new ArrayList<TechnologyRecommendation>();
+    if (dailyRecommendations != null) {
+      for (TechnologyRecommendation technologyRecommendation : dailyRecommendations) {
+        if (!technologyRecommendation.getRecommender().get().equals(follower)) {
+          dailyRecommendationsWithoutUser.add(technologyRecommendation);
+        }
+      }
+    }
+    return dailyRecommendationsWithoutUser;
   }
 
   private Date findLastExecutedCronJob(String cronJob) {
@@ -195,10 +221,9 @@ public class CronServiceImpl implements CronService {
           }
           // Push email to queue if has new activities
           if (!activities.getTechnologyActivitiesTo().isEmpty()) {
-            EmailConfig email =
-                new EmailConfig(EmailTypeEnum.ENDORSED, EmailTypeEnum.ENDORSED.getSubject()
-                    + activities.getFormattedTimestamp(), activities,
-                techGalleryUser.getEmail());
+            EmailConfig email = new EmailConfig(EmailTypeEnum.ENDORSED,
+                EmailTypeEnum.ENDORSED.getSubject() + activities.getFormattedTimestamp(),
+                activities, techGalleryUser.getEmail());
             emailService.push(email);
           }
         }
