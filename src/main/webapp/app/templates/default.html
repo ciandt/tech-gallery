@@ -5,7 +5,7 @@
         <h1><a class="navbar-brand" href="#/"><img src="assets/images/tech-gallery.png" alt="Tech Gallery"> Tech Gallery</a></h1>
       </div>
 
-      <div class="navbar-right" ng-if="app.isUserLogged">
+      <div class="navbar-right" ng-if="isUserLogged">
         <!-- SEARCH -->
         <form id="app-search" ng-submit="searchTechnology()" class="navbar-form navbar-left">
           <div class="form-group">
@@ -17,7 +17,7 @@
         <!-- USER DROPDOWN -->
         <ul class="nav navbar-nav navbar-right">
           <li uib-dropdown uib-keyboard-nav>
-            <a href="#"  role="button" uib-dropdown-toggle>Gabriel Izaias <span class="caret"></span></a>
+            <a href="#"  role="button" uib-dropdown-toggle>{{loggedUserInformation.name}}<span class="caret"></span></a>
             <ul class="uib-dropdown-menu">
               <li><a href="#">Meu perfil</a></li>
               <li role="separator" class="divider"></li>
@@ -31,8 +31,8 @@
 </nav>
 
 <main id="app-content">
-  <login ng-if="!app.isUserLogged"></login>
-  <ui-view ng-if="app.isUserLogged"></ui-view>
+  <login ng-if="!isUserLogged"></login>
+  <ui-view ng-if="isUserLogged"></ui-view>
 </main>
 
 <footer id="app-footer">
