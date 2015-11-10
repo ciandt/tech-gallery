@@ -106,7 +106,8 @@ public class CronServiceImpl implements CronService {
           for (String id : follower.getFollowedTechnologyIds()) {
             Technology technology = technologyDao.findById(id);
             Date lastCronJobExecDate = findLastExecutedCronJob(Constants.CRON_MAIL_ACTIVITY_JOB);
-            findNewActivitiesInATechnology(techActivitiesToList, technology, lastCronJobExecDate);
+            findNewActivitiesInATechnology(techActivitiesToList, follower, technology,
+                lastCronJobExecDate);
           }
           techGalleryActivitiesTo.setTechnologyActivitiesTo(techActivitiesToList);
 
@@ -132,29 +133,59 @@ public class CronServiceImpl implements CronService {
   }
 
   private void findNewActivitiesInATechnology(
-      List<TechnologyActivitiesEmailTemplateTO> techActivitiesToList, Technology technology,
-      Date lastCronJobExecDate) {
+      List<TechnologyActivitiesEmailTemplateTO> techActivitiesToList, TechGalleryUser follower,
+      Technology technology, Date lastCronJobExecDate) {
     // Find new Activities in a technology
     List<TechnologyRecommendation> dailyRecommendations = technologyRecommendationDao
         .findAllRecommendationsStartingFrom(technology, lastCronJobExecDate);
+    dailyRecommendations = removeUserRecommendations(follower, dailyRecommendations);
+
     List<TechnologyComment> dailyComments =
         technologyCommentDao.findAllCommentsStartingFrom(technology, lastCronJobExecDate);
+    dailyComments = removeUserComments(follower, dailyComments);
 
     // Remove Recommendations' comments. For avoid duplication
-    if (dailyRecommendations != null) {
+    if (!dailyRecommendations.isEmpty()) {
       for (TechnologyRecommendation recommendation : dailyRecommendations) {
-        if (dailyComments != null) {
+        if (!dailyComments.isEmpty()) {
           dailyComments.remove(recommendation.getComment().get());
         }
       }
     }
 
-    if (dailyRecommendations != null || dailyComments != null) {
+    if (!dailyRecommendations.isEmpty() || !dailyComments.isEmpty()) {
       // Create a TO to each technology
       TechnologyActivitiesEmailTemplateTO techActivitiesTo = technologyActivitiesService
           .createTechnologyActivitiesTo(technology, dailyRecommendations, dailyComments);
       techActivitiesToList.add(techActivitiesTo);
     }
+  }
+
+  private List<TechnologyComment> removeUserComments(TechGalleryUser follower,
+      List<TechnologyComment> dailyComments) {
+    List<TechnologyComment> dailyCommentsWithoutUser = new ArrayList<TechnologyComment>();
+    if (dailyComments != null) {
+      for (TechnologyComment technologyComment : dailyComments) {
+        if (!technologyComment.getAuthor().get().equals(follower)) {
+          dailyCommentsWithoutUser.add(technologyComment);
+        }
+      }
+    }
+    return dailyCommentsWithoutUser;
+  }
+
+  private List<TechnologyRecommendation> removeUserRecommendations(TechGalleryUser follower,
+      List<TechnologyRecommendation> dailyRecommendations) {
+    List<TechnologyRecommendation> dailyRecommendationsWithoutUser =
+        new ArrayList<TechnologyRecommendation>();
+    if (dailyRecommendations != null) {
+      for (TechnologyRecommendation technologyRecommendation : dailyRecommendations) {
+        if (!technologyRecommendation.getRecommender().get().equals(follower)) {
+          dailyRecommendationsWithoutUser.add(technologyRecommendation);
+        }
+      }
+    }
+    return dailyRecommendationsWithoutUser;
   }
 
   private Date findLastExecutedCronJob(String cronJob) {
