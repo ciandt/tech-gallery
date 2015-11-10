@@ -147,7 +147,7 @@ angular.module('techGallery').controller(
       req.technology = $scope.idTechnology;
       if ($scope.endorsed.email || $scope.endorsed) {
         gapi.client.rest.addEndorsement(req).execute(function(data) {
-          
+        ga('send', 'event', 'TechGalleryEvents - Endorsement Add', $scope.name, $scope.endorsed.email);
           if($scope.postGooglePlus && !data.hasOwnProperty('error')){
             var req = {
                 feature : featureEnum.ENDORSE,
@@ -316,7 +316,22 @@ angular.module('techGallery').controller(
           value : newValue
         };
         gapi.client.rest.addSkill(req).execute(function(data) {
-          ga('send', 'event', 'TechGalleryEvents', 'skill_add', $scope.name);
+        	if($scope.skillLevel === 1){
+        		ga('send', 'event', 'TechGalleryEvents - Skill', $scope.name, 'Newbie');
+        	}
+        	if($scope.skillLevel === 2){
+        		ga('send', 'event', 'TechGalleryEvents - Skill', $scope.name, 'Initiate');
+        	}
+			if($scope.skillLevel === 3){
+				ga('send', 'event', 'TechGalleryEvents - Skill', $scope.name, 'Padawan');
+			}
+			if($scope.skillLevel === 4){
+				ga('send', 'event', 'TechGalleryEvents - Skill', $scope.name, 'Knight');
+			}
+			if($scope.skillLevel === 5){
+				ga('send', 'event', 'TechGalleryEvents - Skill', $scope.name, 'Jedi');
+			}
+          
           $scope.processingEndorse = true;
           callBackLoaded();
         });
@@ -395,7 +410,12 @@ angular.module('techGallery').controller(
         		      gapi.client.rest.postComment(req).execute();
 		            }
     			});
-    			ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);
+    			if($scope.score === true){
+    				ga('send', 'event', 'TechGalleryEvents - Recommendation', 'recommendation_positive', $scope.name);
+    			}
+    			if($scope.score === false){
+    				ga('send', 'event', 'TechGalleryEvents - Recommendation', 'recommendation_negative', $scope.name);
+    	    	}
     		}
     	}else{
     		if($scope.score !== undefined){
