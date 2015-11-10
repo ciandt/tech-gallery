@@ -147,7 +147,7 @@ angular.module('techGallery').controller(
       req.technology = $scope.idTechnology;
       if ($scope.endorsed.email || $scope.endorsed) {
         gapi.client.rest.addEndorsement(req).execute(function(data) {
-          
+        ga('send', 'event', 'TechGalleryEvents - Endorsement Add', $scope.name, $scope.endorsed.email);
           if($scope.postGooglePlus && !data.hasOwnProperty('error')){
             var req = {
                 feature : featureEnum.ENDORSE,
