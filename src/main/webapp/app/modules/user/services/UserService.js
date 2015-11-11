@@ -41,10 +41,11 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
           recommendation: {
             recommended: true,
             comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam a ex voluptatem delectus quo hic nemo provident modi excepturi illum!'
-          }
+          },
+          comments: []
         },
         {
-          id: 'webgel',
+          id: 'webgl',
           name: 'WebGL',
           endorsementsCount: 3,
           rating: {
@@ -54,7 +55,17 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
           recommendation: {
             recommended: false,
             comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, earum quisquam omnis vero doloribus illo!'
-          }
+          },
+          comments: [
+            {
+              timestamp: 1442275916,
+              body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam eveniet amet, assumenda praesentium eius expedita esse consequuntur sed quod molestias temporibus aut nam eligendi mollitia, facere magnam dignissimos beatae quos officia quisquam quasi adipisci reiciendis!'
+            },
+            {
+              timestamp: 1447275916,
+              body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam nulla omnis porro itaque voluptatum doloribus.'
+            }
+          ]
         },
         {
           id: 'unity',
@@ -64,10 +75,8 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
             value : 1,
             title : 'Newbie'
           },
-          recommendation: {
-            recommended: true,
-            comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas provident sint voluptatibus\n commodi recusandae dicta, harum vitae repellendus. Aut, reiciendis quis harum! Ad, quos, officia.'
-          }
+          recommendation: {},
+          comments: []
         },
         {
           id: 'sass',
@@ -80,7 +89,8 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
           recommendation: {
             recommended: true,
             comment: 'Lorem ipsum dolor sit amet.'
-          }
+          },
+          comments: []
         },
         {
           id: 'vagrant',
@@ -93,7 +103,8 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
           recommendation: {
             recommended: true,
             comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam a ex voluptatem delectus quo hic nemo provident modi excepturi illum!'
-          }
+          },
+          comments: []
         },
         {
           id: 'webgel',
@@ -106,7 +117,8 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
           recommendation: {
             recommended: false,
             comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, earum quisquam omnis vero doloribus illo!'
-          }
+          },
+          comments: []
         },
         {
           id: 'unity',
@@ -119,7 +131,8 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
           recommendation: {
             recommended: true,
             comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas provident sint voluptatibus\n commodi recusandae dicta, harum vitae repellendus. Aut, reiciendis quis harum! Ad, quos, officia.'
-          }
+          },
+          comments: []
         },
         {
           id: 'sass',
@@ -132,7 +145,8 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
           recommendation: {
             recommended: true,
             comment: 'Lorem ipsum dolor sit amet.'
-          }
+          },
+          comments: []
         }
       ]
     }, context.profile);

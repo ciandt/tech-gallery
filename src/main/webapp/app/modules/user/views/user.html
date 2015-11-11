@@ -43,7 +43,8 @@
       <h3>Tecnologias</h3>
       <p ng-if="!user.profile.technologies.length">Este usuário não está relacionado à nenhuma tecnologia.</p>
       <div class="row" ng-if="user.profile.technologies.length">
-        <div class="col-sm-6 col-md-3" ng-repeat="technology in user.profile.technologies">
+        <div ng-repeat-start="technology in user.profile.technologies"></div>
+        <div class="col-sm-6 col-md-3">
           <div class="card user-technology">
             <div class="card-section">
               <h3 class="card-title"><a href="#/technologies/{{ technology.id }}">{{ technology.name }}</a></h3>
@@ -52,7 +53,7 @@
             <div class="card-section">
               <div class="user-technology-meta media">
                 <div class="media-left user-technology-label media-middle">Total de indicaçoes:</div>
-                <div class="media-body user-stats">10</div>
+                <div class="media-body user-stats">{{ technology.endorsementsCount }}</div>
               </div>
               <div class="user-technology-meta media">
                 <div class="media-left user-technology-label media-middle">Auto avaliação:</div>
@@ -60,7 +61,7 @@
                   <div class="media">
                     <div class="media-left"><img ng-src="assets/images/{{ technology.rating.title | lowercase }}.png" class="media-object"></div>
                     <div class="media-body">
-                      {{ technology.rating.title }}<br />
+                      <strong>{{ technology.rating.title }}</strong><br />
                       <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:technology.rating.value"></span>
                     </div>
                   </div>
@@ -69,20 +70,49 @@
               <div class="user-technology-meta">
                 <div class="user-technology-label">Como avaliou a tecnologia:</div>
                 <div class="media">
-                  <div class="media-left technology-recommendation-value">
+                  <div class="media-left technology-recommendation-value" ng-if="technology.recommendation.comment">
                     <span ng-if="technology.recommendation.recommended" class="glyphicon glyphicon-thumbs-up"></span>
                     <span ng-if="!technology.recommendation.recommended" class="glyphicon glyphicon-thumbs-down"></span>
                   </div>
-                  <div class="media-body" ng-bind-html="technology.recommendation.comment | nl2p"></div>
+                  <div class="media-body" ng-if="technology.recommendation.comment" ng-bind-html="technology.recommendation.comment | nl2p"></div>
+                  <p ng-if="!technology.recommendation.comment">Ainda não avaliou.</p>
                 </div>
               </div>
               <div class="user-technology-meta">
-                <button class="btn btn-link btn-block"><span class="glyphicon glyphicon-comment"></span> Ver comentários</button>
+                <button class="btn btn-link btn-block" ng-click="user.openCommentsFor(technology)"><span class="glyphicon glyphicon-comment"></span> Ver comentários</button>
               </div>
             </div>
           </div>
         </div>
+        <div class="clearfix" ng-if="($index + 1) % 4 == 0"></div>
+        <div ng-repeat-end=""></div>
       </div>
     </div>
   </div>
+
+  <script type="text/ng-template" id="comments.html">
+    <div class="modal-header">
+      <h3 class="modal-title">Comentários de {{ user.name }} sobre {{ technology.name }}</h3>
+    </div>
+    <div class="modal-body">
+      <p ng-if="!technology.comments.length">Nenhum comentário encontrado.</p>
+      <ol class="technology-comments" ng-if="technology.comments.length">
+        <li class="technology-comment" ng-repeat="comment in technology.comments">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
+          <div class="technology-recommendation-meta media">
+            <div class="media-image">
+              <img class="media-object technology-comment-meta-image" ng-src="{{ user.image }}" alt="">
+            </div>
+            <div class="media-content">
+              <strong>{{ user.name }}</strong><br>
+              em {{ comment.timestamp | date:"dd/MM/yyyy 'às' HH:mm" }}
+            </div>
+          </div>
+        </li>
+      </ol>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-click="close()">OK</button>
+    </div>
+  </script>
 </div>
