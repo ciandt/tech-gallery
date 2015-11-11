@@ -17,9 +17,8 @@
     </header>
     <div class="technology-body">
       <div class="technology-section row">
-        <!-- TECHNOLOGY DESCRIPTION -->
-        <div class="technology-description col-md-7" ng-bind-html="technology.item.description | nl2p"></div>
-
+        <div class="technology-description col-md-7" ng-bind-html="technology.item.description | nl2p">
+        </div>
         <div class="col-md-5">
           <div class="card no-margin">
             <div class="card-section">
@@ -53,8 +52,15 @@
             <div class="card-section">
               <form action="" class="form-inline">
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="usuario" style="width: 250px;">
+                  <input ng-model="endorsed" type="text" class="form-control"
+                  placeholder="usuário" aria-describedby="basic-addon2" uib-typeahead="user as user.email for user in technology.getUsersList($viewValue)" typeahead-min-length="3" typeahead-template-url="customTemplate.html" typeahead-loading="loadingUsers" typeahead-no-results="noResults" style="width: 250px;">
                   <span class="input-group-addon">@ciandt.com</span>
+                </div>
+                <div ng-show="loadingUsers">
+                  <i class="glyphicon glyphicon-refresh"> Carregando...</i>
+                </div>
+                <div ng-show="noResults">
+                  <i class="glyphicon glyphicon-remove"></i> Não foram encontrados registros...
                 </div>
                 <button type="submit" class="btn btn-primary">Indicar</button>
               </form>
@@ -77,7 +83,6 @@
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
-                        <button class="btn btn-link no-padding"><span class="glyphicon glyphicon-triangle-right"></span></button>
                       </div>
                     </div>
                   </div>
@@ -100,7 +105,6 @@
                         <button class="btn btn-default btn-sm"><strong>+1</strong></button>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                        <button class="btn btn-link no-padding"><span class="glyphicon glyphicon-triangle-right"></span></button>
                       </div>
                     </div>
                   </div>
@@ -124,7 +128,6 @@
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
-                        <button class="btn btn-link no-padding"><span class="glyphicon glyphicon-triangle-right"></span></button>
                       </div>
                     </div>
                   </div>
@@ -147,7 +150,6 @@
                         <button class="btn btn-default btn-sm"><strong>+1</strong></button>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                        <button class="btn btn-link no-padding"><span class="glyphicon glyphicon-triangle-right"></span></button>
                       </div>
                     </div>
                   </div>
@@ -171,7 +173,6 @@
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
-                        <button class="btn btn-link no-padding"><span class="glyphicon glyphicon-triangle-right"></span></button>
                       </div>
                     </div>
                   </div>
@@ -194,7 +195,6 @@
                         <button class="btn btn-default btn-sm"><strong>+1</strong></button>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
                         <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                        <button class="btn btn-link no-padding"><span class="glyphicon glyphicon-triangle-right"></span></button>
                       </div>
                     </div>
                   </div>
@@ -214,8 +214,8 @@
         </div>
       </div>
 
+      <!-- TECHNOLOGY RECOMMENDATIONS & COMMENTS -->
       <div class="technology-section row">
-        <!-- TECHNOLOGY RECOMMENDATIONS -->
         <div id="recommendations" class="col-md-6">
           <div class="card no-margin">
             <div class="card-section">
@@ -256,156 +256,73 @@
             </div>
             <div class="card-section">
               <h4>Avaliações</h4>
-              <uib-tabset justified="false">
-                <uib-tab heading="Todas">
-                  <ol class="technology-recommendations">
-                    <li class="technology-recommendation media">
-                      <div class="media-image technology-recommendation-value">
-                        <span class="glyphicon glyphicon-thumbs-up"></span>
+              <ol class="technology-recommendations">
+                <li class="technology-recommendation media">
+                  <div class="media-image technology-recommendation-value">
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                  </div>
+                  <div class="media-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
+                    <div class="technology-recommendation-meta media">
+                      <div class="media-image">
+                        <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt="">
                       </div>
                       <div class="media-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                        <div class="technology-recommendation-meta media">
-                          <div class="media-image">
-                            <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt="">
-                          </div>
-                          <div class="media-content">
-                            <strong>Thulio Ribeiro</strong><br>
-                            em 04/11/2015 às 17:28
-                          </div>
-                        </div>
+                        <strong>Thulio Ribeiro</strong><br>
+                        em 04/11/2015 às 17:28
                       </div>
-                    </li>
-                    <li class="technology-recommendation media">
-                      <div class="media-image technology-recommendation-value">
-                        <span class="glyphicon glyphicon-thumbs-down"></span>
-                      </div>
-                      <div class="media-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                        <div class="technology-recommendation-meta media">
-                          <div class="media-image">
-                            <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt="">
-                          </div>
-                          <div class="media-content">
-                            <strong>Igor Leal</strong><br>
-                            em 04/11/2015 às 17:28
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ol>
-
-                  <div class="row">
-                    <div class="col-md-6 col-md-offset-3 text-center">
-                      <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais avaliações</button>
                     </div>
                   </div>
-                </uib-tab>
-                <uib-tab>
-                  <uib-tab-heading>
-                    <span class="glyphicon glyphicon-thumbs-up"></span> Positivas
-                  </uib-tab-heading>
-                  <ol class="technology-recommendations">
-                    <li class="technology-recommendation media">
-                      <div class="media-image technology-recommendation-value">
-                        <span class="glyphicon glyphicon-thumbs-up"></span>
+                </li>
+                <li class="technology-recommendation media">
+                  <div class="media-image technology-recommendation-value">
+                    &nbsp;
+                    <!-- <span class="glyphicon glyphicon-thumbs-up"></span> -->
+                  </div>
+                  <div class="media-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
+                    <div class="technology-recommendation-meta media">
+                      <div class="media-image">
+                        <img class="technology-recommendation-meta-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt="">
                       </div>
                       <div class="media-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                        <div class="technology-recommendation-meta media">
-                          <div class="media-image">
-                            <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt="">
-                          </div>
-                          <div class="media-content">
-                            <strong>Thulio Ribeiro</strong><br>
-                            em 04/11/2015 às 17:28
-                          </div>
-                        </div>
+                        <strong>Neliza Alves Silva</strong><br>
+                        em 04/11/2015 às 17:28
                       </div>
-                    </li>
-                    <li class="technology-recommendation media">
-                      <div class="media-image technology-recommendation-value">
-                        <span class="glyphicon glyphicon-thumbs-up"></span>
-                      </div>
-                      <div class="media-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                        <div class="technology-recommendation-meta media">
-                          <div class="media-image">
-                            <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt="">
-                          </div>
-                          <div class="media-content">
-                            <strong>Igor Leal</strong><br>
-                            em 04/11/2015 às 17:28
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ol>
-
-                  <div class="row">
-                    <div class="col-md-6 col-md-offset-3 text-center">
-                      <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais avaliações positivas</button>
                     </div>
                   </div>
-                </uib-tab>
-                <uib-tab>
-                  <uib-tab-heading>
-                    <span class="glyphicon glyphicon-thumbs-down"></span> Negativas
-                  </uib-tab-heading>
-                  <ol class="technology-recommendations">
-                    <li class="technology-recommendation media">
-                      <div class="media-image technology-recommendation-value">
-                        <span class="glyphicon glyphicon-thumbs-down"></span>
+                </li>
+                <li class="technology-recommendation media">
+                  <div class="media-image technology-recommendation-value">
+                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                  </div>
+                  <div class="media-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
+                    <div class="technology-recommendation-meta media">
+                      <div class="media-image">
+                        <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt="">
                       </div>
                       <div class="media-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                        <div class="technology-recommendation-meta media">
-                          <div class="media-image">
-                            <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt="">
-                          </div>
-                          <div class="media-content">
-                            <strong>Thulio Ribeiro</strong><br>
-                            em 04/11/2015 às 17:28
-                          </div>
-                        </div>
+                        <strong>Igor Leal</strong><br>
+                        em 04/11/2015 às 17:28
                       </div>
-                    </li>
-                    <li class="technology-recommendation media">
-                      <div class="media-image technology-recommendation-value">
-                        <span class="glyphicon glyphicon-thumbs-down"></span>
-                      </div>
-                      <div class="media-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                        <div class="technology-recommendation-meta media">
-                          <div class="media-image">
-                            <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt="">
-                          </div>
-                          <div class="media-content">
-                            <strong>Igor Leal</strong><br>
-                            em 04/11/2015 às 17:28
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ol>
-
-                  <div class="row">
-                    <div class="col-md-6 col-md-offset-3 text-center">
-                      <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais avaliações negativas</button>
                     </div>
                   </div>
-                </uib-tab>
-              </uib-tabset>
+                </li>
+              </ol>
 
+              <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                  <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais avaliações</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <!-- TECHNOLOGY COMMENTS -->
         <div id="comments" class="col-md-6">
           <div class="card no-margin">
             <div class="card-section">
-              <h3 class="card-title">Comente sobre {{ technology.item.name }}</h3>
+              <h3 class="card-title">Comente sobre {{ technology.item.name }}?</h3>
             </div>
             <div class="card-section">
               <div class="row">

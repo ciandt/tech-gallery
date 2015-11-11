@@ -4,22 +4,22 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
    * Object context
    * @type {Object}
    */
-  var context = this;
+   var context = this;
 
   /**
    * Loading state
    * @type {Boolean}
    */
-  this.loading = true;
+   this.loading = true;
 
   /**
    * Technology details
    * @type {Object}
    */
-  this.item = {};
+   this.item = {};
 
   // Load techonlogy based on URL param
-  TechnologyService.getTechnology($stateParams.id, function (technology) {
+  TechnologyService.getTechnology($stateParams.id).then(function (technology) {
     AppService.setPageTitle(technology.name);
     context.item = technology;
     context.loading = false;
@@ -27,10 +27,18 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
 
   this.ratings = TechnologyService.getRatings();
 
-  this.rating = 0;
+  this.rating = {};
 
-  this.setSkill = function (technology, rating) {
+  this.oldRating = {};
+
+  // Load techonlogy based on URL param
+  TechnologyService.getUserSkill($stateParams.id).then(function (rating) {
     context.rating = rating;
+    context.oldRating = rating;
+  });
+
+  this.setSkill = function (technology, newRating) {
+    TechnologyService.addUserSkill($stateParams.id, newRating, context.oldRating);
   }
 
   this.recommended = TechnologyService.getRecommended();
@@ -44,4 +52,8 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   this.share = {
     gplus : true
   }
+
+  this.getUsersList = function(value) {
+    TechnologyService.getUsersList(value)
+  };
 }
