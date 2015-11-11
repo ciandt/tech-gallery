@@ -91,11 +91,11 @@
           </div>
           <div class="card-actions card-section" ng-if="isUserLogged">
             <div class="pull-left">
-              <button type="button" ng-click="deleteTechnology(technology.id)" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button>
+              <button type="button" ng-click="technologies.followTechnology(technology.id, $event)" ng-class="technologies.setFollowedClass(technology.followedByUser)"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button>
             </div>
             <div class="pull-right">
               <a href="#/technologies/{{ technology.id }}/edit" class="btn btn-default btn-xs" title="Editar {{ technology.name }}"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
-              <!-- <button type="button" ng-click="deleteTechnology(technology.id)" class="btn btn-danger btn-xs" title="Deletar {{ technology.name }}"><span class="glyphicon glyphicon-trash"></span></button> -->
+              <button type="button" ng-if="loggedUserInformation.admin" ng-click="technologies.deleteTechnology(technology.id)" class="btn btn-danger btn-xs" title="Deletar {{ technology.name }}"><span class="glyphicon glyphicon-trash"></span></button>
             </div>
           </div>
           <div class="card-meta card-section">
