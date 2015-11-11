@@ -12,9 +12,10 @@ module.exports = function(
   $stateProvider
     .state('root', {
       abstract: true,
+      controller : 'AppController as app',
       templateUrl: 'app/templates/default.html',
       resolve: {
-        loadEndpoints: function ($rootScope, API, $q) {
+        loadEndpoints: function ($rootScope, API, $q, AppService) {
           $rootScope.apiLoaded = false;
           var deferred = $q.defer();
           var gapiInterval = window.setInterval(function() {
@@ -25,6 +26,7 @@ module.exports = function(
 
             gapi.client.load(API.NAME, API.VERSION, function (data) {
               $rootScope.apiLoaded = true;
+              AppService.setLoading(false);
               deferred.resolve();
             }, API.URL);
           }, 200);
