@@ -147,7 +147,7 @@ angular.module('techGallery').controller(
       req.technology = $scope.idTechnology;
       if ($scope.endorsed.email || $scope.endorsed) {
         gapi.client.rest.addEndorsement(req).execute(function(data) {
-        ga('send', 'event', 'Endorsement', $scope.name, $scope.endorsed.email);
+        sendEndorsementEvent($scope.name, $scope.endorsed.email);
           if($scope.postGooglePlus && !data.hasOwnProperty('error')){
             var req = {
                 feature : featureEnum.ENDORSE,
@@ -309,28 +309,14 @@ angular.module('techGallery').controller(
       if (newValue !== oldValue) {
         $scope.skillLevel = returnSkillLevel(newValue);
         //Make API call to save the skill
-
+        sendSkillEvent($scope.skillLevel);
+        
         var idTech = $scope.idTechnology;
         var req = {
           technology : idTech,
           value : newValue
         };
         gapi.client.rest.addSkill(req).execute(function(data) {
-        	if($scope.skillLevel === '1'){
-        		ga('send', 'event', 'Skill', $scope.name, 'Newbie');
-        	}
-        	if($scope.skillLevel === '2'){
-        		ga('send', 'event', 'Skill', $scope.name, 'Initiate');
-        	}
-			if($scope.skillLevel === '3'){
-				ga('send', 'event', 'Skill', $scope.name, 'Padawan');
-			}
-			if($scope.skillLevel === '4'){
-				ga('send', 'event', 'Skill', $scope.name, 'Knight');
-			}
-			if($scope.skillLevel === '5'){
-				ga('send', 'event', 'Skill', $scope.name, 'Jedi');
-			}
           
           $scope.processingEndorse = true;
           callBackLoaded();
@@ -385,7 +371,7 @@ angular.module('techGallery').controller(
 		              gapi.client.rest.postComment(req).execute();
 		            }
     			});
-    			ga('send', 'event', 'Comment', 'comment_add', $scope.name);
+    			sendCommentEvent($scope.name);
     		}else {
     			//Call API to add a comment and a recommendation
     			var req = {
@@ -411,12 +397,7 @@ angular.module('techGallery').controller(
         		      gapi.client.rest.postComment(req).execute();
 		            }
     			});
-    			if($scope.score === true){
-    				ga('send', 'event', 'Recommendation', 'recommendation_positive', $scope.name);
-    			}
-    			if($scope.score === false){
-    				ga('send', 'event', 'Recommendation', 'recommendation_negative', $scope.name);
-    	    	}
+    			sendRecommendationEvent($scope.name, $scope.score);
     		}
     	}else{
     		if($scope.score !== undefined){
