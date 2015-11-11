@@ -10,7 +10,13 @@ $card-spacing: 15px;
 
   // height: 380px;
 }
+.card--stats {
+  display: inline-block;
+  text-align: center;
+  width: 150px;
+}
 .card-section {
+  overflow: hidden;
   padding: $card-spacing;
   border-top: 1px solid #eee;
 

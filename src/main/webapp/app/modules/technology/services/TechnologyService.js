@@ -136,6 +136,12 @@ module.exports = function($q) {
     ];
   }
 
+  this.getRating = function (rating) {
+    context.getRatings().filter(function (i) {
+      return i.value === rating;
+    })
+  }
+
   this.getUserSkill = function (id) {
     var deferred = $q.defer();
     if (!id) {

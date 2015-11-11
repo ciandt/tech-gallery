@@ -7,13 +7,82 @@
           <img ng-src="{{ user.profile.image }}" class="user-image" />
         </div>
         <div class="media-body">
-          <h1 class="user-name">{{ user.profile.name }}</h1>
-
-
+          <div class="pull-left">
+            <h1 class="user-name">{{ user.profile.name }}</h1>
+          </div>
+          <div class="pull-right">
+            <div class="card card--stats">
+              <div class="card-section">
+                <span class="panel-title">Tecnologias</span>
+              </div>
+              <div class="card-section text-center">
+                <span class="user-stats">{{ user.profile.technologiesCount }}</span>
+              </div>
+            </div>
+            <div class="card card--stats">
+              <div class="card-section">
+                <span class="panel-title">Avaliações</span>
+              </div>
+              <div class="card-section text-center">
+                <span class="user-stats">{{ user.profile.recommendationsCount }}</span>
+              </div>
+            </div>
+            <div class="card card--stats">
+              <div class="card-section">
+                <span class="panel-title">Comentários</span>
+              </div>
+              <div class="card-section text-center">
+                <span class="user-stats">{{ user.profile.commentsCount }}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </header>
     <div class="user-body">
+      <h3>Tecnologias</h3>
+      <p ng-if="!user.profile.technologies.length">Este usuário não está relacionado à nenhuma tecnologia.</p>
+      <div class="row" ng-if="user.profile.technologies.length">
+        <div class="col-sm-6 col-md-3" ng-repeat="technology in user.profile.technologies">
+          <div class="card user-technology">
+            <div class="card-section">
+              <h3 class="card-title"><a href="#/technologies/{{ technology.id }}">{{ technology.name }}</a></h3>
+              <p class="technology-recommendation"><small><a href="#/technologies/{{ technology.id }}">Ver tecnologia</a></small></p>
+            </div>
+            <div class="card-section">
+              <div class="user-technology-meta media">
+                <div class="media-left user-technology-label media-middle">Total de indicaçoes:</div>
+                <div class="media-body user-stats">10</div>
+              </div>
+              <div class="user-technology-meta media">
+                <div class="media-left user-technology-label media-middle">Auto avaliação:</div>
+                <div class="media-body">
+                  <div class="media">
+                    <div class="media-left"><img ng-src="assets/images/{{ technology.rating.title | lowercase }}.png" class="media-object"></div>
+                    <div class="media-body">
+                      {{ technology.rating.title }}<br />
+                      <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:technology.rating.value"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="user-technology-meta">
+                <div class="user-technology-label">Como avaliou a tecnologia:</div>
+                <div class="media">
+                  <div class="media-left technology-recommendation-value">
+                    <span ng-if="technology.recommendation.recommended" class="glyphicon glyphicon-thumbs-up"></span>
+                    <span ng-if="!technology.recommendation.recommended" class="glyphicon glyphicon-thumbs-down"></span>
+                  </div>
+                  <div class="media-body" ng-bind-html="technology.recommendation.comment | nl2p"></div>
+                </div>
+              </div>
+              <div class="user-technology-meta">
+                <button class="btn btn-link btn-block"><span class="glyphicon glyphicon-comment"></span> Ver comentários</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
