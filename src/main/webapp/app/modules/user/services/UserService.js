@@ -1,10 +1,38 @@
-module.exports = function ($rootScope, $q) {
+module.exports = function ($rootScope, $q, $timeout) {
 
   /**
    * Object context
    * @type {Object}
    */
   var context = this;
+
+  /**
+   * The user profile info
+   * @type {Object}
+   */
+  this.profile = {};
+
+  /**
+   * Update the user profile
+   * @param  {String} id The user ID
+   * @return {Promise}
+   */
+  this.updateUserProfile = function (id) {
+    var deferred = $q.defer();
+
+    // Mock with timeout for loading effect
+    $timeout(function () {
+      angular.copy({
+        id: id,
+        name: 'Fulano de Tal',
+        image: 'https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50'
+      }, context.profile);
+
+      deferred.resolve(context.profile);
+    }, 300);
+
+    return deferred.promise;
+  }
 
   this.getUserEmail = function(callBackFunction, authResult){
     setTimeout(function(){
