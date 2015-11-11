@@ -32,22 +32,21 @@
                          onchange="angular.element(this).scope().handleFileSelect(this)">
                 </div>
                 <div class="form-group col-md-12" ng-show="loggedUserInformation.admin">
-                  <div class="btn-group col-md-9" dropdown>
-                    <button id="single-button" type="button" class="btn btn-default" dropdown-toggle>
-                      {{ selectedRecommendation==null ? 'Recomendação Ci&T' : selectedRecommendation }} <span class="caret"></span>
+                  <div class="btn-group" uib-dropdown>
+                    <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+                      {{ technology.selectedRecommendation==null ? 'Recomendação Ci&T' : technology.selectedRecommendation }}
+                      <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-                      <li role="menuitem" ng-repeat="item in dropDownRecommendation">
-                        <a href="#" ng-show="item != 'Todos'" ng-click="selectRecommendation(item)">{{item}}</a>
+                      <li role="menuitem" ng-repeat="item in technology.dropDownRecommendation">
+                        <a href="#" ng-show="item != 'Todos'" ng-click="technology.selectRecommendation(item)">{{item}}</a>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div class="form-group col-md-12" ng-show="loggedUserInformation.admin">
-                  <div class="col-md-9 text-right">
-                    <textarea ng-model="justification" class="form-control" id="idjust" maxlength="500"
-                              placeholder="<Justificativa da Recomendação Ci&T>" ></textarea>
-                  </div>
+                  <textarea ng-model="technology.justification" class="form-control" id="idjust" maxlength="500"
+                            placeholder="<Justificativa da Recomendação Ci&T>" ></textarea>
                 </div>
                 <div class="form-group col-md-12" ng-class="{'has-error': (addTechnologyForm.description.$invalid && addTechnologyForm.description.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.description.$invalid)}">
                   <label for="technology-description">Descrição</label>

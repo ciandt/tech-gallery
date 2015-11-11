@@ -24,11 +24,12 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
 		  context.showTechNotExists = true;
 		  return;
 	  }
+    AppService.setPageTitle('Editar tecnologia');
 	  fillTechnology(data);
   });
 
-  TechnologyService.getRecommendations().then(function(){
-    context.dropDownRecommendation = data
+  TechnologyService.getRecommendations().then(function(data){
+    context.dropDownRecommendation = data;
   });
 
   this.addOrUpdateTechnology = function(form){
