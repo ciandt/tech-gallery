@@ -1,19 +1,23 @@
 package com.ciandt.techgallery.service.model.profile;
 
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
+import com.googlecode.objectify.Ref;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.print.attribute.HashAttributeSet;
 
 public class UserProfileTo {
 
   private TechGalleryUser owner;
 
-  private List<UserProfileItem> positiveRecItems;
-
-  private List<UserProfileItem> negativeRecItems;
-
-  private List<UserProfileItem> otherItems;
+  private List<UserProfileItemTo> technologies;
+  
+  private HashMap<String, UserProfileItemTo> itemByTech; 
 
   /**
    * All args constructor.
@@ -27,9 +31,88 @@ public class UserProfileTo {
       List<UserProfileItem> negativeRecItems, List<UserProfileItem> otherItems) {
     super();
     this.owner = owner;
-    this.positiveRecItems = positiveRecItems;
-    this.negativeRecItems = negativeRecItems;
-    this.otherItems = otherItems;
+    this.itemByTech=new HashMap<String, UserProfileItemTo>();
+    this.technologies = new ArrayList<UserProfileItemTo>();
+    
+    populate(positiveRecItems, negativeRecItems, otherItems);
+  }
+
+  private void populate(List<UserProfileItem> positiveRecItems,
+      List<UserProfileItem> negativeRecItems, List<UserProfileItem> otherItems) {
+    
+    UserProfileItemTo itemTo;
+    String technologyName;
+    for (UserProfileItem userProfileItem : positiveRecItems) {
+      technologyName = userProfileItem.getTechnologyName();
+      itemTo = itemByTech.get(technologyName);
+      if(itemTo==null){
+        itemTo = transformToItemTo(userProfileItem, Boolean.TRUE);
+        technologies.add(itemTo);
+        itemByTech.put(technologyName, itemTo);
+      }
+    }
+    
+    for (UserProfileItem userProfileItem : negativeRecItems) {
+      technologyName = userProfileItem.getTechnologyName();
+      itemTo = itemByTech.get(technologyName);
+      if(itemTo==null){
+        itemTo = transformToItemTo(userProfileItem, Boolean.FALSE);
+        technologies.add(itemTo);
+        itemByTech.put(technologyName, itemTo);
+      }
+    }
+    
+    for (UserProfileItem userProfileItem : otherItems) {
+      technologyName = userProfileItem.getTechnologyName();
+      itemTo = itemByTech.get(technologyName);
+      if(itemTo==null){
+        itemTo = transformToItemTo(userProfileItem, null);
+        technologies.add(itemTo);
+        itemByTech.put(technologyName, itemTo);
+      } else {
+        transformComment(userProfileItem, itemTo);
+      }
+    }
+  }
+
+  private UserProfileItemTo transformToItemTo(UserProfileItem userProfileItem,
+      Boolean isPositive) {
+    
+    UserProfileItemTo userProfileItemTo = new UserProfileItemTo();
+    if (isPositive!=null) {
+      RecomendationTo recomendationTo = new RecomendationTo();
+//      recomendationTo.setPositive(isPositive);
+//      recomendationTo.setComment(userProfileItem.getCompanyRecommendation());
+      userProfileItemTo.setRecomendation(recomendationTo);
+      
+    }
+    
+    transformComment(userProfileItem, userProfileItemTo);
+    
+   userProfileItemTo.setCompanyRecommendation(userProfileItem.getCompanyRecommendation());
+   userProfileItemTo.setEndorsementQuantity(userProfileItem.getEndorsementQuantity());
+   userProfileItemTo.setSkillLevel(userProfileItem.getSkillLevel());
+   userProfileItemTo.setTechnologyName(userProfileItem.getTechnologyName());
+   userProfileItemTo.setTechnologyPhotoUrl(userProfileItemTo.getTechnologyPhotoUrl());
+    
+    return userProfileItemTo;
+  }
+
+  private void transformComment(UserProfileItem userProfileItem,
+      UserProfileItemTo userProfileItemTo) {
+    
+    if (userProfileItem.getComments() != null){
+      if(userProfileItemTo.getComments()==null){
+        userProfileItemTo.setComments(new ArrayList<SubItemCommentTo>());
+      }
+      SubItemCommentTo commentTo;
+      for(Ref<TechnologyComment> comm : userProfileItem.getComments()){
+        commentTo = new SubItemCommentTo();
+        commentTo.setBody(comm.get().getComment());
+        commentTo.setTimestamp(comm.get().getTimestamp());
+        userProfileItemTo.getComments().add(commentTo);
+      }
+    }
   }
 
   public TechGalleryUser getOwner() {
@@ -40,29 +123,6 @@ public class UserProfileTo {
     this.owner = owner;
   }
 
-  public List<UserProfileItem> getPositiveRecItems() {
-    return positiveRecItems;
-  }
-
-  public void setPositiveRecItems(List<UserProfileItem> positiveRecItems) {
-    this.positiveRecItems = positiveRecItems;
-  }
-
-  public List<UserProfileItem> getNegativeRecItems() {
-    return negativeRecItems;
-  }
-
-  public void setNegativeRecItems(List<UserProfileItem> negativeRecItems) {
-    this.negativeRecItems = negativeRecItems;
-  }
-
-  public List<UserProfileItem> getOtherItems() {
-    return otherItems;
-  }
-
-  public void setOtherItems(List<UserProfileItem> otherItems) {
-    this.otherItems = otherItems;
-  }
 
 
 }

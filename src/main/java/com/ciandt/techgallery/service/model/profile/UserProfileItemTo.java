@@ -15,6 +15,8 @@ public class UserProfileItemTo {
   private Integer skillLevel;
 
   private List<SubItemCommentTo> comments;
+  
+  private RecomendationTo recomendation;
 
   public UserProfileItemTo() {}
 
@@ -87,5 +89,11 @@ public class UserProfileItemTo {
     this.technologyPhotoUrl = technologyPhotoUrl;
   }
 
+  public RecomendationTo getRecomendation() {
+    return recomendation;
+  }
 
+  public void setRecomendation(RecomendationTo recomendation) {
+    this.recomendation = recomendation;
+  }
 }
