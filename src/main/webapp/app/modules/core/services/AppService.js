@@ -10,7 +10,7 @@ module.exports = function ($rootScope) {
    * Application loading state
    * @type {Boolean}
    */
-  this.loading = true;
+  $rootScope.loading = true;
 
   /**
    * Application name
@@ -58,7 +58,6 @@ module.exports = function ($rootScope) {
 
   /**
    * Update the page <title>. Add the appName at the end.
-   *
    * @param {String} title The new page title
    */
   this.setPageTitle = function (title) {
@@ -67,10 +66,12 @@ module.exports = function ($rootScope) {
     }
   }
 
+  /**
+   * Set application loading state
+   * @param {Boolean} state The loading state true|false
+   */
   this.setLoading = function (state) {
-    context.loading = !!state;
-    console.log('set loading state to:', context.loading, !!state, state);
-    // $rootScope.$apply();
+    $rootScope.loading = !!state;
   }
 
   this.setPageTitle('Index');

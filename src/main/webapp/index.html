@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="TechGallery" ng-controller="AppController as app">
+<html lang="en" ng-app="TechGallery">
 <head>
   <meta charset="utf-8">
   <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
@@ -18,7 +18,8 @@
   </script>
 </head>
 <body class="tech-gallery">
-  <ui-view></ui-view>
+  <loading ng-if="loading" full="true"></loading>
+  <ui-view ng-if="!loading"></ui-view>
   <script src="build/app.min.js"></script>
 </body>
 </html>
