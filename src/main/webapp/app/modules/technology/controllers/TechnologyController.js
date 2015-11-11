@@ -1,4 +1,4 @@
-module.exports = function ($scope, $rootScope, $stateParams, AppService, TechnologyService) {
+module.exports = function ($rootScope, $stateParams, AppService, TechnologyService) {
 
   /**
    * Object context
@@ -58,11 +58,15 @@ module.exports = function ($scope, $rootScope, $stateParams, AppService, Technol
   };
 
   this.getEndorsementsByTech = function() {
-    return TechnologyService.getEndorsementsByTech($stateParams.id);
+   TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
+    context.showEndorsementResponse = data;
+   });
   };
 
   this.endorseUser = function() {
     TechnologyService.endorseUser($stateParams.id, this.endorsed.email);
+    this.getEndorsementsByTech();
+    AppService.setAlert('Usuário indicado!' ,'success');
   };
 
   this.showSelfInformations = function(email){
@@ -76,4 +80,5 @@ module.exports = function ($scope, $rootScope, $stateParams, AppService, Technol
     return 'plusOne' + index + email;
   };
 
+  this.getEndorsementsByTech();
 }

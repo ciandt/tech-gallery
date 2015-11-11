@@ -72,21 +72,21 @@
 
 
 
-                <div class="technology-endorsement row" ng-repeat="endorsement in technology.getEndorsementsByTech track by $index">
+                <div class="technology-endorsement row" ng-repeat="response in technology.showEndorsementResponse track by $index">
                   <div class="media col-md-7">
                     <div class="media-image technology-endorsement-image">
-                      <a href="#/people/username"><img src="{{endorsement.endorsed.photo}}" alt=""></a>
+                      <a href="#/people/username"><img src={{response.endorsed.photo}} alt=""></a>
                     </div>
                     <div class="media-content">
                       <div class="row">
                         <div class="col-md-6">
-                          <p><strong><a href="#/people/username">{{endorsement.endorsed.name}}</a></strong></p>
+                          <p><strong><a href="#/people/username">{{response.endorsed.name}}</a></strong></p>
                         </div>
                         <div class="col-md-6 text-right">
                           <button
-                          type="button" id={{generateId($index,response.endorsed.email)}}
+                          type="button" id={{technology.generateId($index,response.endorsed.email)}}
                           ng-disabled=disablePlusOne
-                          ng-click="addEndorse(response.endorsed, generateId($index,response.endorsed.email))" class="btn btn-default btn-sm" uibTooltip ={{setToolTipPlusOne($index,response.endorsed.email)}}
+                          ng-click="addEndorse(response.endorsed, technology.generateId($index,response.endorsed.email))" class="btn btn-default btn-sm" uibTooltip ={{setToolTipPlusOne($index,response.endorsed.email)}}
                           ng-class="response.endorsers.plusOneClass">+{{response.endorsers.length}}</button>
                           <div
                           ng-repeat="endorser in technology.getEndorsersFiltered track by $index">
@@ -100,18 +100,10 @@
                   </div>
                 </div>
                 <div class="col-md-5">
-                  <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong> ainda não se auto avaliou.</p>
+                  <p><strong><a href="#/people/username">{{response.endorsed.name}}</a></strong> ainda não se auto avaliou.</p>
                 </div>
               </div>
 
-
-
-
-              <div class="row">
-                <div class="col-md-6 col-md-offset-3 text-center">
-                  <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais profissionais</button>
-                </div>
-              </div>
             </div>
           </div>
         </div>

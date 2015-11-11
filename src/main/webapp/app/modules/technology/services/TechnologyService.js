@@ -170,7 +170,6 @@ module.exports = function($q, $timeout, $rootScope) {
   }
 
   this.addUserSkill = function (idTech, newValue, oldValue) {
-    var deferred = $q.defer();
     if (newValue !== oldValue) {
       if (!idTech) {
         throw 'getTechnology needs a valid `id` parameter';
@@ -251,6 +250,7 @@ this.getUsersList = function (value){
   };
 
   this.getEndorsementsByTech = function(idTech) {
+    var deferred = $q.defer();
     var req = {
       id : idTech
     };
@@ -264,14 +264,15 @@ this.getUsersList = function (value){
           if(!response[i].endorsed.photo) {
             response[i].endorsed.photo = "/assets/images/default-user-image.jpg";
           }
-          response[i].endorsers = this.setPlusOneClass(response[i].endorsers);
+          //response[i].endorsers = setPlusOneClass(response[i].endorsers);
         }
       }
-      /*$scope.showEndorsementResponse = response;
-      $scope.processingEndorse = false;
+      deferred.resolve(response);
+      /*$scope.processingEndorse = false;
       $scope.loadEndorsements = false;
       $scope.$apply();*/
     });
+      return deferred.promise;
   }
 
   this.open = function(endorsers, size) {
@@ -293,7 +294,7 @@ this.getUsersList = function (value){
      * Begin of +1 features
      *
      */
-     this.setPlusOneClass = function(endorsers){
+     /*function setPlusOneClass(endorsers){
       for(var i in endorsers){
         if(endorsers[i].email == $scope.userEmail){
           endorsers.plusOneClass = 'btn GPlusAdded';
@@ -302,6 +303,6 @@ this.getUsersList = function (value){
       }
       endorsers.plusOneClass = 'btn GPlusDefault';
       return endorsers;
-    };
+    };*/
 
   };
