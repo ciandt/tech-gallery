@@ -1,11 +1,16 @@
 var angular = require('angular');
 var apiName = 'rest';
 var apiVersion = 'v1';
+if(window.location.hostname == 'localhost'){
+  var port = ':8080';
+} else {
+  var port = '';
+}
 var apiUrl =  [
   window.location.protocol,
   '//',
   window.location.hostname,
-  ':8080',
+  port,
   '/_ah/api/'
 ].join('');
 

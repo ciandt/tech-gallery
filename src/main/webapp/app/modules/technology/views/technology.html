@@ -118,7 +118,7 @@
             </div>
             <div class="card-section">
               <div class="row">
-                <form action="" class="col-md-12">
+                <form ng-submit="technology.addComment()" class="col-md-12">
                   <div class="form-group">
                     <div class="form-inline">
                       <div class="radio">
@@ -136,7 +136,7 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <textarea name="recommendation[comment]" id="recommendation-comment-input" class="form-control"></textarea>
+                    <textarea ng-model="technology.comment" id="recommendation-comment-input" class="form-control"></textarea>
                   </div>
                   <div class="form-inline text-right">
                     <div class="checkbox">
