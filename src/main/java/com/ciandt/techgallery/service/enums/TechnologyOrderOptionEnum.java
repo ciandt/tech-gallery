@@ -14,7 +14,7 @@ import java.util.List;
  */
 public enum TechnologyOrderOptionEnum {
 
-  POSITIVE_RECOMMENDATION_AMOUNT("Quantidade de Recomendações Positivas") {
+  POSITIVE_RECOMMENDATION_AMOUNT("Recomendações Positivas") {
     @Override
     public void sort(List<Technology> techList) {
       Collections.sort(techList, new Comparator<Technology>() {
@@ -26,7 +26,7 @@ public enum TechnologyOrderOptionEnum {
       });
     }
   },
-  NEGATIVE_RECOMMENDATION_AMOUNT("Quantidade de Recomendações Negativas") {
+  NEGATIVE_RECOMMENDATION_AMOUNT("Recomendações Negativas") {
     @Override
     public void sort(List<Technology> techList) {
       Collections.sort(techList, new Comparator<Technology>() {
@@ -38,7 +38,7 @@ public enum TechnologyOrderOptionEnum {
       });
     }
   },
-  COMMENT_AMOUNT("Quantidade de Comentários") {
+  COMMENT_AMOUNT("Comentários") {
     @Override
     public void sort(List<Technology> techList) {
       Collections.sort(techList, new Comparator<Technology>() {
@@ -50,7 +50,7 @@ public enum TechnologyOrderOptionEnum {
       });
     }
   },
-  ENDORSEMENT_AMOUNT("Quantidade de Indicações") {
+  ENDORSEMENT_AMOUNT("Indicações") {
     @Override
     public void sort(List<Technology> techList) {
       Collections.sort(techList, new Comparator<Technology>() {
