@@ -249,17 +249,17 @@ module.exports = function($q, $timeout, $rootScope) {
     });
 }*/
 
-this.getUsersList = function (value){
-  var req = {query:value};
-  return gapi.client.rest.usersAutoComplete(req).then(function (data){
-    for(var i in data.result.items){
-      if(!data.result.items[i].photo){
-        data.result.items[i].photo = "/assets/images/default-user-image.jpg";
+  this.getUsersList = function (value){
+    var req = {query:value};
+    return gapi.client.rest.usersAutoComplete(req).then(function (data){
+      for(var i in data.result.items){
+        if(!data.result.items[i].photo){
+          data.result.items[i].photo = "/assets/images/default-user-image.jpg";
+        }
       }
-    }
-    return data.result.items;
-  });
-}
+      return data.result.items;
+    });
+  }
 
   this.getRecommendations = function(){
     var deferred = $q.defer();
@@ -269,4 +269,12 @@ this.getUsersList = function (value){
     return deferred.promise;
   }
 
+  this.getCommentsByTech = function(technologyId){
+    var deferred = $q.defer();
+    var req = {technologyId: technologyId};
+    gapi.client.rest.getCommentsByTech(req).execute(function(data){
+      deferred.resolve(data);
+    });
+    return deferred.promise;
+  }
 };
