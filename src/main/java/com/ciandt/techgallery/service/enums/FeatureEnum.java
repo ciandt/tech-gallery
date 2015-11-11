@@ -35,9 +35,11 @@ public enum FeatureEnum {
     public String createContent(String currentUserMail, String endorsedMail, String technologyName, Boolean score,
         String comment) {
       if (score) {
-        return "+" + currentUserMail + this.message() + Constants.POSITIVE_RECOMMENDATION_TEXT + technologyName;
+        return "+" + currentUserMail + this.message() + Constants.POSITIVE_RECOMMENDATION_TEXT
+            + technologyName + Constants.NEW_LINE + Constants.NEW_LINE + "\"" + comment + "\"";
       } else {
-        return "+" + currentUserMail + this.message() + Constants.NEGATIVE_RECOMMENDATION_TEXT + technologyName;
+        return "+" + currentUserMail + this.message() + Constants.NEGATIVE_RECOMMENDATION_TEXT
+            + technologyName + Constants.NEW_LINE + Constants.NEW_LINE + "\"" + comment + "\"";
       }
     }
   };

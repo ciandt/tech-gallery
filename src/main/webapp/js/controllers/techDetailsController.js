@@ -390,6 +390,7 @@ angular.module('techGallery').controller(
                 		  score : data.score,
 		                  currentUserMail : data.recommender.email,
         		          technologyName : data.technology.name,
+        		          comment : data.comment.comment,
                 		  appLink: $scope.currentPage
 		              }
         		      gapi.client.rest.postComment(req).execute();
