@@ -6,8 +6,16 @@ module.exports = function ($scope, $rootScope, AppService, AuthService, UserServ
    */
   var context = this;
 
+  /**
+   * Bind app.alert to the Service model
+   * @type {Object}
+   */
   this.alert = AppService.alert;
 
+  /**
+   * Bind the alert close method to the Service
+   * @type {Function}
+   */
   this.closeAlert = AppService.closeAlert;
 
   $rootScope.$watch('apiLoaded', function(newValue, oldValue) {
@@ -17,22 +25,22 @@ module.exports = function ($scope, $rootScope, AppService, AuthService, UserServ
   });
 
   function checkAuth(immediate){
-	   AuthService.checkAuth(afterLogin, immediate);
+     AuthService.checkAuth(afterLogin, immediate);
   }
 
   var afterLogin = function(data){
-  	if(data){
-  		$rootScope.isUserLogged = true;
+    if(data){
+      $rootScope.isUserLogged = true;
       UserService.getUserInformations();
-    	$scope.$apply();
-  	}else{
+      $scope.$apply();
+    }else{
       $rootScope.isUserLogged = false;
       $scope.$apply();
     }
   }
 
   this.login = function(){
-  	checkAuth(false);
+    checkAuth(false);
   }
 
 }
