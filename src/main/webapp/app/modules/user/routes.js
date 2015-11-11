@@ -9,6 +9,10 @@ module.exports = function(
    */
   var viewsFolder = 'app/modules/user/views/';
 
+  $urlRouterProvider
+    .when('/people', '/404')
+    .when('/people/', '/404');
+
   $stateProvider
     .state('root.user', {
       url: '/people/:id',
