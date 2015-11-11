@@ -4,21 +4,21 @@ function sendEndorsementEvent(techName, endorsedEmail){
 
 function sendSkillEvent(skill){
 	if(skill){
-	if(skill === "Newbie"){
-		ga('send', 'event', 'Skill', $scope.name, 'Newbie');
-	}
-	if(skill === "Initiate"){
-		ga('send', 'event', 'Skill', $scope.name, 'Initiate');
-	}
-	if(skill === "Padawan"){
-		ga('send', 'event', 'Skill', $scope.name, 'Padawan');
-	}
-	if(skill === "Knight"){
-		ga('send', 'event', 'Skill', $scope.name, 'Knight');
-	}
-	if(skill === "Jedi"){
-		ga('send', 'event', 'Skill', $scope.name, 'Jedi');
-	}	
+		if(skill === "Newbie"){
+			ga('send', 'event', 'Skill', $scope.name, 'Newbie');
+		}
+		if(skill === "Initiate"){
+			ga('send', 'event', 'Skill', $scope.name, 'Initiate');
+		}
+		if(skill === "Padawan"){
+			ga('send', 'event', 'Skill', $scope.name, 'Padawan');
+		}
+		if(skill === "Knight"){
+			ga('send', 'event', 'Skill', $scope.name, 'Knight');
+		}
+		if(skill === "Jedi"){
+			ga('send', 'event', 'Skill', $scope.name, 'Jedi');
+		}	
 	}
 }
 
