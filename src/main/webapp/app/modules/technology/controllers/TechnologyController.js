@@ -137,9 +137,14 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   };
 
   this.endorseUser = function() {
-    TechnologyService.endorseUser($stateParams.id, this.endorsed.email);
-    this.getEndorsementsByTech();
-    AppService.setAlert('Usuário indicado!' ,'success');
+    TechnologyService.endorseUser($stateParams.id, this.endorsed.email).then(function(data){
+        if(!data.hasOwnProperty('error')){
+          context.getEndorsementsByTech();
+          //AppService.setAlert('Usuário indicado!' ,'success');
+        } else {
+          //AppService.setAlert(data.error.message ,'error');
+        }
+    });
   };
 
   this.showSelfInformations = function(email){
@@ -154,4 +159,38 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   };
 
   this.getEndorsementsByTech();
+
+     this.followTechnology = function(idTechnology, $event){
+    context.currentElement = $event.currentTarget;
+      TechnologyService.followTechnology(idTechnology).then(function(data){
+        if(!data.hasOwnProperty('error')){
+          changeFollowedClass(context.currentElement);
+        }
+      });
+   }
+
+   function changeFollowedClass(element){
+    if(element.className.indexOf('btn-default') > 0){
+      element.className = 'btn btn-xs btn-danger';
+    }else{
+      element.className = 'btn btn-xs btn-default';
+    }
+    context.currentElement = undefined;
+  }
+
+  this.setFollowedClass = function(isFollowedByUser){
+    if(isFollowedByUser){
+      return 'btn btn-xs btn-danger';
+    }
+    return 'btn btn-xs btn-default';
+  }
+
+      this.addEndorse = function(endorsed, id){
+      TechnologyService.addEndorse(endorsed, id, $stateParams.id).then(function(data){
+        if(!data.hasOwnProperty('error')){
+          //reload endorsers
+          //change css class
+        }
+      });
+   }
 }

@@ -7,7 +7,7 @@
             <img ng-src="{{ technology.item.image }}" class="technology-image" />
           </div>
           <div class="media-content">
-            <h1 class="technology-name">{{ technology.item.name }} <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button></h1>
+            <h1 class="technology-name">{{ technology.item.name }} <button class="btn btn-default btn-xs" ng-click="technology.followTechnology(technology.item.id, $event)" ng-class="technology.setFollowedClass(technology.item.followedByUser)"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button></h1>
             <ul class="technology-meta">
               <li ng-if="technology.item.recommendation.length"><span class="label label-default technology-recommendation">{{ technology.item.recommendation }}</span></li>
               <li ng-if="technology.item.website.length"><span class="glyphicon glyphicon-link"></span> <a href="{{ technology.item.website }}" target="_blank" title="{{ technology.item.name }}">{{ technology.item.website }}</a></li>
@@ -53,7 +53,7 @@
                 <div class="form-inline">
                   <div class="input-group">
                     <input ng-model="technology.endorsed" type="text" class="form-control"
-                    placeholder="usuário" aria-describedby="basic-addon2" uib-typeahead="user as user.email for user in technology.getUsersList($viewValue)" typeahead-min-length="3" typeahead-template-url="customTemplate.html" typeahead-loading="loadingUsers" typeahead-no-results="noResults" style="width: 250px;">
+                    placeholder="usuário" aria-describedby="basic-addon2" uib-typeahead="user as user.email for user in technology.getUsersList($viewValue)" typeahead-min-length="3" typeahead-template-url="customTemplate.html" style="width: 250px;">
                     <span class="input-group-addon">@ciandt.com</span>
                   </div>
                   <!--<div ng-show="loadingUsers">
@@ -83,10 +83,10 @@
                           <p><strong><a href="#/people/username">{{response.endorsed.name}}</a></strong></p>
                         </div>
                         <div class="col-md-6 text-right">
-                          <button
+                          <button ng-show="!showSelfInformations(response.endorsed.email)"
                           type="button" id={{technology.generateId($index,response.endorsed.email)}}
                           ng-disabled=disablePlusOne
-                          ng-click="addEndorse(response.endorsed, technology.generateId($index,response.endorsed.email))" class="btn btn-default btn-sm" uibTooltip ={{setToolTipPlusOne($index,response.endorsed.email)}}
+                          ng-click="technology.addEndorse(response.endorsed, technology.generateId($index,response.endorsed.email))" class="btn btn-default btn-sm plusOneButton" uibTooltip ={{technology.setToolTipPlusOne($index,response.endorsed.email)}}
                           ng-class="response.endorsers.plusOneClass">+{{response.endorsers.length}}</button>
                           <div
                           ng-repeat="endorser in technology.getEndorsersFiltered track by $index">
