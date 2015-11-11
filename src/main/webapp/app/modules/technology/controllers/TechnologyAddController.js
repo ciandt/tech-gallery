@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, AppService, TechnologyService, $stateParams) {
+module.exports = function ($rootScope, AppService, TechnologyService, $stateParams, $state) {
 
   /**
    * Object context
@@ -39,7 +39,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
 	  fillTechnology(data);
   });
 
-  this.addOrUpdateTechnology = function(){
+  this.addOrUpdateTechnology = function(form){
       if(context.name != null && context.description != null && context.shortDescription != null) {
     	  TechnologyService.addOrUpdate(context).then(function(data){
     		  var alert;
@@ -48,7 +48,13 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
     			  alert.msg = data.error.message;
     		  }else{
     			  alert = alerts.success;
-    			  clearTechnology();
+            if(context.addNew){
+              clearTechnology();
+              form.$setPristine();
+              form.$setUntouched();
+            }else {
+              $state.go('root.technologies');
+            }
     		  }
     		  context.alert = alert;
     	  });

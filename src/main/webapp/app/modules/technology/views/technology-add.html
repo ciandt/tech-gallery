@@ -12,18 +12,18 @@
       <div class="col-md-10 col-md-offset-1">
         <div class="card no-margin">
           <div class="card-section">
-            <h1 class="card-title" ng-if="technology.id.length">Adicionar nova tecnologia</h1>
-            <h1 class="card-title" ng-if="!technology.id.length">Editar tecnologia</h1>
+            <h1 class="card-title" ng-if="!technology.id.length">Adicionar nova tecnologia</h1>
+            <h1 class="card-title" ng-if="technology.id.length">Editar tecnologia</h1>
           </div>
           <div class="card-section">
-            <form name="addTechnologyForm" ng-submit="technology.addOrUpdateTechnology()" novalidate>
+            <form id="addTechnologyForm" name="addTechnologyForm" ng-submit="technology.addOrUpdateTechnology(addTechnologyForm)" novalidate>
               <div class="row">
-                <div class="form-group col-md-7" 
+                <div class="form-group col-md-7"
                      ng-class="{'has-error': (addTechnologyForm.name.$invalid && addTechnologyForm.name.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.name.$invalid)}">
                   <label for="technology-name">Nome da tecnologia</label>
                   <input type="text" class="form-control" id="technology-name" name="name" ng-model="technology.name" placeholder="Ex.: AngularJS" required="">
                   <div ng-show="addTechnologyForm.$submitted || addTechnologyForm.name.$touched">
-	                  <span ng-show="addTechnologyForm.name.$error.required" class="help-block">Required</span> 
+	                  <span ng-show="addTechnologyForm.name.$error.required" class="help-block">Required</span>
                   </div>
                 </div>
                 <div class="form-group col-md-5">
