@@ -261,4 +261,12 @@ this.getUsersList = function (value){
   });
 }
 
+  this.getRecommendations = function(){
+    var deferred = $q.defer();
+    gapi.client.rest.getRecommendations().execute(function(data){
+      deferred.resolve(data.items);
+    });
+    return deferred.promise;
+  }
+
 };
