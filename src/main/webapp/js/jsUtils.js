@@ -96,7 +96,7 @@
   var alerts = {
     success : {
       type : 'success',
-      msg : 'Endorsement successfull!'
+      msg : 'Usuário indicado com sucesso!'
     },
     failure : {
       type : 'danger',
