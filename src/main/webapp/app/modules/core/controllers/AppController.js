@@ -4,24 +4,24 @@ module.exports = function ($scope, $rootScope, AppService, AuthService, UserServ
    * Object context
    * @type {Object}
    */
-  var context = this;
+   var context = this;
 
-  $rootScope.$watch('apiLoaded', function(newValue, oldValue) {
+   $rootScope.$watch('apiLoaded', function(newValue, oldValue) {
     if(newValue && !$rootScope.isUserLogged){
       AuthService.checkAuth(afterLogin, true)
     }
   });
 
-  function checkAuth(immediate){
-	   AuthService.checkAuth(afterLogin, immediate);
+   function checkAuth(immediate){
+    AuthService.checkAuth(afterLogin, immediate);
   }
 
   var afterLogin = function(data){
   	if(data){
   		$rootScope.isUserLogged = true;
       UserService.getUserInformations();
-    	$scope.$apply();
-  	}else{
+      $scope.$apply();
+    }else{
       $rootScope.isUserLogged = false;
       $scope.$apply();
     }
