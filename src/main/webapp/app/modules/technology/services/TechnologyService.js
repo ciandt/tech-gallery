@@ -28,6 +28,9 @@ module.exports = function($q, $timeout, $rootScope) {
     gapi.client.rest.getTechnologies().execute(function (data) {
      gapi.client.rest.handleLogin().execute();
      context.foundItems = data.technologies;
+     $rootScope.$broadcast('searchChange', {
+        technologies: context.foundItems
+      });
      deferred.resolve(context.foundItems);
    });
     return deferred.promise;
@@ -41,6 +44,24 @@ module.exports = function($q, $timeout, $rootScope) {
     });
     return deferred.promise;
   };
+
+  this.followTechnology = function(technologyId){
+    var deferred = $q.defer();
+    var req = {technologyId:technologyId};
+    gapi.client.rest.followTechnology(req).execute(function(data){
+      deferred.resolve(data);
+    });
+    return deferred.promise;
+  }
+
+  this.deleteTechnology = function(idTechnology){
+    var deferred = $q.defer();
+    var req = {technologyId: idTechnology};
+    gapi.client.rest.deleteTechnology(req).execute(function(data){
+      deferred.resolve(data);
+    });
+    return deferred.promise;
+  }
 
   /*
    * Function to fill the request to save the technology.

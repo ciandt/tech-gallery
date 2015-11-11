@@ -19,9 +19,13 @@ module.exports = function ($scope, $rootScope, AppService, TechnologyService, Us
    * List of technologies
    * @type {Array}
    */
-   TechnologyService.getTechnologies().then(function(){
-    context.items = TechnologyService.foundItems;
-  });
+   this.getTechnologies = function(){
+    TechnologyService.getTechnologies().then(function(){
+      context.items = TechnologyService.foundItems;
+    });
+   }
+
+   this.getTechnologies();
 
   /**
    * Loading state
@@ -32,6 +36,41 @@ module.exports = function ($scope, $rootScope, AppService, TechnologyService, Us
    this.changeFilters = function(){
     TechnologyService.setContentFilters(context.recommendationFilter, context.orderFilter, context.lastActivityDateFilter);
    }
+
+   this.followTechnology = function(idTechnology, $event){
+    context.currentElement = $event.currentTarget;
+      TechnologyService.followTechnology(idTechnology).then(function(data){
+        if(!data.hasOwnProperty('error')){
+          changeFollowedClass(context.currentElement);
+        }
+      });
+   }
+
+   function changeFollowedClass(element){
+    if(element.className.indexOf('btn-default') > 0){
+      element.className = 'btn btn-xs btn-danger';
+    }else{
+      element.className = 'btn btn-xs btn-default';
+    }
+    context.currentElement = undefined;
+  }
+
+  this.setFollowedClass = function(isFollowedByUser){
+    if(isFollowedByUser){
+      return 'btn btn-xs btn-danger';
+    }
+    return 'btn btn-xs btn-default';
+  }
+
+  this.deleteTechnology = function(idTechnology){
+    if(confirm('Você realmente quer apagar a tecnologia?')) {
+      TechnologyService.deleteTechnology(idTechnology).then(function(data){
+        if(!data.hasOwnProperty('error')){
+          context.getTechnologies();
+        }
+      });
+    }
+  }
 
   /**
    * Page title
