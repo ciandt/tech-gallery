@@ -1,413 +1,396 @@
-  <script type="text/ng-template" id="customTemplate.html">
-  <a>
-  <img src={{match.model.photo}} class="autoCompleteImage">
-  <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
-  <br>
-  <span ng-bind-html="match.model.name | uibTypeaheadHighlight:query"></span>
-  <li class="separator"></li>
-  </a>
-  </script>
-  <loading ng-if="technology.loading"></loading>
-  <div class="technology" ng-if="!technology.loading">
-    <div class="content container technology">
-      <header class="technology-header row">
-        <div class="media col-md-12">
-          <div class="media-image no-margin">
-            <img ng-src="{{ technology.item.image }}" class="technology-image" />
-          </div>
-          <div class="media-content">
-            <h1 class="technology-name">{{ technology.item.name }} <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button></h1>
-            <ul class="technology-meta">
-              <li ng-if="technology.item.recommendation.length"><span class="label label-default technology-recommendation">{{ technology.item.recommendation }}</span></li>
-              <li ng-if="technology.item.website.length"><span class="glyphicon glyphicon-link"></span> <a href="{{ technology.item.website }}" target="_blank" title="{{ technology.item.name }}">{{ technology.item.website }}</a></li>
-            </ul>
+<loading ng-if="technology.loading"></loading>
+<div class="technology" ng-if="!technology.loading">
+  <div class="content container technology">
+    <header class="technology-header row">
+      <div class="media col-md-12">
+        <div class="media-image no-margin">
+          <img ng-src="{{ technology.item.image }}" class="technology-image" />
+        </div>
+        <div class="media-content">
+          <h1 class="technology-name">{{ technology.item.name }} <button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button></h1>
+          <ul class="technology-meta">
+            <li ng-if="technology.item.recommendation.length"><span class="label label-default technology-recommendation">{{ technology.item.recommendation }}</span></li>
+            <li ng-if="technology.item.website.length"><span class="glyphicon glyphicon-link"></span> <a href="{{ technology.item.website }}" target="_blank" title="{{ technology.item.name }}">{{ technology.item.website }}</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class="technology-body">
+      <div class="technology-section row">
+        <div class="technology-description col-md-7" ng-bind-html="technology.item.description | nl2p">
+        </div>
+        <div class="col-md-5">
+          <div class="card no-margin">
+            <div class="card-section">
+              <h3 class="card-title">Como você se avalia em {{ technology.item.name }}?</h3>
+            </div>
+            <div class="card-section">
+              <form action="" class="form-inline">
+                <div class="radio technology-rating" ng-repeat="rating in technology.ratings" ng-class="{'active' : rating.value == technology.rating}">
+                  <label for="rating-{{ rating.value }}">
+                    <img ng-src="assets/images/{{ rating.title | lowercase }}.png" class="technology-rating-image" alt="{{ rating.title }}">
+                    <span class="technology-rating-text">
+                      <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:rating.value"></span>
+                    </span>
+                    <span class="technology-rating-text">{{ rating.title }}</span>
+                    <input type="radio" ng-model="technology.rating" ng-change="technology.setSkill(technology.id, rating.value)" name="rating" class="technology-rating-input" id="rating-{{ rating.value }}" value="{{ rating.value }}" ng-checked="rating.value == technology.rating">
+                  </label>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </header>
-      <div class="technology-body">
-        <div class="technology-section row">
-          <div class="technology-description col-md-7" ng-bind-html="technology.item.description | nl2p">
-          </div>
-          <div class="col-md-5">
-            <div class="card no-margin">
-              <div class="card-section">
-                <h3 class="card-title">Como você se avalia em {{ technology.item.name }}?</h3>
+      </div>
+
+      <!-- TECHNOLOGY ENDORSMENTS -->
+      <div id="endorsements" class="technology-section row">
+        <div class="col-md-12">
+          <div class="card no-margin">
+            <div class="card-section">
+              <h3 class="card-title">Quem manja muito de {{ technology.item.name }} na CI&amp;T?</h3>
+            </div>
+            <div class="card-section">
+              <form action="" class="form-inline">
+                <div class="input-group">
+                  <input ng-model="endorsed" type="text" class="form-control"
+                  placeholder="usuário" aria-describedby="basic-addon2" uib-typeahead="user as user.email for user in technology.getUsersList($viewValue)" typeahead-min-length="3" typeahead-template-url="customTemplate.html" typeahead-loading="loadingUsers" typeahead-no-results="noResults" style="width: 250px;">
+                  <span class="input-group-addon">@ciandt.com</span>
+                </div>
+                <div ng-show="loadingUsers">
+                  <i class="glyphicon glyphicon-refresh"> Carregando...</i>
+                </div>
+                <div ng-show="noResults">
+                  <i class="glyphicon glyphicon-remove"></i> Não foram encontrados registros...
+                </div>
+                <button type="submit" class="btn btn-primary">Indicar</button>
+              </form>
+            </div>
+            <div class="card-section">
+              <h4>Quem já foi indicado:</h4>
+
+              <div class="technology-endorsement row">
+                <div class="media col-md-7">
+                  <div class="media-image technology-endorsement-image">
+                    <a href="#/people/username"><img src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
+                  </div>
+                  <div class="media-content">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong></p>
+                      </div>
+                      <div class="col-md-6 text-right">
+                        <button class="btn btn-default btn-sm"><strong>+1</strong></button>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong> ainda não se auto avaliou.</p>
+                </div>
               </div>
-              <div class="card-section">
-                <form action="" class="form-inline">
-                  <div class="radio technology-rating" ng-repeat="rating in technology.ratings" ng-class="{'active' : rating.value == technology.rating}">
-                    <label for="rating-{{ rating.value }}">
-                      <img ng-src="assets/images/{{ rating.title | lowercase }}.png" class="technology-rating-image" alt="{{ rating.title }}">
-                      <span class="technology-rating-text">
-                        <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:rating.value"></span>
-                      </span>
-                      <span class="technology-rating-text">{{ rating.title }}</span>
-                      <input type="radio" ng-model="technology.rating" ng-change="technology.setSkill(technology.id, rating.value, technology.rating)" name="rating" class="technology-rating-input" id="rating-{{ rating.value }}" value="{{ rating.value }}" ng-checked="rating.value == technology.rating">
-                    </label>
+              <div class="technology-endorsement row">
+                <div class="media col-md-7">
+                  <div class="media-image technology-endorsement-image">
+                    <a href="#/people/username"><img src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
+                  </div>
+                  <div class="media-content">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p><strong><a href="#/people/username">Igor Leal</a></strong></p>
+                      </div>
+                      <div class="col-md-6 text-right">
+                        <button class="btn btn-default btn-sm"><strong>+1</strong></button>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <p><strong><a href="#/people/username">Igor Leal</a></strong> se auto avaliou como <strong>Jedi</strong> <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:5"></span></p>
+                </div>
+              </div>
+              <div class="technology-endorsement row">
+                <div class="media col-md-7">
+                  <div class="media-image technology-endorsement-image">
+                    <a href="#/people/username"><img src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
+                  </div>
+                  <div class="media-content">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong></p>
+                      </div>
+                      <div class="col-md-6 text-right">
+                        <button class="btn btn-default btn-sm"><strong>+1</strong></button>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong> ainda não se auto avaliou.</p>
+                </div>
+              </div>
+              <div class="technology-endorsement row">
+                <div class="media col-md-7">
+                  <div class="media-image technology-endorsement-image">
+                    <a href="#/people/username"><img src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
+                  </div>
+                  <div class="media-content">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p><strong><a href="#/people/username">Igor Leal</a></strong></p>
+                      </div>
+                      <div class="col-md-6 text-right">
+                        <button class="btn btn-default btn-sm"><strong>+1</strong></button>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <p><strong><a href="#/people/username">Igor Leal</a></strong> se auto avaliou como <strong>Jedi</strong> <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:5"></span></p>
+                </div>
+              </div>
+              <div class="technology-endorsement row">
+                <div class="media col-md-7">
+                  <div class="media-image technology-endorsement-image">
+                    <a href="#/people/username"><img src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
+                  </div>
+                  <div class="media-content">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong></p>
+                      </div>
+                      <div class="col-md-6 text-right">
+                        <button class="btn btn-default btn-sm"><strong>+1</strong></button>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong> ainda não se auto avaliou.</p>
+                </div>
+              </div>
+              <div class="technology-endorsement row">
+                <div class="media col-md-7">
+                  <div class="media-image technology-endorsement-image">
+                    <a href="#/people/username"><img src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
+                  </div>
+                  <div class="media-content">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p><strong><a href="#/people/username">Igor Leal</a></strong></p>
+                      </div>
+                      <div class="col-md-6 text-right">
+                        <button class="btn btn-default btn-sm"><strong>+1</strong></button>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
+                        <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <p><strong><a href="#/people/username">Igor Leal</a></strong> se auto avaliou como <strong>Jedi</strong> <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:5"></span></p>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                  <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais profissionais</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TECHNOLOGY RECOMMENDATIONS & COMMENTS -->
+      <div class="technology-section row">
+        <div id="recommendations" class="col-md-6">
+          <div class="card no-margin">
+            <div class="card-section">
+              <h3 class="card-title">Como você avalia {{ technology.item.name }}?</h3>
+            </div>
+            <div class="card-section">
+              <div class="row">
+                <form action="" class="col-md-12">
+                  <div class="form-group">
+                    <div class="form-inline">
+                      <div class="radio">
+                        <label for="recommended-up">
+                          <input class="technology-recommendation-input" ng-checked="technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(true)" type="radio" name="recommendation[recommended]" id="recommended-up" value="true">
+                          <span class="btn btn-default" ng-class="{'active' : technology.recommended}"><span class="glyphicon glyphicon-thumbs-up"></span></span>
+                        </label>
+                      </div>
+                      <div class="radio">
+                        <label for="recommended-down">
+                          <input class="technology-recommendation-input" ng-checked="!technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(false)" type="radio" name="recommendation[recommended]" id="recommended-down" value="false">
+                          <span class="btn btn-default" ng-class="{'active' : !technology.recommended}"><span class="glyphicon glyphicon-thumbs-down"></span></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <textarea name="recommendation[comment]" id="recommendation-comment-input" class="form-control"></textarea>
+                  </div>
+                  <div class="form-inline text-right">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="recommendation[post_to_google_plus]" ng-checked="technology.share.gplus"> Postar no Google+
+                      </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Avaliar</button>
                   </div>
                 </form>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- TECHNOLOGY ENDORSMENTS -->
-        <div id="endorsements" class="technology-section row">
-          <div class="col-md-12">
-            <div class="card no-margin">
-              <div class="card-section">
-                <h3 class="card-title">Quem manja muito de {{ technology.item.name }} na CI&amp;T?</h3>
-              </div>
-              <div class="card-section">
-                <form action="" class="form-inline">
-                  <div class="input-group">
-                    <input ng-model="endorsed" type="text" class="form-control"
-                    placeholder="usuário" aria-describedby="basic-addon2" uib-typeahead="user as user.email for user in technology.getUsersList($viewValue)" typeahead-min-length="3" typeahead-template-url="customTemplate.html" typeahead-loading="loadingUsers" typeahead-no-results="noResults" style="width: 250px;">
-                    <span class="input-group-addon" id="basic-addon2">@ciandt.com</span>
-                    <div ng-show="loadingUsers">
-                      <i class="glyphicon glyphicon-refresh"> Carregando...</i>
-                    </div>
-                    <div ng-show="noResults">
-                      <i class="glyphicon glyphicon-remove"></i> Não foram encontrados registros...
+            <div class="card-section">
+              <h4>Avaliações</h4>
+              <ol class="technology-recommendations">
+                <li class="technology-recommendation media">
+                  <div class="media-image technology-recommendation-value">
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                  </div>
+                  <div class="media-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
+                    <div class="technology-recommendation-meta media">
+                      <div class="media-image">
+                        <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt="">
+                      </div>
+                      <div class="media-content">
+                        <strong>Thulio Ribeiro</strong><br>
+                        em 04/11/2015 às 17:28
+                      </div>
                     </div>
                   </div>
-                  <button type="submit" class="btn btn-primary">Indicar</button>
+                </li>
+                <li class="technology-recommendation media">
+                  <div class="media-image technology-recommendation-value">
+                    &nbsp;
+                    <!-- <span class="glyphicon glyphicon-thumbs-up"></span> -->
+                  </div>
+                  <div class="media-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
+                    <div class="technology-recommendation-meta media">
+                      <div class="media-image">
+                        <img class="technology-recommendation-meta-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt="">
+                      </div>
+                      <div class="media-content">
+                        <strong>Neliza Alves Silva</strong><br>
+                        em 04/11/2015 às 17:28
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="technology-recommendation media">
+                  <div class="media-image technology-recommendation-value">
+                    <span class="glyphicon glyphicon-thumbs-down"></span>
+                  </div>
+                  <div class="media-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
+                    <div class="technology-recommendation-meta media">
+                      <div class="media-image">
+                        <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt="">
+                      </div>
+                      <div class="media-content">
+                        <strong>Igor Leal</strong><br>
+                        em 04/11/2015 às 17:28
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+
+              <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                  <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais avaliações</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="comments" class="col-md-6">
+          <div class="card no-margin">
+            <div class="card-section">
+              <h3 class="card-title">Comente sobre {{ technology.item.name }}?</h3>
+            </div>
+            <div class="card-section">
+              <div class="row">
+                <form action="" class="col-md-12">
+                  <div class="form-group">
+                    <textarea name="recommendation[comment]" id="recommendation-comment-input" class="form-control"></textarea>
+                  </div>
+                  <div class="form-inline text-right">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="recommendation[post_to_google_plus]" ng-checked="technology.share.gplus"> Postar no Google+
+                      </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Comentar</button>
+                  </div>
                 </form>
               </div>
-              <div class="card-section">
-                <h4>Quem já foi indicado:</h4>
-
-                <div class="technology-endorsement row">
-                  <div class="media col-md-7">
-                    <div class="media-image technology-endorsement-image">
-                      <a href="#/people/username"><img src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                    </div>
-                    <div class="media-content">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong></p>
-                        </div>
-                        <div class="col-md-6 text-right">
-                          <button class="btn btn-default btn-sm"><strong>+1</strong></button>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-5">
-                    <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong> ainda não se auto avaliou.</p>
-                  </div>
-                </div>
-
-
-
-
-
-
-
-                <div class="technology-endorsement row">
-                  <div class="media col-md-7">
-                    <div class="media-image technology-endorsement-image">
-                      <a href="#/people/username"><img src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
-                    </div>
-                    <div class="media-content">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <p><strong><a href="#/people/username">Igor Leal</a></strong></p>
-                        </div>
-                        <div class="col-md-6 text-right">
-                          <button class="btn btn-default btn-sm"><strong>+1</strong></button>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-5">
-                    <p><strong><a href="#/people/username">Igor Leal</a></strong> se auto avaliou como <strong>Jedi</strong> <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:5"></span></p>
-                  </div>
-                </div>
-                <div class="technology-endorsement row">
-                  <div class="media col-md-7">
-                    <div class="media-image technology-endorsement-image">
-                      <a href="#/people/username"><img src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                    </div>
-                    <div class="media-content">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong></p>
-                        </div>
-                        <div class="col-md-6 text-right">
-                          <button class="btn btn-default btn-sm"><strong>+1</strong></button>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-5">
-                    <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong> ainda não se auto avaliou.</p>
-                  </div>
-                </div>
-                <div class="technology-endorsement row">
-                  <div class="media col-md-7">
-                    <div class="media-image technology-endorsement-image">
-                      <a href="#/people/username"><img src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
-                    </div>
-                    <div class="media-content">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <p><strong><a href="#/people/username">Igor Leal</a></strong></p>
-                        </div>
-                        <div class="col-md-6 text-right">
-                          <button class="btn btn-default btn-sm"><strong>+1</strong></button>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-5">
-                    <p><strong><a href="#/people/username">Igor Leal</a></strong> se auto avaliou como <strong>Jedi</strong> <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:5"></span></p>
-                  </div>
-                </div>
-                <div class="technology-endorsement row">
-                  <div class="media col-md-7">
-                    <div class="media-image technology-endorsement-image">
-                      <a href="#/people/username"><img src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                    </div>
-                    <div class="media-content">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong></p>
-                        </div>
-                        <div class="col-md-6 text-right">
-                          <button class="btn btn-default btn-sm"><strong>+1</strong></button>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-5">
-                    <p><strong><a href="#/people/username">Neliza Alves Silva</a></strong> ainda não se auto avaliou.</p>
-                  </div>
-                </div>
-                <div class="technology-endorsement row">
-                  <div class="media col-md-7">
-                    <div class="media-image technology-endorsement-image">
-                      <a href="#/people/username"><img src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt=""></a>
-                    </div>
-                    <div class="media-content">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <p><strong><a href="#/people/username">Igor Leal</a></strong></p>
-                        </div>
-                        <div class="col-md-6 text-right">
-                          <button class="btn btn-default btn-sm"><strong>+1</strong></button>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt=""></a>
-                          <a href="#/people/username"><img class="technology-endorsement-plus-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt=""></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-5">
-                    <p><strong><a href="#/people/username">Igor Leal</a></strong> se auto avaliou como <strong>Jedi</strong> <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:5"></span></p>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6 col-md-offset-3 text-center">
-                    <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais profissionais</button>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
-        </div>
-
-        <!-- TECHNOLOGY RECOMMENDATIONS & COMMENTS -->
-        <div class="technology-section row">
-          <div id="recommendations" class="col-md-6">
-            <div class="card no-margin">
-              <div class="card-section">
-                <h3 class="card-title">Como você avalia {{ technology.item.name }}?</h3>
-              </div>
-              <div class="card-section">
-                <div class="row">
-                  <form action="" class="col-md-12">
-                    <div class="form-group">
-                      <div class="form-inline">
-                        <div class="radio">
-                          <label for="recommended-up">
-                            <input class="technology-recommendation-input" ng-checked="technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(true)" type="radio" name="recommendation[recommended]" id="recommended-up" value="true">
-                            <span class="btn btn-default" ng-class="{'active' : technology.recommended}"><span class="glyphicon glyphicon-thumbs-up"></span></span>
-                          </label>
-                        </div>
-                        <div class="radio">
-                          <label for="recommended-down">
-                            <input class="technology-recommendation-input" ng-checked="!technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(false)" type="radio" name="recommendation[recommended]" id="recommended-down" value="false">
-                            <span class="btn btn-default" ng-class="{'active' : !technology.recommended}"><span class="glyphicon glyphicon-thumbs-down"></span></span>
-                          </label>
-                        </div>
+            <div class="card-section">
+              <h4>Comentários</h4>
+              <ol class="technology-recommendations">
+                <li class="technology-recommendation media">
+                  <div class="media-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
+                    <div class="technology-recommendation-meta media">
+                      <div class="media-image">
+                        <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt="">
+                      </div>
+                      <div class="media-content">
+                        <strong>Thulio Ribeiro</strong><br>
+                        em 04/11/2015 às 17:28
                       </div>
                     </div>
-                    <div class="form-group">
-                      <textarea name="recommendation[comment]" id="recommendation-comment-input" class="form-control"></textarea>
-                    </div>
-                    <div class="form-inline text-right">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox" name="recommendation[post_to_google_plus]" ng-checked="technology.share.gplus"> Postar no Google+
-                        </label>
-                      </div>
-                      <button type="submit" class="btn btn-primary">Avaliar</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <div class="card-section">
-                <h4>Avaliações</h4>
-                <ol class="technology-recommendations">
-                  <li class="technology-recommendation media">
-                    <div class="media-image technology-recommendation-value">
-                      <span class="glyphicon glyphicon-thumbs-up"></span>
-                    </div>
-                    <div class="media-content">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                      <div class="technology-recommendation-meta media">
-                        <div class="media-image">
-                          <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt="">
-                        </div>
-                        <div class="media-content">
-                          <strong>Thulio Ribeiro</strong><br>
-                          em 04/11/2015 às 17:28
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="technology-recommendation media">
-                    <div class="media-image technology-recommendation-value">
-                      &nbsp;
-                      <!-- <span class="glyphicon glyphicon-thumbs-up"></span> -->
-                    </div>
-                    <div class="media-content">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                      <div class="technology-recommendation-meta media">
-                        <div class="media-image">
-                          <img class="technology-recommendation-meta-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt="">
-                        </div>
-                        <div class="media-content">
-                          <strong>Neliza Alves Silva</strong><br>
-                          em 04/11/2015 às 17:28
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="technology-recommendation media">
-                    <div class="media-image technology-recommendation-value">
-                      <span class="glyphicon glyphicon-thumbs-down"></span>
-                    </div>
-                    <div class="media-content">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                      <div class="technology-recommendation-meta media">
-                        <div class="media-image">
-                          <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt="">
-                        </div>
-                        <div class="media-content">
-                          <strong>Igor Leal</strong><br>
-                          em 04/11/2015 às 17:28
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ol>
-
-                <div class="row">
-                  <div class="col-md-6 col-md-offset-3 text-center">
-                    <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais avaliações</button>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div id="comments" class="col-md-6">
-            <div class="card no-margin">
-              <div class="card-section">
-                <h3 class="card-title">Comente sobre {{ technology.item.name }}?</h3>
-              </div>
-              <div class="card-section">
-                <div class="row">
-                  <form action="" class="col-md-12">
-                    <div class="form-group">
-                      <textarea name="recommendation[comment]" id="recommendation-comment-input" class="form-control"></textarea>
-                    </div>
-                    <div class="form-inline text-right">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox" name="recommendation[post_to_google_plus]" ng-checked="technology.share.gplus"> Postar no Google+
-                        </label>
+                </li>
+                <li class="technology-recommendation media">
+                  <div class="media-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
+                    <div class="technology-recommendation-meta media">
+                      <div class="media-image">
+                        <img class="technology-recommendation-meta-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt="">
                       </div>
-                      <button type="submit" class="btn btn-primary">Comentar</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <div class="card-section">
-                <h4>Comentários</h4>
-                <ol class="technology-recommendations">
-                  <li class="technology-recommendation media">
-                    <div class="media-content">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                      <div class="technology-recommendation-meta media">
-                        <div class="media-image">
-                          <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt="">
-                        </div>
-                        <div class="media-content">
-                          <strong>Thulio Ribeiro</strong><br>
-                          em 04/11/2015 às 17:28
-                        </div>
+                      <div class="media-content">
+                        <strong>Neliza Alves Silva</strong><br>
+                        em 04/11/2015 às 17:28
                       </div>
                     </div>
-                  </li>
-                  <li class="technology-recommendation media">
-                    <div class="media-content">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                      <div class="technology-recommendation-meta media">
-                        <div class="media-image">
-                          <img class="technology-recommendation-meta-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt="">
-                        </div>
-                        <div class="media-content">
-                          <strong>Neliza Alves Silva</strong><br>
-                          em 04/11/2015 às 17:28
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="technology-recommendation media">
-                    <div class="media-content">
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                      <div class="technology-recommendation-meta media">
-                        <div class="media-image">
-                          <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt="">
-                        </div>
-                        <div class="media-content">
-                          <strong>Igor Leal</strong><br>
-                          em 04/11/2015 às 17:28
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ol>
-
-                <div class="row">
-                  <div class="col-md-6 col-md-offset-3 text-center">
-                    <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais comentários</button>
                   </div>
+                </li>
+                <li class="technology-recommendation media">
+                  <div class="media-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
+                    <div class="technology-recommendation-meta media">
+                      <div class="media-image">
+                        <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt="">
+                      </div>
+                      <div class="media-content">
+                        <strong>Igor Leal</strong><br>
+                        em 04/11/2015 às 17:28
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+
+              <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center">
+                  <button class="btn btn-link btn-sm btn-block"><span class="glyphicon glyphicon-plus"></span> Ver mais comentários</button>
                 </div>
               </div>
             </div>
@@ -416,3 +399,4 @@
       </div>
     </div>
   </div>
+</div>

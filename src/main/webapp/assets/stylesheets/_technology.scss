@@ -137,7 +137,7 @@ $technology-spacing: 20px;
 
 .technology-comments,
 .technology-recommendations {
-  margin: 0;
+  margin: $technology-spacing 0;
   padding: 0;
 }
 .technology-comment,

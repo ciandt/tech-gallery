@@ -26,6 +26,55 @@ module.exports = function($q) {
     return deferred.promise;
   };
 
+  this.addOrUpdate = function(context){
+    var req = fillRequestToSave(context);
+	  var deferred = $q.defer();
+	  gapi.client.rest.addOrUpdateTechnology(req).execute(function(data){
+		  deferred.resolve(data);
+      });
+	  return deferred.promise;
+  };
+
+  /*
+   * Function to fill the request to save the technology.
+   */
+  function fillRequestToSave(context) {
+    if(context.image && context.image.startsWith('https://')){
+          var req = {
+              id : slugify(context.name),
+              name : context.name,
+              shortDescription : context.shortDescription,
+              recommendationJustification : context.justification,
+              recommendation : context.selectedRecommendation,
+              description : context.description,
+              website : context.webSite,
+              image : context.image
+          };
+          return req;
+        }else{
+          var req = {
+              id : slugify(context.name),
+              name : context.name,
+              shortDescription : context.shortDescription,
+              recommendationJustification : context.justification,
+              recommendation : context.selectedRecommendation,
+              description : context.description,
+              website : context.webSite,
+              imageContent : context.image
+          };
+          return req;
+        }
+  }
+
+  function slugify(text){
+    return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+  }
+
   this.searchTechnologies = function(req){
     var deferred = $q.defer();
     gapi.client.rest.findByFilter(req).execute(function(data){
