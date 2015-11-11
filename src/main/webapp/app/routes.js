@@ -2,7 +2,7 @@ module.exports = function(
   $stateProvider,
   $urlRouterProvider,
   $urlMatcherFactoryProvider
-) {
+  ) {
   // Disable ui-router strict mode
   $urlMatcherFactoryProvider.strictMode(false);
 

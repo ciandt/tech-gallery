@@ -4,7 +4,7 @@ module.exports = function ($scope, $rootScope, AppService, AuthService, UserServ
    * Object context
    * @type {Object}
    */
-  var context = this;
+   var context = this;
 
   /**
    * Bind app.alert to the Service model
@@ -18,14 +18,14 @@ module.exports = function ($scope, $rootScope, AppService, AuthService, UserServ
    */
   this.closeAlert = AppService.closeAlert;
 
-  $rootScope.$watch('apiLoaded', function(newValue, oldValue) {
+   $rootScope.$watch('apiLoaded', function(newValue, oldValue) {
     if(newValue && !$rootScope.isUserLogged){
       AuthService.checkAuth(afterLogin, true)
     }
   });
 
   function checkAuth(immediate){
-     AuthService.checkAuth(afterLogin, immediate);
+    AuthService.checkAuth(afterLogin, immediate);
   }
 
   var afterLogin = function(data){

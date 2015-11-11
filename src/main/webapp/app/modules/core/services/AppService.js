@@ -32,10 +32,10 @@ module.exports = function ($rootScope) {
    */
   this.setAlert = function (message, type) {
     var type = (type == 'error') ? 'danger' : type;
-    this.alert = {
+    angular.copy({
       message: message,
       type:  type || 'warning'
-    }
+    }, this.alert);
   }
 
   /**
@@ -43,8 +43,16 @@ module.exports = function ($rootScope) {
    * @return {Void}
    */
   this.closeAlert = function () {
-    this.alert = {};
+    angular.copy({}, this.alert)
   }
+
+  /**
+   * Listener to close alert messages.
+   * @return {Void}
+   */
+  $rootScope.$on('$locationChangeSuccess', function(next, current) {
+    context.closeAlert();
+  });
 
   // this.setAlert('Teste', 'error');
 

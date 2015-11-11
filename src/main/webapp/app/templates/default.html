@@ -7,27 +7,28 @@
 
       <div class="navbar-right" ng-if="isUserLogged">
         <!-- SEARCH -->
-        <form id="app-search" ng-submit="searchTechnology()" class="navbar-form navbar-left">
-          <div class="form-group">
-            <input type="text" ng-disabled="app.isLoading" ng-model="textSearch" class="form-control" placeholder="Digite sua busca&hellip;">
-            <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-search"></span></button>
-          </div>
-        </form>
+        <form ng-controller="SearchController as searchController" id="app-search"
+        ng-submit="searchController.searchTechnology()" class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" ng-disabled="app.isLoading" ng-change="searchController.changeTextFilter()" ng-model="searchController.textSearch" class="form-control" placeholder="Digite sua busca&hellip;">
+          <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+      </form>
 
-        <!-- USER DROPDOWN -->
-        <ul class="nav navbar-nav navbar-right">
-          <li uib-dropdown uib-keyboard-nav>
-            <a href="#"  role="button" uib-dropdown-toggle>{{loggedUserInformation.name}}<span class="caret"></span></a>
-            <ul class="uib-dropdown-menu">
-              <li><a href="#">Meu perfil</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#" ng-click="logout()">Sair</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+      <!-- USER DROPDOWN -->
+      <ul ng-controller="SearchController as searchController" class="nav navbar-nav navbar-right">
+        <li uib-dropdown uib-keyboard-nav>
+          <a href="#"  role="button" uib-dropdown-toggle>{{loggedUserInformation.name}}<span class="caret"></span></a>
+          <ul class="uib-dropdown-menu">
+            <li><a href="#">Meu perfil</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href={{searchController.logOutUser}}>Sair</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </div>
+</div>
 </nav>
 
 <main id="app-content">

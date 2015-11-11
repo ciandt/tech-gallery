@@ -1,4 +1,4 @@
-module.exports = function($q) {
+module.exports = function($q, $timeout, $rootScope) {
 
   /**
    * Object context
@@ -6,11 +6,18 @@ module.exports = function($q) {
    */
    var context = this;
 
-  /**
-   * The list of technologies
-   * @type {Array}
-   */
-   this.technologies = [];
+   this.setTextFilter = function(textSearch){
+    context.textSearch = textSearch;
+  };
+
+  this.setContentFilters = function(selectedRecommendationFilter, selectedOrderFilter, selectedLastActivityFilter){
+    context.selectedRecommendationFilter = selectedRecommendationFilter;
+    context.selectedOrderFilter = selectedOrderFilter;
+
+    context.selectedLastActivityFilter = selectedLastActivityFilter;
+
+    context.searchTechnologies();
+  }
 
   /**
    * Retrieve list of technologies
@@ -20,50 +27,71 @@ module.exports = function($q) {
     var deferred = $q.defer();
     gapi.client.rest.getTechnologies().execute(function (data) {
      gapi.client.rest.handleLogin().execute();
-     context.technologies = data.technologies;
-     deferred.resolve(context.technologies);
+     context.foundItems = data.technologies;
+     $rootScope.$broadcast('searchChange', {
+        technologies: context.foundItems
+      });
+     deferred.resolve(context.foundItems);
    });
     return deferred.promise;
   };
 
   this.addOrUpdate = function(context){
     var req = fillRequestToSave(context);
-	  var deferred = $q.defer();
-	  gapi.client.rest.addOrUpdateTechnology(req).execute(function(data){
-		  deferred.resolve(data);
-      });
-	  return deferred.promise;
+    var deferred = $q.defer();
+    gapi.client.rest.addOrUpdateTechnology(req).execute(function(data){
+      deferred.resolve(data);
+    });
+    return deferred.promise;
   };
+
+  this.followTechnology = function(technologyId){
+    var deferred = $q.defer();
+    var req = {technologyId:technologyId};
+    gapi.client.rest.followTechnology(req).execute(function(data){
+      deferred.resolve(data);
+    });
+    return deferred.promise;
+  }
+
+  this.deleteTechnology = function(idTechnology){
+    var deferred = $q.defer();
+    var req = {technologyId: idTechnology};
+    gapi.client.rest.deleteTechnology(req).execute(function(data){
+      deferred.resolve(data);
+    });
+    return deferred.promise;
+  }
 
   /*
    * Function to fill the request to save the technology.
    */
-  function fillRequestToSave(context) {
+   function fillRequestToSave(context) {
     if(context.image && context.image.startsWith('https://')){
-          var req = {
-              id : slugify(context.name),
-              name : context.name,
-              shortDescription : context.shortDescription,
-              recommendationJustification : context.justification,
-              recommendation : context.selectedRecommendation,
-              description : context.description,
-              website : context.webSite,
-              image : context.image
-          };
-          return req;
-        }else{
-          var req = {
-              id : slugify(context.name),
-              name : context.name,
-              shortDescription : context.shortDescription,
-              recommendationJustification : context.justification,
-              recommendation : context.selectedRecommendation,
-              description : context.description,
-              website : context.webSite,
-              imageContent : context.image
-          };
-          return req;
-        }
+      var req = {
+        id : slugify(context.name),
+        name : context.name,
+        shortDescription : context.shortDescription,
+        recommendationJustification : context.justification,
+        recommendation : context.selectedRecommendation,
+        description : context.description,
+        website : context.webSite,
+        image : context.image
+      };
+      return req;
+    }else{
+      var req = {
+        id : slugify(context.name),
+        name : context.name,
+        shortDescription : context.shortDescription,
+        recommendationJustification : context.justification,
+        recommendation : context.selectedRecommendation,
+        description : context.description,
+        website : context.webSite,
+        imageContent : context.image
+      };
+      return req;
+    }
   }
 
   function slugify(text){
@@ -73,13 +101,24 @@ module.exports = function($q) {
         .replace(/\-\-+/g, '-')         // Replace multiple - with single -
         .replace(/^-+/, '')             // Trim - from start of text
         .replace(/-+$/, '');            // Trim - from end of text
-  }
+      }
 
-  this.searchTechnologies = function(req){
+  this.searchTechnologies = function(){
+    context.foundItems = [];
+    var req = {
+      titleContains: context.textSearch,
+      shortDescriptionContains: context.textSearch,
+      orderOptionIs: context.selectedOrderFilter,
+      dateFilter : context.selectedLastActivityFilter,
+      recommendationIs: context.selectedRecommendationFilter
+    }
     var deferred = $q.defer();
     gapi.client.rest.findByFilter(req).execute(function(data){
-      var foundTechnologies = data.technologies;
-      deferred.resolve(foundTechnologies);
+      context.foundItems = data.technologies;
+      $rootScope.$broadcast('searchChange', {
+        technologies: context.foundItems
+      });
+      deferred.resolve(context.foundItems);
     });
     return deferred.promise;
   }
@@ -97,16 +136,12 @@ module.exports = function($q) {
    */
    this.getTechnology = function (id) {
     var deferred = $q.defer();
-    if (!id) {
-      throw 'getTechnology needs a valid `id` parameter';
+    if(id){
+      var req = {id: id};
+      gapi.client.rest.getTechnology(req).execute(function(data){
+        deferred.resolve(data);
+      });
     }
-    var req = {
-      id : id
-    };
-    gapi.client.rest.getTechnology(req).execute(function(data){
-      context.technology = data;
-      deferred.resolve(context.technology);
-    });
     return deferred.promise;
   }
 
@@ -142,13 +177,13 @@ module.exports = function($q) {
     })
   }
 
-  this.getUserSkill = function (id) {
+  this.getUserSkill = function (idTech) {
     var deferred = $q.defer();
-    if (!id) {
+    if (!idTech) {
       throw 'getTechnology needs a valid `id` parameter';
     }
     var req = {
-      id : id
+      id : idTech
     };
     gapi.client.rest.getUserSkill(req).execute(function(data) {
       context.rating = data.value;
@@ -157,14 +192,13 @@ module.exports = function($q) {
     return deferred.promise;
   }
 
-  this.addUserSkill = function (id, newValue, oldValue) {
-    var deferred = $q.defer();
+  this.addUserSkill = function (idTech, newValue, oldValue) {
     if (newValue !== oldValue) {
-      if (!id) {
+      if (!idTech) {
         throw 'getTechnology needs a valid `id` parameter';
       }
       var req = {
-        technology : id,
+        technology : idTech,
         value : newValue
       };
       gapi.client.rest.addSkill(req).execute(function(data) {
@@ -180,18 +214,18 @@ module.exports = function($q) {
 
   this.endorsed = {};
 
-  this.endorseUser = function(idTech) {
-    var req = {};
-    if(this.endorsed.email){
-      req.endorsed = this.endorsed.email;
-    }else{
-      //req.endorsed = endorsed;
-    }
-    req.technology = idTech;
+  this.endorseUser = function(idTech, endorsedMail) {
+    var req = {
+      technology : idTech,
+      endorsed : endorsedMail
+    };
     if (req.endorsed) {
       gapi.client.rest.addEndorsement(req).execute(function(data) {
 
-     /*   if($scope.postGooglePlus && !data.hasOwnProperty('error')){
+        /*
+        * G+ Post
+        */
+        /*if($scope.postGooglePlus && !data.hasOwnProperty('error')){
           var req = {
             feature : featureEnum.ENDORSE,
             currentUserMail : data.endorser.email,
@@ -216,8 +250,30 @@ module.exports = function($q) {
     //$scope.$apply();
   };
 
-  /*function showEndorsementsByTech() {
-    var idTech = $scope.idTechnology;
+/*
+* Auto complete on edorse user.
+*/
+this.getUsersList = function (value){
+  var req = {query:value};
+  return gapi.client.rest.usersAutoComplete(req).then(function (data){
+    for(var i in data.result.items){
+      if(!data.result.items[i].photo){
+        data.result.items[i].photo = "/assets/images/default-user-image.jpg";
+      }
+    }
+    return data.result.items;
+  });
+}
+
+  /**
+  * Begin of Show Endorsement Features
+  */
+  this.showAllEndorsers = function(endorsers) {
+    return (endorsers.length > 0);
+  };
+
+  this.getEndorsementsByTech = function(idTech) {
+    var deferred = $q.defer();
     var req = {
       id : idTech
     };
@@ -231,26 +287,71 @@ module.exports = function($q) {
           if(!response[i].endorsed.photo) {
             response[i].endorsed.photo = "/assets/images/default-user-image.jpg";
           }
-          response[i].endorsers = setPlusOneClass(response[i].endorsers);
+          //response[i].endorsers = setPlusOneClass(response[i].endorsers);
         }
       }
-      $scope.showEndorsementResponse = response;
-      $scope.processingEndorse = false;
+      deferred.resolve(response);
+      /*$scope.processingEndorse = false;
       $scope.loadEndorsements = false;
-      $scope.$apply();
+      $scope.$apply();*/
     });
-}*/
+      return deferred.promise;
+  }
 
-this.getUsersList = function (value){
-  var req = {query:value};
-  return gapi.client.rest.usersAutoComplete(req).then(function (data){
-    for(var i in data.result.items){
-      if(!data.result.items[i].photo){
-        data.result.items[i].photo = "/assets/images/default-user-image.jpg";
+  this.getUsersList = function (value){
+    var req = {query:value};
+    return gapi.client.rest.usersAutoComplete(req).then(function (data){
+      for(var i in data.result.items){
+        if(!data.result.items[i].photo){
+          data.result.items[i].photo = "/assets/images/default-user-image.jpg";
+        }
       }
-    }
-    return data.result.items;
   });
 }
+  this.open = function(endorsers, size) {
+    var modalInstance = $modal.open({
+      animation : true,
+      templateUrl : '/showEndorsementModal.html',
+      controller : 'modalController',
+      size : size,
+      resolve : {
+        endorsers : function() {
+          return endorsers;
+        }
+      }
+    });
+  };
 
-};
+  this.getRecommendations = function(){
+    var deferred = $q.defer();
+    gapi.client.rest.getRecommendations().execute(function(data){
+      deferred.resolve(data.items);
+    });
+    return deferred.promise;
+  }
+
+  this.getCommentsByTech = function(technologyId){
+    var deferred = $q.defer();
+    var req = {technologyId: technologyId};
+    gapi.client.rest.getCommentsByTech(req).execute(function(data){
+      deferred.resolve(data);
+    });
+    return deferred.promise;
+  }
+  /*
+     *
+     * Begin of +1 features
+     *
+     */
+     /*function setPlusOneClass(endorsers){
+      for(var i in endorsers){
+        if(endorsers[i].email == $scope.userEmail){
+          endorsers.plusOneClass = 'btn GPlusAdded';
+          return endorsers;
+        }
+      }
+      endorsers.plusOneClass = 'btn GPlusDefault';
+      return endorsers;
+    };*/
+
+  };

@@ -51,7 +51,7 @@ public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String> implem
   @Override
   public Technology findByIdActive(String id) {
     Technology technology = super.findById(id);
-    if (technology.getActive()) {
+    if (technology != null && technology.getActive()) {
       return technology;
     }
     return null;
