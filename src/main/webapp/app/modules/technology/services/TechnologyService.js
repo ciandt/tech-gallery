@@ -1,4 +1,4 @@
-module.exports = function($q) {
+module.exports = function($q, $timeout, $rootScope) {
 
   /**
    * Object context
@@ -6,11 +6,18 @@ module.exports = function($q) {
    */
    var context = this;
 
-  /**
-   * The list of technologies
-   * @type {Array}
-   */
-   this.technologies = [];
+   this.setTextFilter = function(textSearch){
+    context.textSearch = textSearch;
+  };
+
+  this.setContentFilters = function(selectedRecommendationFilter, selectedOrderFilter, selectedLastActivityFilter){
+    context.selectedRecommendationFilter = selectedRecommendationFilter;
+    context.selectedOrderFilter = selectedOrderFilter;
+
+    context.selectedLastActivityFilter = selectedLastActivityFilter;
+
+    context.searchTechnologies();
+  }
 
   /**
    * Retrieve list of technologies
@@ -20,8 +27,8 @@ module.exports = function($q) {
     var deferred = $q.defer();
     gapi.client.rest.getTechnologies().execute(function (data) {
      gapi.client.rest.handleLogin().execute();
-     context.technologies = data.technologies;
-     deferred.resolve(context.technologies);
+     context.foundItems = data.technologies;
+     deferred.resolve(context.foundItems);
    });
     return deferred.promise;
   };
@@ -75,11 +82,22 @@ module.exports = function($q) {
         .replace(/-+$/, '');            // Trim - from end of text
   }
 
-  this.searchTechnologies = function(req){
+  this.searchTechnologies = function(){
+    context.foundItems = [];
+    var req = {
+      titleContains: context.textSearch,
+      shortDescriptionContains: context.textSearch,
+      orderOptionIs: context.selectedOrderFilter,
+      dateFilter : context.selectedLastActivityFilter,
+      recommendationIs: context.selectedRecommendationFilter
+    }
     var deferred = $q.defer();
     gapi.client.rest.findByFilter(req).execute(function(data){
-      var foundTechnologies = data.technologies;
-      deferred.resolve(foundTechnologies);
+      context.foundItems = data.technologies;
+      $rootScope.$broadcast('searchChange', {
+        technologies: context.foundItems
+      });
+      deferred.resolve(context.foundItems);
     });
     return deferred.promise;
   }
