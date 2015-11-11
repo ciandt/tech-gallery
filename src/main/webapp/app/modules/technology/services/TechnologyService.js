@@ -215,6 +215,7 @@ module.exports = function($q, $timeout, $rootScope) {
   this.endorsed = {};
 
   this.endorseUser = function(idTech, endorsedMail) {
+    var deferred = $q.defer();
     var req = {
       technology : idTech,
       endorsed : endorsedMail
@@ -245,22 +246,24 @@ module.exports = function($q, $timeout, $rootScope) {
         }
         $scope.alert = alert;
         $scope.endorsed = '';*/
+        deferred.resolve(data);
       });
     }
     //$scope.$apply();
+    return deferred.promise;
   };
 
 /*
 * Auto complete on edorse user.
 */
-this.getUsersList = function (value){
-  var req = {query:value};
-  return gapi.client.rest.usersAutoComplete(req).then(function (data){
-    for(var i in data.result.items){
-      if(!data.result.items[i].photo){
-        data.result.items[i].photo = "/assets/images/default-user-image.jpg";
+  this.getUsersList = function (value){
+    var req = {query:value};
+    return gapi.client.rest.usersAutoComplete(req).then(function (data){
+      for(var i in data.result.items){
+        if(!data.result.items[i].photo){
+          data.result.items[i].photo = "/assets/images/default-user-image.jpg";
+        }
       }
-    }
     return data.result.items;
   });
 }
@@ -298,16 +301,6 @@ this.getUsersList = function (value){
       return deferred.promise;
   }
 
-  this.getUsersList = function (value){
-    var req = {query:value};
-    return gapi.client.rest.usersAutoComplete(req).then(function (data){
-      for(var i in data.result.items){
-        if(!data.result.items[i].photo){
-          data.result.items[i].photo = "/assets/images/default-user-image.jpg";
-        }
-      }
-  });
-}
   this.open = function(endorsers, size) {
     var modalInstance = $modal.open({
       animation : true,
@@ -343,7 +336,7 @@ this.getUsersList = function (value){
      * Begin of +1 features
      *
      */
-     /*function setPlusOneClass(endorsers){
+     function setPlusOneClass(endorsers){
       for(var i in endorsers){
         if(endorsers[i].email == $scope.userEmail){
           endorsers.plusOneClass = 'btn GPlusAdded';
@@ -352,6 +345,22 @@ this.getUsersList = function (value){
       }
       endorsers.plusOneClass = 'btn GPlusDefault';
       return endorsers;
-    };*/
+    };
+
+      this.addEndorse = function(endorsed, id, idTech) {
+      //$scope.disablePlusOne = true;
+      //$scope.processingEndorse = true;
+      var deferred = $q.defer();
+      var completeEmail = endorsed.email;
+      completeEmail = completeEmail.split('@');
+      var email = completeEmail[0];
+      var req = {};
+      req.endorsed = email;
+      req.technology = idTech;
+      gapi.client.rest.addEndorsementPlusOne(req).execute(function(data){
+        deferred.resolve(data);
+      });
+      return deferred.promise;
+    };
 
   };
