@@ -1,6 +1,13 @@
 <loading ng-if="technology.loading"></loading>
 <div class="technology" ng-if="!technology.loading">
   <div class="content container">
+
+    <div class="col-md-12" ng-if="app.alert.message.length">
+      <uib-alert type="{{ app.alert.type }}" close="app.closeAlert()">
+        {{ app.alert.message }}
+      </uib-alert>
+    </div>
+
     <div class="row">
       <div class="col-md-10 col-md-offset-1">
         <div class="card no-margin">
