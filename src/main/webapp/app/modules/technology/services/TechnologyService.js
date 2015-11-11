@@ -97,16 +97,12 @@ module.exports = function($q) {
    */
    this.getTechnology = function (id) {
     var deferred = $q.defer();
-    if (!id) {
-      throw 'getTechnology needs a valid `id` parameter';
+    if(id){
+      var req = {id: id};
+      gapi.client.rest.getTechnology(req).execute(function(data){
+        deferred.resolve(data);
+      });
     }
-    var req = {
-      id : id
-    };
-    gapi.client.rest.getTechnology(req).execute(function(data){
-      context.technology = data;
-      deferred.resolve(context.technology);
-    });
     return deferred.promise;
   }
 

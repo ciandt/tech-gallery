@@ -1,22 +1,10 @@
-module.exports = function ($rootScope, AppService, TechnologyService, $stateParams, $state) {
+module.exports = function ($rootScope, AppService, TechnologyService, $stateParams, $state, $scope) {
 
   /**
    * Object context
    * @type {Object}
    */
   var context = this;
-
-  var alerts = {
-	  success : {
-		  type : 'success',
-	  },
-	  failure : {
-		  type : 'danger',
-	  },
-	  caution : {
-		  type : 'warning',
-	  }
-  };
 
   /**
    * Loading state
@@ -40,25 +28,27 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
   });
 
   this.addOrUpdateTechnology = function(form){
-      if(context.name != null && context.description != null && context.shortDescription != null) {
-    	  TechnologyService.addOrUpdate(context).then(function(data){
-    		  var alert;
-    		  if (data.hasOwnProperty('error')) {
-    			  alert = alerts.failure;
-    			  alert.msg = data.error.message;
-    		  }else{
-    			  alert = alerts.success;
-            if(context.addNew){
-              clearTechnology();
-              form.$setPristine();
-              form.$setUntouched();
-            }else {
-              $state.go('root.technologies');
-            }
-    		  }
-    		  context.alert = alert;
-    	  });
-      }
+    var isEdit = (context.id !== undefined);
+    if(context.name != null && context.description != null && context.shortDescription != null) {
+  	  TechnologyService.addOrUpdate(context).then(function(data){
+  		  if (data.hasOwnProperty('error')) {
+          AppService.setAlert(data.error.message, 'error');
+  		  }else{
+          if(context.addNew){
+            clearTechnology();
+            form.$setPristine();
+            form.$setUntouched();
+          }else {
+            $state.go('root.technologies');
+          }
+          if(isEdit){
+            AppService.setAlert('Tecnologia editada com sucesso', 'success');
+          }else{
+            AppService.setAlert('Tecnologia criada com sucesso', 'success');
+          }
+  		  }
+  	  });
+    }
   };
 
   /*
@@ -91,8 +81,8 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
 	  context.selectedRecommendation = selected;
   };
 
-  function handleFileSelect(evt) {
-      var files = evt.target.files;
+  $scope.handleFileSelect = function(file) {
+      var files = file.files;
       var f = files[0];
       var reader = new FileReader();
       reader.onload = (function(theFile) {
@@ -100,14 +90,14 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
           var img = new Image;
           img.src = reader.result;
           img.onload = function() {
-            if(f.type != 'image/png' || img.width > 355 || img.height > 355){
+            if(f.type != 'image/png' || img.width > 100 || img.height > 100){
               alert('Esta imagem tem um tamanho ou tipo errado, escolha uma imagem com o tamanho 355x355 e tipo PNG.');
-              document.getElementById('idimage').value = null;
-              document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
+              document.getElementById('technology-image').value = null;
+              //document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
             }else{
               var image = e.target.result;
               context.image = image.replace('data:image/png;base64,', '');
-              document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="200" />'].join('');
+              //document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="200" />'].join('');
             }
           };
         };
