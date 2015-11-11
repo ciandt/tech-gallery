@@ -1,0 +1,19 @@
+<loading ng-if="user.loading"></loading>
+<div class="user" ng-if="!user.loading">
+  <div class="content container">
+    <header class="user-header row">
+      <div class="media col-md-12">
+        <div class="media-left no-margin">
+          <img ng-src="{{ user.profile.image }}" class="user-image" />
+        </div>
+        <div class="media-body">
+          <h1 class="user-name">{{ user.profile.name }}</h1>
+
+
+        </div>
+      </div>
+    </header>
+    <div class="user-body">
+    </div>
+  </div>
+</div>
