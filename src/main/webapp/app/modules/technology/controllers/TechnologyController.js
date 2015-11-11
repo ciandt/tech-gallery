@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $stateParams, AppService, TechnologyService) {
+module.exports = function ($scope, $rootScope, $stateParams, AppService, TechnologyService) {
 
   /**
    * Object context
@@ -54,6 +54,26 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   }
 
   this.getUsersList = function(value) {
-    TechnologyService.getUsersList(value)
+    return TechnologyService.getUsersList(value);
   };
+
+  this.getEndorsementsByTech = function() {
+    return TechnologyService.getEndorsementsByTech($stateParams.id);
+  };
+
+  this.endorseUser = function() {
+    TechnologyService.endorseUser($stateParams.id, this.endorsed.email);
+  };
+
+  this.showSelfInformations = function(email){
+    if($scope.userEmail == email){
+      return true;
+    }
+    return false;
+  };
+
+  this.generateId = function(index, email) {
+    return 'plusOne' + index + email;
+  };
+
 }
