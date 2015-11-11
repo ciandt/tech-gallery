@@ -67,6 +67,13 @@
   </div>
 
   <div class="content container">
+
+    <div class="col-md-12" ng-if="app.alert.message.length">
+      <uib-alert type="{{ app.alert.type }}" close="app.closeAlert()">
+        {{ app.alert.message }}
+      </uib-alert>
+    </div>
+
     <div class="row" ng-if="technologies.items.length">
       <div class="col-sm-6 col-md-3" ng-repeat="technology in technologies.items">
         <div class="card">

@@ -33,6 +33,55 @@ module.exports = function($q, $timeout, $rootScope) {
     return deferred.promise;
   };
 
+  this.addOrUpdate = function(context){
+    var req = fillRequestToSave(context);
+	  var deferred = $q.defer();
+	  gapi.client.rest.addOrUpdateTechnology(req).execute(function(data){
+		  deferred.resolve(data);
+      });
+	  return deferred.promise;
+  };
+
+  /*
+   * Function to fill the request to save the technology.
+   */
+  function fillRequestToSave(context) {
+    if(context.image && context.image.startsWith('https://')){
+          var req = {
+              id : slugify(context.name),
+              name : context.name,
+              shortDescription : context.shortDescription,
+              recommendationJustification : context.justification,
+              recommendation : context.selectedRecommendation,
+              description : context.description,
+              website : context.webSite,
+              image : context.image
+          };
+          return req;
+        }else{
+          var req = {
+              id : slugify(context.name),
+              name : context.name,
+              shortDescription : context.shortDescription,
+              recommendationJustification : context.justification,
+              recommendation : context.selectedRecommendation,
+              description : context.description,
+              website : context.webSite,
+              imageContent : context.image
+          };
+          return req;
+        }
+  }
+
+  function slugify(text){
+    return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+  }
+
   this.searchTechnologies = function(){
     context.foundItems = [];
     var req = {
@@ -62,33 +111,21 @@ module.exports = function($q, $timeout, $rootScope) {
   /**
    * Retrive a technology based on its ID
    * @param  {String}   id The ID of the technology
-   * @param  {Function} cb A callback function
-   * @return {Void}
+   * @return {Promise} The gapi response
    */
-   this.getTechnology = function (id, cb) {
+   this.getTechnology = function (id) {
+    var deferred = $q.defer();
     if (!id) {
       throw 'getTechnology needs a valid `id` parameter';
     }
-
-    // Mock
-    context.technology = {
-      'id': id,
-      'name': 'Vagrant',
-      'recommendation': 'Observar e fazer provas de conceito',
-      'image': 'https://storage.googleapis.com/tech-gallery-assets/imagesLogo/vagrant.png',
-      'description': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe ipsam pariatur atque ea rerum aliquid a laborum, illo soluta esse sit sunt natus autem ad sed repellendus fugit velit consequatur eveniet, dolorum itaque quisquam. Provident nesciunt, vitae sit quidem officia quasi quos aliquid dolorem explicabo id numquam aliquam suscipit at aperiam, in illum deleniti aspernatur dolores molestias doloribus laudantium, reiciendis corrupti molestiae consectetur. \nNon architecto sed, quam reprehenderit. Molestias suscipit natus ad sunt dolorum velit molestiae unde animi quasi voluptates recusandae, ipsum nemo perspiciatis reiciendis, consectetur minima dolores architecto odit maxime quibusdam temporibus doloribus alias ut autem! Nam, quis obcaecati ipsum alias delectus facere dolores nisi recusandae, maxime excepturi eos repudiandae fugiat molestias consequatur quidem! Cupiditate explicabo, fugit sit voluptates voluptatem a eos velit molestiae vitae, facilis dicta, repellat totam est quia ipsa modi id deleniti atque. Quam odio ex minima nobis nisi perferendis dignissimos deleniti voluptates et molestias est natus laborum facere, explicabo blanditiis vero magni reprehenderit. \nSequi accusamus optio repudiandae illo ad placeat cumque cupiditate sapiente aperiam eaque inventore ea quam, atque at ut, consequatur iusto earum id iste autem aliquid veritatis tenetur. Neque ut soluta, hic. Quisquam quidem nam minus dignissimos hic quia praesentium unde voluptatibus eligendi.',
-      'shortDescription': 'O Vagrant tem a finalidade de gerenciar scripts de criação de ambientes.',
-      'positiveRecommendationsCounter': 0,
-      'negativeRecommendationsCounter': 0,
-      'endorsersCounter': 0,
-      'commentariesCounter': 0,
-      'lastActivity': '28/10/2015 13:44',
-      'website': 'https://www.vagrantup.com/'
-    }
-
-    if (cb && typeof cb === 'function') {
-      cb(context.technology);
-    }
+    var req = {
+      id : id
+    };
+    gapi.client.rest.getTechnology(req).execute(function(data){
+      context.technology = data;
+      deferred.resolve(context.technology);
+    });
+    return deferred.promise;
   }
 
   /**
@@ -117,8 +154,115 @@ module.exports = function($q, $timeout, $rootScope) {
     ];
   }
 
+  this.getUserSkill = function (id) {
+    var deferred = $q.defer();
+    if (!id) {
+      throw 'getTechnology needs a valid `id` parameter';
+    }
+    var req = {
+      id : id
+    };
+    gapi.client.rest.getUserSkill(req).execute(function(data) {
+      context.rating = data.value;
+      deferred.resolve(context.rating);
+    });
+    return deferred.promise;
+  }
+
+  this.addUserSkill = function (id, newValue, oldValue) {
+    var deferred = $q.defer();
+    if (newValue !== oldValue) {
+      if (!id) {
+        throw 'getTechnology needs a valid `id` parameter';
+      }
+      var req = {
+        technology : id,
+        value : newValue
+      };
+      gapi.client.rest.addSkill(req).execute(function(data) {
+        //ga('send', 'event', 'TechGalleryEvents', 'skill_add', $scope.name);
+      });
+    }
+  }
+
   this.getRecommended = function () {
     // Mock
     return false;
   }
+
+  this.endorsed = {};
+
+  this.endorseUser = function(idTech) {
+    var req = {};
+    if(this.endorsed.email){
+      req.endorsed = this.endorsed.email;
+    }else{
+      //req.endorsed = endorsed;
+    }
+    req.technology = idTech;
+    if (req.endorsed) {
+      gapi.client.rest.addEndorsement(req).execute(function(data) {
+
+     /*   if($scope.postGooglePlus && !data.hasOwnProperty('error')){
+          var req = {
+            feature : featureEnum.ENDORSE,
+            currentUserMail : data.endorser.email,
+            endorsedMail : data.endorsed.email,
+            technologyName : data.technology.name,
+            appLink : $scope.currentPage
+          }
+          gapi.client.rest.postComment(req).execute();
+        }*/
+
+       /* var alert;
+        if (data.hasOwnProperty('error')) {
+          alert = alerts.failure;
+          alert.msg = data.error.message;
+        }else{
+          alert = alerts.success;
+        }
+        $scope.alert = alert;
+        $scope.endorsed = '';*/
+      });
+    }
+    //$scope.$apply();
+  };
+
+  /*function showEndorsementsByTech() {
+    var idTech = $scope.idTechnology;
+    var req = {
+      id : idTech
+    };
+    gapi.client.rest.getEndorsementsByTech(req).execute(function(data) {
+      if(data.result && data.result.endorsements){
+        var response = data.result.endorsements;
+        for(var i in response){
+          var fullResponse = response[i].endorsers;
+          var endorsersFiltered = fullResponse.slice(0,5);
+          response[i].endorsersFiltered = endorsersFiltered;
+          if(!response[i].endorsed.photo) {
+            response[i].endorsed.photo = "/assets/images/default-user-image.jpg";
+          }
+          response[i].endorsers = setPlusOneClass(response[i].endorsers);
+        }
+      }
+      $scope.showEndorsementResponse = response;
+      $scope.processingEndorse = false;
+      $scope.loadEndorsements = false;
+      $scope.$apply();
+    });
+}*/
+
+this.getUsersList = function (value){
+  var req = {query:value};
+  return gapi.client.rest.usersAutoComplete(req).then(function (data){
+    for(var i in data.result.items){
+      if(!data.result.items[i].photo){
+        data.result.items[i].photo = "/assets/images/default-user-image.jpg";
+      }
+    }
+    return data.result.items;
+  });
+}
+
 };

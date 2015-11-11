@@ -52,8 +52,15 @@
             <div class="card-section">
               <form action="" class="form-inline">
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="usuario" style="width: 250px;">
+                  <input ng-model="endorsed" type="text" class="form-control"
+                  placeholder="usuário" aria-describedby="basic-addon2" uib-typeahead="user as user.email for user in technology.getUsersList($viewValue)" typeahead-min-length="3" typeahead-template-url="customTemplate.html" typeahead-loading="loadingUsers" typeahead-no-results="noResults" style="width: 250px;">
                   <span class="input-group-addon">@ciandt.com</span>
+                </div>
+                <div ng-show="loadingUsers">
+                  <i class="glyphicon glyphicon-refresh"> Carregando...</i>
+                </div>
+                <div ng-show="noResults">
+                  <i class="glyphicon glyphicon-remove"></i> Não foram encontrados registros...
                 </div>
                 <button type="submit" class="btn btn-primary">Indicar</button>
               </form>

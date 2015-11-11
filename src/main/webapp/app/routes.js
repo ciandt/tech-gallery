@@ -35,6 +35,9 @@ module.exports = function(
   })
   .state('404', {
     url: '/404',
+    controller : function (AppService) {
+      AppService.setPageTitle('Página não encontrada');
+    },
     templateUrl: 'app/templates/404.html'
   });
 };

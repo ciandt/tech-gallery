@@ -31,7 +31,7 @@ module.exports = function(
     })
     .state('root.technologies-edit', {
       url: '/technologies/:id/edit',
-      controller: 'TechnologyEditController as technology',
+      controller: 'TechnologyAddController as technology',
       templateUrl: viewsFolder + 'technology-add.html'
     })
 };

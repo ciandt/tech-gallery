@@ -6,6 +6,10 @@ module.exports = function ($scope, $rootScope, AppService, AuthService, UserServ
    */
    var context = this;
 
+  this.alert = AppService.alert;
+
+  this.closeAlert = AppService.closeAlert;
+
    $rootScope.$watch('apiLoaded', function(newValue, oldValue) {
     if(newValue && !$rootScope.isUserLogged){
       AuthService.checkAuth(afterLogin, true)
