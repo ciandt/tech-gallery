@@ -136,16 +136,12 @@ module.exports = function($q, $timeout, $rootScope) {
    */
    this.getTechnology = function (id) {
     var deferred = $q.defer();
-    if (!id) {
-      throw 'getTechnology needs a valid `id` parameter';
+    if(id){
+      var req = {id: id};
+      gapi.client.rest.getTechnology(req).execute(function(data){
+        deferred.resolve(data);
+      });
     }
-    var req = {
-      id : id
-    };
-    gapi.client.rest.getTechnology(req).execute(function(data){
-      context.technology = data;
-      deferred.resolve(context.technology);
-    });
     return deferred.promise;
   }
 
@@ -274,16 +270,32 @@ module.exports = function($q, $timeout, $rootScope) {
     });
 }*/
 
-this.getUsersList = function (value){
-  var req = {query:value};
-  return gapi.client.rest.usersAutoComplete(req).then(function (data){
-    for(var i in data.result.items){
-      if(!data.result.items[i].photo){
-        data.result.items[i].photo = "/assets/images/default-user-image.jpg";
+  this.getUsersList = function (value){
+    var req = {query:value};
+    return gapi.client.rest.usersAutoComplete(req).then(function (data){
+      for(var i in data.result.items){
+        if(!data.result.items[i].photo){
+          data.result.items[i].photo = "/assets/images/default-user-image.jpg";
+        }
       }
-    }
-    return data.result.items;
-  });
-}
+      return data.result.items;
+    });
+  }
 
+  this.getRecommendations = function(){
+    var deferred = $q.defer();
+    gapi.client.rest.getRecommendations().execute(function(data){
+      deferred.resolve(data.items);
+    });
+    return deferred.promise;
+  }
+
+  this.getCommentsByTech = function(technologyId){
+    var deferred = $q.defer();
+    var req = {technologyId: technologyId};
+    gapi.client.rest.getCommentsByTech(req).execute(function(data){
+      deferred.resolve(data);
+    });
+    return deferred.promise;
+  }
 };
