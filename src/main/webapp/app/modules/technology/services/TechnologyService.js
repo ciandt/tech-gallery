@@ -32,7 +32,6 @@ module.exports = function($q, $timeout, $rootScope) {
    this.getTechnologies = function () {
     var deferred = $q.defer();
     gapi.client.rest.getTechnologies().execute(function (data) {
-     gapi.client.rest.handleLogin().execute();
      context.foundItems = data.technologies;
      $rootScope.$broadcast('searchChange', {
         technologies: context.foundItems
