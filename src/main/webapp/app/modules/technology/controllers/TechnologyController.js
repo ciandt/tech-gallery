@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $stateParams, AppService, TechnologyService, $modal) {
+module.exports = function ($rootScope, $stateParams, AppService, TechnologyService, $uibModal) {
 
   /**
    * Object context
@@ -32,6 +32,10 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   });
 
   this.ratings = TechnologyService.getRatings();
+
+  this.getRating = function (rating){
+    return TechnologyService.getRating(rating);
+  }
 
   this.rating = {};
 
@@ -177,10 +181,14 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
    }
 
      this.open = function(endorsers, size) {
-    var modalInstance = $modal.open({
+    var modalInstance = $uibModal.open({
       animation : true,
-      templateUrl : '/showEndorsementModal.html',
-      controller : 'modalController',
+      templateUrl : 'showEndorsementModal.html',
+      controller : function ($scope) {
+        $scope.endorsers = endorsers;
+        $scope.close = $scope.$close;
+        $scope.getUserLogin = context.getUserLogin;
+      },
       size : size,
       resolve : {
         endorsers : function() {
@@ -189,4 +197,11 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       }
     });
   };
+
+  this.getUserLogin = function (email){
+    var completeEmail = email;
+    completeEmail = completeEmail.split('@');
+    return completeEmail[0];
+  };
+
 }

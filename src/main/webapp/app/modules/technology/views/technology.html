@@ -75,12 +75,12 @@
                 <div class="technology-endorsement row" ng-repeat="response in technology.showEndorsementResponse track by $index">
                   <div class="media col-md-7">
                     <div class="media-image technology-endorsement-image">
-                      <a href="#/people/username"><img src={{response.endorsed.photo}} alt=""></a>
+                      <a href="#/people/{{technology.getUserLogin(response.endorsed.email)}}"><img src={{response.endorsed.photo}} alt=""></a>
                     </div>
                     <div class="media-content">
                       <div class="row">
                         <div class="col-md-6">
-                          <p><strong><a href="#/people/username">{{response.endorsed.name}}</a></strong></p>
+                          <p><strong><a href="#/people/{{technology.getUserLogin(response.endorsed.email)}}">{{response.endorsed.name}}</a></strong></p>
                         </div>
                         <div class="col-md-6 text-right">
                           <button ng-show="!technology.showSelfInformations(response.endorsed.email)"
@@ -89,7 +89,7 @@
                           ng-class="response.endorsers.plusOneClass">+{{response.endorsers.length}}</button>
                           <div
                           ng-repeat="endorser in response.endorsersFiltered track by $index">
-                          <a href="">
+                          <a href="#/people/{{technology.getUserLogin(endorser.email)}}">
                             <img class="media-object endorsers-image"
                             src={{endorser.photo}} uibTooltip={{endorser.name}}>
                           </a>
@@ -101,8 +101,11 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-5">
-                  <p><strong><a href="#/people/username">{{response.endorsed.name}}</a></strong> ainda não se auto avaliou.</p>
+                <div class="col-md-5" ng-show="!response.endorsedSkill">
+                  <p><strong><a href="#/people/{{technology.getUserLogin(response.endorsed.email)}}">{{response.endorsed.name}}</a></strong> ainda não se auto avaliou.</p>
+                </div>
+                <div class="col-md-5" ng-show="response.endorsedSkill">
+                  <p><strong><a href="#/people/{{technology.getUserLogin(response.endorsed.email)}}">{{response.endorsed.name}}</a></strong> se auto avaliou como <strong>{{technology.getRating(response.endorsedSkill).title}}</strong> <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:response.endorsedSkill"></span></p>
                 </div>
               </div>
 
@@ -248,4 +251,26 @@
       </div>
     </div>
   </div>
+
+  <script type="text/ng-template" id="showEndorsementModal.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Pessoas que recomendaram...</h3>
+</div>
+<div id="div_image_recomendations" class="container">
+    <div class="col-xs-6">
+        <div ng-repeat="endorser in endorsers">
+            <div class="media-left media-middle">
+              <a href="#/people/{{getUserLogin(endorser.email)}}">
+                <img class="media-object endorsers-image" src="{{endorser.photo}}" uibTooltip ="{{endorser.name}}">
+              </a>
+            </div>
+            <div class="media-body">
+              <a href="#/people/{{getUserLogin(endorser.email)}}">
+                <h4 class="media-heading">{{endorser.name}}</h4>
+              </a>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
 </div>

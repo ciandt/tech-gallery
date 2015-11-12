@@ -259,9 +259,9 @@ module.exports = function($q, $timeout, $rootScope) {
     return deferred.promise;
   };
 
-/*
-* Auto complete on edorse user.
-*/
+  /*
+  * Auto complete on edorse user.
+  */
   this.getUsersList = function (value){
     var req = {query:value};
     return gapi.client.rest.usersAutoComplete(req).then(function (data){
@@ -270,9 +270,9 @@ module.exports = function($q, $timeout, $rootScope) {
           data.result.items[i].photo = "/assets/images/default-user-image.jpg";
         }
       }
-    return data.result.items;
-  });
-}
+      return data.result.items;
+    });
+  }
 
   /**
   * Begin of Show Endorsement Features
@@ -304,7 +304,7 @@ module.exports = function($q, $timeout, $rootScope) {
       $scope.loadEndorsements = false;
       $scope.$apply();*/
     });
-      return deferred.promise;
+    return deferred.promise;
   }
 
   this.getRecommendations = function(){
@@ -324,16 +324,13 @@ module.exports = function($q, $timeout, $rootScope) {
     return deferred.promise;
   }
   /*
-     *
-     * Begin of +1 features
-     *
-     */
-     function setPlusOneClass(endorsers){
-      for(var i in endorsers){
-        if(endorsers[i].email == $rootScope.userEmail){
-          endorsers.plusOneClass = 'btn GPlusAdded';
-          return endorsers;
-        }
+  * Begin of +1 features
+  */
+  function setPlusOneClass(endorsers){
+    for(var i in endorsers){
+      if(endorsers[i].email == $rootScope.userEmail){
+        endorsers.plusOneClass = 'btn GPlusAdded';
+        return endorsers;
       }
     }
     endorsers.plusOneClass = 'btn GPlusDefault';
@@ -343,19 +340,19 @@ module.exports = function($q, $timeout, $rootScope) {
   this.addComment = function(context, id){
     var deferred = $q.defer();
     var req = {
-        technologyId : id,
-        comment : context.comment
+      technologyId : id,
+      comment : context.comment
     };
     gapi.client.rest.addComment(req).execute(function(data) {
       deferred.resolve(data);
       if(context.postGooglePlus && !data.hasOwnProperty('error')){
         var req = {
-              feature : featureEnum.COMMENT,
-              currentUserMail : data.author.email,
-              technologyName : context.name,
-              comment: data.comment,
-              appLink: context.currentPage
-            }
+          feature : featureEnum.COMMENT,
+          currentUserMail : data.author.email,
+          technologyName : context.name,
+          comment: data.comment,
+          appLink: context.currentPage
+        }
         //gapi.client.rest.postComment(req).execute();
       }
     });
@@ -365,20 +362,20 @@ module.exports = function($q, $timeout, $rootScope) {
   this.addRecommendationComment = function(context, id){
     var deferred = $q.defer();
     var req = {
-          technology : {id : id},
-          comment : {comment : context.commentRecommend},
-          recommendation : {score : context.recommended}
-      };
+      technology : {id : id},
+      comment : {comment : context.commentRecommend},
+      recommendation : {score : context.recommended}
+    };
     gapi.client.rest.addRecommendationComment(req).execute(function(data) {
       deferred.resolve(data);
       if(context.postGooglePlus && !data.hasOwnProperty('error')){
         var req = {
-              feature : featureEnum.RECOMMEND,
-              score : data.score,
-              currentUserMail : data.recommender.email,
-              technologyName : data.technology.name,
-              appLink: context.currentPage
-          }
+          feature : featureEnum.RECOMMEND,
+          score : data.score,
+          currentUserMail : data.recommender.email,
+          technologyName : data.technology.name,
+          appLink: context.currentPage
+        }
         //gapi.client.rest.postComment(req).execute();
       }
     });
