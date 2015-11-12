@@ -24,6 +24,8 @@ module.exports = function (CLIENT_ID, USER_SCOPES, UserService, $rootScope) {
 
   function handleAuthResultTrue(authResult) {
     if (authResult && !authResult.error) {
+      var req = {timezone: new Date().getTimezoneOffset() * (-1)};
+      gapi.client.rest.handleLogin(req).execute();
       if(!$rootScope.userEmail){
         UserService.getUserEmail(handleDomain, authResult)
       }else{
