@@ -69,8 +69,18 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   function loadComments() {
     var req = {technologyId: $stateParams.id};
     TechnologyService.getCommentsByTech($stateParams.id).then(function(data){
-      context.techComments = data.comments;
-      context.techCommentsFull = data.comments;
+      context.techComments = [];
+      context.techCommentsRecommend = [];
+      if(!data.hasOwnProperty('error')){
+        for (var i = 0; i < data.comments.length; i++) {
+          if(data.comments[i].recommendationScore == undefined){
+            context.techComments.push(data.comments[i]);
+          }else{
+            context.techCommentsRecommend.push(data.comments[i]);
+          }
+        };
+      }
+
     });
   }
 
@@ -78,7 +88,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     if(context.commentRecommend && context.commentRecommend.trim().length <= 500){
       TechnologyService.addRecommendationComment(context, $stateParams.id).then(function(){
         context.commentRecommend = '';
-        context.recommended = undefined;
+        context.recommended = true;
         loadComments();
       });
       //ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);

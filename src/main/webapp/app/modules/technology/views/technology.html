@@ -139,7 +139,7 @@
                     <textarea ng-model="technology.commentRecommend" id="recommendation-comment-input" class="form-control"></textarea>
                   </div>
                   <div class="form-inline text-right">
-                    <div class="checkbox" ng-show="false">
+                    <div class="checkbox" ng-show="app.showGPlus">
                       <label>
                         <input type="checkbox" ng-model="technology.postGooglePlus" ng-checked="technology.share.gplus"> Postar no Google+
                       </label>
@@ -152,7 +152,7 @@
             <div class="card-section">
               <h4>Avaliações</h4>
               <ol class="technology-recommendations">
-                <div ng-repeat="commentRecommend in technology.techComments track by $index">
+                <div ng-repeat="commentRecommend in technology.techCommentsRecommend track by $index">
                   <li class="technology-recommendation media">
                     <div class="media-image technology-recommendation-value">
                       <span class="glyphicon glyphicon-thumbs-up"
@@ -200,7 +200,7 @@
                     <textarea ng-model="technology.comment" id="recommendation-comment-input" class="form-control"></textarea>
                   </div>
                   <div class="form-inline text-right">
-                    <div class="checkbox" ng-show="false">
+                    <div class="checkbox" ng-show="app.showGPlus">
                       <label>
                         <input type="checkbox" ng-model="technology.postGooglePlus" ng-checked="technology.share.gplus"> Postar no Google+
                       </label>
