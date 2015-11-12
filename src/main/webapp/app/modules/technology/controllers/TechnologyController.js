@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $stateParams, AppService, TechnologyService) {
+module.exports = function ($rootScope, $stateParams, AppService, TechnologyService, $modal) {
 
   /**
    * Object context
@@ -130,6 +130,11 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       }
     }*/
 
+
+    this.showAllEndorsers = function(endorsers) {
+      return (endorsers.length > 0);
+    };
+
   this.getEndorsementsByTech = function() {
    TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
     context.showEndorsementResponse = data;
@@ -148,7 +153,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   };
 
   this.showSelfInformations = function(email){
-    if($scope.userEmail == email){
+    if($rootScope.userEmail == email){
       return true;
     }
     return false;
@@ -193,4 +198,18 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
         }
       });
    }
+
+     this.open = function(endorsers, size) {
+    var modalInstance = $modal.open({
+      animation : true,
+      templateUrl : '/showEndorsementModal.html',
+      controller : 'modalController',
+      size : size,
+      resolve : {
+        endorsers : function() {
+          return endorsers;
+        }
+      }
+    });
+  };
 }

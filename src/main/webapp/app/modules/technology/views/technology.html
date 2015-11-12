@@ -68,10 +68,10 @@
               </div>
               <div class="card-section">
                 <h4>Quem já foi indicado:</h4>
-
-
-
-
+                <div ng-show="!technology.showEndorsementResponse">
+                  <h5>Ainda não tem ninguém aqui. Indique um colega que saiba
+                    disso ali em cima!</h5>
+                </div>
                 <div class="technology-endorsement row" ng-repeat="response in technology.showEndorsementResponse track by $index">
                   <div class="media col-md-7">
                     <div class="media-image technology-endorsement-image">
@@ -83,18 +83,20 @@
                           <p><strong><a href="#/people/username">{{response.endorsed.name}}</a></strong></p>
                         </div>
                         <div class="col-md-6 text-right">
-                          <button ng-show="!showSelfInformations(response.endorsed.email)"
+                          <button ng-show="!technology.showSelfInformations(response.endorsed.email)"
                           type="button" id={{technology.generateId($index,response.endorsed.email)}}
-                          ng-disabled=disablePlusOne
                           ng-click="technology.addEndorse(response.endorsed, technology.generateId($index,response.endorsed.email))" class="btn btn-default btn-sm plusOneButton" uibTooltip ={{technology.setToolTipPlusOne($index,response.endorsed.email)}}
                           ng-class="response.endorsers.plusOneClass">+{{response.endorsers.length}}</button>
                           <div
-                          ng-repeat="endorser in technology.getEndorsersFiltered track by $index">
+                          ng-repeat="endorser in response.endorsersFiltered track by $index">
                           <a href="">
-                            <img class="technology-endorsement-plus-image"
+                            <img class="media-object endorsers-image"
                             src={{endorser.photo}} uibTooltip={{endorser.name}}>
                           </a>
                         </div>
+                        <a href="#" ng-show="technology.showAllEndorsers(response.endorsers)"
+                        class="glyphicon glyphicon-play"
+                        ng-click="technology.open(response.endorsers)"></a>
                       </div>
                     </div>
                   </div>

@@ -290,7 +290,7 @@ module.exports = function($q, $timeout, $rootScope) {
           if(!response[i].endorsed.photo) {
             response[i].endorsed.photo = "/assets/images/default-user-image.jpg";
           }
-          //response[i].endorsers = setPlusOneClass(response[i].endorsers);
+          response[i].endorsers = setPlusOneClass(response[i].endorsers);
         }
       }
       deferred.resolve(response);
@@ -300,20 +300,6 @@ module.exports = function($q, $timeout, $rootScope) {
     });
       return deferred.promise;
   }
-
-  this.open = function(endorsers, size) {
-    var modalInstance = $modal.open({
-      animation : true,
-      templateUrl : '/showEndorsementModal.html',
-      controller : 'modalController',
-      size : size,
-      resolve : {
-        endorsers : function() {
-          return endorsers;
-        }
-      }
-    });
-  };
 
   this.getRecommendations = function(){
     var deferred = $q.defer();
@@ -338,7 +324,7 @@ module.exports = function($q, $timeout, $rootScope) {
      */
      function setPlusOneClass(endorsers){
       for(var i in endorsers){
-        if(endorsers[i].email == $scope.userEmail){
+        if(endorsers[i].email == $rootScope.userEmail){
           endorsers.plusOneClass = 'btn GPlusAdded';
           return endorsers;
         }
