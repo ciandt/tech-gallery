@@ -79,6 +79,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       TechnologyService.addRecommendationComment(context, $stateParams.id).then(function(){
         context.commentRecommend = '';
         context.recommended = undefined;
+        loadComments();
       });
       //ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);
     }else{
@@ -90,6 +91,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     if(context.comment && context.comment.trim().length <= 500){
       TechnologyService.addComment(context, $stateParams.id).then(function(){
         context.comment = '';
+        loadComments();
       });
       //ga('send', 'event', 'TechGalleryEvents', 'comment_add', $scope.name);
     }
