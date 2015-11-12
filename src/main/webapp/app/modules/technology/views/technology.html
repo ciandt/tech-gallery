@@ -139,7 +139,7 @@
                     <textarea ng-model="technology.commentRecommend" id="recommendation-comment-input" class="form-control"></textarea>
                   </div>
                   <div class="form-inline text-right">
-                    <div class="checkbox">
+                    <div class="checkbox" ng-show="false">
                       <label>
                         <input type="checkbox" ng-model="technology.postGooglePlus" ng-checked="technology.share.gplus"> Postar no Google+
                       </label>
@@ -152,61 +152,32 @@
             <div class="card-section">
               <h4>Avaliações</h4>
               <ol class="technology-recommendations">
-                <div ng-repeat="commentRecommend in technology.commentRecommends">
+                <div ng-repeat="commentRecommend in technology.techComments track by $index">
                   <li class="technology-recommendation media">
                     <div class="media-image technology-recommendation-value">
-                      <span class="glyphicon glyphicon-thumbs-up"></span>
+                      <span class="glyphicon glyphicon-thumbs-up"
+                            ng-show="commentRecommend.recommendationScore != null && commentRecommend.recommendationScore"></span>
+                      <span class="glyphicon glyphicon-thumbs-down"
+                            ng-show="commentRecommend.recommendationScore != null && !commentRecommend.recommendationScore"></span>
                     </div>
                     <div class="media-content">
-                      <p>commentRecommend.comment</p>
+                      <p>{{commentRecommend.comment}}</p>
                       <div class="technology-recommendation-meta media">
                         <div class="media-image">
-                          <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt="">
+                          <a ng-href='#/people/{{commentRecommend.author.login}}'>
+                            <img class="technology-recommendation-meta-image" src="{{commentRecommend.author.photo}}" alt="">
+                          </a>
                         </div>
                         <div class="media-content">
-                          <strong>Thulio Ribeiro</strong><br>
-                          em 04/11/2015 às 17:28
+                          <strong>
+                            <a ng-href='#/people/{{commentRecommend.author.login}}'>{{commentRecommend.author.name}}</a>
+                          </strong><br>
+                          em {{commentRecommend.creation | date:"dd/MM/yyyy 'às' H:mm"}}
                         </div>
                       </div>
                     </div>
                   </li>
                 </div>
-
-                <li class="technology-recommendation media">
-                  <div class="media-image technology-recommendation-value">
-                    &nbsp;
-                    <!-- <span class="glyphicon glyphicon-thumbs-up"></span> -->
-                  </div>
-                  <div class="media-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                    <div class="technology-recommendation-meta media">
-                      <div class="media-image">
-                        <img class="technology-recommendation-meta-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt="">
-                      </div>
-                      <div class="media-content">
-                        <strong>Neliza Alves Silva</strong><br>
-                        em 04/11/2015 às 17:28
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li class="technology-recommendation media">
-                  <div class="media-image technology-recommendation-value">
-                    <span class="glyphicon glyphicon-thumbs-down"></span>
-                  </div>
-                  <div class="media-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                    <div class="technology-recommendation-meta media">
-                      <div class="media-image">
-                        <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt="">
-                      </div>
-                      <div class="media-content">
-                        <strong>Igor Leal</strong><br>
-                        em 04/11/2015 às 17:28
-                      </div>
-                    </div>
-                  </div>
-                </li>
               </ol>
 
               <div class="row">
@@ -229,7 +200,7 @@
                     <textarea ng-model="technology.comment" id="recommendation-comment-input" class="form-control"></textarea>
                   </div>
                   <div class="form-inline text-right">
-                    <div class="checkbox">
+                    <div class="checkbox" ng-show="false">
                       <label>
                         <input type="checkbox" ng-model="technology.postGooglePlus" ng-checked="technology.share.gplus"> Postar no Google+
                       </label>
@@ -242,48 +213,26 @@
             <div class="card-section">
               <h4>Comentários</h4>
               <ol class="technology-recommendations">
-                <li class="technology-recommendation media">
-                  <div class="media-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                    <div class="technology-recommendation-meta media">
-                      <div class="media-image">
-                        <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50" alt="">
-                      </div>
-                      <div class="media-content">
-                        <strong>Thulio Ribeiro</strong><br>
-                        em 04/11/2015 às 17:28
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li class="technology-recommendation media">
-                  <div class="media-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                    <div class="technology-recommendation-meta media">
-                      <div class="media-image">
-                        <img class="technology-recommendation-meta-image" src="https://lh4.googleusercontent.com/-GgkIPViK0sU/AAAAAAAAAAI/AAAAAAAAABc/GxnDoMppmL8/photo.jpg?sz=50" alt="">
-                      </div>
-                      <div class="media-content">
-                        <strong>Neliza Alves Silva</strong><br>
-                        em 04/11/2015 às 17:28
+                <div ng-repeat="comment in technology.techComments track by $index">
+                  <li class="technology-recommendation media">
+                    <div class="media-content">
+                      <p>{{comment.comment}}</p>
+                      <div class="technology-recommendation-meta media">
+                        <div class="media-image">
+                          <a ng-href='#/people/{{comment.author.login}}'>
+                            <img class="technology-recommendation-meta-image" src="{{comment.author.photo}}" alt="">
+                          </a>
+                        </div>
+                        <div class="media-content">
+                          <strong>
+                            <a ng-href='#/people/{{comment.author.login}}'>{{comment.author.name}}</a>
+                          </strong><br>
+                          em {{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-                <li class="technology-recommendation media">
-                  <div class="media-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem nulla quod officia cumque tempore alias iure iusto ex quos incidunt modi repellendus, aliquid? Laborum quos non tempora sunt eveniet doloribus!</p>
-                    <div class="technology-recommendation-meta media">
-                      <div class="media-image">
-                        <img class="technology-recommendation-meta-image" src="https://lh5.googleusercontent.com/-AyoC_aHm5iU/AAAAAAAAAAI/AAAAAAAABFw/-eaQx3SF2qs/photo.jpg?sz=50" alt="">
-                      </div>
-                      <div class="media-content">
-                        <strong>Igor Leal</strong><br>
-                        em 04/11/2015 às 17:28
-                      </div>
-                    </div>
-                  </div>
-                </li>
+                  </li>
+                </div>
               </ol>
 
               <div class="row">
