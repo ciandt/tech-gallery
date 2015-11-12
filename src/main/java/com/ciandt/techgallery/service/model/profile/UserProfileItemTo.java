@@ -16,7 +16,7 @@ public class UserProfileItemTo {
 
   private List<SubItemCommentTo> comments;
   
-  private RecomendationTo recomendation;
+  private RecomendationTo recommendation;
 
   public UserProfileItemTo() {}
 
@@ -89,11 +89,11 @@ public class UserProfileItemTo {
     this.technologyPhotoUrl = technologyPhotoUrl;
   }
 
-  public RecomendationTo getRecomendation() {
-    return recomendation;
+  public RecomendationTo getRecommendation() {
+    return recommendation;
   }
 
-  public void setRecomendation(RecomendationTo recomendation) {
-    this.recomendation = recomendation;
+  public void setRecommendation(RecomendationTo recomendation) {
+    this.recommendation = recomendation;
   }
 }

@@ -94,7 +94,7 @@ public class UserProfileTo {
         RecomendationTo recomendationTo = new RecomendationTo();
         recomendationTo.setPositive(rec.getScore());
         recomendationTo.setComment(rec.getComment().get().getComment());
-        userProfileItemTo.setRecomendation(recomendationTo);
+        userProfileItemTo.setRecommendation(recomendationTo);
       }
     }
     
