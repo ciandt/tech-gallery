@@ -10,6 +10,7 @@ import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
 
 import com.ciandt.techgallery.service.transformer.TechnologyCommentTransformer;
+import com.ciandt.techgallery.utils.timezone.TimezoneManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -127,7 +128,7 @@ public class TechnologyComment extends BaseEntity<Long> {
 
   public String getFormattedTimestamp() {
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm:ss");
-    return formatter.format(this.timestamp);
+    return formatter.format(TimezoneManager.getInstance().convertToUserTimezone(this.timestamp));
   }
   
   public void setTimestamp(Date timestamp) {

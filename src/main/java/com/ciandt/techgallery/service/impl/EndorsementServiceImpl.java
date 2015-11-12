@@ -23,15 +23,13 @@ import com.ciandt.techgallery.service.EndorsementService;
 import com.ciandt.techgallery.service.SkillService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
-import com.ciandt.techgallery.service.email.EmailConfig;
-import com.ciandt.techgallery.service.enums.EmailTypeEnum;
 import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.service.model.EndorsementResponse;
 import com.ciandt.techgallery.service.model.EndorsementsGroupedByEndorsedTransient;
 import com.ciandt.techgallery.service.model.EndorsementsResponse;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.ShowEndorsementsResponse;
-import com.ciandt.techgallery.service.model.TechnologyActivitiesTO;
+import com.ciandt.techgallery.service.profile.UserProfileService;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
 import java.util.ArrayList;
@@ -60,11 +58,11 @@ public class EndorsementServiceImpl implements EndorsementService {
   private static EndorsementServiceImpl instance;
 
   /** technology dao for getting technologies. */
-  TechnologyDAO techDAO = TechnologyDAOImpl.getInstance();
+  TechnologyDAO techDao = TechnologyDAOImpl.getInstance();
   /** tech gallery user service for getting PEOPLE API user. */
   UserServiceTG userService = UserServiceTGImpl.getInstance();
   /** user dao for getting users. */
-  TechGalleryUserDAO userDAO = TechGalleryUserDAOImpl.getInstance();
+  TechGalleryUserDAO userDao = TechGalleryUserDAOImpl.getInstance();
   /** endorsement dao. */
   EndorsementDAO endorsementDao = EndorsementDAOImpl.getInstance();
   /** skill service. */
@@ -73,6 +71,9 @@ public class EndorsementServiceImpl implements EndorsementService {
   TechnologyService techService = TechnologyServiceImpl.getInstance();
   /** Email service. */
   EmailService emailService = EmailServiceImpl.getInstance();
+  /** User Profile service. */
+  UserProfileService userProfileService = UserProfileServiceImpl.getInstance();
+
   /*
    * Constructors --------------------------------------------
    */
@@ -131,7 +132,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new NotFoundException(i18n.t("Current user was not found!"));
     } else {
       // get the TechGalleryUser from datastore
-      tgEndorserUser = userDAO.findByGoogleId(googleId);
+      tgEndorserUser = userDao.findByGoogleId(googleId);
       if (tgEndorserUser == null) {
         throw new BadRequestException(i18n.t("Endorser user do not exists on datastore!"));
       }
@@ -155,7 +156,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     if (technologyId == null || technologyId.equals("")) {
       throw new BadRequestException(i18n.t("Technology was not especified!"));
     } else {
-      technology = techDAO.findById(technologyId);
+      technology = techDao.findById(technologyId);
       if (technology == null) {
         throw new BadRequestException(i18n.t("Technology do not exists!"));
       }
@@ -178,8 +179,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
-    notifyEndorsedUser(tgEndorserUser, tgEndorsedUser, technology);
-    UserProfileServiceImpl.getInstance().handleEndorsement(entity);
+    userProfileService.handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
 
@@ -219,7 +219,7 @@ public class EndorsementServiceImpl implements EndorsementService {
       throw new NotFoundException(i18n.t("Current user was not found!"));
     } else {
       // get the TechGalleryUser from datastore
-      tgEndorserUser = userDAO.findByGoogleId(googleId);
+      tgEndorserUser = userDao.findByGoogleId(googleId);
       if (tgEndorserUser == null) {
         throw new BadRequestException(i18n.t("Endorser user do not exists on datastore!"));
       }
@@ -243,7 +243,7 @@ public class EndorsementServiceImpl implements EndorsementService {
     if (technologyId == null || technologyId.equals("")) {
       throw new BadRequestException(i18n.t("Technology was not especified!"));
     } else {
-      technology = techDAO.findById(technologyId);
+      technology = techDao.findById(technologyId);
       if (technology == null) {
         throw new BadRequestException(i18n.t("Technology do not exists!"));
       }
@@ -280,22 +280,10 @@ public class EndorsementServiceImpl implements EndorsementService {
     entity.setTechnology(Ref.create(technology));
     entity.setActive(true);
     endorsementDao.add(entity);
-    notifyEndorsedUser(tgEndorserUser, tgEndorsedUser, technology);
     UserProfileServiceImpl.getInstance().handleEndorsement(entity);
     return getEndorsement(entity.getId());
   }
 
-  private void notifyEndorsedUser(TechGalleryUser tgEndorserUser, TechGalleryUser tgEndorsedUser,
-      Technology technology) {
-    TechnologyActivitiesTO techActivities = new TechnologyActivitiesTO();
-    techActivities.setTechnology(technology);
-    techActivities.setEndorserUser(tgEndorserUser);
-    EmailConfig email =
-        new EmailConfig(EmailTypeEnum.ENDORSED, EmailTypeEnum.ENDORSED.getSubject()
-            + technology.getName(), techActivities, tgEndorsedUser.getEmail());
-    emailService.push(email);
-  }
-  
   /**
    * GET for getting all endorsements.
    */
@@ -341,14 +329,38 @@ public class EndorsementServiceImpl implements EndorsementService {
     final List<Endorsement> endorsementsByTech = endorsementDao.findAllActivesByTechnology(techId);
     final List<EndorsementsGroupedByEndorsedTransient> grouped =
         groupEndorsementByEndorsed(endorsementsByTech, techId);
-    Collections.sort(grouped, new EndorsementsGroupedByEndorsedTransient());
-
     final Technology technology = techService.getTechnologyById(techId, user);
+
     techService.updateEdorsedsCounter(technology, grouped.size());
 
+    groupUsersWithSkill(grouped, technology);
+
+    Collections.sort(grouped, new EndorsementsGroupedByEndorsedTransient());
     final ShowEndorsementsResponse response = new ShowEndorsementsResponse();
     response.setEndorsements(grouped);
     return response;
+  }
+
+  private void groupUsersWithSkill(final List<EndorsementsGroupedByEndorsedTransient> grouped,
+      final Technology technology) throws BadRequestException {
+    List<Skill> techSkills = skillService.getSkillsByTech(technology);
+    for (Skill skill : techSkills) {
+      boolean isGrouped = false;
+      for (EndorsementsGroupedByEndorsedTransient groupedEndorsements : grouped) {
+        if (skill.getTechGalleryUser().get().equals(groupedEndorsements.getEndorsed())) {
+          isGrouped = true;
+          break;
+        }
+      }
+      if (!isGrouped) {
+        EndorsementsGroupedByEndorsedTransient newEndorsed =
+            new EndorsementsGroupedByEndorsedTransient();
+        newEndorsed.setEndorsed(skill.getTechGalleryUser().get());
+        newEndorsed.setEndorsedSkill(skill.getValue());
+        newEndorsed.setEndorsers(new ArrayList<TechGalleryUser>());
+        grouped.add(newEndorsed);
+      }
+    }
   }
 
   @Override

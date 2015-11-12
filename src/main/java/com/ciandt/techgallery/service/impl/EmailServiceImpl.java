@@ -16,6 +16,7 @@ import com.ciant.techgallery.transaction.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,7 +110,7 @@ public class EmailServiceImpl implements EmailService {
     EmailNotification emailNotification = new EmailNotification();
     emailNotification.setRecipients(Arrays.asList(email.getTo()));
     emailNotification.setReason(email.getReason());
-    emailNotification.setTimestampSend(System.currentTimeMillis());
+    emailNotification.setTimestampSend(new Date());
     emailNotification.setEmailStatus(success ? "SUCCESS" : "FAILURE");
 
     Key<EmailNotification> key = emailNotificationDao.add(emailNotification);

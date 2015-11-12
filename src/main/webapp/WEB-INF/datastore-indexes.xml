@@ -21,4 +21,9 @@
         <property name="name" direction="asc" />
         <property name="startTimestamp" direction="desc" />
     </datastore-index>
+    <datastore-index kind="Endorsement" ancestor="false" source="manual">
+        <property name="active" direction="asc" />
+        <property name="endorsed" direction="asc" />
+        <property name="timestamp" direction="asc" />
+    </datastore-index>
 </datastore-indexes>

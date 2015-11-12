@@ -185,8 +185,9 @@ public class UserServiceTGImpl implements UserServiceTG {
    *           in case of a IO exception
    */
   @Override
-  public TechGalleryUser handleLogin(final User user, HttpServletRequest req)
-      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException, OAuthRequestException {
+  public TechGalleryUser handleLogin(Integer timezoneOffset, final User user, HttpServletRequest req)
+      throws NotFoundException, BadRequestException, InternalServerErrorException, IOException,
+      OAuthRequestException {
     if (user == null) {
       throw new OAuthRequestException(i18n.t("Authorization error"));
     }
@@ -209,6 +210,7 @@ public class UserServiceTGImpl implements UserServiceTG {
       tgUser = new TechGalleryUser();
     }
     updateUserInformation(user, person, tgUser);
+    tgUser.setTimezoneOffset(timezoneOffset);
     addUser(tgUser);
     log.info("User " + tgUser.getName() + " added/updated");
     return tgUser;
@@ -371,6 +373,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    * @throws InternalServerErrorException
    *           if any IO exceptions occur
    */
+  @SuppressWarnings("unchecked")
   @Override
   public List<UserResponse> getUsersByPartialLogin(String userLogin)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
@@ -407,6 +410,7 @@ public class UserServiceTGImpl implements UserServiceTG {
     return techUsers;
   }
 
+  @SuppressWarnings("unchecked")
   private Map<String, Object> peopleApiConnect(final String userLogin, final String urlEndPoint)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     String fullRequest = urlEndPoint + userLogin;

@@ -9,6 +9,7 @@ import java.util.List;
  * @author felipers
  *
  */
+@SuppressWarnings("serial")
 public class UserResponse implements Response, Serializable {
 
   /** user id. */
