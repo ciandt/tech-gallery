@@ -74,9 +74,6 @@ public class TechnologyFollowersServiceImpl implements TechnologyFollowersServic
   public Technology followTechnology(String technologyId, TechGalleryUser techUser)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
 
-    if (techUser.getFollowedTechnologyIds() == null) {
-      techUser.setFollowedTechnologyIds(new ArrayList<String>());
-    }
     Technology technology = techService.getTechnologyById(technologyId, null);
     TechnologyFollowers technologyFollowers = followersDao.findById(technology.getId());
 
@@ -104,7 +101,8 @@ public class TechnologyFollowersServiceImpl implements TechnologyFollowersServic
     return technologyFollowers;
   }
 
-  private TechnologyFollowers follow(TechnologyFollowers technologyFollowers,
+  @Override
+  public TechnologyFollowers follow(TechnologyFollowers technologyFollowers,
       TechGalleryUser techUser, Technology technology) {
     if (technologyFollowers == null) {
       technologyFollowers = new TechnologyFollowers();
@@ -113,6 +111,9 @@ public class TechnologyFollowersServiceImpl implements TechnologyFollowersServic
       technologyFollowers.setFollowers(new ArrayList<Ref<TechGalleryUser>>());
     }
     technologyFollowers.getFollowers().add(Ref.create(techUser));
+    if (techUser.getFollowedTechnologyIds() == null) {
+      techUser.setFollowedTechnologyIds(new ArrayList<String>());
+    }
     techUser.getFollowedTechnologyIds().add(technology.getId());
     return technologyFollowers;
   }
@@ -134,5 +135,10 @@ public class TechnologyFollowersServiceImpl implements TechnologyFollowersServic
         followersDao.add(technologyFollowers);
       }
     }
+  }
+
+  @Override
+  public TechnologyFollowers findById(String id) {
+    return followersDao.findById(id);
   }
 }

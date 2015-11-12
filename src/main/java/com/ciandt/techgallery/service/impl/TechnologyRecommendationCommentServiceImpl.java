@@ -73,7 +73,6 @@ public class TechnologyRecommendationCommentServiceImpl
     technologyService.audit(technology.getId(), user);
 
     return recommendation;
-
   }
 
   /**

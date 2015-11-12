@@ -4,6 +4,7 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Unindex;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,7 @@ public class EmailNotification extends BaseEntity<Long> {
   @Unindex
   private String emailStatus;
   @Unindex
-  private Long timestampSend;
+  private Date timestampSend;
 
   public Long getId() {
     return id;
@@ -62,12 +63,12 @@ public class EmailNotification extends BaseEntity<Long> {
     this.emailStatus = emailStatus;
   }
 
-  public Long getTimestampSend() {
+  public Date getTimestampSend() {
     return timestampSend;
   }
 
-  public void setTimestampSend(Long timestampSend) {
-    this.timestampSend = timestampSend;
+  public void setTimestampSend(Date date) {
+    this.timestampSend = date;
   }
 
 }

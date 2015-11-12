@@ -8,7 +8,10 @@ import com.google.appengine.api.users.User;
 
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.model.UserSkillTO;
+
+import java.util.List;
 
 /**
  * Services for Skills.
@@ -70,4 +73,13 @@ public interface SkillService {
    */
   String importUserSkill(UserSkillTO userSkills, User user)
       throws NotFoundException, InternalServerErrorException, BadRequestException;
+
+  /**
+   * Service for getting all skills informed for a technology.
+   * 
+   * @param technology Technology Entity.
+   * @return List of all skills of the informed technology.
+   * @throws BadRequestException in case a request with problem were made.
+   */
+  List<Skill> getSkillsByTech(Technology technology) throws BadRequestException;
 }

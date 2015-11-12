@@ -10,6 +10,7 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,5 +106,19 @@ public class EndorsementDAOImpl extends GenericDAOImpl<Endorsement, Long>
         .filter("active", true).list();
 
     return entities;
+  }
+  
+  @Override
+  public List<Endorsement> findAllEndorsementsStartingFrom(TechGalleryUser userEndorsed, Date date) {
+    final Objectify objectify = OfyService.ofy();
+    final List<Endorsement> endorsements =
+        objectify.load().type(Endorsement.class)
+            .filter(Endorsement.TIMESTAMP + " >", date)
+            .filter(Endorsement.ENDORSED, Ref.create(userEndorsed))
+            .filter(Endorsement.ACTIVE, Boolean.TRUE).list();
+    if (endorsements == null || endorsements.size() <= 0) {
+      return null;
+    }
+    return endorsements;
   }
 }

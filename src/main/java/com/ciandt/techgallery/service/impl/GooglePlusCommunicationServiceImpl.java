@@ -33,8 +33,7 @@ public class GooglePlusCommunicationServiceImpl implements SocialNetworkCommunic
 
   private UserServiceTG userService = UserServiceTGImpl.getInstance();
 
-  private GooglePlusCommunicationServiceImpl() {
-  }
+  private GooglePlusCommunicationServiceImpl() {}
 
   /**
    * Singleton method for the service.
@@ -55,13 +54,14 @@ public class GooglePlusCommunicationServiceImpl implements SocialNetworkCommunic
    * (non-Javadoc)
    * 
    * @see com.ciandt.techgallery.service.GooglePlusCommunicationService#
-   * postGooglePlus(com.ciandt.techgallery.service.enums.FeatureEnum,
-   * java.lang.Boolean, java.lang.String, java.lang.String, java.lang.String,
-   * com.google.appengine.api.users.User, javax.servlet.http.HttpServletRequest)
+   * postGooglePlus(com.ciandt.techgallery.service.enums.FeatureEnum, java.lang.Boolean,
+   * java.lang.String, java.lang.String, java.lang.String, com.google.appengine.api.users.User,
+   * javax.servlet.http.HttpServletRequest)
    */
   @Override
-  public void postInUserProfile(FeatureEnum feature, Boolean score, String comment, String currentUserMail,
-      String endorsedMail, String technologyName, String techGalleryLink, User user, String accessToken)
+  public void postInUserProfile(FeatureEnum feature, Boolean score, String comment,
+      String currentUserMail, String endorsedMail, String technologyName, String techGalleryLink,
+      User user, String accessToken)
           throws InternalServerErrorException, BadRequestException, NotFoundException, IOException {
 
     TechGalleryUser techUser = userService.validateUser(user);
@@ -79,15 +79,18 @@ public class GooglePlusCommunicationServiceImpl implements SocialNetworkCommunic
     acl.setDomainRestricted(true); // Required, this does the domain restriction
 
     // Create a new activity object to be executed
-    String content = feature.createContent(currentUserMail, endorsedMail, technologyName, score, comment);
-    Activity activity = new Activity().setObject(new Activity.PlusDomainsObject().setOriginalContent(content))
-        .setAccess(acl);
+    String content =
+        feature.createContent(currentUserMail, endorsedMail, technologyName, score, comment);
+    Activity activity = new Activity()
+        .setObject(new Activity.PlusDomainsObject().setOriginalContent(content)).setAccess(acl);
 
     // Attach the link
-    Activity.PlusDomainsObject.Attachments attachment = new Activity.PlusDomainsObject.Attachments();
+    Activity.PlusDomainsObject.Attachments attachment =
+        new Activity.PlusDomainsObject.Attachments();
     attachment.setObjectType("article");
     attachment.setUrl(techGalleryLink);
-    List<Activity.PlusDomainsObject.Attachments> attachments = new ArrayList();
+    List<Activity.PlusDomainsObject.Attachments> attachments =
+        new ArrayList<Activity.PlusDomainsObject.Attachments>();
     attachments.add(attachment); // You can also add multiple attachments to the
                                  // post
     activity.getObject().setAttachments(attachments);
@@ -96,7 +99,8 @@ public class GooglePlusCommunicationServiceImpl implements SocialNetworkCommunic
     GoogleCredential credential = new GoogleCredential().setAccessToken(accessToken);
 
     // Create a new authorized API client according the credential
-    PlusDomains plusDomains = new PlusDomains.Builder(new NetHttpTransport(), new JacksonFactory(), credential).build();
+    PlusDomains plusDomains =
+        new PlusDomains.Builder(new NetHttpTransport(), new JacksonFactory(), credential).build();
 
     // Execute the API request, which calls `activities.insert` for the logged
     // in user
@@ -106,8 +110,7 @@ public class GooglePlusCommunicationServiceImpl implements SocialNetworkCommunic
   /**
    * This method confirm the user preference to post on your Google+ profile
    * 
-   * @param user
-   *          the user logged in
+   * @param user the user logged in
    * @throws NotFoundException
    * @throws BadRequestException
    * @throws InternalServerErrorException

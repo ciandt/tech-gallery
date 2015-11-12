@@ -9,13 +9,15 @@ import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 
+import java.util.List;
+
 /**
  * SkillDAOImpl methods implementation.
  *
  * @author Felipe Goncalves de Castro
  *
  */
-public class SkillDAOImpl extends GenericDAOImpl<Skill, Long> implements SkillDAO {
+public class SkillDAOImpl extends GenericDAOImpl<Skill, Long>implements SkillDAO {
 
   /*
    * Attributes --------------------------------------------
@@ -54,6 +56,13 @@ public class SkillDAOImpl extends GenericDAOImpl<Skill, Long> implements SkillDA
             .now();
 
     return entity;
+  }
+
+  @Override
+  public List<Skill> findByTechnology(Technology technology) {
+    final Objectify objectify = OfyService.ofy();
+    return objectify.load().type(Skill.class).filter(Skill.TECHNOLOGY, Ref.create(technology))
+        .filter(Skill.ACTIVE, Boolean.TRUE).list();
   }
 
 }

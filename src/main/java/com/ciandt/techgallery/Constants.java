@@ -17,7 +17,8 @@ public class Constants {
   public static final String PLUS_SCOPE = "https://www.googleapis.com/auth/plus.me";
   public static final String PLUS_STREAM_WRITE = "https://www.googleapis.com/auth/plus.stream.write";
 
-  public static final String CRON_MAIL_JOB = "/cron/email";
+  public static final String CRON_MAIL_ACTIVITY_JOB = "/cron/activityresume";
+  public static final String CRON_MAIL_ENDORSEMENT_JOB = "/cron/endorsementresume";
 
   public static final String POSITIVE_RECOMMENDATION_TEXT = "positivamente a tecnologia ";
   public static final String NEGATIVE_RECOMMENDATION_TEXT = "negativamente a tecnologia ";
@@ -44,5 +45,9 @@ public class Constants {
   public static final String LINK_LOCALHOST = "http://localhost:8888/";
 
   public static final String PATH_VIEW_TECH_HTML = "viewTech.html";
+  
+  public static final String EMAIL_CONTEXT_SINGLE = "te indicou em";
+  
+  public static final String EMAIL_CONTEXT_PLURAL = "te indicaram em";
 
 }

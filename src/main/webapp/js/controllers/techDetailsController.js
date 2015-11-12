@@ -147,7 +147,7 @@ angular.module('techGallery').controller(
       req.technology = $scope.idTechnology;
       if ($scope.endorsed.email || $scope.endorsed) {
         gapi.client.rest.addEndorsement(req).execute(function(data) {
-
+        sendEndorsementEvent($scope.name, $scope.endorsed.email);
           if($scope.postGooglePlus && !data.hasOwnProperty('error')){
             var req = {
                 feature : featureEnum.ENDORSE,
@@ -194,6 +194,7 @@ angular.module('techGallery').controller(
           var response = data.result.endorsements;
           for(var i in response){
             var fullResponse = response[i].endorsers;
+            if(fullResponse) {
             var endorsersFiltered = fullResponse.slice(0,5);
             response[i].endorsersFiltered = endorsersFiltered;
             if(!response[i].endorsed.photo) {
@@ -201,6 +202,7 @@ angular.module('techGallery').controller(
             }
             response[i].endorsers = setPlusOneClass(response[i].endorsers);
           }
+        }
         }
         $scope.showEndorsementResponse = response;
         $scope.processingEndorse = false;
@@ -307,6 +309,7 @@ angular.module('techGallery').controller(
       if (newValue !== oldValue) {
         $scope.skillLevel = returnSkillLevel(newValue);
         //Make API call to save the skill
+        sendSkillEvent($scope.skillLevel);
 
         var idTech = $scope.idTechnology;
         var req = {
@@ -314,7 +317,7 @@ angular.module('techGallery').controller(
           value : newValue
         };
         gapi.client.rest.addSkill(req).execute(function(data) {
-          ga('send', 'event', 'TechGalleryEvents', 'skill_add', $scope.name);
+          
           $scope.processingEndorse = true;
           callBackLoaded();
         });
@@ -368,7 +371,7 @@ angular.module('techGallery').controller(
                   gapi.client.rest.postComment(req).execute();
                 }
           });
-          ga('send', 'event', 'TechGalleryEvents', 'comment_add', $scope.name);
+    			sendCommentEvent($scope.name);
         }else {
           //Call API to add a comment and a recommendation
           var req = {
@@ -388,12 +391,13 @@ angular.module('techGallery').controller(
                       score : data.score,
                       currentUserMail : data.recommender.email,
                       technologyName : data.technology.name,
+        		          comment : data.comment.comment,
                       appLink: $scope.currentPage
                   }
                   gapi.client.rest.postComment(req).execute();
                 }
           });
-          ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);
+    			sendRecommendationEvent($scope.name, $scope.score);
         }
       }else{
         if($scope.score !== undefined){

@@ -38,6 +38,7 @@ public class TransactionalInvocationHandler implements InvocationHandler {
     }
   }
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
   public Object invoke(final Object proxy, final Method method, final Object[] args)
       throws Throwable {
