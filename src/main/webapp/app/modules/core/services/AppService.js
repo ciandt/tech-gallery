@@ -24,6 +24,8 @@ module.exports = function ($rootScope) {
    */
   this.alert = {};
 
+  this.alertBotton = {};
+
   /**
    * Set app-wide alert message
    * @param {String} message The alert message
@@ -31,11 +33,7 @@ module.exports = function ($rootScope) {
    * @see https://angular-ui.github.io/bootstrap/#/alert
    */
   this.setAlert = function (message, type) {
-    var type = (type == 'error') ? 'danger' : type;
-    angular.copy({
-      message: message,
-      type:  type || 'warning'
-    }, this.alert);
+    fillAlert(message, type, this.alert);
   }
 
   /**
@@ -44,6 +42,26 @@ module.exports = function ($rootScope) {
    */
   this.closeAlert = function () {
     angular.copy({}, this.alert)
+  }
+
+  this.setAlertBotton = function (message, type) {
+    fillAlert(message, type, this.alertBotton);
+  }
+
+  /**
+   * Remove app-wide alert messafge
+   * @return {Void}
+   */
+  this.closeAlertBotton = function () {
+    angular.copy({}, this.alertBotton)
+  }
+
+  function fillAlert(message, type, alert) {
+    var type = (type == 'error') ? 'danger' : type;
+    angular.copy({
+      message: message,
+      type:  type || 'warning'
+    }, alert);
   }
 
   /**

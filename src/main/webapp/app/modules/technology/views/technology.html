@@ -2,6 +2,11 @@
   <div class="technology" ng-if="!technology.loading">
     <div class="content container technology">
       <header class="technology-header row">
+        <div class="col-md-12" ng-if="app.alert.message.length">
+          <uib-alert type="{{ app.alert.type }}" close="app.closeAlert()">
+            {{ app.alert.message }}
+          </uib-alert>
+        </div>
         <div class="media col-md-12">
           <div class="media-image no-margin">
             <img ng-src="{{ technology.item.image }}" class="technology-image" />
@@ -51,7 +56,7 @@
               </div>
               <div class="card-section">
                 <div class="form-inline">
-                  <div class="input-group">
+                  <div class="input-group typeahead-input">
                     <input ng-model="technology.endorsed" type="text" class="form-control"
                     placeholder="usuário" aria-describedby="basic-addon2" uib-typeahead="user as user.email for user in technology.getUsersList($viewValue)" typeahead-min-length="3" typeahead-template-url="customTemplate.html" style="width: 250px;">
                     <span class="input-group-addon">@ciandt.com</span>
@@ -68,39 +73,44 @@
               </div>
               <div class="card-section">
                 <h4>Quem já foi indicado:</h4>
-
-
-
-
+                <div ng-show="!technology.showEndorsementResponse">
+                  <h5>Ainda não tem ninguém aqui. Indique um colega que saiba
+                    disso ali em cima!</h5>
+                </div>
                 <div class="technology-endorsement row" ng-repeat="response in technology.showEndorsementResponse track by $index">
                   <div class="media col-md-7">
                     <div class="media-image technology-endorsement-image">
-                      <a href="#/people/username"><img src={{response.endorsed.photo}} alt=""></a>
+                      <a href="#/people/{{technology.getUserLogin(response.endorsed.email)}}"><img src={{response.endorsed.photo}} alt=""></a>
                     </div>
                     <div class="media-content">
                       <div class="row">
                         <div class="col-md-6">
-                          <p><strong><a href="#/people/username">{{response.endorsed.name}}</a></strong></p>
+                          <p><strong><a href="#/people/{{technology.getUserLogin(response.endorsed.email)}}">{{response.endorsed.name}}</a></strong></p>
                         </div>
                         <div class="col-md-6 text-right">
-                          <button ng-show="!showSelfInformations(response.endorsed.email)"
+                          <button ng-show="!technology.showSelfInformations(response.endorsed.email)"
                           type="button" id={{technology.generateId($index,response.endorsed.email)}}
-                          ng-disabled=disablePlusOne
                           ng-click="technology.addEndorse(response.endorsed, technology.generateId($index,response.endorsed.email))" class="btn btn-default btn-sm plusOneButton" uibTooltip ={{technology.setToolTipPlusOne($index,response.endorsed.email)}}
                           ng-class="response.endorsers.plusOneClass">+{{response.endorsers.length}}</button>
                           <div
-                          ng-repeat="endorser in technology.getEndorsersFiltered track by $index">
-                          <a href="">
-                            <img class="technology-endorsement-plus-image"
+                          ng-repeat="endorser in response.endorsersFiltered track by $index">
+                          <a href="#/people/{{technology.getUserLogin(endorser.email)}}">
+                            <img class="media-object endorsers-image"
                             src={{endorser.photo}} uibTooltip={{endorser.name}}>
                           </a>
                         </div>
+                        <a href="#" ng-show="technology.showAllEndorsers(response.endorsers)"
+                        class="glyphicon glyphicon-play"
+                        ng-click="technology.open(response.endorsers)"></a>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-5">
-                  <p><strong><a href="#/people/username">{{response.endorsed.name}}</a></strong> ainda não se auto avaliou.</p>
+                <div class="col-md-5" ng-show="!response.endorsedSkill">
+                  <p><strong><a href="#/people/{{technology.getUserLogin(response.endorsed.email)}}">{{response.endorsed.name}}</a></strong> ainda não se auto avaliou.</p>
+                </div>
+                <div class="col-md-5" ng-show="response.endorsedSkill">
+                  <p><strong><a href="#/people/{{technology.getUserLogin(response.endorsed.email)}}">{{response.endorsed.name}}</a></strong> se auto avaliou como <strong>{{technology.getRating(response.endorsedSkill).title}}</strong> <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:response.endorsedSkill"></span></p>
                 </div>
               </div>
 
@@ -111,6 +121,11 @@
 
       <!-- TECHNOLOGY RECOMMENDATIONS & COMMENTS -->
       <div class="technology-section row">
+        <div class="col-md-12" ng-if="app.alertBotton.message.length">
+          <uib-alert type="{{ app.alertBotton.type }}" close="app.closeAlertBotton()">
+            {{ app.alertBotton.message }}
+          </uib-alert>
+        </div>
         <div id="recommendations" class="col-md-6">
           <div class="card no-margin">
             <div class="card-section">
@@ -123,13 +138,13 @@
                     <div class="form-inline">
                       <div class="radio">
                         <label for="recommended-up">
-                          <input class="technology-recommendation-input" ng-checked="technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(true)" type="radio" name="recommendation[recommended]" id="recommended-up" value="true">
+                          <input class="technology-recommendation-input" ng-checked="technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(true)" type="radio" id="recommended-up" value="true">
                           <span class="btn btn-default" ng-class="{'active' : technology.recommended}"><span class="glyphicon glyphicon-thumbs-up"></span></span>
                         </label>
                       </div>
                       <div class="radio">
                         <label for="recommended-down">
-                          <input class="technology-recommendation-input" ng-checked="!technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(false)" type="radio" name="recommendation[recommended]" id="recommended-down" value="false">
+                          <input class="technology-recommendation-input" ng-checked="!technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(false)" type="radio" id="recommended-down" value="false">
                           <span class="btn btn-default" ng-class="{'active' : !technology.recommended}"><span class="glyphicon glyphicon-thumbs-down"></span></span>
                         </label>
                       </div>
@@ -246,4 +261,26 @@
       </div>
     </div>
   </div>
+
+  <script type="text/ng-template" id="showEndorsementModal.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Pessoas que recomendaram...</h3>
+</div>
+<div id="div_image_recomendations" class="container">
+    <div class="col-xs-6">
+        <div ng-repeat="endorser in endorsers">
+            <div class="media-left media-middle">
+              <a href="#/people/{{getUserLogin(endorser.email)}}">
+                <img class="media-object endorsers-image" src="{{endorser.photo}}" uibTooltip ="{{endorser.name}}">
+              </a>
+            </div>
+            <div class="media-body">
+              <a href="#/people/{{getUserLogin(endorser.email)}}">
+                <h4 class="media-heading">{{endorser.name}}</h4>
+              </a>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
 </div>
