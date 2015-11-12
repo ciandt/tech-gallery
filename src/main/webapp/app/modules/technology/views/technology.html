@@ -1,6 +1,11 @@
   <loading ng-if="technology.loading"></loading>
   <div class="technology" ng-if="!technology.loading">
     <div class="content container technology">
+      <div class="col-md-12" ng-if="app.alert.message.length">
+          <uib-alert type="{{ app.alert.type }}" close="app.closeAlert()">
+            {{ app.alert.message }}
+          </uib-alert>
+        </div>
       <header class="technology-header row">
         <div class="media col-md-12">
           <div class="media-image no-margin">
@@ -116,6 +121,11 @@
 
       <!-- TECHNOLOGY RECOMMENDATIONS & COMMENTS -->
       <div class="technology-section row">
+        <div class="col-md-12" ng-if="app.alertBotton.message.length">
+          <uib-alert type="{{ app.alertBotton.type }}" close="app.closeAlertBotton()">
+            {{ app.alertBotton.message }}
+          </uib-alert>
+        </div>
         <div id="recommendations" class="col-md-6">
           <div class="card no-margin">
             <div class="card-section">
@@ -128,13 +138,13 @@
                     <div class="form-inline">
                       <div class="radio">
                         <label for="recommended-up">
-                          <input class="technology-recommendation-input" ng-checked="technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(true)" type="radio" name="recommendation[recommended]" id="recommended-up" value="true">
+                          <input class="technology-recommendation-input" ng-checked="technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(true)" type="radio" id="recommended-up" value="true">
                           <span class="btn btn-default" ng-class="{'active' : technology.recommended}"><span class="glyphicon glyphicon-thumbs-up"></span></span>
                         </label>
                       </div>
                       <div class="radio">
                         <label for="recommended-down">
-                          <input class="technology-recommendation-input" ng-checked="!technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(false)" type="radio" name="recommendation[recommended]" id="recommended-down" value="false">
+                          <input class="technology-recommendation-input" ng-checked="!technology.recommended" ng-model="technology.recommended" ng-change="technology.setRecommendation(false)" type="radio" id="recommended-down" value="false">
                           <span class="btn btn-default" ng-class="{'active' : !technology.recommended}"><span class="glyphicon glyphicon-thumbs-down"></span></span>
                         </label>
                       </div>

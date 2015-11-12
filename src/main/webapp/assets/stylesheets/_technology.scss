@@ -108,7 +108,7 @@ $technology-spacing: 20px;
 .technology-endorsement,
 .technology-comment {
   margin-bottom: $technology-spacing;
-
+  width: 100%;
   &:last-of-type {
     margin-bottom: 0;
   }

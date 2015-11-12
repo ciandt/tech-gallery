@@ -75,7 +75,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     TechnologyService.getCommentsByTech($stateParams.id).then(function(data){
       context.techComments = [];
       context.techCommentsRecommend = [];
-      if(!data.hasOwnProperty('error')){
+      if(!data.hasOwnProperty('error') && data.comments !== undefined){
         for (var i = 0; i < data.comments.length; i++) {
           if(data.comments[i].recommendationScore == undefined){
             context.techComments.push(data.comments[i]);
@@ -94,10 +94,11 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
         context.commentRecommend = '';
         context.recommended = true;
         loadComments();
+        AppService.setAlertBotton('Recomendação incluída com sucesso.', 'success');
       });
       //ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);
     }else{
-      AppService.setAlert('Você deve informar um comentário sobre sua recomendação.', 'warning');
+      AppService.setAlertBotton('Você deve informar um comentário sobre sua recomendação.', 'warning');
     }
   }
 
@@ -106,6 +107,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       TechnologyService.addComment(context, $stateParams.id).then(function(){
         context.comment = '';
         loadComments();
+        AppService.setAlertBotton('Comentário incluído com sucesso.', 'success');
       });
       //ga('send', 'event', 'TechGalleryEvents', 'comment_add', $scope.name);
     }
@@ -126,9 +128,9 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     TechnologyService.endorseUser($stateParams.id, this.endorsed.email).then(function(data){
         if(!data.hasOwnProperty('error')){
           context.getEndorsementsByTech();
-          //AppService.setAlert('Usuário indicado!' ,'success');
+          AppService.setAlert('Usuário indicado!' ,'success');
         } else {
-          //AppService.setAlert(data.error.message ,'error');
+          AppService.setAlert(data.error.message ,'error');
         }
     });
   };
