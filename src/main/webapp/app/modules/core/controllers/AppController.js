@@ -12,11 +12,15 @@ module.exports = function ($scope, $rootScope, AppService, AuthService, UserServ
    */
   this.alert = AppService.alert;
 
+  this.alertBotton = AppService.alertBotton;
+
   /**
    * Bind the alert close method to the Service
    * @type {Function}
    */
   this.closeAlert = AppService.closeAlert;
+
+  this.closeAlertBotton = AppService.closeAlertBotton;
 
    $rootScope.$watch('apiLoaded', function(newValue, oldValue) {
     if(newValue && !$rootScope.isUserLogged){

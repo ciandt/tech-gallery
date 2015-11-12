@@ -32,7 +32,6 @@ module.exports = function($q, $timeout, $rootScope) {
    this.getTechnologies = function () {
     var deferred = $q.defer();
     gapi.client.rest.getTechnologies().execute(function (data) {
-     gapi.client.rest.handleLogin().execute();
      context.foundItems = data.technologies;
      $rootScope.$broadcast('searchChange', {
         technologies: context.foundItems
@@ -107,7 +106,11 @@ module.exports = function($q, $timeout, $rootScope) {
         .replace(/\-\-+/g, '-')         // Replace multiple - with single -
         .replace(/^-+/, '')             // Trim - from start of text
         .replace(/-+$/, '');            // Trim - from end of text
-      }
+  }
+
+  this.slugify = function(text){
+    return slugify(text);
+  }
 
   this.searchTechnologies = function(){
     context.foundItems = [];
@@ -214,8 +217,7 @@ module.exports = function($q, $timeout, $rootScope) {
   }
 
   this.getRecommended = function () {
-    // Mock
-    return false;
+    return true;
   }
 
   this.endorsed = {};
@@ -259,9 +261,9 @@ module.exports = function($q, $timeout, $rootScope) {
     return deferred.promise;
   };
 
-/*
-* Auto complete on edorse user.
-*/
+  /*
+  * Auto complete on edorse user.
+  */
   this.getUsersList = function (value){
     var req = {query:value};
     return gapi.client.rest.usersAutoComplete(req).then(function (data){
@@ -270,9 +272,9 @@ module.exports = function($q, $timeout, $rootScope) {
           data.result.items[i].photo = "/assets/images/default-user-image.jpg";
         }
       }
-    return data.result.items;
-  });
-}
+      return data.result.items;
+    });
+  }
 
   /**
   * Begin of Show Endorsement Features
@@ -296,7 +298,7 @@ module.exports = function($q, $timeout, $rootScope) {
           if(!response[i].endorsed.photo) {
             response[i].endorsed.photo = "/assets/images/default-user-image.jpg";
           }
-          //response[i].endorsers = setPlusOneClass(response[i].endorsers);
+          response[i].endorsers = setPlusOneClass(response[i].endorsers);
         }
       }
       deferred.resolve(response);
@@ -304,22 +306,8 @@ module.exports = function($q, $timeout, $rootScope) {
       $scope.loadEndorsements = false;
       $scope.$apply();*/
     });
-      return deferred.promise;
+    return deferred.promise;
   }
-
-  this.open = function(endorsers, size) {
-    var modalInstance = $modal.open({
-      animation : true,
-      templateUrl : '/showEndorsementModal.html',
-      controller : 'modalController',
-      size : size,
-      resolve : {
-        endorsers : function() {
-          return endorsers;
-        }
-      }
-    });
-  };
 
   this.getRecommendations = function(){
     var deferred = $q.defer();
@@ -338,13 +326,11 @@ module.exports = function($q, $timeout, $rootScope) {
     return deferred.promise;
   }
   /*
-   *
-   * Begin of +1 features
-   *
-   */
+  * Begin of +1 features
+  */
   function setPlusOneClass(endorsers){
     for(var i in endorsers){
-      if(endorsers[i].email == $scope.userEmail){
+      if(endorsers[i].email == $rootScope.userEmail){
         endorsers.plusOneClass = 'btn GPlusAdded';
         return endorsers;
       }
@@ -356,19 +342,19 @@ module.exports = function($q, $timeout, $rootScope) {
   this.addComment = function(context, id){
     var deferred = $q.defer();
     var req = {
-        technologyId : id,
-        comment : context.comment
+      technologyId : id,
+      comment : context.comment
     };
     gapi.client.rest.addComment(req).execute(function(data) {
       deferred.resolve(data);
       if(context.postGooglePlus && !data.hasOwnProperty('error')){
         var req = {
-              feature : featureEnum.COMMENT,
-              currentUserMail : data.author.email,
-              technologyName : context.name,
-              comment: data.comment,
-              appLink: context.currentPage
-            }
+          feature : featureEnum.COMMENT,
+          currentUserMail : data.author.email,
+          technologyName : context.name,
+          comment: data.comment,
+          appLink: context.currentPage
+        }
         //gapi.client.rest.postComment(req).execute();
       }
     });
@@ -378,20 +364,20 @@ module.exports = function($q, $timeout, $rootScope) {
   this.addRecommendationComment = function(context, id){
     var deferred = $q.defer();
     var req = {
-          technology : {id : id},
-          comment : {comment : context.commentRecommend},
-          recommendation : {score : context.recommended}
-      };
+      technology : {id : id},
+      comment : {comment : context.commentRecommend},
+      recommendation : {score : context.recommended}
+    };
     gapi.client.rest.addRecommendationComment(req).execute(function(data) {
       deferred.resolve(data);
       if(context.postGooglePlus && !data.hasOwnProperty('error')){
         var req = {
-              feature : featureEnum.RECOMMEND,
-              score : data.score,
-              currentUserMail : data.recommender.email,
-              technologyName : data.technology.name,
-              appLink: context.currentPage
-          }
+          feature : featureEnum.RECOMMEND,
+          score : data.score,
+          currentUserMail : data.recommender.email,
+          technologyName : data.technology.name,
+          appLink: context.currentPage
+        }
         //gapi.client.rest.postComment(req).execute();
       }
     });

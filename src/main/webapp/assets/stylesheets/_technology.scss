@@ -9,6 +9,12 @@ $technology-spacing: 20px;
     margin: 0 $technology-spacing 0 0;
   }
 }
+
+.typeahead-input ul{
+  height:300px;
+  overflow:auto;
+}
+
 .technology-image {
   border: 1px solid #ddd;
   border-radius: 100%;
@@ -58,7 +64,6 @@ $technology-spacing: 20px;
 
 .technology-section {
   position: relative;
-  overflow: hidden;
   padding-top: $technology-spacing;
   margin-bottom: $technology-spacing;
 
@@ -109,7 +114,7 @@ $technology-spacing: 20px;
 .technology-endorsement,
 .technology-comment {
   margin-bottom: $technology-spacing;
-
+  width: 100%;
   &:last-of-type {
     margin-bottom: 0;
   }

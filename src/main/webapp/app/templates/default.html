@@ -20,7 +20,7 @@
         <li uib-dropdown uib-keyboard-nav>
           <a href="#"  role="button" uib-dropdown-toggle>{{loggedUserInformation.name}}<span class="caret"></span></a>
           <ul class="uib-dropdown-menu">
-            <li><a href="#">Meu perfil</a></li>
+            <li><a ng-href="#/people/{{ loggedUserInformation.login }}">Meu perfil</a></li>
             <li role="separator" class="divider"></li>
             <li><a href={{searchController.logOutUser}}>Sair</a></li>
           </ul>
