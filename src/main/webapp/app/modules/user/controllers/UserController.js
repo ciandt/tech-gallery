@@ -15,11 +15,12 @@ module.exports = function ($stateParams, AppService, UserService, $uibModal) {
   /**
    * The user profile info
    * @type {Object}
-   */
+   */ 
   this.profile = UserService.profile;
 
   // Update the user info based on the URL param
   UserService.updateUserProfile($stateParams.id).then(function (user) {
+    context.profile = user;
     context.loading = false;
     AppService.setPageTitle(user.name);
   });

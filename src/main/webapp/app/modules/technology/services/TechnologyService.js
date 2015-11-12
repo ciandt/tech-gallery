@@ -75,7 +75,7 @@ module.exports = function($q, $timeout, $rootScope) {
    function fillRequestToSave(context) {
     if(context.image && context.image.startsWith('https://')){
       var req = {
-        id : context.slugify(context.name),
+        id : slugify(context.name),
         name : context.name,
         shortDescription : context.shortDescription,
         recommendationJustification : context.justification,
@@ -87,7 +87,7 @@ module.exports = function($q, $timeout, $rootScope) {
       return req;
     }else{
       var req = {
-        id : context.slugify(context.name),
+        id : slugify(context.name),
         name : context.name,
         shortDescription : context.shortDescription,
         recommendationJustification : context.justification,
@@ -100,14 +100,18 @@ module.exports = function($q, $timeout, $rootScope) {
     }
   }
 
-  this.slugify = function(text){
+  function slugify(text){
     return text.toString().toLowerCase()
         .replace(/\s+/g, '-')           // Replace spaces with -
         .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
         .replace(/\-\-+/g, '-')         // Replace multiple - with single -
         .replace(/^-+/, '')             // Trim - from start of text
         .replace(/-+$/, '');            // Trim - from end of text
-      }
+  }
+
+  this.slugify = function(text){
+    return slugify(text);
+  }
 
   this.searchTechnologies = function(){
     context.foundItems = [];

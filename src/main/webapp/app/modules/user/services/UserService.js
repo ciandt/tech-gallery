@@ -20,7 +20,7 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
    this.updateUserProfile = function (id) {
     var deferred = $q.defer();
 
-    var userMail = $scope.userId + "@ciandt.com";
+    var userMail = 'example@example.com';
 
     var req = {
      email : userMail
@@ -28,158 +28,40 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
 
    gapi.client.rest.profile.get(req).execute(function(data) {
     
-    var response = data;
-    var technologiesCount = data.technologies.lenth;
-    var recommendationsCount = 0;
-    var commentsCount = 0;
+      var response = data;
+      var technologiesCount = data.technologies.length;
+      var recommendationsCount = 0;
+      var commentsCount = 0;
 
-    if(data){
+      if(data){
 
-      for (var i=0; i < data.technologies.lenth; i++) {
-        if(data.technologies[i].recommendation){
-          recommendationsCount++;
-        }
-        if(data.technologies[i].comments){
-          comments += data.technologies[i].comments.lenth;
-        }
-        var skillLevel = data.technologies[i].skillLevel;
-        var rating = {
-          value : 0,
-          title : ''
+        for (var i=0; i < data.technologies.length; i++) {
+          if(data.technologies[i].recommendation){
+            recommendationsCount++;
+          }
+          if(data.technologies[i].comments){
+            commentsCount += data.technologies[i].comments.length;
+          }
+          var skillLevel = data.technologies[i].skillLevel;
+          var rating = {
+            value : 0,
+            title : ''
+          };
+          if(skillLevel){
+            rating = TechnologyService.getRatings()[skillLevel - 1];
+          }
+          data.technologies[i].rating = rating;
+          data.technologies[i].id = TechnologyService.slugify(data.technologies[i].technologyName);
         };
-        if(skillLevel){
-          var rating = TechnologyService.getRatings[skillLevel - 1];
-        }
-        data.technologies[i].rating = rating;
-        data.technologies[i].id = TechnologyService.slugify(data.technologies[i].name);
-      };
 
-      data.owner.technologiesCount = technologiesCount;
-      data.owner.recommendationsCount = recommendationsCount;
-      data.owner.commentsCount = commentsCount;
-    }
-    
-  });
-
-    // // Mock
-    // angular.copy({
-    //   id: id,
-    //   name: 'Fulano de Tal',
-    //   image: 'https://lh5.googleusercontent.com/-Ggye___6JQU/AAAAAAAAAAI/AAAAAAAAABc/9udrCsEUoc4/photo.jpg?sz=50',
-    //   technologiesCount: 12,
-    //   recommendationsCount: 23,
-    //   commentsCount: 108,
-    //   // technologies : []
-    //   technologies : [
-    //   {
-    //     id: 'vagrant',
-    //     name: 'Vagrant',
-    //     endorsementsCount: 123,
-    //     rating: {
-    //       value : 5,
-    //       title : 'Jedi'
-    //     },
-    //     recommendation: {
-    //       recommended: true,
-    //       comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam a ex voluptatem delectus quo hic nemo provident modi excepturi illum!'
-    //     }
-    //   },
-    //   {
-    //     id: 'webgel',
-    //     name: 'WebGL',
-    //     endorsementsCount: 3,
-    //     rating: {
-    //       value : 3,
-    //       title : 'Padawan'
-    //     },
-    //     recommendation: {
-    //       recommended: false,
-    //       comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, earum quisquam omnis vero doloribus illo!'
-    //     }
-    //   },
-    //   {
-    //     id: 'unity',
-    //     name: 'Unity',
-    //     endorsementsCount: 1234567,
-    //     rating: {
-    //       value : 1,
-    //       title : 'Newbie'
-    //     },
-    //     recommendation: {
-    //       recommended: true,
-    //       comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas provident sint voluptatibus\n commodi recusandae dicta, harum vitae repellendus. Aut, reiciendis quis harum! Ad, quos, officia.'
-    //     }
-    //   },
-    //   {
-    //     id: 'sass',
-    //     name: 'SASS',
-    //     endorsementsCount: 75,
-    //     rating: {
-    //       value : 5,
-    //       title : 'Jedi'
-    //     },
-    //     recommendation: {
-    //       recommended: true,
-    //       comment: 'Lorem ipsum dolor sit amet.'
-    //     }
-    //   },
-    //   {
-    //     id: 'vagrant',
-    //     name: 'Vagrant',
-    //     endorsementsCount: 123,
-    //     rating: {
-    //       value : 5,
-    //       title : 'Jedi'
-    //     },
-    //     recommendation: {
-    //       recommended: true,
-    //       comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam a ex voluptatem delectus quo hic nemo provident modi excepturi illum!'
-    //     }
-    //   },
-    //   {
-    //     id: 'webgel',
-    //     name: 'WebGL',
-    //     endorsementsCount: 3,
-    //     rating: {
-    //       value : 3,
-    //       title : 'Padawan'
-    //     },
-    //     recommendation: {
-    //       recommended: false,
-    //       comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, earum quisquam omnis vero doloribus illo!'
-    //     }
-    //   },
-    //   {
-    //     id: 'unity',
-    //     name: 'Unity',
-    //     endorsementsCount: 1234567,
-    //     rating: {
-    //       value : 1,
-    //       title : 'Newbie'
-    //     },
-    //     recommendation: {
-    //       recommended: true,
-    //       comment: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas provident sint voluptatibus\n commodi recusandae dicta, harum vitae repellendus. Aut, reiciendis quis harum! Ad, quos, officia.'
-    //     }
-    //   },
-    //   {
-    //     id: 'sass',
-    //     name: 'SASS',
-    //     endorsementsCount: 75,
-    //     rating: {
-    //       value : 5,
-    //       title : 'Jedi'
-    //     },
-    //     recommendation: {
-    //       recommended: true,
-    //       comment: 'Lorem ipsum dolor sit amet.'
-    //     }
-    //   }
-    //   ]
-    // }, context.profile);
-
-deferred.resolve(context.profile);
-return deferred.promise;
+        data.owner.technologiesCount = technologiesCount;
+        data.owner.recommendationsCount = recommendationsCount;
+        data.owner.commentsCount = commentsCount;
+        deferred.resolve(data);
+      }
+      
+    });
+  return deferred.promise;
 }
 
 this.getUserEmail = function(callBackFunction, authResult){
