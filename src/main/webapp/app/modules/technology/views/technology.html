@@ -1,12 +1,12 @@
   <loading ng-if="technology.loading"></loading>
   <div class="technology" ng-if="!technology.loading">
     <div class="content container technology">
-      <div class="col-md-12" ng-if="app.alert.message.length">
+      <header class="technology-header row">
+        <div class="col-md-12" ng-if="app.alert.message.length">
           <uib-alert type="{{ app.alert.type }}" close="app.closeAlert()">
             {{ app.alert.message }}
           </uib-alert>
         </div>
-      <header class="technology-header row">
         <div class="media col-md-12">
           <div class="media-image no-margin">
             <img ng-src="{{ technology.item.image }}" class="technology-image" />
