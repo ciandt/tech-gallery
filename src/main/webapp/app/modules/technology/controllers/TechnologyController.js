@@ -119,9 +119,9 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     TechnologyService.endorseUser($stateParams.id, this.endorsed.email).then(function(data){
         if(!data.hasOwnProperty('error')){
           context.getEndorsementsByTech();
-          //AppService.setAlert('Usuário indicado!' ,'success');
+          AppService.setAlert('Usuário indicado!' ,'success');
         } else {
-          //AppService.setAlert(data.error.message ,'error');
+          AppService.setAlert(data.error.message ,'error');
         }
     });
   };

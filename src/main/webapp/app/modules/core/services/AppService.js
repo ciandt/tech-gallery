@@ -33,11 +33,7 @@ module.exports = function ($rootScope) {
    * @see https://angular-ui.github.io/bootstrap/#/alert
    */
   this.setAlert = function (message, type) {
-    var type = (type == 'error') ? 'danger' : type;
-    angular.copy({
-      message: message,
-      type:  type || 'warning'
-    }, this.alert);
+    fillAlert(message, type, this.alert);
   }
 
   /**
@@ -49,11 +45,7 @@ module.exports = function ($rootScope) {
   }
 
   this.setAlertBotton = function (message, type) {
-    var type = (type == 'error') ? 'danger' : type;
-    angular.copy({
-      message: message,
-      type:  type || 'warning'
-    }, this.alertBotton);
+    fillAlert(message, type, this.alertBotton);
   }
 
   /**
@@ -62,6 +54,14 @@ module.exports = function ($rootScope) {
    */
   this.closeAlertBotton = function () {
     angular.copy({}, this.alertBotton)
+  }
+
+  function fillAlert(message, type, alert) {
+    var type = (type == 'error') ? 'danger' : type;
+    angular.copy({
+      message: message,
+      type:  type || 'warning'
+    }, alert);
   }
 
   /**
