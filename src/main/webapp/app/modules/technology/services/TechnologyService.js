@@ -373,7 +373,7 @@ module.exports = function($q, $timeout, $rootScope) {
               comment: data.comment,
               appLink: context.currentPage
             }
-        gapi.client.rest.postComment(req).execute();
+        //gapi.client.rest.postComment(req).execute();
       }
     });
     return deferred.promise;
@@ -396,7 +396,7 @@ module.exports = function($q, $timeout, $rootScope) {
               technologyName : data.technology.name,
               appLink: context.currentPage
           }
-        gapi.client.rest.postComment(req).execute();
+        //gapi.client.rest.postComment(req).execute();
       }
     });
     return deferred.promise;
