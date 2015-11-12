@@ -20,46 +20,45 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
    this.updateUserProfile = function (id) {
     var deferred = $q.defer();
 
-    var userMail = 'example@example.com';
+    var userMail = id + "@ciandt.com";
+    // var userMail = 'example@example.com';
 
     var req = {
      email : userMail
    };
 
    gapi.client.rest.profile.get(req).execute(function(data) {
-    
-      var response = data;
-      var technologiesCount = data.technologies.length;
-      var recommendationsCount = 0;
-      var commentsCount = 0;
-
-      if(data){
-
-        for (var i=0; i < data.technologies.length; i++) {
-          if(data.technologies[i].recommendation){
-            recommendationsCount++;
-          }
-          if(data.technologies[i].comments){
-            commentsCount += data.technologies[i].comments.length;
-          }
-          var skillLevel = data.technologies[i].skillLevel;
-          var rating = {
-            value : 0,
-            title : ''
+      if(data && !data.hasOwnProperty('error')){
+        var technologiesCount = 0;
+        var recommendationsCount = 0;
+        var commentsCount = 0;
+        if(data.technologies){
+          var technologiesCount = data.technologies.length;
+          for (var i=0; i < data.technologies.length; i++) {
+            if(data.technologies[i].recommendation){
+              recommendationsCount++;
+            }
+            if(data.technologies[i].comments){
+              commentsCount += data.technologies[i].comments.length;
+            }
+            var skillLevel = data.technologies[i].skillLevel;
+            var rating = {
+              value : 0,
+              title : ''
+            };
+            if(skillLevel){
+              rating = TechnologyService.getRatings()[skillLevel - 1];
+            }
+            data.technologies[i].rating = rating;
+            data.technologies[i].id = TechnologyService.slugify(data.technologies[i].technologyName);
           };
-          if(skillLevel){
-            rating = TechnologyService.getRatings()[skillLevel - 1];
-          }
-          data.technologies[i].rating = rating;
-          data.technologies[i].id = TechnologyService.slugify(data.technologies[i].technologyName);
-        };
+        }
 
         data.owner.technologiesCount = technologiesCount;
         data.owner.recommendationsCount = recommendationsCount;
         data.owner.commentsCount = commentsCount;
-        deferred.resolve(data);
       }
-      
+      deferred.resolve(data);      
     });
   return deferred.promise;
 }
