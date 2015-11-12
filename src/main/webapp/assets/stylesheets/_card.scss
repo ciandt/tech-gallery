@@ -5,7 +5,6 @@ $card-spacing: 15px;
   border: 1px solid $border-color;
   border-bottom-width: 2px;
   border-radius: $border-radius-base;
-  overflow: hidden;
   margin-bottom: $card-spacing * 2;
 
   // height: 380px;
@@ -16,7 +15,6 @@ $card-spacing: 15px;
   width: 150px;
 }
 .card-section {
-  overflow: hidden;
   padding: $card-spacing;
   border-top: 1px solid #eee;
 

@@ -28,7 +28,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     AppService.setPageTitle(technology.name);
     context.item = technology;
     context.loading = false;
-    //loadComments();
+    loadComments();
   });
 
   this.ratings = TechnologyService.getRatings();
@@ -66,69 +66,46 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   /**
    * Begin of show comments features
    */
-  /*function loadComments() {
+  function loadComments() {
     var req = {technologyId: $stateParams.id};
     TechnologyService.getCommentsByTech($stateParams.id).then(function(data){
-      context.techComments = data.comments;
-      context.techCommentsFull = data.comments;
-    });
-  }*/
-
-  /*this.addComment = function(){
-      if(context.comment && context.comment.trim().length <= 500){
-        if(context.recommended == undefined){
-          var req = {
-              technologyId : $stateParams.id,
-              comment : context.comment
-          };
-          gapi.client.rest.addComment(req).execute(function(data) {
-            $scope.processingComment = true;
-            callBackLoaded();
-            $scope.comment = '';
-            if($scope.postGooglePlus && !data.hasOwnProperty('error')){
-                  var req = {
-                        feature : featureEnum.COMMENT,
-                        currentUserMail : data.author.email,
-                        technologyName : $scope.name,
-                comment: data.comment,
-              appLink: $scope.currentPage
-                    }
-                  gapi.client.rest.postComment(req).execute();
-                }
-          });
-          ga('send', 'event', 'TechGalleryEvents', 'comment_add', $scope.name);
-        }else {
-          var req = {
-              technology : {id : $stateParams.id},
-              comment : {comment : context.comment},
-              recommendation : {score : $scope.score}
-          };
-          gapi.client.rest.addRecommendationComment(req).execute(function(data) {
-            $scope.processingComment = true;
-            callBackLoaded();
-            $scope.comment = '';
-            $scope.score = undefined;
-            $scope.setClassThumbs('');
-            if($scope.postGooglePlus && !data.hasOwnProperty('error')){
-                  var req = {
-                      feature : featureEnum.RECOMMEND,
-                      score : data.score,
-                      currentUserMail : data.recommender.email,
-                      technologyName : data.technology.name,
-                      appLink: $scope.currentPage
-                  }
-                  gapi.client.rest.postComment(req).execute();
-                }
-          });
-          ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);
-        }
-      }else{
-        if($scope.score !== undefined){
-          $scope.alertComment = true;
-          $scope.alertMsgComment = 'Você deve informar um comentário sobre sua recomendação.';
-        }
+      context.techComments = [];
+      context.techCommentsRecommend = [];
+      if(!data.hasOwnProperty('error')){
+        for (var i = 0; i < data.comments.length; i++) {
+          if(data.comments[i].recommendationScore == undefined){
+            context.techComments.push(data.comments[i]);
+          }else{
+            context.techCommentsRecommend.push(data.comments[i]);
+          }
+        };
       }
-    }*/
+
+    });
+  }
+
+  this.addRecommendationComment = function(){
+    if(context.commentRecommend && context.commentRecommend.trim().length <= 500){
+      TechnologyService.addRecommendationComment(context, $stateParams.id).then(function(){
+        context.commentRecommend = '';
+        context.recommended = true;
+        loadComments();
+      });
+      //ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);
+    }else{
+      AppService.setAlert('Você deve informar um comentário sobre sua recomendação.', 'warning');
+    }
+  }
+
+  this.addComment = function(){
+    if(context.comment && context.comment.trim().length <= 500){
+      TechnologyService.addComment(context, $stateParams.id).then(function(){
+        context.comment = '';
+        loadComments();
+      });
+      //ga('send', 'event', 'TechGalleryEvents', 'comment_add', $scope.name);
+    }
+  }
 
 
     this.showAllEndorsers = function(endorsers) {

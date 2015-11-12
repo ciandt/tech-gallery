@@ -1,7 +1,11 @@
 package com.ciandt.techgallery.service.model.profile;
 
+import com.ciandt.techgallery.persistence.dao.impl.TechnologyDAOImpl;
+import com.ciandt.techgallery.persistence.dao.impl.TechnologyRecommendationDAOImpl;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
+import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
 import com.googlecode.objectify.Ref;
 
@@ -84,11 +88,14 @@ public class UserProfileTo {
     
     UserProfileItemTo userProfileItemTo = new UserProfileItemTo();
     if (isPositive!=null) {
-      RecomendationTo recomendationTo = new RecomendationTo();
-//      recomendationTo.setPositive(isPositive);
-//      recomendationTo.setComment(userProfileItem.getCompanyRecommendation());
-      userProfileItemTo.setRecomendation(recomendationTo);
-      
+      Technology tech = TechnologyDAOImpl.getInstance().findByName(userProfileItem.getTechnologyName());
+      TechnologyRecommendation rec = TechnologyRecommendationDAOImpl.getInstance().findActiveByRecommenderAndTechnology(owner, tech);
+      if(rec!=null){
+        RecomendationTo recomendationTo = new RecomendationTo();
+        recomendationTo.setPositive(rec.getScore());
+        recomendationTo.setComment(rec.getComment().get().getComment());
+        userProfileItemTo.setRecommendation(recomendationTo);
+      }
     }
     
     transformComment(userProfileItem, userProfileItemTo);

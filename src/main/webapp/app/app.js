@@ -1,6 +1,7 @@
 var angular = require('angular');
 var apiName = 'rest';
 var apiVersion = 'v1';
+var showGPlus = false;
 if(window.location.hostname == 'localhost'){
   var port = ':8080';
 } else {
