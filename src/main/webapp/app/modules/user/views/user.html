@@ -4,11 +4,11 @@
     <header class="user-header row">
       <div class="media col-md-12">
         <div class="media-left no-margin">
-          <img ng-src="{{ user.profile.image }}" class="user-image" />
+          <img ng-src="{{ user.profile.photo }}" class="user-image" />
         </div>
         <div class="media-body">
           <div class="pull-left">
-            <h1 class="user-name">{{ user.profile.name }}</h1>
+            <h1 class="user-name">{{ user.profile.owner.name }}</h1>
           </div>
           <div class="pull-right">
             <div class="card card--stats">
@@ -16,7 +16,7 @@
                 <span class="panel-title">Tecnologias</span>
               </div>
               <div class="card-section text-center">
-                <span class="user-stats">{{ user.profile.technologiesCount }}</span>
+                <span class="user-stats">{{ user.profile.owner.technologiesCount }}</span>
               </div>
             </div>
             <div class="card card--stats">
@@ -24,7 +24,7 @@
                 <span class="panel-title">Avaliações</span>
               </div>
               <div class="card-section text-center">
-                <span class="user-stats">{{ user.profile.recommendationsCount }}</span>
+                <span class="user-stats">{{ user.profile.owner.recommendationsCount }}</span>
               </div>
             </div>
             <div class="card card--stats">
@@ -32,7 +32,7 @@
                 <span class="panel-title">Comentários</span>
               </div>
               <div class="card-section text-center">
-                <span class="user-stats">{{ user.profile.commentsCount }}</span>
+                <span class="user-stats">{{ user.profile.owner.commentsCount }}</span>
               </div>
             </div>
           </div>

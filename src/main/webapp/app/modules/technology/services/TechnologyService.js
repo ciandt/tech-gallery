@@ -69,7 +69,7 @@ module.exports = function($q, $timeout, $rootScope) {
    function fillRequestToSave(context) {
     if(context.image && context.image.startsWith('https://')){
       var req = {
-        id : slugify(context.name),
+        id : context.slugify(context.name),
         name : context.name,
         shortDescription : context.shortDescription,
         recommendationJustification : context.justification,
@@ -81,7 +81,7 @@ module.exports = function($q, $timeout, $rootScope) {
       return req;
     }else{
       var req = {
-        id : slugify(context.name),
+        id : context.slugify(context.name),
         name : context.name,
         shortDescription : context.shortDescription,
         recommendationJustification : context.justification,
@@ -94,7 +94,7 @@ module.exports = function($q, $timeout, $rootScope) {
     }
   }
 
-  function slugify(text){
+  this.slugify = function(text){
     return text.toString().toLowerCase()
         .replace(/\s+/g, '-')           // Replace spaces with -
         .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
