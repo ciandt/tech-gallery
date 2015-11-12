@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $stateParams, AppService, TechnologyService) {
+module.exports = function ($rootScope, $stateParams, AppService, TechnologyService, $uibModal) {
 
   /**
    * Object context
@@ -32,6 +32,10 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   });
 
   this.ratings = TechnologyService.getRatings();
+
+  this.getRating = function (rating){
+    return TechnologyService.getRating(rating);
+  }
 
   this.rating = {};
 
@@ -71,7 +75,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     TechnologyService.getCommentsByTech($stateParams.id).then(function(data){
       context.techComments = [];
       context.techCommentsRecommend = [];
-      if(!data.hasOwnProperty('error')){
+      if(!data.hasOwnProperty('error') && data.comments !== undefined){
         for (var i = 0; i < data.comments.length; i++) {
           if(data.comments[i].recommendationScore == undefined){
             context.techComments.push(data.comments[i]);
@@ -90,10 +94,11 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
         context.commentRecommend = '';
         context.recommended = true;
         loadComments();
+        AppService.setAlertBotton('Recomendação incluída com sucesso.', 'success');
       });
       //ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);
     }else{
-      AppService.setAlert('Você deve informar um comentário sobre sua recomendação.', 'warning');
+      AppService.setAlertBotton('Você deve informar um comentário sobre sua recomendação.', 'warning');
     }
   }
 
@@ -102,10 +107,16 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       TechnologyService.addComment(context, $stateParams.id).then(function(){
         context.comment = '';
         loadComments();
+        AppService.setAlertBotton('Comentário incluído com sucesso.', 'success');
       });
       //ga('send', 'event', 'TechGalleryEvents', 'comment_add', $scope.name);
     }
   }
+
+
+    this.showAllEndorsers = function(endorsers) {
+      return (endorsers.length > 0);
+    };
 
   this.getEndorsementsByTech = function() {
    TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
@@ -117,15 +128,15 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     TechnologyService.endorseUser($stateParams.id, this.endorsed.email).then(function(data){
         if(!data.hasOwnProperty('error')){
           context.getEndorsementsByTech();
-          //AppService.setAlert('Usuário indicado!' ,'success');
+          AppService.setAlert('Usuário indicado!' ,'success');
         } else {
-          //AppService.setAlert(data.error.message ,'error');
+          AppService.setAlert(data.error.message ,'error');
         }
     });
   };
 
   this.showSelfInformations = function(email){
-    if($scope.userEmail == email){
+    if($rootScope.userEmail == email){
       return true;
     }
     return false;
@@ -170,4 +181,29 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
         }
       });
    }
+
+     this.open = function(endorsers, size) {
+    var modalInstance = $uibModal.open({
+      animation : true,
+      templateUrl : 'showEndorsementModal.html',
+      controller : function ($scope) {
+        $scope.endorsers = endorsers;
+        $scope.close = $scope.$close;
+        $scope.getUserLogin = context.getUserLogin;
+      },
+      size : size,
+      resolve : {
+        endorsers : function() {
+          return endorsers;
+        }
+      }
+    });
+  };
+
+  this.getUserLogin = function (email){
+    var completeEmail = email;
+    completeEmail = completeEmail.split('@');
+    return completeEmail[0];
+  };
+
 }
