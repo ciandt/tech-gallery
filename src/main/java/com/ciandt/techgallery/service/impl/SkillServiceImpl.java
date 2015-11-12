@@ -24,6 +24,7 @@ import com.ciandt.techgallery.utils.TechGalleryUtil;
 import com.ciandt.techgallery.utils.i18n.I18n;
 
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -216,6 +217,14 @@ public class SkillServiceImpl implements SkillService {
   }
 
   @Override
+  public List<Skill> getSkillsByTech(Technology technology) throws BadRequestException {
+    if (technology == null) {
+      throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_NOT_EXIST.message());
+    }
+    return skillDao.findByTechnology(technology);
+  }
+
+  @Override
   public String importUserSkill(UserSkillTO userSkills, User user)
       throws InternalServerErrorException, BadRequestException {
     String email = userSkills.getEmail();
@@ -260,5 +269,4 @@ public class SkillServiceImpl implements SkillService {
     }
     return technology;
   }
-
 }

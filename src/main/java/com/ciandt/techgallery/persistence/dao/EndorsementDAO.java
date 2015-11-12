@@ -4,6 +4,7 @@ import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,5 +55,7 @@ public interface EndorsementDAO extends GenericDAO<Endorsement, Long> {
    */
   List<Endorsement> findActivesByUsers(TechGalleryUser endorser, TechGalleryUser endorsed,
       Technology technology);
+  
+  List<Endorsement> findAllEndorsementsStartingFrom(TechGalleryUser userEndorsed, Date date);
 
 }

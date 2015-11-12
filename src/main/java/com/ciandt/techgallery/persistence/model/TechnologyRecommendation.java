@@ -11,6 +11,7 @@ import com.googlecode.objectify.annotation.Unindex;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.service.transformer.TechnologyRecommendationTransformer;
+import com.ciandt.techgallery.utils.timezone.TimezoneManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -154,7 +155,7 @@ public class TechnologyRecommendation extends BaseEntity<Long> {
 
   public String getFormattedTimestamp() {
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm:ss");
-    return formatter.format(this.timestamp);
+    return formatter.format(TimezoneManager.getInstance().convertToUserTimezone(this.timestamp));
   }
 
   public void setTimestamp(Date timestamp) {

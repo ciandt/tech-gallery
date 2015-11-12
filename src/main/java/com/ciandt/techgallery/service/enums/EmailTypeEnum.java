@@ -12,9 +12,9 @@ public enum EmailTypeEnum {
   DAILY_RESUME("[Tech Gallery] Resumo diário - ",
       "TechnologyActivitiesResume",
       "Resumo do dia para os followers"),
-  ENDORSED("[Tech Gallery] Você foi indicado em ",
+  ENDORSED("[Tech Gallery] Resumo diário de Indicação - ",
       "UserEndorserment",
-      "Notificação de indicação");
+      "Resumo do dia para indicações");
 
   private String subject;
   private String template;

@@ -7,7 +7,6 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
-import com.googlecode.objectify.annotation.Unindex;
 
 import com.ciandt.techgallery.service.transformer.EndorsementTransformer;
 
@@ -44,7 +43,7 @@ public class Endorsement extends BaseEntity<Long> {
   @Load
   private Ref<TechGalleryUser> endorsed;
 
-  @Unindex
+  @Index
   private Date timestamp;
 
   @Index
