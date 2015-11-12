@@ -26,6 +26,8 @@ public class UserResponse implements Response, Serializable {
   private List<String> followedTechIds;
   /** save the preference of user. */
   private Boolean postGooglePlusPreference;
+  
+  private String login;
 
   public Long getId() {
     return id;
@@ -56,6 +58,9 @@ public class UserResponse implements Response, Serializable {
   }
 
   public void setEmail(String email) {
+    if(email!=null && email.contains("@")){
+      setLogin(email.split("@")[0]);
+    }
     this.email = email;
   }
 
@@ -81,5 +86,13 @@ public class UserResponse implements Response, Serializable {
 
   public void setFollowedTechIds(List<String> followedTechIds) {
     this.followedTechIds = followedTechIds;
+  }
+
+  public String getLogin() {
+    return login;
+  }
+
+  public void setLogin(String login) {
+    this.login = login;
   }
 }
