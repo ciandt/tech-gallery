@@ -2,17 +2,18 @@
 <html lang="en" ng-app="techGallery" ng-cloak>
 <head>
   <meta charset="utf-8">
-  <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/app.css" />
-  <link rel="stylesheet" href="css/techgallery.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+  <title>Tech Gallery</title>
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/stylesheets/app.css" />
+  <link rel="stylesheet" href="assets/stylesheets/techgallery.css" />
 
   <script src="https://apis.google.com/js/client.js?onload=init"></script>
-  <script src="lib/angular/angular.js"></script>
-  <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
-  <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-  <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
-  <script src="lib/angular-route/angular-route.min.js"></script>
+  <script src="node_modules/angular/angular.js"></script>
+  <script src="node_modules/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="node_modules/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="node_modules/angular-route/angular-route.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/jsUtils.js"></script>
   <script src="js/googleAnalytics.js"></script>
@@ -39,7 +40,7 @@
       </div>
     </div>
   </nav>
-  
+
   <div class="page-header"></div>
 
   <div class="login-Button" ng-show="showLogin">
@@ -50,7 +51,7 @@
   <div>
     <h3 class="container-fluid" ng-show="showContent==false"><strong><center>Usuário não encontrado...</center></strong></h3>
   </div>
-  
+
   <div ng-show="showContent">
     <div id="userInformations" class="container">
       <img class="img-circle profilePhoto col-xs-6 col-md-4" src={{userProfile.owner.photo?userProfile.owner.photo:defaultUserPhoto}}>
@@ -86,7 +87,7 @@
     <div class="container">
       <a href="" ng-click="userProfile.positiveRecItems.length>=4 ? showLessItems('positive') : showAllItems('positive')" ng-show="completePositiveItems.length > 3" class="pull-right">{{userProfile.positiveItems.length>=4 ? 'Ver Menos...' : 'Ver Todos...'}}</a>
     </div>
-    
+
     <div id="negativeCards" class="container">
       <h3 class="container-fluid"><strong>Recomendações Negativas</strong></h3>
       <center><h4 ng-show="!userProfile.negativeRecItems">Não existem tecnologias com recomendações negativas para este usuário...</h4></center>
@@ -94,7 +95,7 @@
           <div class="thumbnail userProfileThumbnail">
               <h3 class="titleThumbnail">{{negativeItem.technologyName}}</h3>
               <h5 class="titleThumbnail">{{negativeItem.companyRecommendation}}</h5>
-          	<div class="imageSize">
+            <div class="imageSize">
                 <img src={{negativeItem.technologyPhotoUrl}} data-holder-rendered="true"
                     class="thumbnail-Image">
               </div>
@@ -117,7 +118,7 @@
     <div class="container">
       <a href="" ng-click="userProfile.negativeRecItems.length>=4 ? showLessItems('negative') : showAllItems('negative')" ng-show="completeNegativeItems.length > 3" class="pull-right">{{userProfile.negativeItems.length>=4 ? 'Ver Menos...' : 'Ver Todos...'}}</a>
     </div>
-    
+
     <div id="otherCards" class="container">
       <h3 class="container-fluid"><strong>Outras</strong></h3>
       <center><h4 ng-show="!userProfile.otherItems">Não existem tecnologias com recomendações de outro tipo para este usuário...</h4></center>

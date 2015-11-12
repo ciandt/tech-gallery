@@ -2,17 +2,18 @@
 <html lang="en" ng-app="techGallery" ng-cloak>
 <head>
   <meta charset="utf-8">
-  <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/app.css" />
-  <link rel="stylesheet" href="css/techgallery.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+  <title>Tech Gallery</title>
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/stylesheets/app.css" />
+  <link rel="stylesheet" href="assets/stylesheets/techgallery.css" />
 
   <script src="https://apis.google.com/js/client.js?onload=init"></script>
-  <script src="lib/angular/angular.js"></script>
-  <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
-  <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-  <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
-  <script src="lib/angular-route/angular-route.min.js"></script>
+  <script src="node_modules/angular/angular.js"></script>
+  <script src="node_modules/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="node_modules/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="node_modules/angular-route/angular-route.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/jsUtils.js"></script>
   <script src="js/googleAnalytics.js"></script>
@@ -21,14 +22,14 @@
   <script src="js/controllers/modalController.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
-  
+
   <script type="text/ng-template" id="customTemplate.html">
   <a>
-      <img src={{match.model.photo}} class="autoCompleteImage">
+    <img src={{match.model.photo}} class="autoCompleteImage">
       <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
-	  <br>
-	  <span ng-bind-html="match.model.name | uibTypeaheadHighlight:query"></span>
-	  <li class="separator"></li>
+    <br>
+    <span ng-bind-html="match.model.name | uibTypeaheadHighlight:query"></span>
+    <li class="separator"></li>
   </a>
 </script>
 </head>
@@ -50,7 +51,7 @@
       </div>
     </div>
   </nav>
-  
+
   <div class="page-header"></div>
 
   <div class="login-Button" ng-show="showLogin">
@@ -101,7 +102,7 @@
       </div>
     </div>
     <div>
-      <img ng-show="processEndorse" src="/images/loading.gif"
+      <img ng-show="processEndorse" src="assets/images/loading.gif"
         class="loading">
     </div>
     <div class="endorse-alerts spacingtop">
@@ -121,7 +122,7 @@
     </div>
 
     <div>
-      <img ng-show="loadEndorsements" src="/images/loading.gif"
+      <img ng-show="loadEndorsements" src="assets/images/loading.gif"
         class="loading">
     </div>
 
@@ -134,7 +135,7 @@
 
       <div class="row">
         <div class="overLayer" ng-show="processingEndorse">
-          <img src="/images/loading.gif"
+          <img src="assets/images/loading.gif"
           class="loading">
         </div>
         <div class="spacingtop"
@@ -177,72 +178,72 @@
         </div>
       </div>
     </div>
-    
+
     <div id="choose_recommendation" class="container">
-    	<div>
-    		<h3 class="col-md-9 recommendQuestion">Recomenda esta tecnologia? 
-    			<button type="button" class="btn btn-link removeFilter" ng-click="removeFilter()">Remover filtro</button>
-    		</h3>
-    		
-    		<div id="recommend_area" class="col-md-9 text-left">
-    			<button id="btn_up" type="button" ng-click="changeThumbs('up')" ng-class="setClassThumbs('up')" 
-    					class="btn glyphicon glyphicon-thumbs-up thumbsFont"></button>
-    					
-    			<a href="#ANC_COMMENTS" class="recommendations-link" ng-click="filterRecommenders()">{{up}}</a>
-    			
-    			<button id="btn_down" type="button" ng-click="changeThumbs('down')" ng-class="setClassThumbs('down')" 
-    					class="btn glyphicon glyphicon-thumbs-down thumbsFont"></button>
-    					
-    			<a href="#ANC_COMMENTS" class="recommendations-link" ng-click="filterNoRecommenders()">{{down}}</a>
-          
+      <div>
+        <h3 class="col-md-9 recommendQuestion">Recomenda esta tecnologia?
+          <button type="button" class="btn btn-link removeFilter" ng-click="removeFilter()">Remover filtro</button>
+        </h3>
+
+        <div id="recommend_area" class="col-md-9 text-left">
+          <button id="btn_up" type="button" ng-click="changeThumbs('up')" ng-class="setClassThumbs('up')"
+              class="btn glyphicon glyphicon-thumbs-up thumbsFont"></button>
+
+          <a href="#ANC_COMMENTS" class="recommendations-link" ng-click="filterRecommenders()">{{up}}</a>
+
+          <button id="btn_down" type="button" ng-click="changeThumbs('down')" ng-class="setClassThumbs('down')"
+              class="btn glyphicon glyphicon-thumbs-down thumbsFont"></button>
+
+          <a href="#ANC_COMMENTS" class="recommendations-link" ng-click="filterNoRecommenders()">{{down}}</a>
+
           <label class="checkGooglePlus">
-              <input type="checkbox" ng-change="changePreference()" ng-model="postGooglePlus">Permitir postagem no Google+
+              <input type="checkbox" ng-change="changePreference()" ng-model="postGooglePlus" />Permitir postagem no Google+
           </label>
-    		</div>
-    	</div>
+        </div>
+      </div>
     </div>
     <div id="add_comments" class="container">
-    	<div class="endorse-alerts spacingtop">
-	      <alert ng-show="alertComment" type="danger" close="closeAlertComment()">{{alertMsgComment}}</alert>
-	    </div>
-    	<div>
-	    	<h3>Comentários</h3>
-	    	<h5 ng-show="recommend_message">Para completar a recomendação desta tecnologia, faça um comentário:</h5>
-	    	<div id="comment_area" class="col-md-9 text-right">
-		    	<textarea id="txta_comment" ng-model="comment" class="form-control textarea" maxlength="500"></textarea>
-		    	<button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearComment()">Limpar</button>
-		    	<button id="btn_add_comment" type="button" class="btn btn-primary" ng-click="addComment()">Comentar</button>
-	    	</div>
-    	</div>
+      <div class="endorse-alerts spacingtop">
+        <alert ng-show="alertComment" type="danger" close="closeAlertComment()">{{alertMsgComment}}</alert>
+      </div>
+      <div>
+        <h3>Comentários</h3>
+        <h5 ng-show="recommend_message">Para completar a recomendação desta tecnologia, faça um comentário:</h5>
+        <div id="comment_area" class="col-md-9 text-right">
+          <textarea id="txta_comment" ng-model="comment" class="form-control textarea" maxlength="500"></textarea>
+          <button id="btn_clear" type="button" class="btn btn-primary" ng-click="clearComment()">Limpar</button>
+          <button id="btn_add_comment" type="button" class="btn btn-primary" ng-click="addComment()">Comentar</button>
+        </div>
+      </div>
     </div>
     <div id="show_comments" class="container">
-    	<a name="ANC_COMMENTS"></a>
-	    <div class="overLayer" ng-show="processingComment">
-	      <img src="/images/loading.gif" class="loading">
-	    </div>
-	    <div class="col-xs-9">
-	  		<div class="commentBlock" ng-repeat="comment in techComments track by $index">
-	    		<span class="glyphicon glyphicon-thumbs-up recommendationInComment" ng-show="comment.recommendationScore != null && comment.recommendationScore"></span>
-	    		<span class="glyphicon glyphicon-thumbs-down recommendationInComment" ng-show="comment.recommendationScore != null && !comment.recommendationScore"></span>
-	    		<div id="organize_comments" class="container">
-		  			<div class="commentHeader">
+      <a name="ANC_COMMENTS"></a>
+      <div class="overLayer" ng-show="processingComment">
+        <img src="assets/images/loading.gif" class="loading">
+      </div>
+      <div class="col-xs-9">
+        <div class="commentBlock" ng-repeat="comment in techComments track by $index">
+          <span class="glyphicon glyphicon-thumbs-up recommendationInComment" ng-show="comment.recommendationScore != null && comment.recommendationScore"></span>
+          <span class="glyphicon glyphicon-thumbs-down recommendationInComment" ng-show="comment.recommendationScore != null && !comment.recommendationScore"></span>
+          <div id="organize_comments" class="container">
+            <div class="commentHeader">
                         <a href={{redirectUserProfile(comment.author.email)}}>
-						  <img class="media-object endorsed-image commentImage img-circle" src="{{comment.author.photo}}"/>
+              <img class="media-object endorsed-image commentImage img-circle" src="{{comment.author.photo}}"/>
                         </a>
-		  				<b class="flex1">
+              <b class="flex1">
                         <a href={{redirectUserProfile(comment.author.email)}}>
-		  				  <span class="commentName">{{comment.author.name}}</span>
+                <span class="commentName">{{comment.author.name}}</span>
                         </a>
                         <span class="smallFont"> em </span>
-		  				<span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}</span><span class="smallFont"> disse:</span>
-		  				</b>
-		  				<a ng-show="showSelfInformations(comment.author.email)" ng-click="deleteComment(comment.id)" 
-		  					ref="#" id="btn_delete" type="button" class="btn glyphicon glyphicon-remove-circle"></a>
-		  			</div>
-		  			<h5>{{comment.comment}}</h5>
-	  			</div>
-	  		</div>
-	  	</div>
+              <span class="mediumFont">{{comment.creation | date:"dd/MM/yyyy 'às' H:mm"}}</span><span class="smallFont"> disse:</span>
+              </b>
+              <a ng-show="showSelfInformations(comment.author.email)" ng-click="deleteComment(comment.id)"
+                ref="#" id="btn_delete" type="button" class="btn glyphicon glyphicon-remove-circle"></a>
+            </div>
+            <h5>{{comment.comment}}</h5>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>

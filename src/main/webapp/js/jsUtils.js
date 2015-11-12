@@ -6,14 +6,14 @@
   var afterLogin;
   var userEmail;
   var userDomain;
-  
+
   var getUserEmail = function(callBackFunction, authResult){
     setTimeout(function(){
       gapi.client.load('oauth2', 'v2', function() {
         gapi.client.oauth2.userinfo.get().execute(function(resp) {
           userEmail = resp.email;
           if(userEmail){
-        	  trackUser(userEmail.replace('@'+resp.hd, ''));
+            trackUser(userEmail.replace('@'+resp.hd, ''));
           }
           if(callBackFunction){
             callBackFunction(authResult);
@@ -22,15 +22,15 @@
       });
     },200);
   }
-  
+
   function trackUser(userEmail) {
-  	ga('create', 'UA-60744312-3', 'auto');
-  	ga('set', '&uid', userEmail);
-  	ga('set', 'contentGroup1', userEmail);
-  	ga('set', 'dimension1', userEmail);
-  	ga('send', 'pageview');
+    ga('create', 'UA-60744312-3', 'auto');
+    ga('set', '&uid', userEmail);
+    ga('set', 'contentGroup1', userEmail);
+    ga('set', 'dimension1', userEmail);
+    ga('send', 'pageview');
   }
-  
+
   getUserEmail();
 
   var checkAuth = function(successFunction, immediate){
@@ -60,7 +60,7 @@
       return afterLogin(false);
     }
   }
-  
+
   var verifyDomainGroup = function(){
     var domain = userEmail.split('@');
     userDomain = domain[1];
@@ -69,7 +69,7 @@
     }
     return false;
   }
-  
+
   var handleDomain = function(authResult){
     if(verifyDomainGroup()){
       authResult.userEmail = userEmail;
@@ -82,7 +82,7 @@
       afterLogin = '';
     }
   }
-  
+
   var logoutRedirect = function(){
     var logoutRedirect = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue='
     logoutRedirect += location.protocol;
@@ -107,7 +107,7 @@
       msg : 'Você já fez essa indicação anteriormente!'
     }
   };
-  
+
   var techAlerts = {
     successAdd : {
       type : 'success',
@@ -135,7 +135,7 @@
 
     return '';
   };
-  
+
   var slugify = function(text){
     text = text.toString.toLowerCase();
     var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
@@ -161,7 +161,7 @@
     checkAuth: checkAuth,
     getParameterByName: getParameterByName,
     alerts: alerts,
-    techAlerts: techAlerts, 
+    techAlerts: techAlerts,
     logoutRedirect: logoutRedirect,
     getUserEmail : getUserEmail,
     slugify: slugify,

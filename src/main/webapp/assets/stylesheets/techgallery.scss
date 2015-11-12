@@ -1,0 +1,251 @@
+/* Tech Gallery css stylesheet */
+
+.technologydescription {
+  text-align: justify;
+  height: 80px;
+  width: 100%;
+  display: block;
+}
+
+.techGalleryFixedLink {
+  position: fixed;
+  top: 70px !important;
+  right: 20px !important;
+  opacity: 0.8;
+  width: 33px;
+  height: 32px;
+  text-align: center;
+  padding: 1px 0;
+  font-size: 20px;
+  line-height: 1.42;
+  border-radius: 15px;
+}
+
+.GPlusDefault{
+  color: #262626 !important;
+    font-weight: bold;
+    background-color: #fff;
+    box-shadow: 1px 1px 1px black;
+}
+
+.GPlusAdded{
+  color: white !important;
+  font-weight: bold;
+    background-color: #dd4b39;
+    box-shadow: 1px 1px 1px black;
+}
+
+.plusOneButton{
+  float: left
+}
+
+.alignBar{
+  margin-top:-20px
+}
+
+.logoBar{
+  width:30px;
+  float:left;
+  margin-top:15px;
+  margin-right:10px
+}
+
+.headerBar{
+  float:right;
+  color:white
+}
+
+.rightSideBar{
+  margin-top:8px
+}
+
+.whiteText{
+  color:white
+}
+
+.overLayer{
+  position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+
+.img-tech-view{
+  height: 355px;
+  width: 355px;
+}
+
+.spacingtop {
+  margin-top: 2%;
+}
+
+.login-Button {
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.endorsed-image {
+  width: 64px;
+  height: 64px;
+}
+
+.endorsers-image {
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+
+.endorse-input {
+  width: 30%;
+  float: left;
+  margin-right: 10%;
+}
+
+.endorse-alerts {
+  width: 50%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.textarea {
+  height: 108px !important;
+  margin-bottom: 5px;
+}
+
+.smallFont{
+  font-size: small
+}
+
+.mediumFont{
+  font-size: medium
+}
+
+.commentName{
+  font-size: large;
+  margin-left: 15px;
+}
+
+.commentHeader{
+  display: flex;
+  align-items: center;
+}
+
+.flex1{
+  flex: 1;
+}
+
+.commentImage{
+  display: inline;
+}
+
+.commentBlock{
+  margin-bottom: 30px;
+}
+
+.techSearch{
+  margin-right: 50px;
+}
+
+.searchButton{
+  box-shadow: 2px 2px 2px black;
+  margin-right: 5px
+}
+
+.selectedThumbUp {
+  color: green !important;
+}
+
+.selectedThumbDown {
+  color: red !important;
+}
+
+.thumbsFont {
+  font-size: 40px;
+}
+
+.recommendations-link {
+  font-size: 20px;
+}
+
+.caption {
+  height: 120px;
+}
+
+.recommendationInComment {
+  float: left;
+  margin-top: 20px;
+  right: 20px;
+  font-size: 31px;
+}
+
+.recommendQuestion {
+  padding-left: 0px !important;
+}
+
+.removeFilter {
+  float: right;
+}
+
+.separator{
+  width: 100%;
+    border-top: 1px solid #716F77;
+    list-style-type: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.autoCompleteImage{
+  width:30px;
+  margin-right: 10px;
+}
+
+.profileName{
+    font-style: italic;
+    font-variant: small-caps;
+    font-weight: bold;
+    font-size: 50px;
+}
+
+.profilePhoto{
+  width: 100px;
+}
+
+.userProfileThumbnail{
+  overflow: auto;
+    overflow-x: hidden;
+    width: 325px;
+    height: 430px;
+}
+
+.divComments{
+  margin-top: 30px;
+}
+
+.spacingUserCards{
+  margin-right: 70px;
+}
+
+.topBar {
+  padding-right: 0px !important;
+}
+
+.endorse-input ul{
+  height:300px;
+  overflow:auto
+}
+
+.checkGooglePlus{
+  margin-left: 70px;
+}

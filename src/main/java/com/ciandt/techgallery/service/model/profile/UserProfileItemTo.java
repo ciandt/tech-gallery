@@ -10,11 +10,13 @@ public class UserProfileItemTo {
 
   private String technologyPhotoUrl;
 
-  private Integer endorsementQuantity;
+  private Integer endorsementsCount;
 
   private Integer skillLevel;
 
   private List<SubItemCommentTo> comments;
+  
+  private RecomendationTo recommendation;
 
   public UserProfileItemTo() {}
 
@@ -34,7 +36,7 @@ public class UserProfileItemTo {
     this.technologyName = technologyName;
     this.companyRecommendation = companyRecommendation;
     this.technologyPhotoUrl = technologyPhotoUrl;
-    this.endorsementQuantity = endorsementQuantity;
+    this.endorsementsCount = endorsementQuantity;
     this.skillLevel = skillLevel;
     this.comments = comments;
   }
@@ -55,12 +57,12 @@ public class UserProfileItemTo {
     this.companyRecommendation = companyRecommendation;
   }
 
-  public Integer getEndorsementQuantity() {
-    return endorsementQuantity;
+  public Integer getEndorsementsCount() {
+    return endorsementsCount;
   }
 
-  public void setEndorsementQuantity(Integer endorsementQuantity) {
-    this.endorsementQuantity = endorsementQuantity;
+  public void setEndorsementsCount(Integer endorsementQuantity) {
+    this.endorsementsCount = endorsementQuantity;
   }
 
   public Integer getSkillLevel() {
@@ -87,5 +89,11 @@ public class UserProfileItemTo {
     this.technologyPhotoUrl = technologyPhotoUrl;
   }
 
+  public RecomendationTo getRecommendation() {
+    return recommendation;
+  }
 
+  public void setRecommendation(RecomendationTo recomendation) {
+    this.recommendation = recomendation;
+  }
 }

@@ -2,16 +2,17 @@
 <html lang="en" ng-app="techGallery" ng-cloak>
 <head>
   <meta charset="utf-8">
-  <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/app.css" />
-  <link rel="stylesheet" href="css/techgallery.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+  <title>Tech Gallery</title>
+  <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/stylesheets/app.css" />
+  <link rel="stylesheet" href="assets/stylesheets/techgallery.css" />
 
   <script src="https://apis.google.com/js/client.js?onload=init"></script>
-  <script src="lib/angular/angular.js"></script>
-  <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
-  <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
-  <script src="lib/angular-route/angular-route.min.js"></script>
+  <script src="node_modules/angular/angular.js"></script>
+  <script src="node_modules/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="node_modules/angular-route/angular-route.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/jsUtils.js"></script>
   <script src="js/googleAnalytics.js"></script>
@@ -21,7 +22,7 @@
   <script src="js/directives.js"></script>
 </head>
 <body ng-controller="techListController">
-	<a href="/createTech.html" title="Adicionar Tecnologia" ng-show="!showLogin" 
+	<a href="/createTech.html" title="Adicionar Tecnologia" ng-show="!showLogin"
 	   class="btn btn-default btn-circle glyphicon-plus techGalleryFixedLink"></a>
     <nav class="navbar navbar-fixed-top techGalleryFixedBar">
       <div class="container topBar">
@@ -34,7 +35,7 @@
         <div id="navbar" class="rightSideBar">
           <div class="navbar-form navbar-right">
             <div class="form-group">
-			  <form ng-submit="searchTechnology()">
+        <form ng-submit="searchTechnology()">
                 <input ng-disabled=showLogin type="text" ng-model="textSearch" class="form-control" placeholder="Digite sua busca...">
                 <div class="btn-group" dropdown>
                   <button id="single-button" type="button" class="btn btn-default" dropdown-toggle ng-disabled=showLogin>
@@ -68,22 +69,22 @@
     </nav>
 
     <div class="page-header"></div>
-    
+
     <div class="container login-Button">
       <h3 ng-show="showLogin && !domainError">Para ter acesso ao conteúdo realize seu login...</h3>
       <h3 ng-show="domainError">{{domainError}}</h3>
     </div>
-    
+
     <div class="container" ng-show="!showLogin">
       <a href="" ng-click="searchTechnology(0)">Último Dia</a>
       <a href="" ng-click="searchTechnology(1)">Últimos 7 Dias</a>
       <a href="" ng-click="searchTechnology(2)">Últimos 30 Dias</a>
     </div>
-    
+
     <div class="container">
-    	<div ng-show="showLoading">
-      		<img class="loading" src="/images/loading.gif">
-    	</div>
+      <div ng-show="showLoading">
+          <img class="loading" src="/images/loading.gif">
+      </div>
         <div>
             <div class="col-sm-6 col-md-3" ng-repeat="tech in techList">
                 <div class="thumbnail">
@@ -96,9 +97,9 @@
                         <h3>{{tech.name}}</h3>
                     </a>
                     <h5 class="titleThumbnail">{{tech.recommendation}}</h5>
-                	<div class="imageSize">
-	                    <img src={{tech.image}} data-holder-rendered="true"
-	                        class="thumbnail-Image">
+                  <div class="imageSize">
+                      <img src={{tech.image}} data-holder-rendered="true"
+                          class="thumbnail-Image">
                     </div>
                     <div class="caption">
                         <p class='technologydescription'>{{tech.shortDescription}}</p>

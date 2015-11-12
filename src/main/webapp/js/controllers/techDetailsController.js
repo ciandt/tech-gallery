@@ -2,45 +2,45 @@ angular.module('techGallery').controller(
   'techDetailsController',
   function($scope, $timeout, $modal) {
     'use strict';
-    
+
     var featureEnum = {
         ENDORSE: 'ENDORSE',
         COMMENT: 'COMMENT',
         RECOMMEND: 'RECOMMEND'
     };
-    
+
     $scope.currentPage = document.location.href;
-    
+
     $scope.getUsersList = function (value){
       var req = {query:value};
       return gapi.client.rest.usersAutoComplete(req).then(function (data){
         for(var i in data.result.items){
           if(!data.result.items[i].photo){
-            data.result.items[i].photo = "/images/default-user-image.jpg";
+            data.result.items[i].photo = "/assets/images/default-user-image.jpg";
           }
         }
         return data.result.items;
       });
     }
-    
+
     $scope.idTechnology = jsUtils.getParameterByName('id');
     $scope.loadEndorsements = true;
     $scope.showTechNotExists = false;
 
     //Fill this property with the domain of your choice
     $scope.domain = '@ciandt.com';
-    
+
     $scope.logoutRedirect = function(){
       return jsUtils.logoutRedirect();
     }
-    
+
     $scope.indexPage = function(){
       var indexPage = location.protocol;
       indexPage += '//';
       indexPage += location.hostname;
       return indexPage;
     }
-    
+
     $scope.redirectUserProfile = function(email) {
       var userId = email.split('@')[0];
       var protocol = location.protocol + '//';
@@ -74,13 +74,13 @@ angular.module('techGallery').controller(
         $scope.$apply();
       }
     }
-    
+
     function checkLogin(immediate){
       $timeout(function() {
         jsUtils.checkAuth(successFunction, immediate);
       }, 200);
     }
-    
+
     checkLogin(true);
 
     $scope.login = function(){
@@ -158,7 +158,7 @@ angular.module('techGallery').controller(
             }
             gapi.client.rest.postComment(req).execute();
           }
-          
+
           if(alertUser){
             var alert;
             if (data.hasOwnProperty('error')) {
@@ -195,14 +195,14 @@ angular.module('techGallery').controller(
           for(var i in response){
             var fullResponse = response[i].endorsers;
             if(fullResponse) {
-            	var endorsersFiltered = fullResponse.slice(0,5);
-            	response[i].endorsersFiltered = endorsersFiltered;
-            	if(!response[i].endorsed.photo) {
-            		response[i].endorsed.photo = "/images/default-user-image.jpg";
-            	}
-            	response[i].endorsers = setPlusOneClass(response[i].endorsers);
+            var endorsersFiltered = fullResponse.slice(0,5);
+            response[i].endorsersFiltered = endorsersFiltered;
+            if(!response[i].endorsed.photo) {
+              response[i].endorsed.photo = "/assets/images/default-user-image.jpg";
             }
+            response[i].endorsers = setPlusOneClass(response[i].endorsers);
           }
+        }
         }
         $scope.showEndorsementResponse = response;
         $scope.processingEndorse = false;
@@ -241,7 +241,7 @@ angular.module('techGallery').controller(
       endorsers.plusOneClass = 'btn GPlusDefault';
       return endorsers;
     };
-    
+
     $scope.setToolTipPlusOne = function(index, email){
       var id = $scope.generateId(index, email);
       var element = document.getElementById(id);
@@ -310,7 +310,7 @@ angular.module('techGallery').controller(
         $scope.skillLevel = returnSkillLevel(newValue);
         //Make API call to save the skill
         sendSkillEvent($scope.skillLevel);
-        
+
         var idTech = $scope.idTechnology;
         var req = {
           technology : idTech,
@@ -341,213 +341,213 @@ angular.module('techGallery').controller(
         return null;
       }
     }
-    
+
     /**
      * Begin of create comments features
      */
     $scope.clearComment = function(){
-    	$scope.comment = '';
+      $scope.comment = '';
     }
-    
+
     $scope.addComment = function(){
-    	if($scope.comment && $scope.comment.trim().length <= 500){
-    		if($scope.score == undefined){
-    			var req = {
-    					technologyId : $scope.idTechnology,
-    					comment : $scope.comment
-    			};
-    			gapi.client.rest.addComment(req).execute(function(data) {
-    				$scope.processingComment = true;
-    				callBackLoaded();
-    				$scope.comment = '';
-    				if($scope.postGooglePlus && !data.hasOwnProperty('error')){
-		              var req = {
-        	          		feature : featureEnum.COMMENT,
-            	      		currentUserMail : data.author.email,
-	                	  	technologyName : $scope.name,
-					  		comment: data.comment,
-		 					appLink: $scope.currentPage
-        			      }
-		              gapi.client.rest.postComment(req).execute();
-		            }
-    			});
+      if($scope.comment && $scope.comment.trim().length <= 500){
+        if($scope.score == undefined){
+          var req = {
+              technologyId : $scope.idTechnology,
+              comment : $scope.comment
+          };
+          gapi.client.rest.addComment(req).execute(function(data) {
+            $scope.processingComment = true;
+            callBackLoaded();
+            $scope.comment = '';
+            if($scope.postGooglePlus && !data.hasOwnProperty('error')){
+                  var req = {
+                        feature : featureEnum.COMMENT,
+                        currentUserMail : data.author.email,
+                        technologyName : $scope.name,
+                comment: data.comment,
+              appLink: $scope.currentPage
+                    }
+                  gapi.client.rest.postComment(req).execute();
+                }
+          });
     			sendCommentEvent($scope.name);
-    		}else {
-    			//Call API to add a comment and a recommendation
-    			var req = {
-    					technology : {id : $scope.idTechnology},
-    					comment : {comment : $scope.comment},
-    					recommendation : {score : $scope.score}
-    			};
-    			gapi.client.rest.addRecommendationComment(req).execute(function(data) {
-    				$scope.processingComment = true;
-    				callBackLoaded();
-    				$scope.comment = '';
-    				$scope.score = undefined;
-    				$scope.setClassThumbs('');
-    				if($scope.postGooglePlus && !data.hasOwnProperty('error')){
-		              var req = {
-        		          feature : featureEnum.RECOMMEND,
-                		  score : data.score,
-		                  currentUserMail : data.recommender.email,
-        		          technologyName : data.technology.name,
+        }else {
+          //Call API to add a comment and a recommendation
+          var req = {
+              technology : {id : $scope.idTechnology},
+              comment : {comment : $scope.comment},
+              recommendation : {score : $scope.score}
+          };
+          gapi.client.rest.addRecommendationComment(req).execute(function(data) {
+            $scope.processingComment = true;
+            callBackLoaded();
+            $scope.comment = '';
+            $scope.score = undefined;
+            $scope.setClassThumbs('');
+            if($scope.postGooglePlus && !data.hasOwnProperty('error')){
+                  var req = {
+                      feature : featureEnum.RECOMMEND,
+                      score : data.score,
+                      currentUserMail : data.recommender.email,
+                      technologyName : data.technology.name,
         		          comment : data.comment.comment,
-                		  appLink: $scope.currentPage
-		              }
-        		      gapi.client.rest.postComment(req).execute();
-		            }
-    			});
+                      appLink: $scope.currentPage
+                  }
+                  gapi.client.rest.postComment(req).execute();
+                }
+          });
     			sendRecommendationEvent($scope.name, $scope.score);
-    		}
-    	}else{
-    		if($scope.score !== undefined){
-    			$scope.alertComment = true;
-    			$scope.alertMsgComment = 'Você deve informar um comentário sobre sua recomendação.';
-    		}
-    	}
+        }
+      }else{
+        if($scope.score !== undefined){
+          $scope.alertComment = true;
+          $scope.alertMsgComment = 'Você deve informar um comentário sobre sua recomendação.';
+        }
+      }
     }
-    
+
     $scope.closeAlertComment = function() {
-	    $scope.alertComment = undefined;
+      $scope.alertComment = undefined;
     };
-    
+
     /**
      * Begin of show comments features
      */
 //    $scope.techComments=jsUtils.mockTechComment();
     function loadComments() {
-    	var req = {technologyId: $scope.idTechnology};
-    	gapi.client.rest.getCommentsByTech(req).execute(function(data){
-    		$scope.techComments = data.comments;
-    		$scope.techCommentsFull = data.comments;
-    		$scope.processingComment = false;
-    		$scope.$apply();
-    	});
+      var req = {technologyId: $scope.idTechnology};
+      gapi.client.rest.getCommentsByTech(req).execute(function(data){
+        $scope.techComments = data.comments;
+        $scope.techCommentsFull = data.comments;
+        $scope.processingComment = false;
+        $scope.$apply();
+      });
     }
-    
+
     $scope.filterRecommenders = function(){
-    	if($scope.up > 0 && $scope.techCommentsFull){
-    		$scope.techComments = [];
-    		for (var i = 0; i < $scope.techCommentsFull.length; i++) {
-    			if($scope.techCommentsFull[i].recommendationScore != null && $scope.techCommentsFull[i].recommendationScore){
-    				$scope.techComments.push($scope.techCommentsFull[i]);
-    			}
-    		}
-    		document.getElementById("txta_comment").focus();
-    	}else{
-    		$scope.alertComment = true;
-    		$scope.alertMsgComment = 'Ninguém recomendou esta tecnologia ainda.';
-    	}
+      if($scope.up > 0 && $scope.techCommentsFull){
+        $scope.techComments = [];
+        for (var i = 0; i < $scope.techCommentsFull.length; i++) {
+          if($scope.techCommentsFull[i].recommendationScore != null && $scope.techCommentsFull[i].recommendationScore){
+            $scope.techComments.push($scope.techCommentsFull[i]);
+          }
+        }
+        document.getElementById("txta_comment").focus();
+      }else{
+        $scope.alertComment = true;
+        $scope.alertMsgComment = 'Ninguém recomendou esta tecnologia ainda.';
+      }
     }
-    
+
     $scope.filterNoRecommenders = function(){
-    	if($scope.down > 0 && $scope.techCommentsFull){
-    		$scope.techComments = [];
-    		for (var i = 0; i < $scope.techCommentsFull.length; i++) {
-    			if($scope.techCommentsFull[i].recommendationScore != null && !$scope.techCommentsFull[i].recommendationScore){
-    				$scope.techComments.push($scope.techCommentsFull[i]);
-    			}
-    		}
-    		document.getElementById("txta_comment").focus();
-    	}else{
-    		$scope.alertComment = true;
-    		$scope.alertMsgComment = 'Ninguém não recomendou esta tecnologia ainda.';
-    	}
+      if($scope.down > 0 && $scope.techCommentsFull){
+        $scope.techComments = [];
+        for (var i = 0; i < $scope.techCommentsFull.length; i++) {
+          if($scope.techCommentsFull[i].recommendationScore != null && !$scope.techCommentsFull[i].recommendationScore){
+            $scope.techComments.push($scope.techCommentsFull[i]);
+          }
+        }
+        document.getElementById("txta_comment").focus();
+      }else{
+        $scope.alertComment = true;
+        $scope.alertMsgComment = 'Ninguém não recomendou esta tecnologia ainda.';
+      }
     }
-    
+
     $scope.removeFilter = function(){
-    	if($scope.techCommentsFull){
-    		$scope.techComments = [];
-    		$scope.techComments = $scope.techCommentsFull;
-    	}
+      if($scope.techCommentsFull){
+        $scope.techComments = [];
+        $scope.techComments = $scope.techCommentsFull;
+      }
     }
-    
+
     $scope.changeThumbs = function(thumbs){
-    	if(thumbs == 'up'){
-    		if($scope.score == undefined || $scope.score == false){
-    			$scope.score = true;
-    			$scope.recommend_message = true;
-    		}else {
-    			$scope.score = undefined;
-    			$scope.recommend_message = false;
-    		}
-    	}else if(thumbs == 'down'){
-    		if($scope.score == undefined || $scope.score == true){
-    			$scope.score = false;
-    			$scope.recommend_message = true;
-    		}else {
-    			$scope.score = undefined;
-    			$scope.recommend_message = false;
-    		}
-    	}
-    	document.getElementById("txta_comment").focus();
+      if(thumbs == 'up'){
+        if($scope.score == undefined || $scope.score == false){
+          $scope.score = true;
+          $scope.recommend_message = true;
+        }else {
+          $scope.score = undefined;
+          $scope.recommend_message = false;
+        }
+      }else if(thumbs == 'down'){
+        if($scope.score == undefined || $scope.score == true){
+          $scope.score = false;
+          $scope.recommend_message = true;
+        }else {
+          $scope.score = undefined;
+          $scope.recommend_message = false;
+        }
+      }
+      document.getElementById("txta_comment").focus();
     }
-    
+
     $scope.setClassThumbs = function(thumbs){
-    	if($scope.score == undefined){
-    		return '';
-    	}else if($scope.score == true && thumbs == 'up'){
-    		return 'selectedThumbUp';
-    	}else if($scope.score == false && thumbs == 'down'){
-    		return 'selectedThumbDown';
-    	}
+      if($scope.score == undefined){
+        return '';
+      }else if($scope.score == true && thumbs == 'up'){
+        return 'selectedThumbUp';
+      }else if($scope.score == false && thumbs == 'down'){
+        return 'selectedThumbDown';
+      }
     }
-    
+
     function loadRecommends() {
-    	var req = {id : $scope.idTechnology};
-    	gapi.client.rest.getRecommendationsUp(req).execute(function(data){
-    		$scope.up = 0;
-    		if(data.items !== undefined){
-    			$scope.up = data.items.length;
-    		}
-    		$scope.$apply();
-    	});
+      var req = {id : $scope.idTechnology};
+      gapi.client.rest.getRecommendationsUp(req).execute(function(data){
+        $scope.up = 0;
+        if(data.items !== undefined){
+          $scope.up = data.items.length;
+        }
+        $scope.$apply();
+      });
     }
-    
+
     function loadNotRecommends() {
-    	var req = {id : $scope.idTechnology};
-    	gapi.client.rest.getRecommendationsDown(req).execute(function(data){
-    		$scope.down = 0;
-    		if(data.items !== undefined){
-    			$scope.down = data.items.length;
-    		}
-    		$scope.$apply();
-    	});
+      var req = {id : $scope.idTechnology};
+      gapi.client.rest.getRecommendationsDown(req).execute(function(data){
+        $scope.down = 0;
+        if(data.items !== undefined){
+          $scope.down = data.items.length;
+        }
+        $scope.$apply();
+      });
     }
-    
+
     $scope.deleteComment = function(id) {
-    	if(confirm('Você realmente quer apagar o comentário?')) {
-    		var reqRecommend = null;
-    		for (var i = 0; i < $scope.techComments.length; i++) {
-    			if($scope.techComments[i].id != null && $scope.techComments[i].id === id){
-    				if($scope.techComments[i].recommendationScore != null){
-    					reqRecommend = {
-    							    recommendId : $scope.techComments[i].recommendationId,
-    							    commentId: id
-    							    };
-    				}
-    				break;
-    			}
-    		}
-    		if(reqRecommend){
-    			gapi.client.rest.deleteCommentAndRecommendation(reqRecommend).execute(function(data){
-    				loadComments();
-    				loadRecommends();
-    				loadNotRecommends();
-    			});
-    		}else{
-    			var req = {commentId: id};
-    			gapi.client.rest.deleteComment(req).execute(function(data){
-    				loadComments();
-    			});
-    		}
-    	}
+      if(confirm('Você realmente quer apagar o comentário?')) {
+        var reqRecommend = null;
+        for (var i = 0; i < $scope.techComments.length; i++) {
+          if($scope.techComments[i].id != null && $scope.techComments[i].id === id){
+            if($scope.techComments[i].recommendationScore != null){
+              reqRecommend = {
+                      recommendId : $scope.techComments[i].recommendationId,
+                      commentId: id
+                      };
+            }
+            break;
+          }
+        }
+        if(reqRecommend){
+          gapi.client.rest.deleteCommentAndRecommendation(reqRecommend).execute(function(data){
+            loadComments();
+            loadRecommends();
+            loadNotRecommends();
+          });
+        }else{
+          var req = {commentId: id};
+          gapi.client.rest.deleteComment(req).execute(function(data){
+            loadComments();
+          });
+        }
+      }
     };
-    
+
     $scope.setFollowedClass = function(isFollowedByUser){
       return jsUtils.setFollowedClass(isFollowedByUser);
     }
-    
+
     $scope.followTechnology = function(){
       var req = {technologyId: $scope.idTechnology}
       gapi.client.rest.followTechnology(req).execute(function(data){
@@ -557,7 +557,7 @@ angular.module('techGallery').controller(
         }
       });
     }
-    
+
     function changeFollowedClass(elementId){
       var element = document.getElementById(elementId)
       var oldClass = element.className;
@@ -567,11 +567,11 @@ angular.module('techGallery').controller(
         element.className = 'btn btn-primary';
       }
     }
-    
+
     $scope.generateFollowId = function(){
       return 'btn-follow-' + $scope.idTechnology;
     }
-    
+
     $scope.changePreference = function(){
       var oldValue = !$scope.postGooglePlus;
       var req = {postGooglePlusPreference: $scope.postGooglePlus}
@@ -581,11 +581,11 @@ angular.module('techGallery').controller(
         }
       });
     }
-    
+
     $scope.editTechnology = function(){
-    	window.location = $scope.redirectUrl($scope.id, '/createTech.html');
+      window.location = $scope.redirectUrl($scope.id, '/createTech.html');
     }
-    
+
     $scope.redirectUrl = function(techId, servlet) {
         var protocol = location.protocol + '//';
         var host = protocol + location.host;
@@ -593,6 +593,6 @@ angular.module('techGallery').controller(
         var queryString = '?id=';
         return host + servletRedirect + queryString + techId;
       };
-    
+
   }
 );

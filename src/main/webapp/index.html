@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" ng-app="TechGallery">
+<head>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+  <title ng-bind="pageTitle">Tech Gallery</title>
+  <meta name="description" content="techgallery.description">
+  <link href="build/app.min.css" rel="stylesheet">
+  <script src="https://apis.google.com/js/client.js"></script>
+  <script type="text/ng-template" id="customTemplate.html">
+  <a>
+  <img src={{match.model.photo}} class="autoCompleteImage">
+  <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+  <br>
+  <span ng-bind-html="match.model.name | uibTypeaheadHighlight:query"></span>
+  <li class="separator"></li>
+  </a>
+  </script>
+</head>
+<body class="tech-gallery">
+  <loading ng-if="loading" full="true"></loading>
+  <ui-view ng-if="!loading"></ui-view>
+  <script src="build/app.min.js"></script>
+</body>
+</html>

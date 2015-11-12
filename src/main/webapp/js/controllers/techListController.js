@@ -6,18 +6,18 @@ angular.module('techGallery').controller(
     $scope.domainError = false;
     $scope.userLogged = false;
 //    $scope.selectedRecommendation = 'Selecione';
-    
+
     $scope.indexPage = function(){
       var indexPage = location.protocol;
       indexPage += '//';
       indexPage += location.hostname;
       return indexPage;
     }
-    
+
     $scope.logoutRedirect = function(){
       return jsUtils.logoutRedirect();
     }
-    
+
     var executeAuth = function(immediate) {
       $timeout(function() {
         jsUtils.checkAuth(successFunction, immediate);
@@ -60,7 +60,7 @@ angular.module('techGallery').controller(
       var queryString = '?id=';
       return host + path + servletRedirect + queryString + techId;
     };
-    
+
     $scope.redirectToView = function(techId) {
     	ga('send', 'event', 'TechGalleryEvents', 'technology_acess', techId);
     	window.location = $scope.redirectUrl(techId, '/viewTech');
@@ -86,7 +86,7 @@ angular.module('techGallery').controller(
     	var req = {timezone: new Date().getTimezoneOffset() * (-1)};
         gapi.client.rest.handleLogin(req).execute();
         gapi.client.rest.getOrderOptions().execute(function(data) {
-        	$scope.orderOptions = data.items;
+          $scope.orderOptions = data.items;
         });
         gapi.client.rest.getRecommendations().execute(function(data){
           $scope.dropDownRecommendation = data.items;
@@ -97,11 +97,11 @@ angular.module('techGallery').controller(
         $scope.$apply();
       });
     }
-    
+
     $scope.selectOrderOption = function(orderOption) {
-    	$scope.selectedOrderOption = orderOption;
+      $scope.selectedOrderOption = orderOption;
     }
-    
+
     $scope.searchTechnology = function (dateFilter){
       if($scope.textSearch || $scope.selectedOrderOption || $scope.selectedRecommendation || dateFilter >= 0){
         $scope.techList = '';
@@ -120,7 +120,7 @@ angular.module('techGallery').controller(
         });
       }
     }
-    
+
     $scope.searchClear = function (){
       $scope.techList = '';
       $scope.textSearch = '';
@@ -129,19 +129,19 @@ angular.module('techGallery').controller(
       $scope.showLoading = true;
       callBackLoaded();
     }
-    
+
     $scope.selectRecommendation = function(selected){
       $scope.selectedRecommendation = selected;
     };
-    
+
     $scope.selectOrderOption = function(selected){
-    	$scope.selectedOrderOption = selected;
+      $scope.selectedOrderOption = selected;
     };
-    
+
     $scope.setFollowedClass = function(isFollowedByUser){
       return jsUtils.setFollowedClass(isFollowedByUser);
     }
-    
+
     $scope.followTechnology = function(technologyId){
       var req = {technologyId:technologyId};
       gapi.client.rest.followTechnology(req).execute(function(data){
@@ -151,7 +151,7 @@ angular.module('techGallery').controller(
         }
       });
     }
-    
+
     function changeFollowedClass(elementId){
       var element = document.getElementById(elementId)
       var oldClass = element.className;
@@ -161,11 +161,11 @@ angular.module('techGallery').controller(
         element.className = 'btn btn-xs btn-primary';
       }
     }
-    
+
     $scope.generateFollowId = function(techId){
       return 'btn-follow-' + techId;
     }
-    
+
     $scope.deleteTechnology = function(technologyId){
       if(confirm('Você realmente quer apagar a tecnologia?')) {
         var req = {technologyId: technologyId};
@@ -176,7 +176,7 @@ angular.module('techGallery').controller(
         });
       }
     }
-    
+
     $scope.editTechnology = function(technologyId){
     	window.location = $scope.redirectUrl(technologyId, '/createTech.html');
     }

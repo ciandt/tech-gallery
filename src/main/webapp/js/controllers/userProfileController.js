@@ -3,11 +3,11 @@ angular.module('techGallery').controller(
   function($scope, $timeout) {
     'use strict';
     $scope.userId = jsUtils.getParameterByName('userId');
-    $scope.defaultUserPhoto = "/images/default-user-image.jpg";
+    $scope.defaultUserPhoto = "/assets/images/default-user-image.jpg";
     $scope.logoutRedirect = function(){
       return jsUtils.logoutRedirect();
     }
-    
+
     $scope.indexPage = function(){
       var indexPage = location.protocol;
       indexPage += '//';
@@ -37,13 +37,13 @@ angular.module('techGallery').controller(
         $scope.$apply();
       }
     }
-    
+
     function checkLogin(immediate){
       $timeout(function() {
         jsUtils.checkAuth(successFunction, immediate);
       }, 200);
     }
-    
+
     checkLogin(true);
 
     $scope.login = function(){
@@ -70,7 +70,7 @@ angular.module('techGallery').controller(
             $scope.completeOtherItems = response.otherItems;
             response.otherItems = response.otherItems.slice(0,3);
           }
-          
+
           $scope.userProfile = response;
           $scope.showContent = true;
           $scope.$apply();
@@ -80,7 +80,7 @@ angular.module('techGallery').controller(
         }
       });
     }
-    
+
     $scope.showAllItems = function(type){
       if(type=="positive"){
         $scope.userProfile.positiveRecItems = $scope.completePositiveItems;
@@ -90,7 +90,7 @@ angular.module('techGallery').controller(
         $scope.userProfile.otherItems = $scope.completeOtherItems;
       }
     }
-    
+
     $scope.showLessItems = function(type){
       if(type=="positive"){
         $scope.userProfile.positiveRecItems = $scope.userProfile.positiveRecItems.slice(0,3);

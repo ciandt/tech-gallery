@@ -1,0 +1,120 @@
+<loading ng-if="technologies.loading"></loading>
+<div class="technologies" ng-if="!technologies.loading">
+  <!-- TECHNOLOGIES TOOLBAR -->
+  <div class="toolbar btn-toolbar" role="toolbar">
+    <div class="container">
+      <div class="pull-left">
+        <form class="form-inline">
+          <div class="form-group">
+            <label for="technology-filter" tabindex="0" tooltip-placement="bottom" uib-tooltip="Filtrar por"><span class="glyphicon glyphicon-filter"></span></label>
+            <select ng-model="technologies.recommendationFilter" ng-change="technologies.changeFilters()" class="form-control" id="technology-filter">
+              <option value="">Todos</option>
+              <option>Recomendada</option>
+              <option>Recomendada alternativa</option>
+              <option>Usar e aprender</option>
+              <option>Observar e fazer provas de conceito</option>
+              <option>Não recomendadas ou aposentar</option>
+              <option>Não informado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="technology-order" tabindex="0" tooltip-placement="bottom" uib-tooltip="Ordenar por"><span class="glyphicon glyphicon-sort"></span></label>
+            <select ng-model="technologies.orderFilter" ng-change="technologies.changeFilters()" class="form-control" id="technology-order">
+              <option value="">Selecione</option>
+              <option>Alfabética</option>
+              <option>Recomendações positivas</option>
+              <option>Recomendações negativas</option>
+              <option>Comentários</option>
+              <option>Indicações</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="technology-order" tabindex="0" tooltip-placement="bottom" uib-tooltip="Última atividade"><span class="glyphicon glyphicon-time"></span></label>
+            <select ng-model="technologies.lastActivityDateFilter" ng-change="technologies.changeFilters()" class="form-control" id="technology-order">
+              <option value="">Selecione</option>
+              <option value="0">Último Dia</option>
+              <option value="1">Últimos 7 Dias</option>
+              <option value="2">Últimos 30 Dias</option>
+            </select>
+          </div>
+        </form>
+        <!-- <div class="btn-group" dropdown>
+          <button id="single-button" type="button" class="btn btn-default" dropdown-toggle ng-disabled=showLogin>
+            {{ selectedRecommendation==null ? 'Filtrar Por:' : selectedRecommendation }} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+            <li role="menuitem" ng-repeat="item in dropDownRecommendation">
+              <a href="#" ng-click="selectRecommendation(item)">{{item}}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="btn-group" dropdown>
+          <button id="opt" type="button" class="btn btn-default" dropdown-toggle ng-disabled=showLogin>
+            {{ selectedOrderOption==null ? 'Ordenar Por:' : selectedOrderOption }} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="opt">
+            <li role="menuitem" ng-repeat="item in orderOptions">
+              <a href="#" ng-click="selectOrderOption(item)">{{item}}</a>
+            </li>
+          </ul>
+        </div> -->
+      </div>
+
+      <div class="btn-group pull-right" role="group" ng-if="isUserLogged">
+        <a href="#/technologies/new" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar tecnologia</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="content container">
+
+    <div class="col-md-12" ng-if="app.alert.message.length">
+      <uib-alert type="{{ app.alert.type }}" close="app.closeAlert()">
+        {{ app.alert.message }}
+      </uib-alert>
+    </div>
+
+    <div class="row" ng-if="technologies.items.length">
+      <div class="col-sm-6 col-md-3" ng-repeat="technology in technologies.items">
+        <div class="card">
+          <div class="card-header card-section">
+            <div class="technology-image">
+              <a href="#/technologies/{{ technology.id }}"><img ng-src="{{ technology.image }}" alt="{{ technology.name }}" data-holder-rendered="true"></a>
+            </div>
+            <h3 class="card-title"><a href="#/technologies/{{ technology.id }}">{{ technology.name }}</a></h3>
+            <span class="label label-default technology-recommendation">{{ technology.recommendation }}</span>
+          </div>
+          <div class="card-content card-section">
+            <div class="technology-description">
+              <p>{{ technology.shortDescription }}</p>
+            </div>
+          </div>
+          <div class="card-actions card-section" ng-if="isUserLogged">
+            <div class="pull-left">
+              <button type="button" ng-click="technologies.followTechnology(technology.id, $event)" ng-class="technologies.setFollowedClass(technology.followedByUser)"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button>
+            </div>
+            <div class="pull-right">
+              <a href="#/technologies/{{ technology.id }}/edit" class="btn btn-default btn-xs" title="Editar {{ technology.name }}"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
+              <button type="button" ng-if="loggedUserInformation.admin" ng-click="technologies.deleteTechnology(technology.id)" class="btn btn-danger btn-xs" title="Deletar {{ technology.name }}"><span class="glyphicon glyphicon-trash"></span></button>
+            </div>
+          </div>
+          <div class="card-meta card-section">
+            <div class="titleThumbnail">
+              <span class="glyphicon glyphicon-thumbs-up"></span> {{ technology.positiveRecommendationsCounter }}
+              <span class="glyphicon glyphicon-thumbs-down"></span> {{ technology.negativeRecommendationsCounter }}
+              <span class="glyphicon glyphicon-user"></span> {{ technology.endorsersCounter }}
+              <span class="glyphicon glyphicon-list-alt"></span> {{ technology.commentariesCounter }}
+            </div>
+            <small class="technology-last-activity">
+              <span class="lastActivityLabel">Última Atividade:</span>
+              <time>{{ technology.lastActivity | date:"dd/MM/yyyy H:mm" }}</time>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-if="!technologies.items.length">
+      Nenhuma tecnologia encontrada.
+    </div>
+  </div>
+</div>
