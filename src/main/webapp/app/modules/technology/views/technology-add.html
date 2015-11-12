@@ -21,7 +21,7 @@
                 <div class="form-group col-md-7"
                      ng-class="{'has-error': (addTechnologyForm.name.$invalid && addTechnologyForm.name.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.name.$invalid)}">
                   <label for="technology-name">Nome da tecnologia</label>
-                  <input type="text" class="form-control" id="technology-name" name="name" ng-model="technology.name" placeholder="Ex.: AngularJS" required="">
+                  <input type="text" class="form-control" id="technology-name" name="name" ng-model="technology.name" placeholder="Ex.: AngularJS" required="" ng-disabled="technology.id.length">
                   <div ng-show="addTechnologyForm.$submitted || addTechnologyForm.name.$touched">
 	                  <span ng-show="addTechnologyForm.name.$error.required" class="help-block">O campo Nome é obrigatório</span>
                   </div>

@@ -214,8 +214,7 @@ module.exports = function($q, $timeout, $rootScope) {
   }
 
   this.getRecommended = function () {
-    // Mock
-    return false;
+    return true;
   }
 
   this.endorsed = {};
