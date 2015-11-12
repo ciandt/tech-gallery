@@ -107,7 +107,11 @@ module.exports = function($q, $timeout, $rootScope) {
         .replace(/\-\-+/g, '-')         // Replace multiple - with single -
         .replace(/^-+/, '')             // Trim - from start of text
         .replace(/-+$/, '');            // Trim - from end of text
-      }
+  }
+
+  this.slugify = function(text){
+    return slugify(text);
+  }
 
   this.searchTechnologies = function(){
     context.foundItems = [];
