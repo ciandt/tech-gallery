@@ -32,7 +32,7 @@ public class UserProfileTo {
     super();
     this.owner = owner;
     this.itemByTech=new HashMap<String, UserProfileItemTo>();
-    this.technologies = new ArrayList<UserProfileItemTo>();
+    this.setTechnologies(new ArrayList<UserProfileItemTo>());
     
     populate(positiveRecItems, negativeRecItems, otherItems);
   }
@@ -42,35 +42,39 @@ public class UserProfileTo {
     
     UserProfileItemTo itemTo;
     String technologyName;
-    for (UserProfileItem userProfileItem : positiveRecItems) {
-      technologyName = userProfileItem.getTechnologyName();
-      itemTo = itemByTech.get(technologyName);
-      if(itemTo==null){
-        itemTo = transformToItemTo(userProfileItem, Boolean.TRUE);
-        technologies.add(itemTo);
-        itemByTech.put(technologyName, itemTo);
+    if(positiveRecItems!=null){
+      for (UserProfileItem userProfileItem : positiveRecItems) {
+        technologyName = userProfileItem.getTechnologyName();
+        itemTo = itemByTech.get(technologyName);
+        if(itemTo==null){
+          itemTo = transformToItemTo(userProfileItem, Boolean.TRUE);
+          getTechnologies().add(itemTo);
+          itemByTech.put(technologyName, itemTo);
+        }
       }
     }
-    
-    for (UserProfileItem userProfileItem : negativeRecItems) {
-      technologyName = userProfileItem.getTechnologyName();
-      itemTo = itemByTech.get(technologyName);
-      if(itemTo==null){
-        itemTo = transformToItemTo(userProfileItem, Boolean.FALSE);
-        technologies.add(itemTo);
-        itemByTech.put(technologyName, itemTo);
+    if(negativeRecItems!=null){
+      for (UserProfileItem userProfileItem : negativeRecItems) {
+        technologyName = userProfileItem.getTechnologyName();
+        itemTo = itemByTech.get(technologyName);
+        if(itemTo==null){
+          itemTo = transformToItemTo(userProfileItem, Boolean.FALSE);
+          getTechnologies().add(itemTo);
+          itemByTech.put(technologyName, itemTo);
+        }
       }
     }
-    
-    for (UserProfileItem userProfileItem : otherItems) {
-      technologyName = userProfileItem.getTechnologyName();
-      itemTo = itemByTech.get(technologyName);
-      if(itemTo==null){
-        itemTo = transformToItemTo(userProfileItem, null);
-        technologies.add(itemTo);
-        itemByTech.put(technologyName, itemTo);
-      } else {
-        transformComment(userProfileItem, itemTo);
+    if(otherItems!=null){
+      for (UserProfileItem userProfileItem : otherItems) {
+        technologyName = userProfileItem.getTechnologyName();
+        itemTo = itemByTech.get(technologyName);
+        if(itemTo==null){
+          itemTo = transformToItemTo(userProfileItem, null);
+          getTechnologies().add(itemTo);
+          itemByTech.put(technologyName, itemTo);
+        } else {
+          transformComment(userProfileItem, itemTo);
+        }
       }
     }
   }
@@ -90,7 +94,7 @@ public class UserProfileTo {
     transformComment(userProfileItem, userProfileItemTo);
     
    userProfileItemTo.setCompanyRecommendation(userProfileItem.getCompanyRecommendation());
-   userProfileItemTo.setEndorsementQuantity(userProfileItem.getEndorsementQuantity());
+   userProfileItemTo.setEndorsementsCount(userProfileItem.getEndorsementQuantity());
    userProfileItemTo.setSkillLevel(userProfileItem.getSkillLevel());
    userProfileItemTo.setTechnologyName(userProfileItem.getTechnologyName());
    userProfileItemTo.setTechnologyPhotoUrl(userProfileItemTo.getTechnologyPhotoUrl());
@@ -121,6 +125,14 @@ public class UserProfileTo {
 
   public void setOwner(TechGalleryUser owner) {
     this.owner = owner;
+  }
+
+  public List<UserProfileItemTo> getTechnologies() {
+    return technologies;
+  }
+
+  public void setTechnologies(List<UserProfileItemTo> technologies) {
+    this.technologies = technologies;
   }
 
 
