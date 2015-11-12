@@ -9,6 +9,12 @@ $technology-spacing: 20px;
     margin: 0 $technology-spacing 0 0;
   }
 }
+
+.typeahead-input ul{
+  height:300px;
+  overflow:auto;
+}
+
 .technology-image {
   border: 1px solid #ddd;
   border-radius: 100%;
