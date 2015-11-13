@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $stateParams, AppService, TechnologyService, $uibModal) {
+module.exports = function ($rootScope, $stateParams, AppService, TechnologyService, $uibModal, Analytics) {
 
   /**
    * Object context
@@ -49,6 +49,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
 
   this.setSkill = function (technology, newRating) {
     TechnologyService.addUserSkill($stateParams.id, newRating, context.oldRating);
+    Analytics.sendSkillEvent(context.item.name, newRating);
   }
 
   this.recommended = TechnologyService.getRecommended();
@@ -92,11 +93,11 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     if(context.commentRecommend && context.commentRecommend.trim().length <= 500){
       TechnologyService.addRecommendationComment(context, $stateParams.id).then(function(){
         context.commentRecommend = '';
+        Analytics.sendRecommendationEvent(context.item.name, context.recommended);
         context.recommended = true;
         loadComments();
         AppService.setAlertBotton('Recomendação incluída com sucesso.', 'success');
       });
-      //ga('send', 'event', 'TechGalleryEvents', 'recommendation_add', $scope.name);
     }else{
       AppService.setAlertBotton('Você deve informar um comentário sobre sua recomendação.', 'warning');
     }
@@ -105,11 +106,11 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   this.addComment = function(){
     if(context.comment && context.comment.trim().length <= 500){
       TechnologyService.addComment(context, $stateParams.id).then(function(){
-        context.comment = '';
+    	Analytics.sendCommentEvent(context.item.name);
+    	context.comment = '';
         loadComments();
         AppService.setAlertBotton('Comentário incluído com sucesso.', 'success');
       });
-      //ga('send', 'event', 'TechGalleryEvents', 'comment_add', $scope.name);
     }
   }
 
@@ -139,6 +140,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   this.endorseUser = function() {
     TechnologyService.endorseUser($stateParams.id, this.endorsed.email).then(function(data){
         if(!data.hasOwnProperty('error')){
+          Analytics.sendEndorsementEvent(context.item.name, context.endorsed.email);
           context.getEndorsementsByTech();
           AppService.setAlert('Usuário indicado!' ,'success');
         } else {
@@ -160,7 +162,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
 
   this.getEndorsementsByTech();
 
-     this.followTechnology = function(idTechnology, $event){
+  this.followTechnology = function(idTechnology, $event){
     context.currentElement = $event.currentTarget;
       TechnologyService.followTechnology(idTechnology).then(function(data){
         if(!data.hasOwnProperty('error')){
@@ -198,14 +200,14 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       return 'btn-follow-' + $stateParams.id;
     }
 
-      this.addEndorse = function(endorsed, id){
+    this.addEndorse = function(endorsed, id){
       TechnologyService.addEndorse(endorsed, id, $stateParams.id).then(function(data){
         if(!data.hasOwnProperty('error')){
           //reload endorsers
           //change css class
         }
       });
-   }
+    }
 
      this.open = function(endorsers, size) {
     var modalInstance = $uibModal.open({
