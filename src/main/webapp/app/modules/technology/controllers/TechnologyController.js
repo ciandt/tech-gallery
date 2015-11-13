@@ -135,9 +135,11 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
 
   this.getEndorsementsByTech();
 
-  this.verifyStyle = function(email){
-    if(email == $rootScope.userEmail){
-      return true;
+  this.verifyStyle = function(endorsers){
+    for(var i in endorsers){
+      if(endorsers[i].email == $rootScope.userEmail){
+        return true;
+      }
     }
     return false;
   };
