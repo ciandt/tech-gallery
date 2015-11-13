@@ -93,8 +93,9 @@
                         <div class="col-md-6 text-right">
                           <button ng-show="!technology.showSelfInformations(response.endorsed.email)"
                           type="button" id={{technology.generateId($index,response.endorsed.email)}}
-                          ng-click="technology.addEndorse(response.endorsed, technology.generateId($index,response.endorsed.email))" class="btn btn-default btn-sm plusOneButton" uibTooltip ={{technology.setToolTipPlusOne($index,response.endorsed.email)}}
-                          ng-class="response.endorsers.plusOneClass">+{{response.endorsers.length}}</button>
+                          ng-click="technology.addEndorse($event, response.endorsed, technology.generateId($index,response.endorsed.email))" class="btn btn-default btn-sm plusOneButton"
+                          uibTooltip ={{technology.setToolTipPlusOne($index,response.endorsed.email)}}
+                          ng-class="{ 'btn-danger' : technology.verifyStyle(response.endorsers[0].email) }">+{{response.endorsers.length}}</button>
                           <div
                           ng-repeat="endorser in response.endorsersFiltered track by $index">
                           <a href="#/people/{{technology.getUserLogin(endorser.email)}}">

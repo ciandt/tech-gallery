@@ -85,7 +85,6 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
           }
         };
       }
-
     });
   }
 
@@ -114,10 +113,9 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     }
   }
 
-
-    this.showAllEndorsers = function(endorsers) {
-      return (endorsers !== undefined && endorsers.length > 0);
-    };
+  this.showAllEndorsers = function(endorsers) {
+    return (endorsers !== undefined && endorsers.length > 0);
+  };
 
   this.getEndorsementsByTech = function() {
    TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
@@ -125,8 +123,19 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       context.completeEndorsements = data;
       context.filteredEndorsements = data.slice(0,5);
       context.showEndorsementResponse = context.filteredEndorsements;
+    }else{
+      context.completeEndorsements = undefined;
+      context.filteredEndorsements = undefined;
+      context.showEndorsementResponse = undefined;
     }
    });
+  };
+
+  this.verifyStyle = function(email){
+    if(email == $rootScope.userEmail){
+      return true;
+    }
+    return false;
   };
 
   this.showAllEndorsements = function(){
@@ -139,13 +148,13 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
 
   this.endorseUser = function() {
     TechnologyService.endorseUser($stateParams.id, this.endorsed.email).then(function(data){
-        if(!data.hasOwnProperty('error')){
-          Analytics.sendEndorsementEvent(context.item.name, context.endorsed.email);
-          context.getEndorsementsByTech();
-          AppService.setAlert('Usuário indicado!' ,'success');
-        } else {
-          AppService.setAlert(data.error.message ,'error');
-        }
+      if(!data.hasOwnProperty('error')){
+        Analytics.sendEndorsementEvent(context.item.name, context.endorsed.email);
+        context.getEndorsementsByTech();
+        AppService.setAlert('Usuário indicado!' ,'success');
+      } else {
+        AppService.setAlert(data.error.message ,'error');
+      }
     });
   };
 
@@ -172,15 +181,15 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       });
    }
 
-    function changeFollowedClass(elementId){
-      var element = document.getElementById(elementId)
-      var oldClass = element.className;
-      if(oldClass.indexOf('btn-primary') > 0){
-        element.className = 'btn-xs btn-danger';
-      }else{
-        element.className = 'btn-xs btn-primary';
-      }
+  function changeFollowedClass(elementId){
+    var element = document.getElementById(elementId)
+    var oldClass = element.className;
+    if(oldClass.indexOf('btn-primary') > 0){
+      element.className = 'btn-xs btn-danger';
+    }else{
+      element.className = 'btn-xs btn-primary';
     }
+  }
 
   this.setFollowedClass = function(isFollowedByUser){
     if(isFollowedByUser){
@@ -200,16 +209,18 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       return 'btn-follow-' + $stateParams.id;
     }
 
-    this.addEndorse = function(endorsed, id){
+    this.addEndorse = function($event, endorsed, id){
+      var elemment = $event.currentTarget;
+      elemment.disabled = true;
       TechnologyService.addEndorse(endorsed, id, $stateParams.id).then(function(data){
         if(!data.hasOwnProperty('error')){
-          //reload endorsers
-          //change css class
+          context.getEndorsementsByTech();
+          elemment.disabled = false;
         }
       });
     }
 
-     this.open = function(endorsers, size) {
+  this.open = function(endorsers, size) {
     var modalInstance = $uibModal.open({
       animation : true,
       templateUrl : 'showEndorsementModal.html',

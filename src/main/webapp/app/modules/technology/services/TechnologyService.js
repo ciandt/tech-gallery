@@ -303,9 +303,6 @@ module.exports = function($q, $timeout, $rootScope) {
         }
       }
       deferred.resolve(response);
-      /*$scope.processingEndorse = false;
-      $scope.loadEndorsements = false;
-      $scope.$apply();*/
     });
     return deferred.promise;
   }
@@ -332,11 +329,11 @@ module.exports = function($q, $timeout, $rootScope) {
   function setPlusOneClass(endorsers){
     for(var i in endorsers){
       if(endorsers[i].email == $rootScope.userEmail){
-        endorsers.plusOneClass = 'btn GPlusAdded';
+        endorsers.plusOneClass = 'btn-danger';
         return endorsers;
       }
     }
-    endorsers.plusOneClass = 'btn GPlusDefault';
+    endorsers.plusOneClass = '';
     return endorsers;
   };
 
