@@ -119,17 +119,21 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     return (endorsers !== undefined && endorsers.length > 0);
   };
 
-   TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
-    if(data){
-      context.completeEndorsements = data;
-      context.filteredEndorsements = data.slice(0,5);
-      context.showEndorsementResponse = context.filteredEndorsements;
-    }else{
-      context.completeEndorsements = undefined;
-      context.filteredEndorsements = undefined;
-      context.showEndorsementResponse = undefined;
-    }
-   });
+  this.getEndorsementsByTech = function() {
+    TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
+      if(data){
+        context.completeEndorsements = data;
+        context.filteredEndorsements = data.slice(0,5);
+        context.showEndorsementResponse = context.filteredEndorsements;
+      }else{
+        context.completeEndorsements = undefined;
+        context.filteredEndorsements = undefined;
+        context.showEndorsementResponse = undefined;
+      }
+    });
+  };
+
+  this.getEndorsementsByTech();
 
   this.verifyStyle = function(email){
     if(email == $rootScope.userEmail){
