@@ -48,7 +48,7 @@ public class TechnologyActivitiesEmailTemplateTO {
    */
   public String getTechnologyLink() {
     String linkTechnology;
-    String queryString = "?id=" + technology.getId();
+    String queryString = "#/technologies/" + technology.getId();
     String environment = System.getProperty(Constants.RUNTIME_ENVIRONMENT_PROPERTY);
     if (StringUtils.equals(Constants.PRODUCTION_PROPERTY, environment)) {
       String applicationId = System.getProperty(Constants.APPLICATION_ID_PROPERTY);
@@ -57,7 +57,7 @@ public class TechnologyActivitiesEmailTemplateTO {
     } else {
       linkTechnology = Constants.LINK_LOCALHOST;
     }
-    return linkTechnology + Constants.PATH_VIEW_TECH_HTML + queryString;
+    return linkTechnology + queryString;
   }
 
   public Technology getTechnology() {
