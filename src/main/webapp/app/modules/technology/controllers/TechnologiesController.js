@@ -34,6 +34,12 @@ module.exports = function ($scope, $rootScope, AppService, TechnologyService, Us
    this.loading = false;
 
    this.changeFilters = function(){
+    if(context.recommendationFilter == ""){
+      context.recommendationFilter = null;
+    }
+    if(context.lastActivityDateFilter == ""){
+      context.lastActivityDateFilter = null;
+    }
     TechnologyService.setContentFilters(context.recommendationFilter, context.orderFilter, context.lastActivityDateFilter);
    }
 
