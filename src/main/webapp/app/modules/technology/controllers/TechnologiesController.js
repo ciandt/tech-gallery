@@ -12,6 +12,7 @@ module.exports = function ($scope, $rootScope, AppService, TechnologyService, Us
    */
    $scope.$on('searchChange', function(event, data) {
     context.items = data.technologies;
+    context.loading = false;
     $scope.$apply();
   })
 
@@ -20,8 +21,10 @@ module.exports = function ($scope, $rootScope, AppService, TechnologyService, Us
    * @type {Array}
    */
    this.getTechnologies = function(){
+    context.loading = true;
     TechnologyService.getTechnologies().then(function(){
       context.items = TechnologyService.foundItems;
+      context.loading = false;
     });
    }
 
@@ -31,25 +34,41 @@ module.exports = function ($scope, $rootScope, AppService, TechnologyService, Us
    * Loading state
    * @type {Boolean}
    */
-   this.loading = false;
+   this.loading = true;
 
-   this.changeFilters = function(){
-    if(context.recommendationFilter == ""){
+  this.recommendationFilter = null;
+  this.orderFilter = null;
+  this.lastActivityDateFilter = null;
+
+   this.updateFilters = function(){
+    context.loading = true;
+    if(context.recommendationFilter === ''){
       context.recommendationFilter = null;
     }
-    if(context.lastActivityDateFilter == ""){
+    if(context.lastActivityDateFilter === ''){
       context.lastActivityDateFilter = null;
     }
     TechnologyService.setContentFilters(context.recommendationFilter, context.orderFilter, context.lastActivityDateFilter);
    }
 
+  /**
+   * Reset technologies filters
+   * @return {Void}
+   */
+  this.resetFilters = function () {
+    context.recommendationFilter = null;
+    context.orderFilter = null;
+    context.lastActivityDateFilter = null;
+    context.updateFilters();
+  }
+
    this.followTechnology = function(idTechnology, $event){
     context.currentElement = $event.currentTarget;
-      TechnologyService.followTechnology(idTechnology).then(function(data){
-        if(!data.hasOwnProperty('error')){
-          changeFollowedClass(context.currentElement);
-        }
-      });
+    TechnologyService.followTechnology(idTechnology).then(function(data){
+      if(!data.hasOwnProperty('error')){
+        changeFollowedClass(context.currentElement);
+      }
+    });
    }
 
    function changeFollowedClass(element){
@@ -70,6 +89,7 @@ module.exports = function ($scope, $rootScope, AppService, TechnologyService, Us
 
   this.deleteTechnology = function(idTechnology){
     if(confirm('Você realmente quer apagar a tecnologia?')) {
+      context.loading = true;
       TechnologyService.deleteTechnology(idTechnology).then(function(data){
         if(!data.hasOwnProperty('error')){
           context.getTechnologies();

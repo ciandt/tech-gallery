@@ -44,6 +44,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
             form.$setPristine();
             form.$setUntouched();
           }else {
+            $rootScope.technologySaved = true;
             $state.go('root.technologies');
           }
           if(isEdit){

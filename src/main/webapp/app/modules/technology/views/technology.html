@@ -15,7 +15,7 @@
             <div class="pull-right">
               <a href="#/technologies/{{ technology.item.id }}/edit" class="btn btn-default btn-xs" title="Editar {{ technology.item.name }}"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
             </div>
-            <h1 class="technology-name">{{ technology.item.name }} <button id="idFollowButton" class="btn" ng-click="technology.followTechnology(technology.item.id, $event)" ng-class="technology.setFollowedClass(technology.item.followedByUser)"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button></h1>
+            <h1 class="technology-name">{{ technology.item.name }} <button id="idFollowButton" ng-click="technology.followTechnology()" ng-class="technology.setFollowedClass(technology.item.followedByUser)"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button></h1>
             <ul class="technology-meta">
               <li ng-if="technology.item.recommendation.length"><span class="label label-default technology-recommendation">{{ technology.item.recommendation }}</span></li>
               <li ng-if="technology.item.website.length"><span class="glyphicon glyphicon-link"></span> <a href="{{ technology.item.website }}" target="_blank" title="{{ technology.item.name }}">{{ technology.item.website }}</a></li>
@@ -60,8 +60,7 @@
               <div class="card-section">
                 <div class="form-inline">
                   <div class="input-group typeahead-input">
-                    <input ng-model="technology.endorsed" type="text" class="form-control"
-                    placeholder="usuário" aria-describedby="basic-addon2" uib-typeahead="user as user.email for user in technology.getUsersList($viewValue)" typeahead-min-length="3" typeahead-template-url="customTemplate.html" style="width: 250px;">
+                    <input ng-model="technology.endorsed" type="text" class="form-control" placeholder="usuário" aria-describedby="basic-addon2" uib-typeahead="user as user.email for user in technology.getUsersList($viewValue)" typeahead-min-length="3" typeahead-template-url="customTemplate.html" style="width: 250px;">
                     <span class="input-group-addon">@ciandt.com</span>
                   </div>
                   <!--<div ng-show="loadingUsers">
@@ -188,7 +187,7 @@
                       <div class="technology-recommendation-meta media">
                         <div class="media-image">
                           <a ng-href='#/people/{{commentRecommend.author.login}}'>
-                            <img class="technology-recommendation-meta-image" src="{{commentRecommend.author.photo}}" alt="">
+                            <img class="technology-recommendation-meta-image" ng-src="{{commentRecommend.author.photo}}" alt="">
                           </a>
                         </div>
                         <div class="media-content">
@@ -243,7 +242,7 @@
                       <div class="technology-recommendation-meta media">
                         <div class="media-image">
                           <a ng-href='#/people/{{comment.author.login}}'>
-                            <img class="technology-recommendation-meta-image" src="{{comment.author.photo}}" alt="">
+                            <img class="technology-recommendation-meta-image" ng-src="{{comment.author.photo}}" alt="">
                           </a>
                         </div>
                         <div class="media-content">
@@ -271,24 +270,34 @@
   </div>
 
   <script type="text/ng-template" id="showEndorsementModal.html">
-  <div class="modal-header">
-    <h3 class="modal-title">Pessoas que recomendaram...</h3>
-</div>
-<div id="div_image_recomendations" class="container">
-    <div class="col-xs-6">
-        <div ng-repeat="endorser in endorsers">
-            <div class="media-left media-middle">
-              <a href="#/people/{{getUserLogin(endorser.email)}}">
-                <img class="media-object endorsers-image" src="{{endorser.photo}}" uibTooltip ="{{endorser.name}}">
-              </a>
-            </div>
-            <div class="media-body">
-              <a href="#/people/{{getUserLogin(endorser.email)}}">
-                <h4 class="media-heading">{{endorser.name}}</h4>
-              </a>
+    <div class="modal-header">
+      <h3 class="modal-title">Pessoas que recomendaram...</h3>
+    </div>
+    <div id="div_image_recomendations" class="container">
+        <div class="col-xs-6">
+            <div ng-repeat="endorser in endorsers">
+                <div class="media-left media-middle">
+                  <a href="#/people/{{ getUserLogin(endorser.email) }}">
+                    <img class="media-object endorsers-image" ng-src="{{ endorser.photo }}" uibTooltip ="{{ endorser.name }}">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <a href="#/people/{{ getUserLogin(endorser.email) }}">
+                    <h4 class="media-heading">{{ endorser.name }}</h4>
+                  </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</script>
+  </script>
+
+  <script type="text/ng-template" id="customTemplate.html">
+    <a>
+    <img ng-src="{{ match.model.photo }}" class="autoCompleteImage">
+    <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+    <br>
+    <span ng-bind-html="match.model.name | uibTypeaheadHighlight:query"></span>
+    <li class="separator"></li>
+    </a>
+  </script>
 </div>
