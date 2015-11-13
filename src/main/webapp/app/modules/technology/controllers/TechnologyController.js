@@ -120,9 +120,11 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
 
   this.getEndorsementsByTech = function() {
    TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
-    context.completeEndorsements = data;
-    context.filteredEndorsements = data.slice(0,5);
-    context.showEndorsementResponse = context.filteredEndorsements;
+    if(data){
+      context.completeEndorsements = data;
+      context.filteredEndorsements = data.slice(0,5);
+      context.showEndorsementResponse = context.filteredEndorsements;
+    }
    });
   };
 
