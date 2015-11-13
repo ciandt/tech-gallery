@@ -31,7 +31,7 @@
                   <input type="file" class="form-control" id="technology-image" ng-model="technology.image"
                          onchange="angular.element(this).scope().handleFileSelect(this)">
                 </div>
-                <div class="form-group col-md-12" ng-show="loggedUserInformation.admin">
+                <div class="form-group col-md-12" ng-show="!loggedUserInformation.admin">
                   <div class="btn-group" uib-dropdown>
                     <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
                       {{ technology.selectedRecommendation==null ? 'Recomendação Ci&T' : technology.selectedRecommendation }}
@@ -39,7 +39,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
                       <li role="menuitem" ng-repeat="item in technology.dropDownRecommendation">
-                        <a href="#" ng-show="item != 'Todos'" ng-click="technology.selectRecommendation(item)">{{item}}</a>
+                        <a href="#" ng-show="item != 'Todos' && item != 'Não informado'" ng-click="technology.selectRecommendation(item)">{{item}}</a>
                       </li>
                     </ul>
                   </div>
