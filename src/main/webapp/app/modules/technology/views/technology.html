@@ -15,7 +15,7 @@
             <div class="pull-right">
               <a href="#/technologies/{{ technology.item.id }}/edit" class="btn btn-default btn-xs" title="Editar {{ technology.item.name }}"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
             </div>
-            <h1 class="technology-name">{{ technology.item.name }} <button id={{technology.generateFollowId()}} class="btn" ng-click="technology.followTechnology(technology.item.id, $event)" ng-class="technology.setFollowedClass(technology.item.followedByUser)"><span class="glyphicon glyphicon-star-empty"></span> {{technology.setFollowedButtonName(technology.item.followedByUser)}}</button></h1>
+            <h1 class="technology-name">{{ technology.item.name }} <button id="idFollowButton" class="btn" ng-click="technology.followTechnology(technology.item.id, $event)" ng-class="technology.setFollowedClass(technology.item.followedByUser)"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button></h1>
             <ul class="technology-meta">
               <li ng-if="technology.item.recommendation.length"><span class="label label-default technology-recommendation">{{ technology.item.recommendation }}</span></li>
               <li ng-if="technology.item.website.length"><span class="glyphicon glyphicon-link"></span> <a href="{{ technology.item.website }}" target="_blank" title="{{ technology.item.name }}">{{ technology.item.website }}</a></li>

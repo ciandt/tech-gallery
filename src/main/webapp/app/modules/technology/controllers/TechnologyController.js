@@ -70,7 +70,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   /**
    * Begin of show comments features
    */
-  function loadComments() {
+   function loadComments() {
     var req = {technologyId: $stateParams.id};
     TechnologyService.getCommentsByTech($stateParams.id).then(function(data){
       context.techComments = [];
@@ -114,17 +114,15 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   }
 
 
-    this.showAllEndorsers = function(endorsers) {
-      return (endorsers !== undefined && endorsers.length > 0);
-    };
+  this.showAllEndorsers = function(endorsers) {
+    return (endorsers !== undefined && endorsers.length > 0);
+  };
 
-  this.getEndorsementsByTech = function() {
-   TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
+  TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
     context.completeEndorsements = data;
     context.filteredEndorsements = data.slice(0,5);
     context.showEndorsementResponse = context.filteredEndorsements;
-   });
-  };
+  });
 
   this.showAllEndorsements = function(){
     context.showEndorsementResponse = context.completeEndorsements;
@@ -136,12 +134,12 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
 
   this.endorseUser = function() {
     TechnologyService.endorseUser($stateParams.id, this.endorsed.email).then(function(data){
-        if(!data.hasOwnProperty('error')){
-          context.getEndorsementsByTech();
-          AppService.setAlert('Usuário indicado!' ,'success');
-        } else {
-          AppService.setAlert(data.error.message ,'error');
-        }
+      if(!data.hasOwnProperty('error')){
+        context.getEndorsementsByTech();
+        AppService.setAlert('Usuário indicado!' ,'success');
+      } else {
+        AppService.setAlert(data.error.message ,'error');
+      }
     });
   };
 
@@ -156,11 +154,8 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     return 'plusOne' + index + email;
   };
 
-  this.getEndorsementsByTech();
-
-     this.followTechnology = function(idTechnology, $event){
-    context.currentElement = $event.currentTarget;
-      TechnologyService.followTechnology(idTechnology).then(function(data){
+     /*this.followTechnology = function(){
+      TechnologyService.followTechnology($stateParams.id).then(function(data){
         if(!data.hasOwnProperty('error')){
           var elementId = 'btn-follow-' + data.id;
           changeFollowedClass(elementId);
@@ -185,48 +180,60 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     return 'btn-xs bbtn-primary';
   }
 
-    this.setFollowedButtonName = function(isFollowedByUser){
-    if(isFollowedByUser){
-      return 'Seguindo';
-    }
-    return 'Seguir';
-  }
-
     this.generateFollowId = function(){
       return 'btn-follow-' + $stateParams.id;
+    }*/
+
+    this.followTechnology = function(idTechnology, $event){
+      context.currentElement = $event.currentTarget;
+      TechnologyService.followTechnology(idTechnology).then(function(data){
+        if(!data.hasOwnProperty('error')){
+          changeFollowedClass(context.currentElement);
+        }
+      });
     }
 
-      this.addEndorse = function(endorsed, id){
+    function changeFollowedClass(element){
+      var children = element.children;
+      if(element.className.indexOf('btn-default') > 0){
+        element.className = 'btn btn-xs btn-danger';
+      }else{
+        element.className = 'btn btn-xs btn-default';
+      }
+      context.currentElement = undefined;
+    }
+
+    this.addEndorse = function(endorsed, id){
       TechnologyService.addEndorse(endorsed, id, $stateParams.id).then(function(data){
         if(!data.hasOwnProperty('error')){
           //reload endorsers
           //change css class
         }
       });
-   }
+    }
 
-     this.open = function(endorsers, size) {
-    var modalInstance = $uibModal.open({
-      animation : true,
-      templateUrl : 'showEndorsementModal.html',
-      controller : function ($scope) {
-        $scope.endorsers = endorsers;
-        $scope.close = $scope.$close;
-        $scope.getUserLogin = context.getUserLogin;
-      },
-      size : size,
-      resolve : {
-        endorsers : function() {
-          return endorsers;
+    this.open = function(endorsers, size) {
+      var modalInstance = $uibModal.open({
+        animation : true,
+        templateUrl : 'showEndorsementModal.html',
+        controller : function ($scope) {
+          $scope.endorsers = endorsers;
+          $scope.close = $scope.$close;
+          $scope.getUserLogin = context.getUserLogin;
+        },
+        size : size,
+        resolve : {
+          endorsers : function() {
+            return endorsers;
+          }
         }
-      }
-    });
-  };
+      });
+    };
 
-  this.getUserLogin = function (email){
-    var completeEmail = email;
-    completeEmail = completeEmail.split('@');
-    return completeEmail[0];
-  };
+    this.getUserLogin = function (email){
+      var completeEmail = email;
+      completeEmail = completeEmail.split('@');
+      return completeEmail[0];
+    };
 
-}
+  }
