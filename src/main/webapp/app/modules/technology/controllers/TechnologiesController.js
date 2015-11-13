@@ -36,16 +36,31 @@ module.exports = function ($scope, $rootScope, AppService, TechnologyService, Us
    */
    this.loading = true;
 
-   this.changeFilters = function(){
+  this.recommendationFilter = null;
+  this.orderFilter = null;
+  this.lastActivityDateFilter = null;
+
+   this.updateFilters = function(){
     context.loading = true;
-    if(context.recommendationFilter == ""){
+    if(context.recommendationFilter === ''){
       context.recommendationFilter = null;
     }
-    if(context.lastActivityDateFilter == ""){
+    if(context.lastActivityDateFilter === ''){
       context.lastActivityDateFilter = null;
     }
     TechnologyService.setContentFilters(context.recommendationFilter, context.orderFilter, context.lastActivityDateFilter);
    }
+
+  /**
+   * Reset technologies filters
+   * @return {Void}
+   */
+  this.resetFilters = function () {
+    context.recommendationFilter = null;
+    context.orderFilter = null;
+    context.lastActivityDateFilter = null;
+    context.updateFilters();
+  }
 
    this.followTechnology = function(idTechnology, $event){
     context.currentElement = $event.currentTarget;
