@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
+module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytics) {
 
   /**
    * Object context
@@ -58,7 +58,7 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService) {
         data.owner.recommendationsCount = recommendationsCount;
         data.owner.commentsCount = commentsCount;
       }
-      deferred.resolve(data);      
+      deferred.resolve(data);
     });
   return deferred.promise;
 }
@@ -68,9 +68,9 @@ this.getUserEmail = function(callBackFunction, authResult){
     gapi.client.load('oauth2', 'v2', function() {
       gapi.client.oauth2.userinfo.get().execute(function(resp) {
         $rootScope.userEmail = resp.email;
-          //if(userEmail){
-          //  trackUser(userEmail.replace('@'+resp.hd, ''));
-          //}
+          if(authResult == undefined && $rootScope.userEmail){
+        	  Analytics.trackUser($rootScope.userEmail.replace('@'+resp.hd, ''));
+          }
           if(callBackFunction){
             callBackFunction(authResult);
           }
@@ -97,13 +97,5 @@ this.logOutUser = function(){
   logoutRedirect += location.pathname;
   logoutRedirect += location.search;
   return logoutRedirect;
-}
-
-function trackUser(userEmail) {
-  ga('create', 'UA-60744312-3', 'auto');
-  ga('set', '&uid', userEmail);
-  ga('set', 'contentGroup1', userEmail);
-  ga('set', 'dimension1', userEmail);
-  ga('send', 'pageview');
 }
 }
