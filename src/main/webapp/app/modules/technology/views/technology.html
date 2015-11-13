@@ -82,7 +82,7 @@
                 <div class="technology-endorsement row" ng-repeat="response in technology.showEndorsementResponse track by $index">
                   <div class="media col-md-7">
                     <div class="media-image technology-endorsement-image">
-                      <a href="#/people/{{technology.getUserLogin(response.endorsed.email)}}"><img src={{response.endorsed.photo}} alt=""></a>
+                      <a href="#/people/{{technology.getUserLogin(response.endorsed.email)}}"><img ng-src={{response.endorsed.photo}} alt=""></a>
                     </div>
                     <div class="media-content">
                       <div class="row">
@@ -94,12 +94,12 @@
                           type="button" id={{technology.generateId($index,response.endorsed.email)}}
                           ng-click="technology.addEndorse($event, response.endorsed, technology.generateId($index,response.endorsed.email))" class="btn btn-default btn-sm plusOneButton"
                           uibTooltip ={{technology.setToolTipPlusOne($index,response.endorsed.email)}}
-                          ng-class="{ 'btn-danger' : technology.verifyStyle(response.endorsers[0].email) }">+{{response.endorsers.length}}</button>
+                          ng-class="{ 'btn-danger' : technology.verifyStyle(response.endorsers) }">+{{response.endorsers.length}}</button>
                           <div
                           ng-repeat="endorser in response.endorsersFiltered track by $index">
                           <a href="#/people/{{technology.getUserLogin(endorser.email)}}">
                             <img class="media-object endorsers-image"
-                            src={{endorser.photo}} uibTooltip={{endorser.name}}>
+                            ng-src={{endorser.photo}} uibTooltip={{endorser.name}}>
                           </a>
                         </div>
                         <a href="#" ng-show="technology.showAllEndorsers(response.endorsers)"
