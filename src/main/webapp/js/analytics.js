@@ -18,7 +18,7 @@ function sendSkillEvent(skill){
 		}
 		if(skill === "Jedi"){
 			ga('send', 'event', 'Skill', $scope.name, 'Jedi');
-		}	
+		}
 	}
 }
 

@@ -115,7 +115,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
 
 
     this.showAllEndorsers = function(endorsers) {
-      return (endorsers.length > 0);
+      return (endorsers !== undefined && endorsers.length > 0);
     };
 
   this.getEndorsementsByTech = function() {
@@ -152,26 +152,39 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     context.currentElement = $event.currentTarget;
       TechnologyService.followTechnology(idTechnology).then(function(data){
         if(!data.hasOwnProperty('error')){
-          changeFollowedClass(context.currentElement);
+          var elementId = 'btn-follow-' + data.id;
+          changeFollowedClass(elementId);
         }
       });
    }
 
-   function changeFollowedClass(element){
-    if(element.className.indexOf('btn-default') > 0){
-      element.className = 'btn btn-xs btn-danger';
-    }else{
-      element.className = 'btn btn-xs btn-default';
+    function changeFollowedClass(elementId){
+      var element = document.getElementById(elementId)
+      var oldClass = element.className;
+      if(oldClass.indexOf('btn-primary') > 0){
+        element.className = 'btn-xs btn-danger';
+      }else{
+        element.className = 'btn-xs btn-primary';
+      }
     }
-    context.currentElement = undefined;
-  }
 
   this.setFollowedClass = function(isFollowedByUser){
     if(isFollowedByUser){
-      return 'btn btn-xs btn-danger';
+      return 'btn-xs btn-danger';
     }
-    return 'btn btn-xs btn-default';
+    return 'btn-xs bbtn-primary';
   }
+
+    this.setFollowedButtonName = function(isFollowedByUser){
+    if(isFollowedByUser){
+      return 'Seguindo';
+    }
+    return 'Seguir';
+  }
+
+    this.generateFollowId = function(){
+      return 'btn-follow-' + $stateParams.id;
+    }
 
       this.addEndorse = function(endorsed, id){
       TechnologyService.addEndorse(endorsed, id, $stateParams.id).then(function(data){
