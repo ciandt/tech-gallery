@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, Analytics) {
+module.exports = function ($rootScope, $location, Analytics) {
 
   /**
    * Object context
@@ -68,11 +68,14 @@ module.exports = function ($rootScope, Analytics) {
    * Listener to close alert messages.
    * @return {Void}
    */
-  $rootScope.$on('$locationChangeSuccess', function(next, current) {
-    if(current.indexOf('technologies/') >= 0){
-      Analytics.trackTechnologyAcess(current.substring(current.indexOf('technologies')+13));
+  $rootScope.$on('$locationChangeSuccess', function(event, newUrl, oldUrl) {
+    if(newUrl.indexOf('technologies/') >= 0){
+      Analytics.trackTechnologyAcess(newUrl.substring(newUrl.indexOf('technologies')+13));
     }
-    context.closeAlert();
+    if(!$rootScope.technologySaved && (oldUrl.indexOf('/new') < 0 || oldUrl.indexOf('/edit') < 0)){
+      context.closeAlert();
+    }
+    $rootScope.technologySaved = undefined;
     context.closeAlertBotton();
   });
 
