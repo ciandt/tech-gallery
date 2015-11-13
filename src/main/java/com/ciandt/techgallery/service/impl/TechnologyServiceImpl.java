@@ -313,11 +313,12 @@ public class TechnologyServiceImpl implements TechnologyService {
   }
 
   private boolean verifyRecommendationFilter(TechnologyFilter techFilter, Technology technology) {
-    if (technology.getRecommendation() == null) {
+    if (technology.getRecommendation() == null && techFilter.getRecommendationIs() == "") {
       return true;
-    } else if (techFilter.getRecommendationIs() != null && (technology.getRecommendation().toLowerCase()
-        .equals(techFilter.getRecommendationIs().toLowerCase())
-        || techFilter.getRecommendationIs().toLowerCase().equals(RecommendationEnums.ANY.message().toLowerCase()))) {
+    } else if (technology.getRecommendation() != null && techFilter.getRecommendationIs() != null
+        && (technology.getRecommendation().toLowerCase().equals(techFilter.getRecommendationIs().toLowerCase())
+            || techFilter.getRecommendationIs().toLowerCase()
+                .equals(RecommendationEnums.ANY.message().toLowerCase()))) {
       return true;
     }
     return false;
