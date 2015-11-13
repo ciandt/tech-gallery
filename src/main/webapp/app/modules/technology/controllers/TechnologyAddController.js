@@ -65,7 +65,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
 	  context.shortDescription = '';
 	  context.webSite = '';
     document.getElementById('technology-name').value = null;
-    //document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
+    document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="100" />'].join('');
   }
 
   function fillTechnology(technology) {
@@ -76,7 +76,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
 	  context.webSite = technology.website;
 	  context.image = technology.image;
 	  if(context.image){
-		  //document.getElementById('list').innerHTML = ['<img src="', context.image,'" title="', context.name, '" width="200" />'].join('');
+		  document.getElementById('list').innerHTML = ['<img src="', context.image,'" title="', context.name, '" width="100" />'].join('');
 	  }
 	  context.selectedRecommendation = technology.recommendation;
 	  context.justification = technology.recommendationJustification;
@@ -89,25 +89,30 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
   $scope.handleFileSelect = function(file) {
       var files = file.files;
       var f = files[0];
-      var reader = new FileReader();
-      reader.onload = (function(theFile) {
-        return function(e) {
-          var img = new Image;
-          img.src = reader.result;
-          img.onload = function() {
-            if(f.type != 'image/png' || img.width > 100 || img.height > 100){
-              alert('Esta imagem tem um tamanho ou tipo errado, escolha uma imagem com o tamanho 100x100 e tipo PNG.');
-              document.getElementById('technology-image').value = null;
-              //document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="200" />'].join('');
-            }else{
-              var image = e.target.result;
-              context.image = image.replace('data:image/png;base64,', '');
-              //document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="200" />'].join('');
-            }
+      if (f) {
+        var reader = new FileReader();
+        reader.onload = (function(theFile) {
+          return function(e) {
+            var img = new Image;
+            img.src = reader.result;
+            img.onload = function() {
+              if(f.type != 'image/png' || img.width > 100 || img.height > 100){
+                alert('Esta imagem tem um tamanho ou tipo errado, escolha uma imagem com o tamanho 100x100 e tipo PNG.');
+                document.getElementById('technology-image').value = null;
+                document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="100" />'].join('');
+              }else{
+                var image = e.target.result;
+                context.image = image.replace('data:image/png;base64,', '');
+                document.getElementById('list').innerHTML = ['<img src="', e.target.result,'" title="', theFile.name, '" width="100" />'].join('');
+              }
+            };
           };
-        };
-      })(f);
-      reader.readAsDataURL(f);
+        })(f);
+        reader.readAsDataURL(f);
+      }
+      else {
+        document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="100" />'].join('');
+      };
   }
 
   function setClassElement(id){
