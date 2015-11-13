@@ -1,4 +1,4 @@
-module.exports = function ($rootScope) {
+module.exports = function ($rootScope, Analytics) {
 
   /**
    * Object context
@@ -69,7 +69,11 @@ module.exports = function ($rootScope) {
    * @return {Void}
    */
   $rootScope.$on('$locationChangeSuccess', function(next, current) {
+    if(current.indexOf('technologies/') >= 0){
+      Analytics.trackTechnologyAcess(current.substring(current.indexOf('technologies')+13));
+    }
     context.closeAlert();
+    context.closeAlertBotton();
   });
 
   // this.setAlert('Teste', 'error');
