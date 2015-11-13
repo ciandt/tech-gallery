@@ -13,19 +13,19 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
   this.loading = false;
 
   this.login = function(){
-	  checkLogin(false);
+    checkLogin(false);
   };
 
   AppService.setPageTitle('Adicionar nova tecnologia');
 
   TechnologyService.getTechnology($stateParams.id).then(function(data){
-	  if (data.hasOwnProperty('error')) {
-		  context.showContent = false;
-		  context.showTechNotExists = true;
-		  return;
-	  }
+    if (data.hasOwnProperty('error')) {
+      context.showContent = false;
+      context.showTechNotExists = true;
+      return;
+    }
     AppService.setPageTitle('Editar tecnologia');
-	  fillTechnology(data);
+    fillTechnology(data);
   });
 
   TechnologyService.getRecommendations().then(function(data){
@@ -35,10 +35,10 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
   this.addOrUpdateTechnology = function(form){
     var isEdit = (context.id !== undefined);
     if(context.name != null && context.description != null && context.shortDescription != null) {
-  	  TechnologyService.addOrUpdate(context).then(function(data){
-  		  if (data.hasOwnProperty('error')) {
+      TechnologyService.addOrUpdate(context).then(function(data){
+        if (data.hasOwnProperty('error')) {
           AppService.setAlert(data.error.message, 'error');
-  		  }else{
+        }else{
           if(context.addNew){
             clearTechnology();
             form.$setPristine();
@@ -52,8 +52,8 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
           }else{
             AppService.setAlert('Tecnologia criada com sucesso', 'success');
           }
-  		  }
-  	  });
+        }
+      });
     }
   };
 
@@ -61,30 +61,30 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
    * Function to clean the technology informations
    */
   function clearTechnology() {
-	  context.name = '';
-	  context.description = '';
-	  context.shortDescription = '';
-	  context.webSite = '';
+    context.name = '';
+    context.description = '';
+    context.shortDescription = '';
+    context.webSite = '';
     document.getElementById('technology-name').value = null;
-    document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" width="100" />'].join('');
+    document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" />'].join('');
   }
 
   function fillTechnology(technology) {
-	  context.name = technology.name;
-	  context.id = technology.id;
-	  context.shortDescription = technology.shortDescription;
-	  context.description = technology.description;
-	  context.webSite = technology.website;
-	  context.image = technology.image;
-	  if(context.image){
-		  document.getElementById('list').innerHTML = ['<img src="', context.image,'" title="', context.name, '" width="100" />'].join('');
-	  }
-	  context.selectedRecommendation = technology.recommendation;
-	  context.justification = technology.recommendationJustification;
+    context.name = technology.name;
+    context.id = technology.id;
+    context.shortDescription = technology.shortDescription;
+    context.description = technology.description;
+    context.webSite = technology.website;
+    context.image = technology.image;
+    if(context.image){
+      document.getElementById('list').innerHTML = ['<img src="', context.image,'" title="', context.name, '" />'].join('');
+    }
+    context.selectedRecommendation = technology.recommendation;
+    context.justification = technology.recommendationJustification;
   }
 
   this.selectRecommendation = function(selected){
-	  context.selectedRecommendation = selected;
+    context.selectedRecommendation = selected;
   };
 
   $scope.handleFileSelect = function(file) {
@@ -117,13 +117,13 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
   }
 
   function setClassElement(id){
-	  var elementClassIncrease = 'btn GPlusDefault';
+    var elementClassIncrease = 'btn GPlusDefault';
       var elementClassDecrease = 'btn GPlusAdded';
       var elementClass = document.getElementById(id).className;
       if (elementClass.indexOf('GPlusAdded') < 0) {
-    	  document.getElementById(id).className = elementClassDecrease;
+        document.getElementById(id).className = elementClassDecrease;
       } else {
-    	  document.getElementById(id).className = elementClassIncrease;
+        document.getElementById(id).className = elementClassIncrease;
       }
   }
 }
