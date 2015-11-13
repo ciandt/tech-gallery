@@ -71,7 +71,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   /**
    * Begin of show comments features
    */
-  function loadComments() {
+   function loadComments() {
     var req = {technologyId: $stateParams.id};
     TechnologyService.getCommentsByTech($stateParams.id).then(function(data){
       context.techComments = [];
@@ -96,6 +96,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
         Analytics.sendRecommendationEvent(context.item.name, context.recommended);
         context.recommended = true;
         loadComments();
+        document.getElementById('idFollowButton').className = 'btn btn-xs btn-danger';
         AppService.setAlertBotton('Recomendação incluída com sucesso.', 'success');
       });
     }else{
@@ -106,28 +107,27 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   this.addComment = function(){
     if(context.comment && context.comment.trim().length <= 500){
       TechnologyService.addComment(context, $stateParams.id).then(function(){
-    	Analytics.sendCommentEvent(context.item.name);
-    	context.comment = '';
-        loadComments();
-        AppService.setAlertBotton('Comentário incluído com sucesso.', 'success');
-      });
+       Analytics.sendCommentEvent(context.item.name);
+       context.comment = '';
+       loadComments();
+       document.getElementById('idFollowButton').className = 'btn btn-xs btn-danger';
+       AppService.setAlertBotton('Comentário incluído com sucesso.', 'success');
+     });
     }
   }
 
 
-    this.showAllEndorsers = function(endorsers) {
-      return (endorsers !== undefined && endorsers.length > 0);
-    };
+  this.showAllEndorsers = function(endorsers) {
+    return (endorsers !== undefined && endorsers.length > 0);
+  };
 
-  this.getEndorsementsByTech = function() {
-   TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
+  TechnologyService.getEndorsementsByTech($stateParams.id).then(function(data){
     if(data){
       context.completeEndorsements = data;
       context.filteredEndorsements = data.slice(0,5);
       context.showEndorsementResponse = context.filteredEndorsements;
     }
-   });
-  };
+  });
 
   this.showAllEndorsements = function(){
     context.showEndorsementResponse = context.completeEndorsements;
@@ -139,13 +139,13 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
 
   this.endorseUser = function() {
     TechnologyService.endorseUser($stateParams.id, this.endorsed.email).then(function(data){
-        if(!data.hasOwnProperty('error')){
-          Analytics.sendEndorsementEvent(context.item.name, context.endorsed.email);
-          context.getEndorsementsByTech();
-          AppService.setAlert('Usuário indicado!' ,'success');
-        } else {
-          AppService.setAlert(data.error.message ,'error');
-        }
+      if(!data.hasOwnProperty('error')){
+        Analytics.sendEndorsementEvent(context.item.name, context.endorsed.email);
+        context.getEndorsementsByTech();
+        AppService.setAlert('Usuário indicado!' ,'success');
+      } else {
+        AppService.setAlert(data.error.message ,'error');
+      }
     });
   };
 
@@ -160,56 +160,40 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     return 'plusOne' + index + email;
   };
 
-  this.getEndorsementsByTech();
-
-  this.followTechnology = function(idTechnology, $event){
-    context.currentElement = $event.currentTarget;
-      TechnologyService.followTechnology(idTechnology).then(function(data){
-        if(!data.hasOwnProperty('error')){
-          var elementId = 'btn-follow-' + data.id;
-          changeFollowedClass(elementId);
-        }
-      });
-   }
-
-    function changeFollowedClass(elementId){
-      var element = document.getElementById(elementId)
-      var oldClass = element.className;
-      if(oldClass.indexOf('btn-primary') > 0){
-        element.className = 'btn-xs btn-danger';
-      }else{
-        element.className = 'btn-xs btn-primary';
+  this.followTechnology = function(){
+    TechnologyService.followTechnology($stateParams.id).then(function(data){
+      if(!data.hasOwnProperty('error')){
+        changeFollowedClass(context.currentElement);
       }
+    });
+  }
+
+  function changeFollowedClass(){
+    var element = document.getElementById('idFollowButton');
+    if(element.className.indexOf('btn-default') > 0){
+      element.className = 'btn btn-xs btn-danger';
+    }else{
+      element.className = 'btn btn-xs btn-default';
     }
+  }
 
   this.setFollowedClass = function(isFollowedByUser){
     if(isFollowedByUser){
-      return 'btn-xs btn-danger';
+      return 'btn btn-xs btn-danger';
     }
-    return 'btn-xs bbtn-primary';
+    return 'btn btn-xs btn-default';
   }
 
-    this.setFollowedButtonName = function(isFollowedByUser){
-    if(isFollowedByUser){
-      return 'Seguindo';
-    }
-    return 'Seguir';
-  }
-
-    this.generateFollowId = function(){
-      return 'btn-follow-' + $stateParams.id;
-    }
-
-    this.addEndorse = function(endorsed, id){
-      TechnologyService.addEndorse(endorsed, id, $stateParams.id).then(function(data){
-        if(!data.hasOwnProperty('error')){
+  this.addEndorse = function(endorsed, id){
+    TechnologyService.addEndorse(endorsed, id, $stateParams.id).then(function(data){
+      if(!data.hasOwnProperty('error')){
           //reload endorsers
           //change css class
         }
       });
-    }
+  }
 
-     this.open = function(endorsers, size) {
+  this.open = function(endorsers, size) {
     var modalInstance = $uibModal.open({
       animation : true,
       templateUrl : 'showEndorsementModal.html',
