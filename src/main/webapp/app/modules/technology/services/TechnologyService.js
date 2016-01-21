@@ -102,6 +102,7 @@ module.exports = function($q, $timeout, $rootScope) {
   function slugify(text){
     return text.toString().toLowerCase()
         .replace(/\s+/g, '_')           // Replace spaces with _
+        .replace(/\#/g, '_')            // Replace # with _
         .replace(/\//g, '_')            // Replace / with _
         .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
         .replace(/\-\-+/g, '-')         // Replace multiple - with single -
