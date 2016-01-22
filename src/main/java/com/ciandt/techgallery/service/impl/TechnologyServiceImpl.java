@@ -3,7 +3,6 @@ package com.ciandt.techgallery.service.impl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -86,7 +85,7 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     String imageLink = technology.getImage();
     if (technology.getImageContent() != null) {
-      imageLink = storageDAO.insertImage(convertNameToId(technology.getName()),
+      imageLink = storageDAO.insertImage(technology.convertNameToId(technology.getName()),
           new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImageContent())));
     }
 
@@ -113,7 +112,7 @@ public class TechnologyServiceImpl implements TechnologyService {
    *
    */
   private void fillTechnology(Technology technology, User user, String imageLink, Boolean isUptate) {
-    technology.setId(convertNameToId(technology.getName()));
+    technology.setId(technology.convertNameToId(technology.getName()));
     if (user != null && user.getEmail() != null) {
       if (!isUptate) {
         technology.setAuthor(user.getEmail());
@@ -127,23 +126,6 @@ public class TechnologyServiceImpl implements TechnologyService {
     technology.initCounters();
   }
 
-  /**
-   * Method that gets the name of the technology and creates the id.
-   *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
-   *         Moreira </a>
-   * @since 13/10/2015
-   *
-   * @param name
-   *          to format.
-   *
-   * @return the id formatted.
-   */
-  private String convertNameToId(String name) {
-    name = Normalizer.normalize(name, Normalizer.Form.NFD);
-    name = name.replaceAll("[^\\p{ASCII}]", "");
-    return name.toLowerCase().replaceAll(" ", "_");
-  }
 
   /**
    * Method to validade informations of the technology to be added.

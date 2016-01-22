@@ -11,6 +11,7 @@ import com.googlecode.objectify.annotation.Unindex;
 import com.ciandt.techgallery.service.enums.TechnologyOrderOptionEnum;
 import com.ciandt.techgallery.service.transformer.TechnologyTransformer;
 
+import java.text.Normalizer;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -360,5 +361,27 @@ public class Technology extends BaseEntity<String> {
       TechnologyOrderOptionEnum orderBy) {
     orderBy.sort(techList);
     return techList;
+  }
+
+  /**
+   * Method that gets the name of the technology and creates the id.
+   *
+   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
+   *         Moreira </a>
+   * @since 13/10/2015
+   *
+   * @param name
+   *          to format.
+   *
+   * @return the id formatted.
+   */
+  public String convertNameToId(String name) {
+    name = Normalizer.normalize(name, Normalizer.Form.NFD);
+    name = name.replaceAll("[^\\p{ASCII}]", "");
+    return name.toLowerCase()
+        .replaceAll(" ", "_")
+        .replaceAll("#", "_")
+        .replaceAll("\\/", "_")
+        .replaceAll("\\.", "");
   }
 }
