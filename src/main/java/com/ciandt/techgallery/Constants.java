@@ -7,7 +7,7 @@ import com.google.api.server.spi.Constant;
  */
 public class Constants {
   public static final String WEB_CLIENT_ID =
-      "146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com";
+      "264651886058-qm7ejdp228dphmcon2t4lppma0m1sa3l.apps.googleusercontent.com";
   public static final String ANDROID_CLIENT_ID = "replace this with your Android client ID";
   public static final String IOS_CLIENT_ID = "replace this with your iOS client ID";
   public static final String ANDROID_AUDIENCE = WEB_CLIENT_ID;
@@ -29,9 +29,9 @@ public class Constants {
 
   public static final String APP_NAME = "Tech Gallery";
   public static final String APP_EMAIL = "google-project@ciandt.com";
-  
+
   public static final String TEMPLATES_FOLDER = "emailtemplates";
-  
+
   public static final String PRODUCTION_PROPERTY = "Production";
 
   public static final String APPLICATION_VERSION_PROPERTY =
@@ -45,9 +45,9 @@ public class Constants {
   public static final String LINK_LOCALHOST = "http://localhost:8888/";
 
   public static final String PATH_VIEW_TECH_HTML = "viewTech.html";
-  
+
   public static final String EMAIL_CONTEXT_SINGLE = "te indicou em";
-  
+
   public static final String EMAIL_CONTEXT_PLURAL = "te indicaram em";
 
 }
