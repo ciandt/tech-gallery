@@ -1,11 +1,15 @@
 package com.ciandt.techgallery.persistence.model;
 
+import com.google.api.server.spi.config.ApiTransformer;
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Unindex;
+
+import com.ciandt.techgallery.service.transformer.SkillConverter;
 
 /**
  * Skill entity.
@@ -14,7 +18,17 @@ import com.googlecode.objectify.annotation.Unindex;
  *
  */
 @Entity
+@ApiTransformer(SkillConverter.class)
 public class Skill extends BaseEntity<Long> {
+
+  /*
+   * Constants --------------------------------------------
+   */
+  public static final String ID = "id";
+  public static final String TECHNOLOGY = "technology";
+  public static final String VALUE = "value";
+  public static final String TECH_GALLERY_USER = "techGalleryUser";
+  public static final String ACTIVE = "active";
 
   @Id
   private Long id;
@@ -75,20 +89,25 @@ public class Skill extends BaseEntity<Long> {
     this.active = active;
   }
 
+  /**
+   * Returns the entity for the referred technology.
+   * @return Technology
+   */
   public Technology getTechnologyEntity() {
     if (technology != null) {
       return technology.get();
     }
-
     return null;
   }
 
-
+  /**
+   * Returns the entity for the referred user.
+   * @return TechGalleryUser
+   */
   public TechGalleryUser getUserEntity() {
     if (techGalleryUser != null) {
       return techGalleryUser.get();
     }
-
     return null;
   }
 

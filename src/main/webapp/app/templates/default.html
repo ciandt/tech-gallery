@@ -1,0 +1,48 @@
+<nav id="app-header" class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="navbar-header">
+        <h1><a class="navbar-brand" href="#/"><img src="assets/images/tech-gallery.png" alt="Tech Gallery"> Tech Gallery</a></h1>
+      </div>
+
+      <div class="navbar-right" ng-if="isUserLogged">
+        <!-- SEARCH -->
+        <form ng-controller="SearchController as searchController" id="app-search"
+        ng-submit="searchController.searchTechnology()" class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" ng-disabled="app.isLoading" ng-change="searchController.changeTextFilter()" ng-model="searchController.textSearch" class="form-control" placeholder="Digite sua busca&hellip;">
+          <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+      </form>
+
+      <!-- USER DROPDOWN -->
+      <ul ng-controller="SearchController as searchController" class="nav navbar-nav navbar-right">
+        <li uib-dropdown uib-keyboard-nav>
+          <a href="#"  role="button" uib-dropdown-toggle>{{loggedUserInformation.name}}<span class="caret"></span></a>
+          <ul class="uib-dropdown-menu">
+            <li><a ng-href="#/people/{{ loggedUserInformation.login }}">Meu perfil</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href={{searchController.logOutUser}}>Sair</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</nav>
+
+<main id="app-content">
+  <login ng-if="!isUserLogged"></login>
+  <ui-view ng-if="isUserLogged"></ui-view>
+</main>
+
+<footer id="app-footer">
+  <div class="container-fluid text-center">
+    <div class="row">
+      <div class="col-md-12">
+        <p><a href="#/" title="Tech Gallery"><img src="assets/images/tech-gallery.png" class="app-logo" alt="Tech Gallery"></a></p>
+        <p>Copyright &copy; 2015 CI&amp;T. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>

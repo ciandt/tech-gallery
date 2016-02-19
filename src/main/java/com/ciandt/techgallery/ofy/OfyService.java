@@ -1,20 +1,22 @@
 package com.ciandt.techgallery.ofy;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyFactory;
+import com.googlecode.objectify.ObjectifyService;
 
+import com.ciandt.techgallery.persistence.model.CronJob;
+import com.ciandt.techgallery.persistence.model.EmailNotification;
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
-import com.ciandt.techgallery.sample.persistence.model.Card;
-import com.ciandt.techgallery.sample.persistence.model.RecommendationSample;
-import com.ciandt.techgallery.sample.persistence.model.Sample;
-import com.ciandt.techgallery.sample.persistence.model.TechnologySample;
-import com.ciandt.techgallery.sample.persistence.model.UserGroup;
-import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyFactory;
-import com.googlecode.objectify.ObjectifyService;
+import com.ciandt.techgallery.persistence.model.TechnologyComment;
+import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
+import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
+import com.ciandt.techgallery.persistence.model.profile.UserProfile;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 /**
  * Service class for Objectify settings.
@@ -30,13 +32,12 @@ public class OfyService implements ServletContextListener {
     ObjectifyService.register(Endorsement.class);
     ObjectifyService.register(TechGalleryUser.class);
     ObjectifyService.register(Skill.class);
-    // @TODO improve how to separate the samples' registers from the production's registers
-    // Samples of registers
-    ObjectifyService.register(UserGroup.class);
-    ObjectifyService.register(Card.class);
-    ObjectifyService.register(TechnologySample.class);
-    ObjectifyService.register(RecommendationSample.class);
-    ObjectifyService.register(Sample.class);
+    ObjectifyService.register(TechnologyComment.class);
+    ObjectifyService.register(TechnologyRecommendation.class);
+    ObjectifyService.register(UserProfile.class);
+    ObjectifyService.register(TechnologyFollowers.class);
+    ObjectifyService.register(EmailNotification.class);
+    ObjectifyService.register(CronJob.class);
   }
 
   /**
@@ -63,9 +64,7 @@ public class OfyService implements ServletContextListener {
    * Context destroyed for http servlet.
    */
   @Override
-  public void contextDestroyed(ServletContextEvent arg0) {
-    // TODO Auto-generated method stub
-  }
+  public void contextDestroyed(ServletContextEvent arg0) {}
 
   /**
    * Context initialized for http servlet.

@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.persistence.model.Endorsement;
+
 import java.util.List;
 
 /**
@@ -11,13 +13,13 @@ import java.util.List;
 public class EndorsementsResponse implements Response {
 
   /** list with all endorsements. */
-  List<EndorsementEntityResponse> endorsements;
+  List<Endorsement> endorsements;
 
-  public List<EndorsementEntityResponse> getEndorsements() {
+  public List<Endorsement> getEndorsements() {
     return endorsements;
   }
 
-  public void setEndorsements(List<EndorsementEntityResponse> endorsements) {
+  public void setEndorsements(List<Endorsement> endorsements) {
     this.endorsements = endorsements;
   }
 

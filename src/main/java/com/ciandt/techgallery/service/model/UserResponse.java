@@ -1,23 +1,33 @@
 package com.ciandt.techgallery.service.model;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * Response with an user entity.
  * 
  * @author felipers
  *
  */
-public class UserResponse implements Response {
+@SuppressWarnings("serial")
+public class UserResponse implements Response, Serializable {
 
   /** user id. */
   private Long id;
-  /** user name */
+  /** user name. */
   private String name;
   /** user email. */
   private String email;
   /** user photo url. */
   private String photo;
-  /** user google id. */
-  private String googleId;
+  /** user is admin. */
+  private boolean admin;
+  /** Followed technologies. */
+  private List<String> followedTechIds;
+  /** save the preference of user. */
+  private Boolean postGooglePlusPreference;
+  
+  private String login;
 
   public Long getId() {
     return id;
@@ -25,6 +35,14 @@ public class UserResponse implements Response {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Boolean getPostGooglePlusPreference() {
+    return postGooglePlusPreference;
+  }
+
+  public void setPostGooglePlusPreference(Boolean postGooglePlusPreference) {
+    this.postGooglePlusPreference = postGooglePlusPreference;
   }
 
   public String getName() {
@@ -40,6 +58,9 @@ public class UserResponse implements Response {
   }
 
   public void setEmail(String email) {
+    if(email!=null && email.contains("@")){
+      setLogin(email.split("@")[0]);
+    }
     this.email = email;
   }
 
@@ -51,12 +72,27 @@ public class UserResponse implements Response {
     this.photo = photo;
   }
 
-  public String getGoogleId() {
-    return googleId;
+  public boolean isAdmin() {
+    return admin;
   }
 
-  public void setGoogleId(String googleId) {
-    this.googleId = googleId;
+  public void setAdmin(boolean admin) {
+    this.admin = admin;
   }
 
+  public List<String> getFollowedTechIds() {
+    return followedTechIds;
+  }
+
+  public void setFollowedTechIds(List<String> followedTechIds) {
+    this.followedTechIds = followedTechIds;
+  }
+
+  public String getLogin() {
+    return login;
+  }
+
+  public void setLogin(String login) {
+    this.login = login;
+  }
 }

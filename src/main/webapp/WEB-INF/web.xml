@@ -1,33 +1,95 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <servlet>
-        <servlet-name>viewTech</servlet-name>
-        <servlet-class>com.ciandt.techgallery.servlets.ViewTech</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>SystemServiceServlet</servlet-name>
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.ciandt.techgallery.sample.service.endpoint.CardEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.SampleEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.TechEndpointImpl,com.ciandt.techgallery.sample.service.endpoint.UserGroupEndpointImpl,com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.SkillEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint</param-value>
+            <param-value>com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.SkillEndpoint,com.ciandt.techgallery.service.endpoint.SocialNetworkCommunicationEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint,com.ciandt.techgallery.service.endpoint.profile.UserProfileEndpoint</param-value>
         </init-param>
     </servlet>
+    <servlet>
+        <servlet-name>viewTech</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.ViewTech</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CronMailServlet</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.CronActivityResumeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CronEndorsedResumeServlet</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.CronEndorsementResumeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SystemServiceServlet</servlet-name>
+        <url-pattern>/_ah/spi/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>viewTech</servlet-name>
         <url-pattern>/viewTech</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SystemServiceServlet</servlet-name>
-        <url-pattern>/_ah/spi/*</url-pattern>
+        <servlet-name>CronMailServlet</servlet-name>
+        <url-pattern>/cron/activityresume</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CronEndorsedResumeServlet</servlet-name>
+        <url-pattern>/cron/endorsementresume</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EmailServlet</servlet-name>
+        <servlet-class>com.ciandt.techgallery.servlets.EmailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EmailServlet</servlet-name>
+        <url-pattern>/mail</url-pattern>
+    </servlet-mapping>
+
+    <security-constraint>
+      <web-resource-collection>
+        <web-resource-name>cron</web-resource-name>
+        <url-pattern>/cron/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+        <role-name>admin</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>sendEmailOnlyAdmin</web-resource-name>
+            <url-pattern>/mail</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <welcome-file-list>
-        <welcome-file>techList.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
     <filter>
         <filter-name>ObjectifyFilter</filter-name>
         <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
     </filter>
+    <filter>
+        <filter-name>I18nFilter</filter-name>
+        <filter-class>com.ciandt.techgallery.utils.i18n.I18nFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>NamespaceFilter</filter-name>
+        <filter-class>com.ciandt.techgallery.filters.NamespaceFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>I18nFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>NamespaceFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <listener>

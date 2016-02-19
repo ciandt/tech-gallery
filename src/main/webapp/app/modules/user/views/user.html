@@ -1,0 +1,121 @@
+<loading ng-if="user.loading"></loading>
+<div class="user" ng-if="!user.loading">
+  <div class="content container">
+    <header class="user-header row">
+      <div class="media col-md-12">
+        <div class="media-left no-margin">
+          <img ng-src="{{ user.profile.owner.photo }}" class="user-image" />
+        </div>
+        <div class="media-body">
+          <div class="pull-left">
+            <h1 class="user-name">{{ user.profile.owner.name }}</h1>
+          </div>
+          <div class="pull-right">
+            <div class="card card--stats">
+              <div class="card-section">
+                <span class="panel-title">Tecnologias</span>
+              </div>
+              <div class="card-section text-center">
+                <span class="user-stats">{{ user.profile.owner.technologiesCount }}</span>
+              </div>
+            </div>
+            <div class="card card--stats">
+              <div class="card-section">
+                <span class="panel-title">Avaliações</span>
+              </div>
+              <div class="card-section text-center">
+                <span class="user-stats">{{ user.profile.owner.recommendationsCount }}</span>
+              </div>
+            </div>
+            <div class="card card--stats">
+              <div class="card-section">
+                <span class="panel-title">Comentários</span>
+              </div>
+              <div class="card-section text-center">
+                <span class="user-stats">{{ user.profile.owner.commentsCount }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="user-body">
+      <h3>Tecnologias</h3>
+      <p ng-if="!user.profile.technologies.length">Este usuário não está relacionado à nenhuma tecnologia.</p>
+      <div class="row" ng-if="user.profile.technologies.length">
+        <div ng-repeat-start="technology in user.profile.technologies"></div>
+        <div class="col-sm-6 col-md-3">
+          <div class="card user-technology">
+            <div class="card-section">
+              <h3 class="card-title"><a href="#/technologies/{{ technology.id }}">{{ technology.technologyName }}</a></h3>
+              <p class="technology-recommendation"><small><a href="#/technologies/{{ technology.id }}">Ver tecnologia</a></small></p>
+            </div>
+            <div class="card-section">
+              <div class="user-technology-meta media">
+                <div class="media-left user-technology-label media-middle">Total de indicaçoes:</div>
+                <div class="media-body user-stats">{{ technology.endorsementsCount }}</div>
+              </div>
+              <div class="user-technology-meta media">
+                <div class="media-left user-technology-label media-middle">Auto avaliação:</div>
+                <div class="media-body">
+                  <div class="media">
+                    <div class="media-left">
+                      <img ng-if="technology.rating.title" ng-src="assets/images/{{ technology.rating.title | lowercase }}.png" class="media-object">
+                      <p ng-if="!technology.rating.title">Ainda não se avaliou.</p>
+                    </div>
+                    <div class="media-body">
+                      <strong>{{ technology.rating.title }}</strong><br />
+                      <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:technology.rating.value"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="user-technology-meta">
+                <div class="user-technology-label">Como avaliou a tecnologia:</div>
+                <div class="media">
+                  <div class="media-left technology-recommendation-value" ng-if="technology.recommendation.comment">
+                    <span ng-if="technology.recommendation.positive" class="glyphicon glyphicon-thumbs-up"></span>
+                    <span ng-if="!technology.recommendation.positive" class="glyphicon glyphicon-thumbs-down"></span>
+                  </div>
+                  <div class="media-body" ng-if="technology.recommendation.comment" ng-bind-html="technology.recommendation.comment | nl2p"></div>
+                  <p ng-if="!technology.recommendation.comment">Ainda não avaliou.</p>
+                </div>
+              </div>
+              <div class="user-technology-meta">
+                <button class="btn btn-link btn-block" ng-click="user.openCommentsFor(technology)"><span class="glyphicon glyphicon-comment"></span> Ver comentários</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="clearfix" ng-if="($index + 1) % 4 == 0"></div>
+        <div ng-repeat-end=""></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/ng-template" id="comments.html">
+    <div class="modal-header">
+      <h3 class="modal-title">Comentários de {{ user.name }} sobre {{ technology.technologyName }}</h3>
+    </div>
+    <div class="modal-body">
+      <p ng-if="!technology.comments.length">Nenhum comentário encontrado.</p>
+      <ol class="technology-comments" ng-if="technology.comments.length">
+        <li class="technology-comment" ng-repeat="comment in technology.comments">
+          <p>{{comment.body}}</p>
+          <div class="technology-recommendation-meta media">
+            <div class="media-image">
+              <img class="media-object technology-comment-meta-image" ng-src="{{ user.image }}" alt="">
+            </div>
+            <div class="media-content">
+              <strong>{{ user.name }}</strong><br>
+              em {{ comment.timestamp | date:"dd/MM/yyyy 'às' HH:mm" }}
+            </div>
+          </div>
+        </li>
+      </ol>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-click="close()">OK</button>
+    </div>
+  </script>
+</div>

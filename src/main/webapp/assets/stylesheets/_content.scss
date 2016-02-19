@@ -1,0 +1,9 @@
+.content {
+  position: relative;
+  top: 20px;
+  z-index: 1;
+}
+
+.toolbar + .content {
+  top: 71px;
+}

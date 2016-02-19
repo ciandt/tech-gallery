@@ -1,0 +1,57 @@
+$card-spacing: 15px;
+.card {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid $border-color;
+  border-bottom-width: 2px;
+  border-radius: $border-radius-base;
+  margin-bottom: $card-spacing * 2;
+
+  // height: 380px;
+}
+.card--stats {
+  display: inline-block;
+  text-align: center;
+  width: 150px;
+}
+.card-section {
+  padding: $card-spacing;
+  border-top: 1px solid #eee;
+
+  &:first-of-type {
+    @extend .card-section--no-border;
+  }
+}
+.card-section--no-border {
+  border: none;
+}
+.card-actions {
+  padding: ($card-spacing/2) $card-spacing;
+  overflow: hidden;
+}
+.card-header {
+  border: none;
+  overflow: hidden;
+
+  height: 235px;
+}
+.card-title {
+  font-size: 20px;
+  margin: 0;
+
+  &,
+  & a {
+    color: $text-color;
+  }
+}
+.card-content {
+  border: none;
+  padding-top: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  height: 125px;
+}
+.card-meta {
+  background-color: #f9f9f9;
+}

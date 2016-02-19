@@ -1,0 +1,17 @@
+.media {
+  margin: 0;
+  display: inline-block;
+  overflow: hidden;
+}
+.media-image {
+  position: relative;
+  float: left;
+  margin-right: 10px;
+
+  img {
+    display: block
+  }
+}
+.media-content {
+  overflow: hidden;
+}

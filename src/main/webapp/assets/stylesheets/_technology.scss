@@ -1,0 +1,188 @@
+$technology-spacing: 20px;
+
+.technology-header {
+  overflow: hidden;
+  margin-bottom: $technology-spacing;
+
+  .technology-image {
+    float: left;
+    margin: 0 $technology-spacing 0 0;
+  }
+}
+
+.typeahead-input ul{
+  height:300px;
+  overflow:auto;
+}
+
+.technology-image {
+  border: 1px solid #ddd;
+  border-radius: 100%;
+  overflow: hidden;
+  margin: 0 auto ($technology-spacing / 2);
+  display: block;
+  background-color: #fff;
+
+  &,
+  & img {
+    width: 125px;
+    height: 125px;
+  }
+}
+.technology-name {
+  display: inline-block;
+  margin: 0 0 ($technology-spacing / 2);
+}
+.technology-meta {
+  margin: 0;
+  padding: 0;
+  font-style: 12px;
+
+  li {
+    list-style: none;
+    // display: inline;
+    margin-bottom: ($technology-spacing / 2);
+
+    &:last-of-type {
+      margin: 0;
+    }
+  }
+
+  &,
+  & a {
+    @extend .technology-last-activity;
+  }
+}
+.technology-last-activity {
+  color: $gray-light;
+}
+
+.card-title + .technology-recommendation {
+  position: relative;
+  top: 5px;
+}
+
+.technology-section {
+  position: relative;
+  padding-top: $technology-spacing;
+  margin-bottom: $technology-spacing;
+
+  // & + & {
+  //   border-top: solid 1px $border-color;
+  // }
+
+  &:first-of-type {
+    padding-top: 0;
+  }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.technology-rating {
+  position: relative;
+  overflow: hidden;
+  margin-right: 8px;
+  text-align: center;
+
+  &:last-of-type {
+    margin: 0;
+  }
+
+  &:hover,
+  &.active {
+    .technology-rating-image {
+      opacity: 1;
+    }
+  }
+}
+.technology-rating-image {
+  display: block;
+  margin: 0 auto;
+  opacity: .3;
+}
+.technology-rating-text {
+  display: block;
+  margin: 5px 0 0;
+}
+.technology-rating-input,
+.technology-recommendation-input {
+  position: absolute !important;
+  visibility: hidden;
+}
+.technology-endorsement,
+.technology-comment {
+  margin-bottom: $technology-spacing;
+  width: 100%;
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+.technology-endorsement-image {
+  border: 1px solid #ddd;
+  overflow: hidden;
+  display: block;
+  border-radius: 100%;
+  background-color: #fff;
+
+  &,
+  & img {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+.technology-endorsement-plus-image,
+.technology-comment-meta-image,
+.technology-recommendation-meta-image {
+  width: 30px;
+  height: 30px;
+}
+
+.technology-comments,
+.technology-recommendations {
+  margin: $technology-spacing 0;
+  padding: 0;
+}
+.technology-comment,
+.technology-recommendation {
+  display: inline-block;
+  list-style: none;
+  margin-bottom: $technology-spacing;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+.technology-recommendation-value {
+  width: 40px;
+  text-align: center;
+
+  .glyphicon {
+    font-size: 20px;
+    margin-top: 5px;
+  }
+
+  .glyphicon-thumbs-up {
+    color: $brand-success;
+  }
+
+  .glyphicon-thumbs-down {
+    color: $brand-danger;
+  }
+}
+
+.technology-recommendation-meta,
+.technology-comment-meta {
+  margin-top: 5px;
+  font-size: 12px;
+  color: $gray-light;
+}
+
+#div_image img {
+  width: 71px;
+  height: 71px;
+  display: inline-block;
+  margin-bottom: 0;
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+  <cron>
+    <url>/cron/activityresume</url>
+    <description>Send email with resume of the day for each technology followers</description>
+    <schedule>every day 22:00</schedule>
+  </cron>
+  <cron>
+    <url>/cron/endorsementresume</url>
+    <description>Send email with resume of the day for each endorsed user</description>
+    <schedule>every day 20:00</schedule>
+  </cron>
+</cronentries>

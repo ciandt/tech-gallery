@@ -1,0 +1,226 @@
+/**
+ * Configuration variables
+ */
+$icon-font-path: '../assets/fonts/';
+$navbar-default-link-color: #fff;
+$navbar-default-link-active-color: #fff;
+$navbar-default-link-hover-color: rgba(255, 255, 255, .8);
+$navbar-default-brand-hover-color: #fff;
+$navbar-default-bg: #EE4C6A;
+$border-radius-base: 3px;
+$border-radius-large: 4px;
+$link-color: #427fed;
+
+$brand-primary: #427fed;
+$brand-danger: #d73d32;
+$brand-success: #1c9e0a;
+
+$border-color: #ddd;
+
+/**
+ * Vendor & third party styles
+ */
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+
+/**
+ * App styles
+ */
+@import 'base';
+@import 'loading';
+@import 'toolbar';
+@import 'media';
+@import 'card';
+@import 'content';
+@import 'technology';
+@import 'user';
+
+@import 'techgallery';
+
+#app-header {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .3);
+}
+
+#app-search {
+  position: relative;
+
+  .form-control {
+    border: none;
+    padding-right: 32px;
+    width: 250px;
+    opacity: .8;
+    transition: all .3s;
+
+    &:focus {
+      opacity: 1;
+      width: 300px;
+    }
+  }
+
+  button[type=submit] {
+    position: absolute;
+    top: 0;
+    padding-top: 7px;
+    right: 15px;
+    color: $gray-light;
+  }
+}
+
+#app-content {
+  margin-top: 51px;
+  position: relative;
+  background-color: #efefef;
+  overflow: hidden;
+  padding-top: 10px;
+  padding-bottom: 100px;
+}
+
+#app-login {
+  max-width: 350px;
+  padding: 20px;
+  margin: 100px auto;
+  background-color: #fff;
+  border-radius: $border-radius-base;
+  border: 1px solid $border-color;
+}
+
+#app-footer {
+  font-size: 12px;
+  border-top: 1px solid $border-color;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  .app-logo {
+    width: 40px;
+    height: auto;
+    // opacity: .7;
+  }
+}
+
+/**
+ * Override bootstrap default styles
+ */
+.tech-gallery {
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin-top: 0;
+  }
+
+  .nav,
+  .pagination,
+  .carousel,
+  .panel-title a {
+    cursor: pointer;
+  }
+
+  .navbar-header h1 {
+    margin: 0;
+  }
+
+  .navbar-brand {
+    position: relative;
+    padding-left: 55px;
+
+    img {
+      position: absolute;
+      left: 15px;
+      top: 10px;
+      height: 30px;
+      width: auto;
+    }
+  }
+
+  .navbar-center {
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-header {
+    margin-top: 20px;
+  }
+
+  .btn-primary,
+  .btn-danger,
+  .btn-success,
+  .btn-info {
+    border-color: transparent;
+  }
+
+  .btn-group + .btn-group {
+    margin-left: 10px;
+  }
+
+  .form-inline {
+    .form-group + .form-group {
+      margin-left: 10px;
+    }
+
+    &.text-right .checkbox {
+      margin-right: 10px;
+    }
+  }
+
+  .menu {
+    list-style: none;
+    border-bottom: 0.1em solid black;
+    margin-bottom: 2em;
+    padding: 0 0 0.5em;
+  }
+
+  .menu:before {
+    content: "[";
+  }
+
+  .menu:after {
+    content: "]";
+  }
+
+  .menu > li {
+    display: inline;
+  }
+
+  .menu > li:before {
+    content: "|";
+    padding-right: 0.3em;
+  }
+
+  .menu > li:nth-child(1):before {
+    content: "";
+    padding: 0;
+  }
+
+  .glyphicon {
+    top: 2px;
+  }
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+.no-margin-bottom {
+  margin-bottom: 0 !important;
+}
+.no-margin-top {
+  margin-top: 0 !important;
+}
+.no-margin-left {
+  margin-left: 0 !important;
+}
+.no-margin-right {
+  margin-right: 0 !important;
+}
+.no-padding {
+  padding: 0 !important;
+}
+.no-padding-bottom {
+  padding-bottom: 0 !important;
+}
+.no-padding-top {
+  padding-top: 0 !important;
+}
+.no-padding-left {
+  padding-left: 0 !important;
+}
+.no-padding-right {
+  padding-right: 0 !important;
+}

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-    <application>tech-gallery</application>
-    <version>${app.version}</version>
-    <threadsafe>true</threadsafe>
-    <system-properties>
-        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
-    </system-properties>
-    <static-files>
-        <exclude path="/node/**"/>
-        <exclude path="/node_modules/**"/>
-    </static-files>
+	<application>tech-gallery</application>
+	<version>${app.version}</version>
+	<threadsafe>true</threadsafe>
+	<system-properties>
+		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
+	</system-properties>
+	<static-files>
+		<exclude path="/node/**" />
+		<exclude path="/node_modules/**" />
+	</static-files>
 </appengine-web-app>
