@@ -3,6 +3,10 @@ module.exports = function () {
   this.sendEndorsementEvent = function(techName, endorsedEmail){
     ga('send', 'event', 'Endorsement', techName, endorsedEmail);
   }
+  
+  this.sendLinkEvent = function(techName){
+    ga('send', 'event', 'Link', 'link_add', techName);
+  }
 
   this.sendSkillEvent = function(name, skill){
     if(skill){

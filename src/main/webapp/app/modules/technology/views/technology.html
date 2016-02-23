@@ -126,7 +126,7 @@
           </div>
         </div>
       </div>
-
+          
       <!-- TECHNOLOGY RECOMMENDATIONS & COMMENTS -->
       <div class="technology-section row">
         <div class="col-md-12" ng-if="app.alertBotton.message.length">
@@ -267,8 +267,59 @@
           </div>
         </div>
       </div>
+          
+       <!-- TECHNOLOGY LINKS -->  
+          <div class="col-md-6">
+            <div class="card no-margin">
+              <div class="card-section">
+                <h3 class="card-title">Links sobre {{ technology.item.name }}</h3>
+              </div>  
+              <div class="card-section">
+              <div class="form-inline text-right">
+                <div class="input-group typeahead-input col-md-12"  style="margin-bottom:20px;">
+                    <textarea ng-model="technology.description" id="link-description-input" class="form-control"  placeholder="add description"></textarea>
+                </div>
+                <div class="input-group typeahead-input col-md-12" style="margin-bottom:20px;">
+                    <input ng-model="technology.link" type="text" class="form-control" placeholder="add link" aria-describedby="basic-addon2"  typeahead-min-length="3">
+                </div>  
+                  <button ng-click="technology.addLink()" class="btn btn-primary"
+                  role="button">Incluir</button>
+              </div>
+            </div>
+            <div class="card-section">
+              <h4>Links indicados:</h4>
+              <ol class="technology-recommendations">
+                <div ng-repeat="item in technology.techLinks track by $index">
+                  <li class="technology-recommendation media">
+                    <div class="media-content">
+                      <p>{{item.description}}  <a href="{{item.link}}">{{item.link}}</a> </p>
+                      
+                      <div class="technology-recommendation-meta media">
+                        <div class="media-image">
+                          <a ng-href='#/people/{{item.author.login}}'>
+                            <img class="technology-recommendation-meta-image" ng-src="{{item.author.photo}}" alt="">
+                          </a>
+                        </div>
+                        <div class="media-content">
+                          <strong>
+                            <a ng-href='#/people/{{item.author.login}}'>{{item.author.name}}</a>
+                          </strong><br>
+                          em {{item.creation | date:"dd/MM/yyyy 'às' H:mm"}}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </div>
+              </ol>    
+            </div>        
+          </div>  
+        </div>         
     </div>
   </div>
+      
+
+
+          
 
   <script type="text/ng-template" id="showEndorsementModal.html">
     <div class="modal-header">

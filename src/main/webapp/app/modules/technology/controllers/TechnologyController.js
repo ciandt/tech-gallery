@@ -87,6 +87,26 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       }
     });
   }
+    
+      /**
+   * Begin of show links features
+   */
+  function loadLinks() {
+    var req = {technologyId: $stateParams.id};
+    TechnologyService.getCommentsByTech($stateParams.id).then(function(data){
+      context.techComments = [];
+      context.techCommentsRecommend = [];
+      if(!data.hasOwnProperty('error') && data.comments !== undefined){
+        for (var i = 0; i < data.comments.length; i++) {
+          if(data.comments[i].recommendationScore == undefined){
+            context.techComments.push(data.comments[i]);
+          }else{
+            context.techCommentsRecommend.push(data.comments[i]);
+          }
+        };
+      }
+    });
+  }
 
   this.addRecommendationComment = function(){
     if(context.commentRecommend && context.commentRecommend.trim().length <= 500){
@@ -114,6 +134,8 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       });
     }
   }
+  
+
 
   this.showAllEndorsers = function(endorsers) {
     return (endorsers !== undefined && endorsers.length > 0);
@@ -134,6 +156,16 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   };
 
   this.getEndorsementsByTech();
+    
+  this.getLinksByTech = function() {
+    TechnologyService.getLinksByTech($stateParams.id).then(function(data){
+      if(data){
+        context.techLinks = data.links;
+      }
+    });
+  };
+
+  this.getLinksByTech();    
 
   this.verifyStyle = function(endorsers){
     for(var i in endorsers){
@@ -147,6 +179,10 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   this.showAllEndorsements = function(){
     context.showEndorsementResponse = context.completeEndorsements;
   };
+    
+  this.showAllLinks = function(){
+    context.showLinkResponse = context.completeLinks;
+  };       
 
   this.showResumedEndorsements = function(){
     context.showEndorsementResponse = context.filteredEndorsements;
@@ -163,6 +199,19 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       }
     });
   };
+    
+  this.addLink = function(){
+    TechnologyService.addLink($stateParams.id, this.description, this.link).then(function(data){
+        if(!data.hasOwnProperty('error')){
+          Analytics.sendLinkEvent(context.item.name);
+          context.getLinksByTech();
+          AppService.setAlert('Link incluído com sucesso!' ,'success');
+        } else{
+          AppService.setAlert(data.error.message ,'error');    
+        }
+      });
+  }
+
 
   this.showSelfInformations = function(email){
     if($rootScope.userEmail == email){
@@ -209,6 +258,11 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
         }
       });
     }
+    
+
+
+
+
 
   this.open = function(endorsers, size) {
     var modalInstance = $uibModal.open({
