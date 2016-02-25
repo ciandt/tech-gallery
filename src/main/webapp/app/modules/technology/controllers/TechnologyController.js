@@ -87,7 +87,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       }
     });
   }
-    
+
       /**
    * Begin of show links features
    */
@@ -134,7 +134,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       });
     }
   }
-  
+
 
 
   this.showAllEndorsers = function(endorsers) {
@@ -156,7 +156,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   };
 
   this.getEndorsementsByTech();
-    
+
   this.getLinksByTech = function() {
     TechnologyService.getLinksByTech($stateParams.id).then(function(data){
       if(data){
@@ -165,7 +165,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     });
   };
 
-  this.getLinksByTech();    
+  this.getLinksByTech();
 
   this.verifyStyle = function(endorsers){
     for(var i in endorsers){
@@ -179,10 +179,10 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   this.showAllEndorsements = function(){
     context.showEndorsementResponse = context.completeEndorsements;
   };
-    
+
   this.showAllLinks = function(){
     context.showLinkResponse = context.completeLinks;
-  };       
+  };
 
   this.showResumedEndorsements = function(){
     context.showEndorsementResponse = context.filteredEndorsements;
@@ -199,19 +199,23 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       }
     });
   };
-    
+
   this.addLink = function(){
+
+    var self = this;
+
     TechnologyService.addLink($stateParams.id, this.description, this.link).then(function(data){
         if(!data.hasOwnProperty('error')){
           Analytics.sendLinkEvent(context.item.name);
           context.getLinksByTech();
           AppService.setAlert('Link incluído com sucesso!' ,'success');
+          self.description = '';
+          self.link = '';
         } else{
-          AppService.setAlert(data.error.message ,'error');    
+          AppService.setAlert(data.error.message ,'error');
         }
       });
   }
-
 
   this.showSelfInformations = function(email){
     if($rootScope.userEmail == email){
@@ -258,7 +262,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
         }
       });
     }
-    
+
 
 
 
