@@ -42,11 +42,12 @@ public enum ValidationMessageEnums {
 
   // Message for Links
   DESCRIPTION_CANNOT_BLANK("Description cannot be null or blank."),
-  DESCRIPTION_MUST_BE_LESSER("Description description must have less than 100 characters."),
+  DESCRIPTION_MUST_BE_LESSER("Description must have less than 100 characters."),
   LINK_CANNOT_BLANK("Link cannot be null or blank."),
   LINK_NOT_EXIST("Link doesn't exist."),
   LINK_ID_CANNOT_BLANK("Link or link's id cannot be null or blank."),
-  LINK_AUTHOR_ERROR("This link doesn't belong to this user.");
+  LINK_AUTHOR_ERROR("This link doesn't belong to this user."),
+  LINK_MUST_BE_VALID("This link is not valid.");
 
 
   private String message;

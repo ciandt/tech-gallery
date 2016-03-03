@@ -217,6 +217,18 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       });
   }
 
+  this.deleteLink = function(idLink){
+    var self = this;
+
+    if(confirm('Você realmente quer apagar este link?')) {
+      TechnologyService.deleteLink(idLink).then(function(data){
+        if(!data.hasOwnProperty('error')){
+          self.getLinksByTech();
+        }
+      });
+    }
+  }
+
   this.showSelfInformations = function(email){
     if($rootScope.userEmail == email){
       return true;

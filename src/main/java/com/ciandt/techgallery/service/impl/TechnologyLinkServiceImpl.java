@@ -28,6 +28,8 @@ import com.ciant.techgallery.transaction.ServiceFactory;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Services for Links Endpoint requests.
@@ -130,7 +132,7 @@ public class TechnologyLinkServiceImpl implements TechnologyLinkService {
     validateDeletion(linkId, user);
 
     final TechnologyLink link = technologyLinkDao.findById(linkId);
-    technologyLinkDao.update(link);
+    technologyLinkDao.delete(link);
 
     // TODO: Atualiza contador de links na tecnologia quando tivermos
     // techService.removeLinksCounter(link.getTechnology().get());
@@ -168,6 +170,17 @@ public class TechnologyLinkServiceImpl implements TechnologyLinkService {
 
     if (link.getDescription().length() > 100) {
       throw new BadRequestException(ValidationMessageEnums.DESCRIPTION_MUST_BE_LESSER.message());
+    }
+
+    if (link != null && link.getLink() != null && !link.getLink().isEmpty()) {
+      Pattern p = Pattern
+        .compile("(@)?(href=')?(HREF=')?(HREF=\")?(href=\")?(http://)?[a-zA-Z_0-9\\-]+(\\.\\w[a-zA-Z_0-9\\-]+)+(/[#&\\n\\-=?\\+\\%/\\.\\w]+)?");
+
+      Matcher m = p.matcher(link.getLink());
+
+      if( !m.matches() ) {
+        throw new BadRequestException(ValidationMessageEnums.LINK_MUST_BE_VALID.message());
+      }
     }
   }
 

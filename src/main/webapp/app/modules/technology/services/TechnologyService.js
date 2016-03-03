@@ -9,7 +9,7 @@ module.exports = function($q, $timeout, $rootScope) {
   var featureEnum = {
     ENDORSE: 'ENDORSE',
     COMMENT: 'COMMENT',
-    RECOMMEND: 'RECOMMEND', 
+    RECOMMEND: 'RECOMMEND',
     LINK:'LINK'
   };
 
@@ -263,7 +263,7 @@ module.exports = function($q, $timeout, $rootScope) {
     //$scope.$apply();
     return deferred.promise;
   };
-    
+
    this.addLink = function(idTech, description, link){
     var deferred = $q.defer();
     var req = {
@@ -274,8 +274,19 @@ module.exports = function($q, $timeout, $rootScope) {
     gapi.client.rest.addLink(req).execute(function(data) {
         deferred.resolve(data);
     });
-    return deferred.promise;   
+    return deferred.promise;
   };
+
+  this.deleteLink = function(linkId){
+   var deferred = $q.defer();
+   var req = {
+     linkId : linkId
+   };
+   gapi.client.rest.deleteLink(req).execute(function(data) {
+       deferred.resolve(data);
+   });
+   return deferred.promise;
+ };
 
   /*
   * Auto complete on edorse user.
@@ -323,7 +334,7 @@ module.exports = function($q, $timeout, $rootScope) {
     });
     return deferred.promise;
   }
-  
+
   /**
   * Begin of Show Links Features
   */
@@ -391,7 +402,7 @@ module.exports = function($q, $timeout, $rootScope) {
     });
     return deferred.promise;
   };
-    
+
   this.addRecommendationComment = function(context, id){
     var deferred = $q.defer();
     var req = {

@@ -295,7 +295,9 @@
 
                     <div class="media-content">
                       <p>
-                        {{item.description}}</br>
+                        {{item.description}}
+                        <button type="button" ng-if="loggedUserInformation.admin || item.author.id === loggedUserInformation.id" ng-click="technology.deleteLink(item.id)" class="btn btn-danger btn-xs" title="Deletar link"><span class="glyphicon glyphicon-trash"></span></button>
+                        </br>
                         <a href="{{item.link}}" target="_blank">{{item.link}}</a>
                       </p>
                     </div>
