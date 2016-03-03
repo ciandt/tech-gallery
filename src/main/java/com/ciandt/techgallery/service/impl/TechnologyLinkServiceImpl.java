@@ -174,7 +174,7 @@ public class TechnologyLinkServiceImpl implements TechnologyLinkService {
 
     if (link != null && link.getLink() != null && !link.getLink().isEmpty()) {
       Pattern p = Pattern
-        .compile("(@)?(href=')?(HREF=')?(HREF=\")?(href=\")?(http://)?[a-zA-Z_0-9\\-]+(\\.\\w[a-zA-Z_0-9\\-]+)+(/[#&\\n\\-=?\\+\\%/\\.\\w]+)?");
+        .compile("(@)?(href=')?(HREF=')?(HREF=\")?(href=\")?(http://|https://)?[a-zA-Z_0-9\\-]+(\\.\\w[a-zA-Z_0-9\\-]+)+(/[#&\\n\\-=?\\+\\%/\\.\\w]+)?");
 
       Matcher m = p.matcher(link.getLink());
 
