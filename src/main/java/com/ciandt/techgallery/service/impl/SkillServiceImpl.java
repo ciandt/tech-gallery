@@ -149,6 +149,7 @@ public class SkillServiceImpl implements SkillService {
     newSkill.setTechnology(Ref.create(technology));
     newSkill.setValue(skill.getValue());
     newSkill.setActive(Boolean.TRUE);
+    newSkill.setCreationDate(new Date());
     final Key<Skill> newSkillKey = skillDao.add(newSkill);
     newSkill.setId(newSkillKey.getId());
 
