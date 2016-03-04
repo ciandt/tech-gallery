@@ -267,6 +267,61 @@
           </div>
         </div>
       </div>
+
+       <!-- TECHNOLOGY LINKS -->
+       <div class="technology-section row">
+          <div class="col-md-6">
+            <div class="card no-margin">
+              <div class="card-section">
+                <h3 class="card-title">Links sobre {{ technology.item.name }}</h3>
+              </div>
+              <div class="card-section">
+              <div class="form-inline text-right">
+                <div class="input-group typeahead-input col-md-12"  style="margin-bottom:20px;">
+                    <input ng-model="technology.description" id="link-description-input" class="form-control"  placeholder="Descrição do link" maxlength="100"></input>
+                </div>
+                <div class="input-group typeahead-input col-md-12" style="margin-bottom:20px;">
+                    <input ng-model="technology.link" type="text" class="form-control" placeholder="Link (ex http://google.com)" aria-describedby="basic-addon2"  typeahead-min-length="3">
+                </div>
+                  <button ng-click="technology.addLink()" class="btn btn-primary"
+                  role="button">Incluir</button>
+              </div>
+            </div>
+            <div class="card-section">
+              <h4>Links indicados:</h4>
+              <ol class="technology-recommendations">
+                <div ng-repeat="item in technology.techLinks track by $index">
+                  <li class="technology-recommendation media">
+
+                    <div class="media-content">
+                      <p>
+                        {{item.description}}
+                        <button type="button" ng-if="loggedUserInformation.admin || item.author.id === loggedUserInformation.id" ng-click="technology.deleteLink(item.id)" class="btn btn-danger btn-xs" title="Deletar link"><span class="glyphicon glyphicon-trash"></span></button>
+                        </br>
+                        <a href="{{item.link}}" target="_blank">{{item.link}}</a>
+                      </p>
+                    </div>
+
+                    <div class="technology-recommendation-meta media">
+                      <div class="media-image">
+                        <a ng-href='#/people/{{item.author.login}}'>
+                          <img class="technology-recommendation-meta-image" ng-src="{{item.author.photo}}" alt="">
+                        </a>
+                      </div>
+                      <div class="media-content">
+                        <strong>
+                          <a ng-href='#/people/{{item.author.login}}'>{{item.author.name}}</a>
+                        </strong><br>
+                        em {{item.creation | date:"dd/MM/yyyy 'às' H:mm"}}
+                      </div>
+                    </div>
+                  </li>
+                </div>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

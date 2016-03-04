@@ -11,6 +11,7 @@ import com.ciandt.techgallery.persistence.model.Skill;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
+import com.ciandt.techgallery.persistence.model.TechnologyLink;
 import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.persistence.model.profile.UserProfile;
@@ -20,7 +21,7 @@ import javax.servlet.ServletContextListener;
 
 /**
  * Service class for Objectify settings.
- * 
+ *
  * @author felipers
  *
  */
@@ -33,6 +34,7 @@ public class OfyService implements ServletContextListener {
     ObjectifyService.register(TechGalleryUser.class);
     ObjectifyService.register(Skill.class);
     ObjectifyService.register(TechnologyComment.class);
+    ObjectifyService.register(TechnologyLink.class);
     ObjectifyService.register(TechnologyRecommendation.class);
     ObjectifyService.register(UserProfile.class);
     ObjectifyService.register(TechnologyFollowers.class);
@@ -42,7 +44,7 @@ public class OfyService implements ServletContextListener {
 
   /**
    * Method that returns the objectify service reference.
-   * 
+   *
    * @return Objectify.
    */
   public static Objectify ofy() {
@@ -53,7 +55,7 @@ public class OfyService implements ServletContextListener {
 
   /**
    * Method that returns the objectify factory reference.
-   * 
+   *
    * @return Objectify.
    */
   public static ObjectifyFactory factory() {
