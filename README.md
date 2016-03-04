@@ -26,7 +26,7 @@ A skeleton application for Google Cloud Endpoints in Java.
 
     1. Update the values in `src/main/java/${packageInPathFormat}/Constants.java`
        to reflect the respective client IDs you have registered in the
-       [APIs Console][6].
+       [APIs Console][6]. 
 
     1. You also need to supply the web client ID you have registered
        in the [APIs Console][4] to your client of choice (web, Android,
@@ -38,7 +38,7 @@ A skeleton application for Google Cloud Endpoints in Java.
 
 1. Get the client library with
 
-   $ mvn appengine:endpoints_get_client_lib
+   $ mvnappengine:endpoints_get_client_lib
 
    It will generate a client library jar file under the
    `target/endpoints-client-libs/<api-name>/target` directory of your
