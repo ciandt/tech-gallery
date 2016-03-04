@@ -135,8 +135,6 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     }
   }
 
-
-
   this.showAllEndorsers = function(endorsers) {
     return (endorsers !== undefined && endorsers.length > 0);
   };
@@ -262,7 +260,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       return 'btn btn-xs btn-danger';
     }
     return 'btn btn-xs btn-default';
-  };
+  }
 
     this.addEndorse = function($event, endorsed, id){
       var elemment = $event.currentTarget;
@@ -273,7 +271,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
           elemment.disabled = false;
         }
       });
-    };
+    }
 
   this.open = function(endorsers, size) {
     var modalInstance = $uibModal.open({
