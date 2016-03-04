@@ -215,7 +215,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
           AppService.setAlert(data.error.message ,'error');
         }
       });
-  }
+  };
 
   this.deleteLink = function(idLink){
     var self = this;
@@ -227,7 +227,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
         }
       });
     }
-  }
+  };
 
   this.showSelfInformations = function(email){
     if($rootScope.userEmail == email){
@@ -262,7 +262,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
       return 'btn btn-xs btn-danger';
     }
     return 'btn btn-xs btn-default';
-  }
+  };
 
     this.addEndorse = function($event, endorsed, id){
       var elemment = $event.currentTarget;
@@ -273,12 +273,7 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
           elemment.disabled = false;
         }
       });
-    }
-
-
-
-
-
+    };
 
   this.open = function(endorsers, size) {
     var modalInstance = $uibModal.open({
