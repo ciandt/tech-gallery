@@ -47,7 +47,7 @@ public class Constants {
   public static final String PATH_VIEW_TECH_HTML = "viewTech.html";
 
   public static final String EMAIL_CONTEXT_SINGLE = "te indicou em";
-
+  
   public static final String EMAIL_CONTEXT_PLURAL = "te indicaram em";
 
 }
