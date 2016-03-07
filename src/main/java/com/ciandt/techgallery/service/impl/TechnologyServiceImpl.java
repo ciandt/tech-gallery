@@ -83,49 +83,57 @@ public class TechnologyServiceImpl implements TechnologyService {
     Boolean isUpdate = foundTechnology != null && foundTechnology.getId().equals(technology.getId())
         && foundTechnology.getActive().equals(Boolean.TRUE);
 
-    String imageLink = technology.getImage();
-    if (technology.getImageContent() != null) {
-      imageLink = storageDAO.insertImage(technology.convertNameToId(technology.getName()),
-          new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImageContent())));
+    String imageLink = saveImage(technology);
+
+    if (isUpdate) {
+      updateTechnology(foundTechnology, technology, user, imageLink);
+    } else {
+      addTechnology(technology, user, imageLink);
     }
-
-    fillTechnology(technology, user, imageLink, isUpdate);
-
-    technologyDAO.add(technology);
 
     return technology;
   }
 
-  /**
-   * Fill a few informations about the technology.
-   *
-   * @author <a href="mailto:joaom@ciandt.com"> João Felipe de Medeiros
-   *         Moreira </a>
-   * @since 13/10/2015
-   *
-   * @param technology
-   *          to be converted.
-   * @param user
-   *          to get informations.
-   * @param imageLink
-   *          returned by the cloud storage.
-   *
-   */
-  private void fillTechnology(Technology technology, User user, String imageLink, Boolean isUptate) {
+  private void updateTechnology(Technology foundTechnology, Technology technology, User user, String imageLink) {
+
+    foundTechnology.setImage(imageLink);
+    foundTechnology.setDescription(technology.getDescription());
+    foundTechnology.setShortDescription(technology.getShortDescription());
+    foundTechnology.setWebsite(technology.getWebsite());
+    foundTechnology.setLastActivity(new Date());
+    foundTechnology.setLastActivityUser(getSafeEmail(user));
+
+    technologyDAO.update(foundTechnology);
+
+  }
+
+  private void addTechnology(Technology technology, User user, String imageLink) {
     technology.setId(technology.convertNameToId(technology.getName()));
-    if (user != null && user.getEmail() != null) {
-      if (!isUptate) {
-        technology.setAuthor(user.getEmail());
-      }
-      technology.setLastActivityUser(user.getEmail());
-    }
+    technology.setAuthor(getSafeEmail(user));
     technology.setActive(Boolean.TRUE);
     technology.setCreationDate(new Date());
     technology.setLastActivity(new Date());
     technology.setImage(imageLink);
     technology.initCounters();
+
+    technologyDAO.add(technology);
   }
 
+  private String saveImage(Technology technology) throws IOException, GeneralSecurityException {
+    String imageLink = technology.getImage();
+    if (technology.getImageContent() != null) {
+      imageLink = storageDAO.insertImage(technology.convertNameToId(technology.getName()),
+          new ByteArrayInputStream(DatatypeConverter.parseBase64Binary(technology.getImageContent())));
+    }
+    return imageLink;
+  }
+
+  private String getSafeEmail(User user) {
+    if (user != null) {
+      return user.getEmail();
+    }
+    return null;
+  }
 
   /**
    * Method to validade informations of the technology to be added.
