@@ -31,6 +31,7 @@ public class SkillConverter implements Transformer<Skill, SkillResponse> {
     skillResponse.setId(entity.getId());
     skillResponse.setValue(entity.getValue());
     skillResponse.setTechnology(entity.getTechnologyEntity().getId());
+    skillResponse.setCreationDate(entity.getCreationDate());
 
     return skillResponse;
   }
@@ -59,6 +60,7 @@ public class SkillConverter implements Transformer<Skill, SkillResponse> {
     } else {
       product.setTechGalleryUser(null);
     }
+    product.setCreationDate(arg0.getCreationDate());
 
     return product;
   }
