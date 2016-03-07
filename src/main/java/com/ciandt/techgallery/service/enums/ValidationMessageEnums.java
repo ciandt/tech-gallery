@@ -22,23 +22,32 @@ public enum ValidationMessageEnums {
   TECHNOLOGY_NOT_EXIST("Technology doesn't exist."),
   TECHNOLOGY_NAME_CANNOT_CHANGE("Technology's name cannot be changed."),
   // Message for users
-  USER_CANNOT_BLANK("User or user's id cannot be null or blank."), 
-  USER_NOT_EXIST("User doesn't exist."), 
+  USER_CANNOT_BLANK("User or user's id cannot be null or blank."),
+  USER_NOT_EXIST("User doesn't exist."),
   USER_GOOGLE_ENDPOINT_NULL("A user must be sent to endpoints."),
   // Message for Comments
-  COMMENT_CANNOT_BLANK("Comment cannot be null or blank."), 
-  COMMENT_MUST_BE_LESSER("Comment must have less than 500 characters."), 
-  COMMENT_NOT_EXIST("Comment doesn't exist."), 
-  COMMENT_ID_CANNOT_BLANK("Comment or comment's id cannot be null or blank."), 
-  COMMENT_AUTHOR_ERROR("This comment doesn't belong to this user."), 
-  RECOMMEND_ID_CANNOT_BLANK("Recommend or recommend's id cannot be null or blank."), 
-  RECOMMEND_NOT_EXIST("Recommend doesn't exist."), 
-  RECOMMEND_RECOMMENDER_ERROR("This recommend doesn't belong to this user."), 
-  TO_INACTIVE("Inactive transient object is not allowed."), 
+  COMMENT_CANNOT_BLANK("Comment cannot be null or blank."),
+  COMMENT_MUST_BE_LESSER("Comment must have less than 500 characters."),
+  COMMENT_NOT_EXIST("Comment doesn't exist."),
+  COMMENT_ID_CANNOT_BLANK("Comment or comment's id cannot be null or blank."),
+  COMMENT_AUTHOR_ERROR("This comment doesn't belong to this user."),
+  RECOMMEND_ID_CANNOT_BLANK("Recommend or recommend's id cannot be null or blank."),
+  RECOMMEND_NOT_EXIST("Recommend doesn't exist."),
+  RECOMMEND_RECOMMENDER_ERROR("This recommend doesn't belong to this user."),
+  TO_INACTIVE("Inactive transient object is not allowed."),
   NO_TECHNOLOGY_WAS_FOUND("No technology was found."),
   FOLLOWERS_CANNOT_EMPTY("Followers cannot be empty"),
     // Message for Post
-  NOT_PERMITTED_BY_USER("The user choosed to not post on your Google+.");
+  NOT_PERMITTED_BY_USER("The user choosed to not post on your Google+."),
+
+  // Message for Links
+  DESCRIPTION_CANNOT_BLANK("Description cannot be null or blank."),
+  DESCRIPTION_MUST_BE_LESSER("Description must have less than 100 characters."),
+  LINK_CANNOT_BLANK("Link cannot be null or blank."),
+  LINK_NOT_EXIST("Link doesn't exist."),
+  LINK_ID_CANNOT_BLANK("Link or link's id cannot be null or blank."),
+  LINK_AUTHOR_ERROR("This link doesn't belong to this user."),
+  LINK_MUST_BE_VALID("This link is not valid.");
 
 
   private String message;

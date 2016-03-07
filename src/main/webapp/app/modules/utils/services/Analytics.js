@@ -4,6 +4,10 @@ module.exports = function () {
     ga('send', 'event', 'Endorsement', techName, endorsedEmail);
   }
 
+  this.sendLinkEvent = function(techName){
+    ga('send', 'event', 'Link', 'link_add', techName);
+  }
+
   this.sendSkillEvent = function(name, skill){
     if(skill){
       if(skill === 1){
@@ -49,4 +53,3 @@ module.exports = function () {
     ga('send', 'event', 'TechGalleryEvents', 'technology_acess', techId);
   }
 }
-

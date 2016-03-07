@@ -9,7 +9,8 @@ module.exports = function($q, $timeout, $rootScope) {
   var featureEnum = {
     ENDORSE: 'ENDORSE',
     COMMENT: 'COMMENT',
-    RECOMMEND: 'RECOMMEND'
+    RECOMMEND: 'RECOMMEND',
+    LINK:'LINK'
   };
 
    this.setTextFilter = function(textSearch){
@@ -263,6 +264,30 @@ module.exports = function($q, $timeout, $rootScope) {
     return deferred.promise;
   };
 
+   this.addLink = function(idTech, description, link){
+    var deferred = $q.defer();
+    var req = {
+      technologyId : idTech,
+      description : description,
+      link : link
+    };
+    gapi.client.rest.addLink(req).execute(function(data) {
+        deferred.resolve(data);
+    });
+    return deferred.promise;
+  };
+
+  this.deleteLink = function(linkId){
+   var deferred = $q.defer();
+   var req = {
+     linkId : linkId
+   };
+   gapi.client.rest.deleteLink(req).execute(function(data) {
+       deferred.resolve(data);
+   });
+   return deferred.promise;
+ };
+
   /*
   * Auto complete on edorse user.
   */
@@ -306,6 +331,22 @@ module.exports = function($q, $timeout, $rootScope) {
         }
       }
       deferred.resolve(response);
+    });
+    return deferred.promise;
+  }
+
+  /**
+  * Begin of Show Links Features
+  */
+  this.showAllLinks = function(links) {
+    return (links.length > 0);
+  };
+
+  this.getLinksByTech = function(technologyId){
+    var deferred = $q.defer();
+    var req = {technologyId: technologyId};
+    gapi.client.rest.getLinksByTech(req).execute(function(data){
+      deferred.resolve(data);
     });
     return deferred.promise;
   }
