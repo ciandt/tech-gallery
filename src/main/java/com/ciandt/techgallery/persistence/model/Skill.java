@@ -11,6 +11,8 @@ import com.googlecode.objectify.annotation.Unindex;
 
 import com.ciandt.techgallery.service.transformer.SkillConverter;
 
+import java.util.Date;
+
 /**
  * Skill entity.
  * 
@@ -29,6 +31,7 @@ public class Skill extends BaseEntity<Long> {
   public static final String VALUE = "value";
   public static final String TECH_GALLERY_USER = "techGalleryUser";
   public static final String ACTIVE = "active";
+  public static final String CREATION_DATE = "creationDate";
 
   @Id
   private Long id;
@@ -46,6 +49,9 @@ public class Skill extends BaseEntity<Long> {
 
   @Index
   private Boolean active;
+
+  @Unindex
+  private Date creationDate;
 
   @Override
   public Long getId() {
@@ -111,4 +117,11 @@ public class Skill extends BaseEntity<Long> {
     return null;
   }
 
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
 }

@@ -2,6 +2,8 @@ package com.ciandt.techgallery.service.model;
 
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 
+import java.util.Date;
+
 /**
  * SkillResponse.
  * 
@@ -14,6 +16,7 @@ public class SkillResponse implements Response {
   private String technology;
   private Integer value;
   private TechGalleryUser user;
+  private Date creationDate;
 
   public Long getId() {
     return id;
@@ -47,4 +50,11 @@ public class SkillResponse implements Response {
     this.user = user;
   }
 
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
 }
