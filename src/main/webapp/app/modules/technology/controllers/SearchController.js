@@ -1,4 +1,4 @@
-module.exports = function (TechnologyService, AppService, UserService) {
+module.exports = function (TechnologyService, AppService, UserService, $location) {
 
   /**
    * Object context
@@ -12,7 +12,7 @@ module.exports = function (TechnologyService, AppService, UserService) {
 
   this.searchTechnology = function (){
     TechnologyService.searchTechnologies().then(function(data){
-      console.log(data, TechnologyService.foundItems);
+      $location.path('technologies');
     });
   }
 
