@@ -6,6 +6,8 @@ module.exports = function($q, $timeout, $rootScope) {
    */
    var context = this;
 
+   this.searched = false;
+
   var featureEnum = {
     ENDORSE: 'ENDORSE',
     COMMENT: 'COMMENT',
@@ -43,6 +45,7 @@ module.exports = function($q, $timeout, $rootScope) {
   };
 
   this.addOrUpdate = function(context){
+    this.searched = false;
     var req = fillRequestToSave(context);
     var deferred = $q.defer();
     gapi.client.rest.addOrUpdateTechnology(req).execute(function(data){
@@ -117,6 +120,7 @@ module.exports = function($q, $timeout, $rootScope) {
   }
 
   this.searchTechnologies = function(){
+    this.searched = true;
     context.foundItems = [];
     var req = {
       titleContains: context.textSearch,

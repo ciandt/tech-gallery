@@ -35,7 +35,7 @@ module.exports = function ($scope, $rootScope, AppService, TechnologyService, Us
     });
    }
 
-   if (TechnologyService.foundItems == undefined){
+   if (!TechnologyService.searched){
      this.getTechnologies();
    }else{
      context.items = TechnologyService.foundItems;
