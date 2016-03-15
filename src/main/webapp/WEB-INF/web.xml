@@ -19,6 +19,10 @@
         <servlet-name>CronEndorsedResumeServlet</servlet-name>
         <servlet-class>com.ciandt.techgallery.servlets.CronEndorsementResumeServlet</servlet-class>
     </servlet>
+  <servlet>
+    <servlet-name>userServlet</servlet-name>
+    <servlet-class>com.ciandt.techgallery.servlets.UserServlet</servlet-class>
+  </servlet>
     <servlet-mapping>
         <servlet-name>SystemServiceServlet</servlet-name>
         <url-pattern>/_ah/spi/*</url-pattern>
@@ -35,6 +39,10 @@
         <servlet-name>CronEndorsedResumeServlet</servlet-name>
         <url-pattern>/cron/endorsementresume</url-pattern>
     </servlet-mapping>
+   <servlet-mapping>
+     <servlet-name>userServlet</servlet-name>
+     <url-pattern>/userServlet</url-pattern>
+   </servlet-mapping>
 
     <servlet>
         <servlet-name>EmailServlet</servlet-name>
@@ -63,6 +71,16 @@
         <auth-constraint>
             <role-name>admin</role-name>
         </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+      <web-resource-collection>
+        <web-resource-name>userServlet</web-resource-name>
+        <url-pattern>/userServlet</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+        <role-name>admin</role-name>
+      </auth-constraint>
     </security-constraint>
 
     <welcome-file-list>

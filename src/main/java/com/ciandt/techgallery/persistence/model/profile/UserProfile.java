@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.persistence.model.profile;
 
+import com.google.api.client.util.Lists;
 import com.google.api.server.spi.config.ApiTransformer;
 
 import com.googlecode.objectify.Key;
@@ -13,7 +14,16 @@ import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.transformer.profile.UserProfileTransformer;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+
+import sun.awt.geom.AreaOp;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -162,6 +172,36 @@ public class UserProfile extends BaseEntity<String> {
 
   public Map<String, UserProfileItem> getOtherItems() {
     return otherItems;
+  }
+
+
+  public List<UserProfileItem> getAllItems() {
+    List<UserProfileItem> userProfileList = Lists.newArrayList();
+    userProfileList.addAll(getPositiveRecItems().values());
+    userProfileList.addAll(getNegativeRecItems().values());
+    userProfileList.addAll(getOtherItems().values());
+
+    return userProfileList;
+  }
+
+  /**
+   * Sort the UserProfile list by Owner UserName.
+   *
+   * @param usersProfile List of UserProfile.
+   */
+  public static void sortUsersProfileByOwnerName(List<UserProfile> usersProfile) {
+    Collections.sort(usersProfile, new Comparator<UserProfile>() {
+      @Override
+      public int compare(UserProfile counter1, UserProfile counter2) {
+        if (counter1 != null && counter1.getOwner() != null && counter1.getOwner().get() != null &&
+                StringUtils.isNotBlank(counter1.getOwner().get().getName()) && counter2 != null &&
+                counter2.getOwner() != null && counter2.getOwner().get() != null &&
+                StringUtils.isNotBlank(counter2.getOwner().get().getName())) {
+          return counter1.getOwner().get().getName().compareTo(counter2.getOwner().get().getName());
+        }
+        return 0;
+      }
+    });
   }
 
 }

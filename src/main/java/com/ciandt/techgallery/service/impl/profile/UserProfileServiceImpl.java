@@ -1,12 +1,6 @@
 package com.ciandt.techgallery.service.impl.profile;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
-
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
+import java.util.List;
 
 import com.ciandt.techgallery.persistence.dao.impl.profile.UserProfileDaoImpl;
 import com.ciandt.techgallery.persistence.model.Endorsement;
@@ -20,6 +14,12 @@ import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
 import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.ciandt.techgallery.service.profile.UserProfileService;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
 
 public class UserProfileServiceImpl implements UserProfileService {
 
@@ -72,6 +72,10 @@ public class UserProfileServiceImpl implements UserProfileService {
   public UserProfile findUserProfileByEmail(String email) throws NotFoundException {
     TechGalleryUser owner = UserServiceTGImpl.getInstance().getUserByEmail(email);
     return findUserProfileByOwner(owner);
+  }
+
+  public List<UserProfile> findAllUsersProfile() throws NotFoundException {
+    return UserProfileDaoImpl.getInstance().findAll();
   }
 
   @Override
