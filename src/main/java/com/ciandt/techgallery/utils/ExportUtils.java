@@ -1,10 +1,11 @@
 package com.ciandt.techgallery.utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Iterator;
-import java.util.List;
+import au.com.bytecode.opencsv.CSVWriter;
+
+import com.ciandt.techgallery.persistence.model.TechGalleryUser;
+import com.ciandt.techgallery.persistence.model.profile.UserProfile;
+import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
+import com.googlecode.objectify.Ref;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -15,12 +16,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.persistence.model.profile.UserProfile;
-import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
-import com.googlecode.objectify.Ref;
-
-import au.com.bytecode.opencsv.CSVWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -29,8 +29,9 @@ import au.com.bytecode.opencsv.CSVWriter;
 public class ExportUtils {
 
   private static final int SHEET_CELL_SIZE = 5;
+  private static final String SHEET_NAME = "Dados Gerais";
   private static final String[] SHEET_HEADERS =
-          new String[]{"Login", "Nome", "Technology", "Quantidade de Indicações", "Auto-Avaliação"};
+          new String[]{"Login", "Nome", "Tecnologia", "Quantidade de Indicações", "Auto-Avaliação"};
 
 
   public static byte[] createXlsUsersProfile(List<UserProfile> usersProfile) throws IOException {
@@ -57,6 +58,7 @@ public class ExportUtils {
 
     HSSFWorkbook workbook = new HSSFWorkbook();
     HSSFSheet sheet = workbook.createSheet();
+    workbook.setSheetName(workbook.getSheetIndex(sheet), SHEET_NAME);
 
     int rownum = 0;
     Row headerRow = sheet.createRow(rownum++);
@@ -73,14 +75,16 @@ public class ExportUtils {
       if (techGalleryUser != null) {
 
         for (UserProfileItem tec : userProfile.getAllItems()) {
-          Row row = sheet.createRow(rownum++);
-          int cellnum = 0;
+          if (tec.getSkillLevel() > 0 || tec.getEndorsementQuantity() > 0) {
+            Row row = sheet.createRow(rownum++);
+            int cellnum = 0;
 
-          row.createCell(cellnum++).setCellValue(createLoginByEmail(techGalleryUser.getEmail()));
-          row.createCell(cellnum++).setCellValue(techGalleryUser.getName());
-          row.createCell(cellnum++).setCellValue(tec.getTechnologyName());
-          row.createCell(cellnum++).setCellValue(tec.getEndorsementQuantity());
-          row.createCell(cellnum++).setCellValue(tec.getSkillLevel());
+            row.createCell(cellnum++).setCellValue(createLoginByEmail(techGalleryUser.getEmail()));
+            row.createCell(cellnum++).setCellValue(techGalleryUser.getName());
+            row.createCell(cellnum++).setCellValue(tec.getTechnologyName());
+            row.createCell(cellnum++).setCellValue(tec.getEndorsementQuantity());
+            row.createCell(cellnum++).setCellValue(tec.getSkillLevel());
+          }
         }
       }
     }

@@ -70,7 +70,7 @@ public class ExportUtilsTest {
     StringWriter csv = ExportUtils.createCsvUsersProfile(user);
     assertNotNull(csv);
 
-    String expectedCsv = "\"Login\",\"Nome\",\"Technology\",\"Quantidade de Indicações\",\"Auto-Avaliação\"\n" +
+    String expectedCsv = "\"Login\",\"Nome\",\"Tecnologia\",\"Quantidade de Indicações\",\"Auto-Avaliação\"\n" +
             "\"beltrano\",\"Beltrano Oliveira\",\"Spring MVC\",\"15.0\",\"8.0\"\n" +
             "\"beltrano\",\"Beltrano Oliveira\",\"Angular Js\",\"10.0\",\"5.0\"\n" +
             "\"fulano\",\"Fulano da Silva\",\"Spring MVC\",\"15.0\",\"8.0\"\n" +
@@ -89,7 +89,7 @@ public class ExportUtilsTest {
     StringWriter csv = ExportUtils.createCsvUsersProfile(user);
     assertNotNull(csv);
 
-    String expectedCsv = "\"Login\",\"Nome\",\"Technology\",\"Quantidade de Indicações\",\"Auto-Avaliação\"\n" +
+    String expectedCsv = "\"Login\",\"Nome\",\"Tecnologia\",\"Quantidade de Indicações\",\"Auto-Avaliação\"\n" +
             "\"\",\"Beltrano Oliveira\",\"Spring MVC\",\"15.0\",\"8.0\"\n" +
             "\"\",\"Beltrano Oliveira\",\"Angular Js\",\"10.0\",\"5.0\"\n" +
             "\"\",\"Fulano da Silva\",\"Spring MVC\",\"15.0\",\"8.0\"\n" +
