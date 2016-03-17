@@ -1,33 +1,34 @@
 package com.ciandt.techgallery.utils;
 
-import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertThat;
-
-import java.io.StringWriter;
-import java.util.List;
-
-import org.hamcrest.CoreMatchers;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.common.collect.Lists;
 
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.profile.UserProfile;
 import com.ciandt.techgallery.persistence.model.profile.UserProfileItem;
 import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.google.common.collect.Lists;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Ref;
+
+import org.hamcrest.CoreMatchers;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by jneves on 11/03/16.
  */
 public class ExportUtilsTest {
 
+  private static final String CSV_HEADERS = "\"Login\",\"Nome\",\"Tecnologia\",\"Total de Indicações\",\"Auto-Avaliação\"\n";
   List<UserProfile> listUserProfile = Lists.newArrayList();
   TechGalleryUser techGalleryUser;
   TechGalleryUser techGalleryUser2;
@@ -67,10 +68,11 @@ public class ExportUtilsTest {
 
     List<UserProfile> user = UserProfileServiceImpl.getInstance().findAllUsersProfile();
 
-    StringWriter csv = ExportUtils.createCsvUsersProfile(user);
+    String csv = new String(ExportUtils.createCsvUsersProfile(user));
+    //StringWriter csv = ExportUtils.createCsvUsersProfile(user);
     assertNotNull(csv);
 
-    String expectedCsv = "\"Login\",\"Nome\",\"Tecnologia\",\"Quantidade de Indicações\",\"Auto-Avaliação\"\n" +
+    String expectedCsv = CSV_HEADERS +
             "\"beltrano\",\"Beltrano Oliveira\",\"Spring MVC\",\"15.0\",\"8.0\"\n" +
             "\"beltrano\",\"Beltrano Oliveira\",\"Angular Js\",\"10.0\",\"5.0\"\n" +
             "\"fulano\",\"Fulano da Silva\",\"Spring MVC\",\"15.0\",\"8.0\"\n" +
@@ -86,10 +88,10 @@ public class ExportUtilsTest {
     techGalleryUser2.setEmail(null);
 
     List<UserProfile> user = UserProfileServiceImpl.getInstance().findAllUsersProfile();
-    StringWriter csv = ExportUtils.createCsvUsersProfile(user);
+    String csv = new String(ExportUtils.createCsvUsersProfile(user));
     assertNotNull(csv);
 
-    String expectedCsv = "\"Login\",\"Nome\",\"Tecnologia\",\"Quantidade de Indicações\",\"Auto-Avaliação\"\n" +
+    String expectedCsv = CSV_HEADERS +
             "\"\",\"Beltrano Oliveira\",\"Spring MVC\",\"15.0\",\"8.0\"\n" +
             "\"\",\"Beltrano Oliveira\",\"Angular Js\",\"10.0\",\"5.0\"\n" +
             "\"\",\"Fulano da Silva\",\"Spring MVC\",\"15.0\",\"8.0\"\n" +

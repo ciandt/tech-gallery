@@ -19,6 +19,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,7 +33,8 @@ public class ExportUtils {
   private static final int SHEET_CELL_SIZE = 5;
   private static final String SHEET_NAME = "Dados Gerais";
   private static final String[] SHEET_HEADERS =
-          new String[]{"Login", "Nome", "Tecnologia", "Quantidade de Indicações", "Auto-Avaliação"};
+          new String[]{"Login", "Nome", "Tecnologia", "Total de Indicações", "Auto-Avaliação"};
+  public static final Charset SHEET_CHARSET = StandardCharsets.UTF_8;
 
 
   public static byte[] createXlsUsersProfile(List<UserProfile> usersProfile) throws IOException {
@@ -42,16 +45,15 @@ public class ExportUtils {
 
     ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
     workbook.write(outByteStream);
-
     return outByteStream.toByteArray();
   }
 
-  public static StringWriter createCsvUsersProfile(List<UserProfile> usersProfile) throws IOException {
+  public static byte[] createCsvUsersProfile(List<UserProfile> usersProfile) throws IOException {
 
     UserProfile.sortUsersProfileByOwnerName(usersProfile);
 
     Workbook workbook = createUsersProfileWorkbook(usersProfile);
-    return createCsv(workbook);
+    return createCsv(workbook).toString().getBytes(SHEET_CHARSET);
   }
 
   private static Workbook createUsersProfileWorkbook(List<UserProfile> usersProfile) {

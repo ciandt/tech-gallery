@@ -47,7 +47,7 @@ public class UserServlet extends HttpServlet {
     try {
       List<UserProfile> allUsersProfile = service.findAllUsersProfile();
       if (allUsersProfile != null) {
-        response.getWriter().write(createCsvUsersProfile(allUsersProfile).toString());
+        response.getOutputStream().write(createCsvUsersProfile(allUsersProfile));
       }
     } catch (Exception e) {
       _LOG.log(Level.SEVERE, "Export exception: ", e);
