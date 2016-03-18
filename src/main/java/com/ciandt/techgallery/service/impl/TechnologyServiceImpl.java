@@ -210,9 +210,8 @@ public class TechnologyServiceImpl implements TechnologyService {
   }
 
   @Override
-  public Response findTechnologiesByFilter(TechnologyFilter techFilter, User user)
+  public Response findTechnologiesByFilter(TechnologyFilter techFilter)
       throws InternalServerErrorException, NotFoundException, BadRequestException {
-    validateUser(user);
     if (techFilter.getRecommendationIs() != null
         && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())) {
       techFilter.setRecommendationIs("");
