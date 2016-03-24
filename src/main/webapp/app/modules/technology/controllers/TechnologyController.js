@@ -48,8 +48,23 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   });
 
   this.setSkill = function (technology, newRating) {
-    TechnologyService.addUserSkill($stateParams.id, newRating, context.oldRating);
-    Analytics.sendSkillEvent(context.item.name, newRating);
+
+       if (newRating !== context.oldRating) {
+          TechnologyService.updateUserSkill($stateParams.id, newRating).then(function(rating){
+             context.rating = rating;
+             context.oldRating = rating;
+          });
+       } else {
+          if(confirm('Deseja remover a avaliação atual?')) {
+            TechnologyService.deleteUserSkill($stateParams.id).then(function(data){
+              if(!data.hasOwnProperty('error')){
+                context.rating = undefined;
+                context.oldRating = undefined;
+              }
+            });
+          }
+       }
+       Analytics.sendSkillEvent(context.item.name, newRating);
   }
 
   this.recommended = TechnologyService.getRecommended();

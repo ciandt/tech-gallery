@@ -209,7 +209,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
         // Skill deletion case
         item.setSkillLevel(0);
-        if (category == UserProfile.OTHER) {
+        if (category == null || category == UserProfile.OTHER) {
           if (!itemHasOtherPropertiesSet(item)) {
             profile.removeItem(technologyKey);
           }

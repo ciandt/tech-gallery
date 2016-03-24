@@ -33,6 +33,9 @@ public interface SkillService {
   Skill addOrUpdateSkill(Skill skill, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException;
 
+  void deleteUserSkill(String techId, User user)
+          throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException;
+
   /**
    * Service for getting an user skill.
    * 

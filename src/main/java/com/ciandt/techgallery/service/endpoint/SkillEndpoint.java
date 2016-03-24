@@ -44,6 +44,12 @@ public class SkillEndpoint {
     return service.addOrUpdateSkill(skill, user);
   }
 
+  @ApiMethod(name = "deleteUserSkill", path = "skill", httpMethod = "delete")
+  public void deleteUserSkill(@Named("id") String techId, User user)
+          throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+    service.deleteUserSkill(techId, user);
+  }
+
   /**
    * Endpoint for getting an User Skill.
    * 
