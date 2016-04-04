@@ -2,7 +2,6 @@ package com.ciandt.techgallery.service.model.email;
 
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.utils.TechGalleryUtil;
 import com.ciandt.techgallery.utils.timezone.TimezoneManager;
 
 import org.apache.commons.lang.StringUtils;
@@ -13,9 +12,8 @@ import java.util.List;
 
 /**
  * TO used for sending emails with mustache template.
- * 
- * @author bliberal
  *
+ * @author bliberal
  */
 public class TechGalleryActivitiesEmailTemplateTO {
 
@@ -26,17 +24,17 @@ public class TechGalleryActivitiesEmailTemplateTO {
   String techgalleryLink;
 
   public TechGalleryActivitiesEmailTemplateTO(String applicationName, TechGalleryUser followerUser,
-      List<TechnologyActivitiesEmailTemplateTO> activitiesList) {
+                                              List<TechnologyActivitiesEmailTemplateTO> activitiesList) {
     super();
     this.timestamp = new Date();
     this.appName = applicationName;
     this.follower = followerUser;
     this.technologyActivitiesTo = activitiesList;
   }
-  
+
   public TechGalleryActivitiesEmailTemplateTO() {
   }
-  
+
   public TechGalleryUser getFollower() {
     return follower;
   }
@@ -50,10 +48,10 @@ public class TechGalleryActivitiesEmailTemplateTO {
   }
 
   public void setTechnologyActivitiesTo(
-      List<TechnologyActivitiesEmailTemplateTO> technologyActivitiesTo) {
+          List<TechnologyActivitiesEmailTemplateTO> technologyActivitiesTo) {
     this.technologyActivitiesTo = technologyActivitiesTo;
   }
-  
+
   public String getFormattedTimestamp() {
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     return formatter.format(TimezoneManager.getInstance().convertToUserTimezone(this.timestamp));
@@ -74,20 +72,18 @@ public class TechGalleryActivitiesEmailTemplateTO {
   public void setAppName(String appName) {
     this.appName = appName;
   }
-  
+
   /**
    * Get link to application page according to runtime enviroment. Ex.: localhost, version-dot-.
-   * 
+   *
    * @return link to application page.
    */
   public String getTechgalleryLink() {
     String environment = System.getProperty(Constants.RUNTIME_ENVIRONMENT_PROPERTY);
     if (StringUtils.equals(Constants.PRODUCTION_PROPERTY, environment)) {
-      String applicationId = System.getProperty(Constants.APPLICATION_ID_PROPERTY);
-      return "https://" + TechGalleryUtil.getApplicationVersion() + "-dot-" + applicationId + ".appspot.com/";
+      return "https://" + Constants.LINK_PRODUCTION;
     } else {
       return Constants.LINK_LOCALHOST;
     }
   }
-  
 }
