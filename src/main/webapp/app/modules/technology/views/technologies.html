@@ -42,9 +42,15 @@
         </form>
       </div>
 
+      <div class="btn-group pull-right" style="margin-left:5px;" role="group" ng-if="isUserLogged" ng-show="loggedUserInformation.admin">
+        <button class="btn btn-primary" ng-click="technologies.openExportUsers()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Exportação</button>
+      </div>
+
       <div class="btn-group pull-right" role="group" ng-if="isUserLogged">
         <a href="#/technologies/new" class="btn btn-primary"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar tecnologia</a>
       </div>
+
+
     </div>
   </div>
 
@@ -72,7 +78,7 @@
               <p>{{ technology.shortDescription }}</p>
             </div>
           </div>
-          <div class="card-actions card-section" ng-if="isUserLogged">
+          <div class="card-actions card-section" ng-if="isUserLogged" ng-show="loggedUserInformation.admin">
             <div class="pull-left">
               <button type="button" ng-click="technologies.followTechnology(technology.id, $event)" ng-class="technologies.setFollowedClass(technology.followedByUser)"><span class="glyphicon glyphicon-star-empty"></span> Seguir</button>
             </div>
@@ -100,4 +106,18 @@
       Nenhuma tecnologia encontrada.
     </div>
   </div>
+
+  <script type="text/ng-template" id="exportUsers.html">
+    <div class="modal-header">
+      <h4 class="modal-title">Colaborador x Tecnologia</h4>
+    </div>
+    <div class="modal-body">
+      <p>Selecione o tipo de arquivo para a geração do relatório.</p>
+    </div>
+    <div class="modal-footer">
+      <a href="/userServlet?type=xls" class="btn btn-success" ng-click="close()">XLS</a>
+      <a href="/userServlet?type=csv" class="btn btn-primary" ng-click="close()">CSV</a>
+    </div>
+  </script>
+</div>
 </div>

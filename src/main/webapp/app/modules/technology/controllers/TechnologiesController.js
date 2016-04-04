@@ -1,4 +1,4 @@
-module.exports = function ($scope, $rootScope, AppService, TechnologyService, UserService, $timeout, API) {
+module.exports = function ($scope, $rootScope, AppService, TechnologyService, UserService, $uibModal, $timeout, API) {
 
   /**
    * Object context
@@ -104,6 +104,17 @@ module.exports = function ($scope, $rootScope, AppService, TechnologyService, Us
         }
       });
     }
+  }
+
+  this.openExportUsers = function () {
+
+    var modalInstance = $uibModal.open({
+      templateUrl: 'exportUsers.html',
+       controller: function ($scope) {
+              $scope.close = $scope.$close;
+            },
+      size: 'sm'
+    });
   }
 
   /**

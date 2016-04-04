@@ -1,9 +1,6 @@
 package com.ciandt.techgallery.service.profile;
 
-import com.google.api.server.spi.response.BadRequestException;
-import com.google.api.server.spi.response.InternalServerErrorException;
-import com.google.api.server.spi.response.NotFoundException;
-import com.google.appengine.api.users.User;
+import java.util.List;
 
 import com.ciandt.techgallery.persistence.model.Endorsement;
 import com.ciandt.techgallery.persistence.model.Skill;
@@ -12,6 +9,10 @@ import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.persistence.model.TechnologyComment;
 import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.persistence.model.profile.UserProfile;
+import com.google.api.server.spi.response.BadRequestException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
+import com.google.appengine.api.users.User;
 
 public interface UserProfileService {
   
@@ -49,6 +50,8 @@ public interface UserProfileService {
   void handleEndorsement(Endorsement endorsement);
 
   UserProfile findUserProfileByEmail(String email) throws NotFoundException;
+
+  List<UserProfile> findAllUsersProfile() throws NotFoundException;
 
   UserProfile createProfile(TechGalleryUser tgUser);
 
