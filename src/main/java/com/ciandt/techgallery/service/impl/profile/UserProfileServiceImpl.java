@@ -197,7 +197,7 @@ public class UserProfileServiceImpl implements UserProfileService {
       UserProfileItem item = getTechnologyItem(technology, profile);
       Integer category = profile.getItemCategory(technologyKey);
 
-      if (skill.getValue() != null && skill.getValue() > 0) {
+      if (skill.getValue() != null && skill.getValue() > 0 && skill.getActive()) {
         item.setSkillLevel(skill.getValue());
         // No previous category means new item
         if (category == null) {

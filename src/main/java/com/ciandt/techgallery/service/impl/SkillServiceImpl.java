@@ -90,12 +90,7 @@ public class SkillServiceImpl implements SkillService {
 
     // if there is a skillEntity, it is needed to inactivate it and create a new
     // one
-    if (skillEntity != null) {
-      log.info("Inactivating skill: " + skillEntity.getId());
-      skillEntity.setInactivatedDate(new Date());
-      skillEntity.setActive(Boolean.FALSE);
-      skillDao.update(skillEntity);
-    }
+    inactivateSkill(skillEntity);
 
     final Skill newSkill = addNewSkill(skill, techUser, technology);
 
@@ -103,22 +98,24 @@ public class SkillServiceImpl implements SkillService {
     return newSkill;
   }
 
-  @Override
-  public void deleteUserSkill(String techId, User user) throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
-
-    log.info("Starting deleting skill");
-
-    Skill skillEntity = getUserSkill(techId, user);
-
+  private void inactivateSkill(Skill skillEntity) {
     if (skillEntity != null) {
       log.info("Inactivating skill: " + skillEntity.getId());
       skillEntity.setInactivatedDate(new Date());
       skillEntity.setActive(Boolean.FALSE);
-      skillEntity.setValue(0);
       skillDao.update(skillEntity);
     }
+  }
+
+  @Override
+  public void deleteUserSkill(String techId, User user) throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
+
+    Skill skillEntity = getUserSkill(techId, user);
+
+    inactivateSkill(skillEntity);
 
     UserProfileServiceImpl.getInstance().handleSkillChanges(skillEntity);
+
   }
 
   /**
