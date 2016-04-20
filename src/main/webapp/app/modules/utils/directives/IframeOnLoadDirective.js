@@ -1,11 +1,13 @@
-module.exports = function() {
+module.exports = function($timeout) {
   return {
     scope: {
       callback: "&iframeOnLoad"
     },
     link: function(scope, element) {
       element.on('load', function() {
-        return scope.callback();
+        $timeout(function() {          
+          scope.callback();
+        });
       });
     }
   }

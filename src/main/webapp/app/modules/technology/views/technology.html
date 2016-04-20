@@ -324,11 +324,8 @@
       </div>
       
       <div class="row" ng-if="technology.showSmartCanvas()">
-        <div class="col-md-12" ng-show="technology.smartCanvasLoaded" >          
-          <iframe iframe-on-load="technology.onLoadSmartCanvas()" src="{{ technology.getSmartCanvasUrl() }}" frameborder="0" width="1135" height="500"></iframe>
-        </div>
-        <div class="col-md-12" ng-if="!technology.smartCanvasLoaded" style="height: 500px;">
-          <smart-canvas-loading></smart-canvas-loading>
+        <div class="col-md-12">          
+          <iframe src="{{ technology.getSmartCanvasUrl() }}" frameborder="0" width="1135" height="500"></iframe>
         </div>
       </div>
     </div>
