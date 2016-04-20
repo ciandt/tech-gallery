@@ -102,6 +102,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     foundTechnology.setWebsite(technology.getWebsite());
     foundTechnology.setLastActivity(new Date());
     foundTechnology.setLastActivityUser(getSafeEmail(user));
+    foundTechnology.setIdBoard(technology.getIdBoard());
 
     technologyDAO.update(foundTechnology);
 

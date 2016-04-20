@@ -177,3 +177,7 @@ node
 *.api
 
 /.idea/
+
+
+### VS Code ###
+.vscode/

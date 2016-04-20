@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $stateParams, AppService, TechnologyService, $uibModal, Analytics) {
+module.exports = function ($rootScope, $stateParams, $sce, $document, $interval, AppService, TechnologyService, $uibModal, Analytics) {
 
   /**
    * Object context
@@ -58,7 +58,38 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     context.recommended = recommendation;
     document.getElementById('recommendation-comment-input').focus();
   }
-
+  
+  /* Smart Canvas */
+  this.smartCanvasLoaded = false;
+  
+  this.showSmartCanvas = function() {
+    return !!context.item.idBoard;
+  };
+  
+  this.getSmartCanvasUrl = function() {
+    return $sce.trustAsResourceUrl("https://ciandt.smartcanvas.com/f/boards/"  + context.item.idBoard);
+  };
+  
+  this.onLoadSmartCanvas = function() {
+    var iframeWindow = $document[0].querySelector('iframe').contentWindow;    
+    
+    var ready = $interval(function() {      
+      var body = iframeWindow.document.body;
+      var toolbar = body.querySelector('paper-toolbar');
+      var container = body.querySelector('#mainContainer');
+      var image = body.querySelector('iron-image.scanvas-content-collection');
+      if(iframeWindow.SCanvas.AppContext.webComponentsReady && toolbar && container && image && image.loaded) {
+        $interval.cancel(ready);
+        
+        // toolbar.remove();
+        // container.style.top = 0;
+        // image.remove();
+        
+        context.smartCanvasLoaded = true;        
+      }
+    }, 1000);
+  }
+  
   // @todo Move this to UserService
   this.share = {
     gplus : true
@@ -296,5 +327,5 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
     completeEmail = completeEmail.split('@');
     return completeEmail[0];
   };
-
+  
 }
