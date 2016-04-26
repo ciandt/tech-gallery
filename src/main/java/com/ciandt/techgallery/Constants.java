@@ -7,7 +7,7 @@ import com.google.api.server.spi.Constant;
  */
 public class Constants {
   public static final String WEB_CLIENT_ID =
-      "923748949453-5dnd2m3fpnleuudufa61rnrngcamm6j6.apps.googleusercontent.com";
+      "146680675139-6fjea6lbua391tfv4hq36hl7kqo7cr96.apps.googleusercontent.com";
   public static final String ANDROID_CLIENT_ID = "replace this with your Android client ID";
   public static final String IOS_CLIENT_ID = "replace this with your iOS client ID";
   public static final String ANDROID_AUDIENCE = WEB_CLIENT_ID;
