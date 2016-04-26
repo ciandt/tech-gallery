@@ -40,7 +40,7 @@ public class TechnologyTO implements Response {
   private String imageContent;
   /** technology is followed by the logged user. */
   private boolean followedByUser;
-  /** technology smart canvas board id */
+  /** technology board id */
   private String idBoard;
   /** technology smart canvas board id */
   private String boardUrlPrefix;
