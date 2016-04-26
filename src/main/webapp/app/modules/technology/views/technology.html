@@ -128,7 +128,7 @@
       </div>
 
       <!-- TECHNOLOGY RECOMMENDATIONS & COMMENTS -->
-      <div class="technology-section row" ng-if="!technology.showSmartCanvas()">
+      <div class="technology-section row" ng-if="!technology.showBoard()">
         <div class="col-md-12" ng-if="app.alertBotton.message.length">
           <uib-alert type="{{ app.alertBotton.type }}" close="app.closeAlertBotton()">
             {{ app.alertBotton.message }}
@@ -269,7 +269,7 @@
       </div>
 
        <!-- TECHNOLOGY LINKS -->
-      <div class="technology-section row" ng-if="!technology.showSmartCanvas()">
+      <div class="technology-section row" ng-if="!technology.showBoard()">
           <div class="col-md-6">
             <div class="card no-margin">
               <div class="card-section">
@@ -322,10 +322,10 @@
           </div>
         </div>
       </div>
-      
-      <div class="row" ng-if="technology.showSmartCanvas()">
-        <div class="col-md-12">          
-          <iframe src="{{ technology.getSmartCanvasUrl() }}" frameborder="0" width="1135" height="500"></iframe>
+
+      <div class="row" ng-if="technology.showBoard()">
+        <div class="col-md-12">
+          <iframe src="{{ technology.getBoardUrl() }}" frameborder="0" width="1135" height="500"></iframe>
         </div>
       </div>
     </div>
