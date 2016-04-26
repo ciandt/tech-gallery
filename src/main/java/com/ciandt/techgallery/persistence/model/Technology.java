@@ -109,7 +109,7 @@ public class Technology extends BaseEntity<String> {
   private Boolean active;
 
   @Ignore
-  private String imageContent;  
+  private String imageContent;
 
   /*
    * Getter's and Setter's --------------------------------------------
@@ -271,11 +271,11 @@ public class Technology extends BaseEntity<String> {
   public void setLastActivityUser(String lastActivityUser) {
     this.lastActivityUser = lastActivityUser;
   }
-  
+
   public String getIdBoard() {
     return idBoard;
   }
-  
+
   public void setIdBoard(String idBoard) {
     this.idBoard = idBoard;
   }

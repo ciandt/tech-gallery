@@ -42,9 +42,11 @@ public class TechnologyTO implements Response {
   private boolean followedByUser;
   /** technology smart canvas board id */
   private String idBoard;
+  /** technology smart canvas board id */
+  private String boardUrlPrefix;
 
   private Date lastActivity;
-  
+
 
   public String getId() {
     return id;
@@ -178,8 +180,16 @@ public class TechnologyTO implements Response {
 	// TODO Auto-generated method stub
 	return idBoard;
   }
-  
+
   public void setIdBoard(String idBoard) {
 	this.idBoard = idBoard;
+  }
+
+  public String getBoardUrlPrefix() {
+    return boardUrlPrefix;
+  }
+
+  public void setBoardUrlPrefix(String boardUrlPrefix) {
+    this.boardUrlPrefix = boardUrlPrefix;
   }
 }

@@ -58,22 +58,22 @@ module.exports = function ($rootScope, $stateParams, $sce, $document, $interval,
     context.recommended = recommendation;
     document.getElementById('recommendation-comment-input').focus();
   }
-  
+
   /* Smart Canvas */
   this.smartCanvasLoaded = false;
-  
+
   this.showSmartCanvas = function() {
     return !!context.item.idBoard;
   };
-  
+
   this.getSmartCanvasUrl = function() {
-    return $sce.trustAsResourceUrl("https://ciandt.smartcanvas.com/f/boards/"  + context.item.idBoard);
+    return $sce.trustAsResourceUrl(context.item.boardUrlPrefix + context.item.idBoard);
   };
-  
+
   this.onLoadSmartCanvas = function() {
     context.smartCanvasLoaded = true;
   }
-  
+
   // @todo Move this to UserService
   this.share = {
     gplus : true
@@ -311,5 +311,5 @@ module.exports = function ($rootScope, $stateParams, $sce, $document, $interval,
     completeEmail = completeEmail.split('@');
     return completeEmail[0];
   };
-  
+
 }
