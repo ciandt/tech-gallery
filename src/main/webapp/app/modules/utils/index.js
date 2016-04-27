@@ -5,6 +5,7 @@ angular
   .filter('range', require('./filters/rangeFilter'))
   .directive('loading', require('./directives/LoadingDirective'))
   .directive('iframeOnLoad', require('./directives/IframeOnLoadDirective'))
-  .directive('boardLoading', require('./directives/BoardLoadingDirective'));
+  .directive('boardLoading', require('./directives/BoardLoadingDirective'))
+  .directive('placeholderImg', require('./directives/PlaceholderImgDirective'));
 
 module.exports = 'TechGallery.Utils';
