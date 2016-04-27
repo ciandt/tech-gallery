@@ -37,8 +37,8 @@ import java.util.logging.Logger;
 public class SkillServiceImpl implements SkillService {
 
   /*
-   * Constants --------------------------------------------
-   */
+     * Constants --------------------------------------------
+     */
   private static final Logger log = Logger.getLogger(SkillServiceImpl.class.getName());
   private static final I18n i18n = I18n.getInstance();
 
@@ -90,17 +90,32 @@ public class SkillServiceImpl implements SkillService {
 
     // if there is a skillEntity, it is needed to inactivate it and create a new
     // one
+    inactivateSkill(skillEntity);
+
+    final Skill newSkill = addNewSkill(skill, techUser, technology);
+
+    UserProfileServiceImpl.getInstance().handleSkillChanges(newSkill);
+    return newSkill;
+  }
+
+  private void inactivateSkill(Skill skillEntity) {
     if (skillEntity != null) {
       log.info("Inactivating skill: " + skillEntity.getId());
       skillEntity.setInactivatedDate(new Date());
       skillEntity.setActive(Boolean.FALSE);
       skillDao.update(skillEntity);
     }
+  }
 
-    final Skill newSkill = addNewSkill(skill, techUser, technology);
+  @Override
+  public void deleteUserSkill(String techId, User user) throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
 
-    UserProfileServiceImpl.getInstance().handleSkillChanges(newSkill);
-    return newSkill;
+    Skill skillEntity = getUserSkill(techId, user);
+
+    inactivateSkill(skillEntity);
+
+    UserProfileServiceImpl.getInstance().handleSkillChanges(skillEntity);
+
   }
 
   /**

@@ -201,7 +201,7 @@ public class UserProfileServiceImpl implements UserProfileService {
       UserProfileItem item = getTechnologyItem(technology, profile);
       Integer category = profile.getItemCategory(technologyKey);
 
-      if (skill.getValue() != null && skill.getValue() > 0) {
+      if (skill.getValue() != null && skill.getValue() > 0 && skill.getActive()) {
         item.setSkillLevel(skill.getValue());
         // No previous category means new item
         if (category == null) {
@@ -213,7 +213,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
         // Skill deletion case
         item.setSkillLevel(0);
-        if (category == UserProfile.OTHER) {
+        if (category == null || category == UserProfile.OTHER) {
           if (!itemHasOtherPropertiesSet(item)) {
             profile.removeItem(technologyKey);
           }

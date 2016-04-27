@@ -211,19 +211,37 @@ module.exports = function($q, $timeout, $rootScope) {
     return deferred.promise;
   }
 
-  this.addUserSkill = function (idTech, newValue, oldValue) {
-    if (newValue !== oldValue) {
-      if (!idTech) {
+  this.updateUserSkill = function(idTech, newValue) {
+
+     var deferred = $q.defer();
+     if (!idTech) {
         throw 'getTechnology needs a valid `id` parameter';
-      }
-      var req = {
+     }
+     var req = {
         technology : idTech,
         value : newValue
-      };
-      gapi.client.rest.addSkill(req).execute(function(data) {
-      });
-    }
+     };
+     gapi.client.rest.addSkill(req).execute(function(data) {
+       context.rating = data.value;
+       deferred.resolve(context.rating);
+     });
+     return deferred.promise;
   }
+
+    this.deleteUserSkill = function(idTech) {
+
+       var deferred = $q.defer();
+       if (!idTech) {
+          throw 'getTechnology needs a valid `id` parameter';
+       }
+       var req = {
+          id : idTech
+       };
+       gapi.client.rest.deleteUserSkill(req).execute(function(data) {
+          deferred.resolve(data);
+       });
+       return deferred.promise;
+    }
 
   this.getRecommended = function () {
     return true;
