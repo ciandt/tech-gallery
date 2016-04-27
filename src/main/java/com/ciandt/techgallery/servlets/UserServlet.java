@@ -38,12 +38,7 @@ public class UserServlet extends HttpServlet {
     response.setCharacterEncoding("UTF-8");
 
     try {
-      TechGalleryUser user = new TechGalleryUser();
-
-      user.setName("Sidharta");
-      user.setAdmin(true);
-
-        //uService.getUserByEmail(userName);
+      TechGalleryUser user = uService.getUserByEmail(userName);
 
       if(!user.isAdmin()) {
         throw new ForbiddenException("Você precisa ser um administrador do TechGallery para esta operação.");
