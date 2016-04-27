@@ -66,6 +66,9 @@ public class Technology extends BaseEntity<String> {
   private String website;
 
   @Unindex
+  private String idBoard;
+
+  @Unindex
   private String author;
 
   @Unindex
@@ -267,6 +270,14 @@ public class Technology extends BaseEntity<String> {
 
   public void setLastActivityUser(String lastActivityUser) {
     this.lastActivityUser = lastActivityUser;
+  }
+
+  public String getIdBoard() {
+    return idBoard;
+  }
+
+  public void setIdBoard(String idBoard) {
+    this.idBoard = idBoard;
   }
 
   /*

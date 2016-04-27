@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $stateParams, AppService, TechnologyService, $uibModal, Analytics) {
+module.exports = function ($rootScope, $stateParams, $sce, $document, $interval, AppService, TechnologyService, $uibModal, Analytics) {
 
   /**
    * Object context
@@ -57,6 +57,21 @@ module.exports = function ($rootScope, $stateParams, AppService, TechnologyServi
   this.setRecommendation = function (recommendation) {
     context.recommended = recommendation;
     document.getElementById('recommendation-comment-input').focus();
+  }
+
+  /* Board */
+  this.boardLoaded = false;
+
+  this.showBoard = function() {
+    return !!context.item.idBoard;
+  };
+
+  this.getBoardUrl = function() {
+    return $sce.trustAsResourceUrl(context.item.boardUrlPrefix + context.item.idBoard);
+  };
+
+  this.onLoadBoard = function() {
+    context.boardLoaded = true;
   }
 
   // @todo Move this to UserService

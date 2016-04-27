@@ -72,6 +72,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
   function fillTechnology(technology) {
     context.name = technology.name;
     context.id = technology.id;
+    context.idBoard = technology.idBoard;
     context.shortDescription = technology.shortDescription;
     context.description = technology.description;
     context.webSite = technology.website;

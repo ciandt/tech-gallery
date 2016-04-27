@@ -5,6 +5,7 @@
 	<threadsafe>true</threadsafe>
 	<system-properties>
 		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
+		<property name="board.url.prefix" value="${board.url.prefix}" />
 	</system-properties>
 	<static-files>
 		<exclude path="/node/**" />

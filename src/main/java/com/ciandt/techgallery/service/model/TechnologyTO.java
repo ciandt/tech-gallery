@@ -40,8 +40,13 @@ public class TechnologyTO implements Response {
   private String imageContent;
   /** technology is followed by the logged user. */
   private boolean followedByUser;
+  /** technology board id */
+  private String idBoard;
+  /** technology smart canvas board id */
+  private String boardUrlPrefix;
 
   private Date lastActivity;
+
 
   public String getId() {
     return id;
@@ -169,5 +174,22 @@ public class TechnologyTO implements Response {
 
   public void setRecommendationJustification(String recommendationJustification) {
     this.recommendationJustification = recommendationJustification;
+  }
+
+  public String getIdBoard() {
+	// TODO Auto-generated method stub
+	return idBoard;
+  }
+
+  public void setIdBoard(String idBoard) {
+	this.idBoard = idBoard;
+  }
+
+  public String getBoardUrlPrefix() {
+    return boardUrlPrefix;
+  }
+
+  public void setBoardUrlPrefix(String boardUrlPrefix) {
+    this.boardUrlPrefix = boardUrlPrefix;
   }
 }

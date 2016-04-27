@@ -29,9 +29,9 @@ public class Constants {
 
   public static final String APP_NAME = "Tech Gallery";
   public static final String APP_EMAIL = "google-project@ciandt.com";
-  
+
   public static final String TEMPLATES_FOLDER = "emailtemplates";
-  
+
   public static final String PRODUCTION_PROPERTY = "Production";
 
   public static final String APPLICATION_VERSION_PROPERTY =
@@ -47,9 +47,9 @@ public class Constants {
   public static final String LINK_PRODUCTION = "techgallery.ciandt.com";
 
   public static final String PATH_VIEW_TECH_HTML = "viewTech.html";
-  
+
   public static final String EMAIL_CONTEXT_SINGLE = "te indicou em";
-  
+
   public static final String EMAIL_CONTEXT_PLURAL = "te indicaram em";
 
 }

@@ -25,6 +25,7 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
     product.setFollowedByUser(baseObject.isFollowedByUser());
     product.setLastActivity(baseObject.getLastActivity());
     product.setImageContent(baseObject.getImageContent());
+    product.setIdBoard(baseObject.getIdBoard());
     return product;
   }
 
@@ -48,6 +49,8 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
       product.setFollowedByUser(baseObject.isFollowedByUser());
       product.setLastActivity(baseObject.getLastActivity());
       product.setImageContent(baseObject.getImageContent());
+      product.setIdBoard(baseObject.getIdBoard());
+      product.setBoardUrlPrefix(System.getProperty("board.url.prefix"));
       return product;
     } else {
       return null;

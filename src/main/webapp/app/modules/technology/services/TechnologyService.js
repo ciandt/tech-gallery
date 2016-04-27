@@ -79,6 +79,7 @@ module.exports = function($q, $timeout, $rootScope) {
     if(context.image && context.image.startsWith('https://')){
       var req = {
         id : slugify(context.name),
+        idBoard: context.idBoard,
         name : context.name,
         shortDescription : context.shortDescription,
         recommendationJustification : context.justification,
@@ -91,6 +92,7 @@ module.exports = function($q, $timeout, $rootScope) {
     }else{
       var req = {
         id : slugify(context.name),
+        idBoard: context.idBoard,
         name : context.name,
         shortDescription : context.shortDescription,
         recommendationJustification : context.justification,
