@@ -33,7 +33,6 @@ public class UserServlet extends HttpServlet {
     String userName = request.getUserPrincipal().getName();
     UserServiceTG uService = UserServiceTGImpl.getInstance();
 
-
     String exportType = request.getParameter("type");
     response.setCharacterEncoding("UTF-8");
 
