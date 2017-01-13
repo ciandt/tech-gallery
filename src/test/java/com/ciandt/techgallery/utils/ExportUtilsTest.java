@@ -68,7 +68,7 @@ public class ExportUtilsTest {
 
     List<UserProfile> user = UserProfileServiceImpl.getInstance().findAllUsersProfile();
 
-    String csv = new String(ExportUtils.createCsvUsersProfile(user));
+    String csv = new String(ExportUtils.createCsvUsersProfile(user), "UTF-8");
     //StringWriter csv = ExportUtils.createCsvUsersProfile(user);
     assertNotNull(csv);
 
@@ -88,7 +88,7 @@ public class ExportUtilsTest {
     techGalleryUser2.setEmail(null);
 
     List<UserProfile> user = UserProfileServiceImpl.getInstance().findAllUsersProfile();
-    String csv = new String(ExportUtils.createCsvUsersProfile(user));
+    String csv = new String(ExportUtils.createCsvUsersProfile(user), "UTF-8");
     assertNotNull(csv);
 
     String expectedCsv = CSV_HEADERS +

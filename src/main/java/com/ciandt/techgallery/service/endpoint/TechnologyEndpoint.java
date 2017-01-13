@@ -3,8 +3,10 @@ package com.ciandt.techgallery.service.endpoint;
 import com.google.api.server.spi.ServiceException;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.AuthLevel;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
+import com.google.api.server.spi.config.ApiReference;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -27,6 +29,7 @@ import com.ciant.techgallery.transaction.ServiceFactory;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Endpoint controller class for Technology requests.
@@ -34,15 +37,14 @@ import java.util.List;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1",
-    clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
-    scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE, Constants.PLUS_STREAM_WRITE})
+@ApiReference(TechGalleryApiDefinition.class)
 public class TechnologyEndpoint {
 
   private TechnologyService service = TechnologyServiceImpl.getInstance();
   private TechnologyFollowersService followersService = ServiceFactory.createServiceImplementation(
       TechnologyFollowersService.class, TechnologyFollowersServiceImpl.class);
   private UserServiceTG userService = UserServiceTGImpl.getInstance();
+  private static final Logger log = Logger.getLogger(TechGalleryAuthenticator.class.getName()); 
 
   /**
    * Endpoint for adding a Technology.
@@ -72,6 +74,10 @@ public class TechnologyEndpoint {
   @ApiMethod(name = "getTechnologies", path = "technology", httpMethod = "get")
   public Response getTechnologies(User user)
       throws InternalServerErrorException, NotFoundException, BadRequestException {
+    if(user == null)
+      log.info("User is null");
+    else
+      log.info("User is: " + user.getEmail());
     return service.getTechnologies(user);
   }
 

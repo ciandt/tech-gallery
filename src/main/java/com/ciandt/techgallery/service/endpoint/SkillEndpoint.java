@@ -3,6 +3,8 @@ package com.ciandt.techgallery.service.endpoint;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.config.AuthLevel;
+import com.google.api.server.spi.config.ApiReference;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -21,9 +23,8 @@ import com.ciandt.techgallery.service.model.UserSkillTO;
  * @author Felipe Goncalves de Castro
  *
  */
-@Api(name = "rest", version = "v1",
-    clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
-    scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE, Constants.PLUS_STREAM_WRITE})
+
+@ApiReference(TechGalleryApiDefinition.class)
 public class SkillEndpoint {
 
   private SkillService service = SkillServiceImpl.getInstance();

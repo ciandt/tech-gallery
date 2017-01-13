@@ -11,7 +11,11 @@ import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.UserResponse;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
+
+import javax.naming.NameNotFoundException;
+
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -184,5 +188,14 @@ public interface UserServiceTG {
    * @throws InternalServerErrorException
    */
   TechGalleryUser validateUser(User user) throws BadRequestException, NotFoundException, InternalServerErrorException;
+
+  /**
+   * @Param user
+   *          info about user from google
+   * @throws BadRequestException
+   * @throws NotFoundException
+   * @throws GeneralSecurityException
+   */
+  void authorize(User user) throws OAuthRequestException;
 
 }
