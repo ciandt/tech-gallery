@@ -3,6 +3,8 @@ package com.ciandt.techgallery.service.endpoint;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.config.AuthLevel;
+import com.google.api.server.spi.config.ApiReference;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.api.server.spi.response.NotFoundException;
@@ -22,9 +24,8 @@ import com.ciandt.techgallery.service.model.Response;
  * @author felipers
  *
  */
-@Api(name = "rest", version = "v1",
-    clientIds = {Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID},
-    scopes = {Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE, Constants.PLUS_STREAM_WRITE})
+
+@ApiReference(TechGalleryApiDefinition.class)
 public class EndorsementEndpoint {
 
   private EndorsementService service = EndorsementServiceImpl.getInstance();
@@ -73,7 +74,7 @@ public class EndorsementEndpoint {
    * @throws NotFoundException in case the information are not founded
    */
   @ApiMethod(name = "getEndorsements", path = "endorsement", httpMethod = "get")
-  public Response getEndorsements() throws InternalServerErrorException, NotFoundException {
+  public Response getEndorsements(User user) throws InternalServerErrorException, NotFoundException {
     return service.getEndorsements();
   }
 
@@ -85,7 +86,7 @@ public class EndorsementEndpoint {
    * @throws NotFoundException in case the information are not founded
    */
   @ApiMethod(name = "getEndorsement", path = "endorsement/{id}", httpMethod = "get")
-  public Endorsement getEndorsement(@Named("id") Long id) throws NotFoundException {
+  public Endorsement getEndorsement(@Named("id") Long id, User user) throws NotFoundException {
     return service.getEndorsement(id);
   }
 

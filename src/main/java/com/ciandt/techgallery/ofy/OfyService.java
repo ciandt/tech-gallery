@@ -3,6 +3,8 @@ package com.ciandt.techgallery.ofy;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
+import com.ciandt.techgallery.persistence.model.ApplicationConfiguration;
+
 
 import com.ciandt.techgallery.persistence.model.CronJob;
 import com.ciandt.techgallery.persistence.model.EmailNotification;
@@ -40,6 +42,7 @@ public class OfyService implements ServletContextListener {
     ObjectifyService.register(TechnologyFollowers.class);
     ObjectifyService.register(EmailNotification.class);
     ObjectifyService.register(CronJob.class);
+    ObjectifyService.register(ApplicationConfiguration.class);
   }
 
   /**
