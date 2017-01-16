@@ -10,8 +10,8 @@
   <artifactId>techgallery</artifactId>
 
   <properties>
-    <app.id>tech-gallery-develop</app.id>
-    <app.version>v1-0-0</app.version>
+    <app.id>tech-gallery</app.id>
+    <app.version>${app_version}</app.version>
     <appengine.version>1.9.27</appengine.version>
     <gcloud.plugin.version>0.9.58.v20150505</gcloud.plugin.version>
     <jackson.databind-version>2.2.3</jackson.databind-version>
