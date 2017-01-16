@@ -188,9 +188,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   public TechGalleryUser handleLogin(Integer timezoneOffset, final User user, HttpServletRequest req)
       throws NotFoundException, BadRequestException, InternalServerErrorException, IOException,
       OAuthRequestException {
-    if (user == null) {
-      throw new OAuthRequestException(i18n.t("Authorization error"));
-    }
+    authorize(user);
     String userEmail = user.getEmail();
     String header = req.getHeader("Authorization");
     String accesstoken = header.substring(header.indexOf(' ')).trim(); // "Bearer
@@ -528,5 +526,19 @@ public class UserServiceTGImpl implements UserServiceTG {
     }
     return techUser;
   }
+
+   /**
+    * @Param user
+    *          info about user from google
+    * @throws BadRequestException
+    * @throws NotFoundException
+    * @throws GeneralSecurityException
+   */
+   @Override
+   public void authorize(final User user) throws OAuthRequestException {
+     if(user == null) {       
+      throw new OAuthRequestException(i18n.t("Authorization error"));
+     }
+   }
 
 }

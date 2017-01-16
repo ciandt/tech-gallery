@@ -11,6 +11,8 @@ import com.ciandt.techgallery.service.impl.GooglePlusCommunicationServiceImpl;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.config.AuthLevel;
+import com.google.api.server.spi.config.ApiReference;
 import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.api.server.spi.response.InternalServerErrorException;
@@ -23,9 +25,7 @@ import com.google.appengine.api.users.User;
  * @author Thulio Ribeiro
  *
  */
-@Api(name = "rest", version = "v1", clientIds = { Constants.WEB_CLIENT_ID,
-    Constants.API_EXPLORER_CLIENT_ID }, scopes = { Constants.EMAIL_SCOPE, Constants.PLUS_SCOPE,
-        Constants.PLUS_STREAM_WRITE })
+@ApiReference(TechGalleryApiDefinition.class)
 public class SocialNetworkCommunicationEndpoint {
 
   private SocialNetworkCommunicationService service = GooglePlusCommunicationServiceImpl.getInstance();
