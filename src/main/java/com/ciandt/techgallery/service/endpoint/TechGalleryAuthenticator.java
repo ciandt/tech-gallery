@@ -38,7 +38,7 @@ public class TechGalleryAuthenticator implements Authenticator {
           String email = currentUser.getEmail();
           // Check domain..
           if(isValidDomain(email) || isWhiteList(email)) {
-            return new User(currentUser.getEmail());
+            return new User(currentUser.getUserId(), currentUser.getEmail());
           }
         }
         throw new RestrictedDomainException(i18n.t("Authorization error"));
