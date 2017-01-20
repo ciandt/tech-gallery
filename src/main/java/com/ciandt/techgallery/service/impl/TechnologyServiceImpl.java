@@ -273,7 +273,7 @@ public class TechnologyServiceImpl implements TechnologyService {
   private void verifyTechnologyFollowedByUser(User user, List<Technology> filteredList)
       throws NotFoundException, BadRequestException, InternalServerErrorException {
     TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
-    if (techUser.getFollowedTechnologyIds() != null && !techUser.getFollowedTechnologyIds().isEmpty()) {
+    if (techUser != null && techUser.getFollowedTechnologyIds() != null && !techUser.getFollowedTechnologyIds().isEmpty()) {
       for (Technology technology : filteredList) {
         if (techUser.getFollowedTechnologyIds().contains(technology.getId())) {
           technology.setFollowedByUser(true);
@@ -333,7 +333,7 @@ public class TechnologyServiceImpl implements TechnologyService {
     } else {
       if (user != null) {
         TechGalleryUser techUser = userService.getUserByGoogleId(user.getUserId());
-        if (techUser.getFollowedTechnologyIds() != null && techUser.getFollowedTechnologyIds().contains(tech.getId())) {
+        if (techUser != null && techUser.getFollowedTechnologyIds() != null && techUser.getFollowedTechnologyIds().contains(tech.getId())) {
           tech.setFollowedByUser(true);
         }
       }
