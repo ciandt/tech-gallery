@@ -19,6 +19,7 @@ import java.security.GeneralSecurityException;
 public class StorageDAOImpl implements StorageDAO {
 
   private static final String IMAGE_FORMAT = "image/png";
+  private static final String IMAGE_EXTENSION = ".png";
 
   /*
    * Attributes --------------------------------------------
@@ -53,6 +54,6 @@ public class StorageDAOImpl implements StorageDAO {
       throws IOException, GeneralSecurityException {
     InputStreamContent contentStream = new InputStreamContent(IMAGE_FORMAT, stream);
 
-    return StorageHandler.saveImage(name, contentStream);
+    return StorageHandler.saveImage(name.concat(IMAGE_EXTENSION), contentStream);
   }
 }
