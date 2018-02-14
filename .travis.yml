@@ -7,8 +7,7 @@ env:
 - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 
 before_install:
-- openssl aes-256-cbc -K $encrypted_7da54d832346_key -iv $encrypted_7da54d832346_iv
-  -in gce.json.enc -out gce.json -d
+- openssl aes-256-cbc -K $encrypted_08b0e885a9e3_key -iv $encrypted_08b0e885a9e3_iv -in gce-travis-deploy.json.enc -out gce-travis-deploy.json -d
 
 script:
 - mvn -v
