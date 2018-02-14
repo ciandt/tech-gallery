@@ -76,16 +76,8 @@ public class ShareTechnologyTest {
 
     @Test
     public void addTechnologyWhenNotExists() throws Exception {
-        // given - pesquiso e nao encontro a tecnologia
-//        TechnologyFilter filter = new TechnologyFilter();
-//        filter.setTitleContains("angular");
-//        TODO: not allow test findTechnologiesByFilter with no real user
-//        TODO: not is possible mock singleton instance and private methods
-//        TechnologiesResponse response = (TechnologiesResponse) service.findTechnologiesByFilter(filter, currentUser);
-//        List notFoundedTechnologies = response.getTechnologies();
-//        assertNotNull(notFoundedTechnologies);
 
-        // when - adiciono novo technologia
+        // given - I added a new tecnology
         Technology technology = new Technology();
         technology.setId(technology.convertNameToId("Angular JS"));
         technology.setName("Angular JS");
@@ -96,9 +88,9 @@ public class ShareTechnologyTest {
         // technology.setImageContent("sample base64 imagem data");
         service.addOrUpdateTechnology(technology, currentUser);
 
-        // then - verifica se a technologia foi inserida
-        // and - sou o author da mesma
-        // and - contadores de endorsement e
+        // then - check if technology was created
+        // and - if I am an author
+        // and - counters has been started with zero
         Technology founded = service.getTechnologyById(technology.getId(), currentUser);
         assertNotNull(founded);
         assertEquals(founded.getId(), technology.getId());
