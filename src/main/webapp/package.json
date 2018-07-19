@@ -16,7 +16,7 @@
     "gulp-jshint": "^1.12.0",
     "gulp-minify-css": "^1.2.1",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.1.0",
+    "gulp-sass": "^4.0.1",
     "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^1.4.2",
     "gulp-util": "^3.0.7",
@@ -25,10 +25,10 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "angular": "~1.4.7",
+    "angular": "^1.7.2",
     "angular-bootstrap": "^0.12.2",
     "angular-route": "~1.4.7",
-    "angular-sanitize": "~1.4.7",
+    "angular-sanitize": "^1.7.2",
     "angular-ui-router": "^0.2.15"
   }
 }

@@ -29,12 +29,12 @@ public class RecommendationEndpoint {
 
   private RecommendationService service = RecommendationServiceImpl.getInstance();
 
-  @ApiMethod(name = "addRecommendation", path = "recommendation", httpMethod = "post")
+  @ApiMethod(name = "addRecommendation", path = "add-recommendation", httpMethod = "post")
   public Response addRecommendation() throws InternalServerErrorException {
     throw new InternalServerErrorException("Not yet implemented!");
   }
 
-  @ApiMethod(name = "getRecommendations", path = "recommendation", httpMethod = "get")
+  @ApiMethod(name = "getRecommendations", path = "get-recommendation", httpMethod = "get")
   public List<String> getRecommendations(User user) throws InternalServerErrorException,
       NotFoundException, BadRequestException {
     return service.getRecommendations(user);

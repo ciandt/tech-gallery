@@ -141,6 +141,7 @@ gulp.task('build:scripts', function () {
       this.emit('end');
     })
     .pipe(source(out.scripts.file))
+    .pipe(buffer())
     .pipe(rename(out.scripts.fileMinified))
     .pipe(chmod(755))
     .pipe(gulp.dest(out.scripts.folder));

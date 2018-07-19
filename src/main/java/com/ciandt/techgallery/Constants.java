@@ -6,9 +6,10 @@ import com.google.api.server.spi.Constant;
  * Contains the client IDs and scopes for allowed clients consuming your API.
  */
 public class Constants {
-  public static final String SERVICE_ACCOUNT_CLIENT_ID = "r2EklsA7k8ODf91DMLYbhrwT";
+  public static final String SERVICE_ACCOUNT_CLIENT_ID = "101429468834662727296";//"r2EklsA7k8ODf91DMLYbhrwT";
   public static final String WEB_CLIENT_ID =
-      "192387127763-mbfdnkegtcv169h4rsrn31fgn64mo21m.apps.googleusercontent.com";
+          "1091883615279-ehqv3bfpvtj47hplbsak68epgng6o24s.apps.googleusercontent.com";
+  //"192387127763-mbfdnkegtcv169h4rsrn31fgn64mo21m.apps.googleusercontent.com";
   public static final String ANDROID_CLIENT_ID = "replace this with your Android client ID";
   public static final String IOS_CLIENT_ID = "replace this with your iOS client ID";
   public static final String ANDROID_AUDIENCE = WEB_CLIENT_ID;
