@@ -96,7 +96,7 @@ gulp.task('watch:stylesheets', function () {
       gutil.log(chalk.red(err.message));
     }))
     .pipe(rename(out.styles.fileMinified))
-    .pipe(chmod(755))
+    .pipe(chmod(0o755))
     .pipe(gulp.dest(out.styles.folder))
 });
 
@@ -112,7 +112,7 @@ gulp.task('watch:scripts', function () {
     })
     .pipe(source(out.scripts.file))
     .pipe(rename(out.scripts.fileMinified))
-    .pipe(chmod(755))
+    .pipe(chmod(0o755))
     .pipe(gulp.dest(out.scripts.folder));
 });
 
@@ -122,17 +122,17 @@ gulp.task('build:stylesheets', function () {
       gutil.log(chalk.white.bgRed(' Error '));
       gutil.log(chalk.red(err.message));
     }))
-    .pipe(chmod(755))
+    .pipe(chmod(0o755))
     .pipe(gulp.dest(out.styles.folder))
     .pipe(rename(out.styles.fileMinified))
     .pipe(minifyCss())
-    .pipe(chmod(755))
+    .pipe(chmod(0o755))
     .pipe(gulp.dest(out.styles.folder));
 });
 
 gulp.task('build:scripts', function () {
   return browserify(src.scripts.app, {
-      debug: true,
+      debug: false,
       insertGlobals: true
     })
     .bundle().on('error', function (err) {
@@ -141,9 +141,8 @@ gulp.task('build:scripts', function () {
       this.emit('end');
     })
     .pipe(source(out.scripts.file))
-    .pipe(buffer())
     .pipe(rename(out.scripts.fileMinified))
-    .pipe(chmod(755))
+    .pipe(chmod(0o755))
     .pipe(gulp.dest(out.scripts.folder));
     //Disable the minification while ng-anotate is not working
     // .pipe(streamify(uglify()).on('error', function (err) {
@@ -162,5 +161,7 @@ gulp.task('jshint', function() {
 gulp.task('csslint', function() {
   return gulp.src('./css/*.css')
     .pipe(csslint())
-    .pipe(csslint.reporter('checkstyle-xml'));
+    .pipe(csslint.formatter('checkstyle-xml'));
 });
+
+gulp.task('default', ['build']);

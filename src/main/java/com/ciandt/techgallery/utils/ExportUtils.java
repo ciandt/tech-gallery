@@ -136,7 +136,7 @@ public class ExportUtils {
   private static void makeRowBold(HSSFWorkbook wb, Row row) {
     CellStyle style = wb.createCellStyle();
     Font font = wb.createFont();
-    font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+    font.setBold(true);
     style.setFont(font);
 
     for (int i = 0; i < row.getLastCellNum(); i++) {

@@ -12,7 +12,7 @@
     <properties>
         <appengine.version>1.9.64</appengine.version>
         <gcloud.plugin.version>2.0.9.133.v201611104</gcloud.plugin.version>
-        <jackson.databind-version>2.2.3</jackson.databind-version>
+        <jackson.databind-version>2.6.4</jackson.databind-version>
         <checkstyle.file.path>/src/main/resources/google_checks.xml</checkstyle.file.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
@@ -109,7 +109,7 @@
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson2</artifactId>
-            <version>1.19.0</version>
+            <version>1.23.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.oauth-client</groupId>
@@ -230,7 +230,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>3.14</version>
+            <version>3.17</version>
         </dependency>
         <dependency>
             <groupId>net.sf.opencsv</groupId>
