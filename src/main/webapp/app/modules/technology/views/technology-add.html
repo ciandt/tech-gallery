@@ -43,23 +43,6 @@
                   </div>
                 </div>
                 <!--End Technology Name-->
-                <!--IsProjectSpecific Name-->
-                <div class="form-group col-md-7" ng-class="{'has-error': (addTechnologyForm.name.$invalid && addTechnologyForm.name.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.name.$invalid)}">
-                  <label for="technology-name">Nome da tecnologia</label>
-                  <input type="text" class="form-control" id="isProjectSpecific" name="name" ng-model="technology.name" placeholder="Ex.: AngularJS" required="" maxlength="30" ng-disabled="technology.id.length">
-                  <span class="help-block">Max: 30 caracteres</span>
-                  <div ng-show="addTechnologyForm.$submitted || addTechnologyForm.name.$touched">
-                    <span ng-show="addTechnologyForm.name.$error.required" class="help-block">O campo Nome é obrigatório</span>
-                  </div>
-                </div>
-                <ui-select ng-model="ctrl.country.selected" theme="selectize" title="Is project specific" append-to-body="true">
-                  <ui-select-match placeholder="Select or search a country in the list...">{{$select.selected.name}}</ui-select-match>
-                  <ui-select-choices repeat="country in ctrl.countries | filter: $select.search">
-                    <span ng-bind-html="country.name | highlight: $select.search"></span>
-                    <small ng-bind-html="country.code | highlight: $select.search"></small>
-                  </ui-select-choices>
-                </ui-select>
-                <!--End IsProjectSpecific Name-->
                 <div class="form-group col-md-12" ng-show="loggedUserInformation.admin">
                   <div class="btn-group" uib-dropdown>
                     <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
