@@ -47,7 +47,10 @@ public enum ValidationMessageEnums {
   LINK_NOT_EXIST("Link doesn't exist."),
   LINK_ID_CANNOT_BLANK("Link or link's id cannot be null or blank."),
   LINK_AUTHOR_ERROR("This link doesn't belong to this user."),
-  LINK_MUST_BE_VALID("This link is not valid.");
+  LINK_MUST_BE_VALID("This link is not valid."),
+
+  //Message for projects
+  NAME_CANNOT_BLANK("Name cannot be null or blank.");
 
 
   private String message;

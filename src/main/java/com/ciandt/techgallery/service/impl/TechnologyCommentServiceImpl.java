@@ -23,7 +23,7 @@ import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
 import com.ciandt.techgallery.service.impl.profile.UserProfileServiceImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyCommentsTO;
-import com.ciant.techgallery.transaction.ServiceFactory;
+import com.ciandt.techgallery.transaction.ServiceFactory;
 
 import java.util.Date;
 import java.util.List;

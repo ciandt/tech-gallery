@@ -1,10 +1,10 @@
-package com.ciant.techgallery.transaction;
+package com.ciandt.techgallery.transaction;
 
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Work;
 
-import com.ciant.techgallery.transaction.idempotency.IdempotencyHandler;
-import com.ciant.techgallery.transaction.idempotency.IdempotencyHandlerFactory;
+import com.ciandt.techgallery.transaction.idempotency.IdempotencyHandler;
+import com.ciandt.techgallery.transaction.idempotency.IdempotencyHandlerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
