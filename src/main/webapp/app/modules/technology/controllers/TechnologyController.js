@@ -41,6 +41,15 @@ module.exports = function ($rootScope, $stateParams, $sce, $document, $interval,
 
   this.oldRating = {};
 
+  this.projects = TechnologyService.getProjects();
+
+  this.getProject = function (project){
+    return TechnologyService.getProject(project);
+  }
+
+  this.project = {};
+
+
   // Load techonlogy based on URL param
   TechnologyService.getUserSkill($stateParams.id).then(function (rating) {
     context.rating = rating;
