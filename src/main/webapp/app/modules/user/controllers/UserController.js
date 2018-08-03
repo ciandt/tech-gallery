@@ -18,6 +18,8 @@ module.exports = function ($stateParams, AppService, UserService, $uibModal, $st
    */ 
   this.profile = UserService.profile;
 
+  context.dropDownProjects = UserService.getProjects();
+
   // Update the user info based on the URL param
   UserService.updateUserProfile($stateParams.id).then(function (profile) {
     if(!profile.hasOwnProperty('error')){
