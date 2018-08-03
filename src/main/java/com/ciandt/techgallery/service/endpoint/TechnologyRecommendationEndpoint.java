@@ -23,25 +23,25 @@ public class TechnologyRecommendationEndpoint {
   private TechnologyRecommendationService service = TechnologyRecommendationServiceImpl.getInstance();
 
   @ApiMethod(name = "getTechnologyRecommendations", path = "technology-recommendations", httpMethod = "get")
-  public List<Response> getRecommendations(@Named("id") String technologyId, User user)
+  public List<Response> getTechRecommendations(@Named("id") String technologyId, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     return service.getRecommendations(technologyId, user);
   }
 
-  @ApiMethod(name = "getRecommendationsUp", path = "technology-recommendations_up", httpMethod = "get")
-  public List<Response> getRecommendationsUp(@Named("id") String technologyId, User user)
+  @ApiMethod(name = "getRecommendationsUp", path = "technology-recommendations-up", httpMethod = "get")
+  public List<Response> getTechRecommendationsUp(@Named("id") String technologyId, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     return service.getRecommendationsUpByTechnologyAndUser(technologyId, user);
   }
 
-  @ApiMethod(name = "getRecommendationsDown", path = "technology-recommendations_down", httpMethod = "get")
-  public List<Response> getRecommendationsDown(@Named("id") String technologyId, User user)
+  @ApiMethod(name = "getRecommendationsDown", path = "technology-recommendations-down", httpMethod = "get")
+  public List<Response> getTechRecommendationsDown(@Named("id") String technologyId, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException, OAuthRequestException {
     return service.getRecommendationsDownByTechnologyAndUser(technologyId, user);
   }
 
   @ApiMethod(name = "deleteRecommendById", path = "technology-delete-recommendation", httpMethod = "get")
-  public Response deleteRecommendById(@Named("recommendId") Long recommendId, User user)
+  public Response deleteTechRecommendById(@Named("recommendId") Long recommendId, User user)
       throws BadRequestException, NotFoundException, InternalServerErrorException {
     return service.deleteRecommendById(recommendId, user);
   }

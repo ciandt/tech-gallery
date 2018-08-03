@@ -13,6 +13,7 @@ import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.oauth.OAuthService;
 import com.google.appengine.api.oauth.OAuthServiceFactory;
 import com.ciandt.techgallery.utils.i18n.I18n;
+import org.apache.commons.lang.StringUtils;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,12 +55,7 @@ public class TechGalleryAuthenticator implements Authenticator {
    */
   private boolean isValidDomain(String email) {
     ApplicationConfiguration domain = appConfigDAO.findOrCreateById("allowed-domains");
-    if(domain != null) {
-      email = email.toLowerCase();
-      // Check empty records..
-      if(domain.getValue() == null || domain.getValue() == "") {
-        return false;
-      }
+    if(domain != null && StringUtils.isNotBlank(domain.getValue())) {
       // Check all allowed domains on settings..
       String[] allowedDomains = domain.getValue().toLowerCase().split(",");
       for(String ad : allowedDomains) {

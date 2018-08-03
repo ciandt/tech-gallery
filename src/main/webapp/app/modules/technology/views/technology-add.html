@@ -19,6 +19,7 @@
             <form id="addTechnologyForm" name="addTechnologyForm" ng-submit="technology.addOrUpdateTechnology(addTechnologyForm)" novalidate>
               <div class="row">
                 <div class="form-group col-md-5">
+                  <!--Image-->
                   <div class="media">
                     <div id="div_image" class="media-left">
                       <output id="list">
@@ -32,14 +33,16 @@
                     </div>
                   </div>
                 </div>
+                <!--End Image-->
+                <!--Technology Name-->
                 <div class="form-group col-md-7" ng-class="{'has-error': (addTechnologyForm.name.$invalid && addTechnologyForm.name.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.name.$invalid)}">
                   <label for="technology-name">Nome da tecnologia</label>
                   <input type="text" class="form-control" id="technology-name" name="name" ng-model="technology.name" placeholder="Ex.: AngularJS" required="" maxlength="30" ng-disabled="technology.id.length">
-                  <span class="help-block">Max: 30 caracteres</span>
                   <div ng-show="addTechnologyForm.$submitted || addTechnologyForm.name.$touched">
                     <span ng-show="addTechnologyForm.name.$error.required" class="help-block">O campo Nome é obrigatório</span>
                   </div>
                 </div>
+                <!--End Technology Name-->
                 <div class="form-group col-md-12" ng-show="loggedUserInformation.admin">
                   <div class="btn-group" uib-dropdown>
                     <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
@@ -56,6 +59,7 @@
                 <div class="form-group col-md-12" ng-show="loggedUserInformation.admin">
                   <textarea ng-model="technology.justification" class="form-control" id="idjust" maxlength="500" placeholder="<Justificativa da Recomendação Ci&T>" ></textarea>
                 </div>
+                <!--Long Description-->
                 <div class="form-group col-md-12" ng-class="{'has-error': (addTechnologyForm.description.$invalid && addTechnologyForm.description.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.description.$invalid)}">
                   <label for="technology-description">Descrição</label>
                   <textarea class="form-control" id="technology-description" style="min-height: 150px; height: 150px; max-height: 300px;" name="description" ng-model="technology.description" maxlength="500" placeholder="Descrição" required></textarea>
@@ -63,6 +67,8 @@
                     <span ng-show="addTechnologyForm.description.$error.required" class="help-block">O campo Descrição é obrigatório</span>
                   </div>
                 </div>
+                <!--End Long Description-->
+                <!--Short Description-->
                 <div class="form-group col-md-12" ng-class="{'has-error': (addTechnologyForm.shortDescription.$invalid && addTechnologyForm.shortDescription.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.shortDescription.$invalid)}">
                   <label for="technology-shortDescription">Descrição curta</label>
                   <textarea class="form-control" id="technology-shortDescription" name="shortDescription" ng-model="technology.shortDescription" maxlength="140" placeholder="Descrição curta" required></textarea>
@@ -70,14 +76,19 @@
                     <span ng-show="addTechnologyForm.shortDescription.$error.required" class="help-block">O campo Descrição Curta é obrigatório</span>
                   </div>
                 </div>
+                <!--End Short Description-->
+                <!--Website-->
                 <div class="form-group col-md-12">
                   <label for="technology-website">Website</label>
                   <input type="text" class="form-control" id="technology-website" ng-model="technology.webSite" placeholder="http://">
                 </div>
+                <!--End Website-->
+                <!--Board Id-->
                 <div class="form-group col-md-12">
                   <label for="id-board">Board Id</label>
                   <input type="text" class="form-control" id="id-board" ng-model="technology.idBoard">
                 </div>
+                <!--End Board Id-->
                 <div class="form-inline col-md-12 text-right">
                   <div class="checkbox" ng-if="!technology.id.length">
                     <label>

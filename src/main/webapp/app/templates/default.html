@@ -19,7 +19,7 @@
       <ul ng-controller="SearchController as searchController" class="nav navbar-nav navbar-right">
         <li uib-dropdown uib-keyboard-nav>
           <a href="#"  role="button" uib-dropdown-toggle>{{loggedUserInformation.name}}<span class="caret"></span></a>
-          <ul class="uib-dropdown-menu">
+          <ul class="uib-dropdown-menu" uib-dropdown-menu>
             <li><a ng-href="#/people/{{ loggedUserInformation.login }}">Meu perfil</a></li>
             <li role="separator" class="divider"></li>
             <li><a href={{searchController.logOutUser}}>Sair</a></li>
