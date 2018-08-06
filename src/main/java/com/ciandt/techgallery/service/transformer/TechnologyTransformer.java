@@ -27,8 +27,10 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
     product.setImageContent(baseObject.getImageContent());
     product.setIdBoard(baseObject.getIdBoard());
 
-    ProjectTransformer projectTransformer = new ProjectTransformer();
-    product.setProject(projectTransformer.transformFrom(baseObject.getProject()));
+    if(baseObject.getProject() != null) {
+      ProjectTransformer projectTransformer = new ProjectTransformer();
+      product.setProject(projectTransformer.transformFrom(baseObject.getProject()));
+    }
 
     return product;
   }
@@ -56,12 +58,10 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
       product.setIdBoard(baseObject.getIdBoard());
       product.setBoardUrlPrefix(System.getProperty("board.url.prefix"));
 
-      ProjectTransformer projectTransformer = new ProjectTransformer();
-<<<<<<< HEAD
-      product.setProject( projectTransformer.transformTo(baseObject.getProject()));
-=======
-      product.setProject(projectTransformer.transformTo(baseObject.getProject()));
->>>>>>> KOGO-8375
+      if(baseObject.getProject() != null) {
+        ProjectTransformer projectTransformer = new ProjectTransformer();
+        product.setProject(projectTransformer.transformTo(baseObject.getProject()));
+      }
 
       return product;
     } else {
