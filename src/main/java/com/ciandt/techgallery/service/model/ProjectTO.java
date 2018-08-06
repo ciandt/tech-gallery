@@ -30,6 +30,4 @@ public class ProjectTO implements Response {
   public void setName(String name) {
     this.name = name;
   }
-
-
 }
