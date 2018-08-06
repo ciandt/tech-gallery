@@ -116,7 +116,6 @@ public class TechnologyServiceImpl implements TechnologyService {
     technology.setCreationDate(new Date());
     technology.setLastActivity(new Date());
     technology.setImage(imageLink);
-    technology.setProject(technology.getProject());
     technology.initCounters();
 
     technologyDAO.add(technology);
