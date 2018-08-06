@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $stateParams, $sce, $document, $interval, AppService, TechnologyService, $uibModal, Analytics) {
+module.exports = function ($rootScope, $stateParams, $sce, $document, $interval, ProjectService, AppService, TechnologyService, $uibModal, Analytics) {
 
   /**
    * Object context
@@ -41,7 +41,7 @@ module.exports = function ($rootScope, $stateParams, $sce, $document, $interval,
 
   this.oldRating = {};
 
-  this.projects = TechnologyService.getProjects();
+  this.projects = ProjectService.getProjects();
 
   this.getProject = function (project){
     return TechnologyService.getProject(project);

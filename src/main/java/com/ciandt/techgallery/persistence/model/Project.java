@@ -10,11 +10,10 @@ import com.googlecode.objectify.annotation.Index;
  * Project entity.
  *
  * @author moizes
- *
  */
 @Entity
 @ApiTransformer(ProjectTransformer.class)
-public class Project extends BaseEntity<String> {
+public class Project extends BaseEntity<Long> {
 
     /*
      * Constants --------------------------------------------
@@ -22,25 +21,19 @@ public class Project extends BaseEntity<String> {
     public static final String ID = "id";
     public static final String NAME = "name";
 
-    /*
-     * Attributes --------------------------------------------
-     */
     @Id
-    private String id;
+    private Long id;
 
     @Index
     private String name;
 
-    /*
-     * Getter's and Setter's --------------------------------------------
-     */
     @Override
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
     @Override
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -57,7 +50,7 @@ public class Project extends BaseEntity<String> {
      *
      * @param project entity.
      */
-    public int compareTo(Project project){
+    public int compareTo(Project project) {
         return this.id.compareTo(project.getId());
     }
 }

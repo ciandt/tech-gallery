@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, AppService, TechnologyService, $stateParams, $state, $scope) {
+module.exports = function ($rootScope, AppService, TechnologyService, ProjectService, $stateParams, $state, $scope) {
 
   /**
    * Object context
@@ -32,10 +32,10 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
     context.dropDownRecommendation = data;
   });
 
-  //TechnologyService.getProjects().then(function(data){
-  //  context.dropDownProjects = data;
-  //});
-  context.dropDownProjects = TechnologyService.getProjects();
+  ProjectService.getProjects().then(function(data){
+    data.unshift({id:0, name:"Não"});
+   context.dropDownProjects = data;
+  });
 
   this.addOrUpdateTechnology = function(form){
     var isEdit = (context.id !== undefined);
@@ -83,7 +83,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
     context.description = technology.description;
     context.webSite = technology.website;
     context.image = technology.image;
-    context.project = technology.project;
+    context.project = technology.project ? technology.project : 0;
     if(context.image){
       document.getElementById('list').innerHTML = ['<img src="', context.image,'" title="', context.name, '" />'].join('');
     }

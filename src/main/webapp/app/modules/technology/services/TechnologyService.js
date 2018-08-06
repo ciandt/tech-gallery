@@ -44,46 +44,6 @@ module.exports = function($q, $timeout, $rootScope) {
     return deferred.promise;
   };
 
-    /**
-     * Retrieve list of projects
-     * @return {Promise} The gapi response
-     */
-     this.getProjects = function () {
-//      var deferred = $q.defer();
-//      gapi.client.rest.getProjects().execute(function (data) {
-//       context.foundItems = data.projects;
-//       $rootScope.$broadcast('searchChange', {
-//          projects: context.foundItems
-//        });
-//       deferred.resolve(context.foundItems);
-//     });
-//      return deferred.promise;
-
- return [
-        {
-           id: 0,
-           name : 'Não'
-        },
-        {
-          id: 1,
-          name : 'Coca-Cola'
-        },
-        {
-          id: 2,
-          name : 'Google'
-        },{
-          id: 3,
-          name : 'IHearth'
-        },{
-          id: 4,
-          name : 'MRV'
-        },{
-          id: 5,
-          name : 'Netshoes'
-        },
-      ];
-    };
-
   this.addOrUpdate = function(context){
     this.searched = false;
     var req = fillRequestToSave(context);
