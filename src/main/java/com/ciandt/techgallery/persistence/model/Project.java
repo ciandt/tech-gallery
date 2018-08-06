@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * Skill entity.
- * 
+ *
  * @author Felipe Goncalves de Castro
  *
  */
@@ -46,5 +46,14 @@ public class Project extends BaseEntity<Long> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Compare the Project entity by ID
+     *
+     * @param project entity.
+     */
+    public int compareTo(Project project){
+        return this.id.compareTo(project.getId());
     }
 }

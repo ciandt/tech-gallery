@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.service.enums;
 
+import com.ciandt.techgallery.persistence.model.Project;
 import com.ciandt.techgallery.persistence.model.Technology;
 
 import java.util.Collections;
@@ -68,6 +69,17 @@ public enum TechnologyOrderOptionEnum {
         @Override
         public int compare(Technology counter1, Technology counter2) {
           return counter1.getName().compareTo(counter2.getName());
+        }
+      });
+    }
+  },
+  BYPROJECT("Projeto") {
+    @Override
+    public void sort(List<Technology> techList) {
+      Collections.sort(techList, new Comparator<Technology>() {
+        @Override
+        public int compare(Technology technology1, Technology technology2) {
+          return technology1.getProject().compareTo(technology2.getProject());
         }
       });
     }

@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.persistence.model.Project;
+
 import java.util.Date;
 
 /**
@@ -24,6 +26,8 @@ public class TechnologyTO implements Response {
   private String author;
   /** technology image. */
   private String image;
+  /** technology project. */
+  private ProjectTO project;
   /** technology company recommendation. */
   private String recommendation;
   /** technology company recommendation justification. */
@@ -142,6 +146,14 @@ public class TechnologyTO implements Response {
 
   public void setImage(String image) {
     this.image = image;
+  }
+
+  public ProjectTO getProject() {
+    return project;
+  }
+
+  public void setProject(ProjectTO project) {
+    this.project = project;
   }
 
   public String getRecommendation() {

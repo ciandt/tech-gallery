@@ -32,6 +32,11 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
     context.dropDownRecommendation = data;
   });
 
+  //TechnologyService.getProjects().then(function(data){
+  //  context.dropDownProjects = data;
+  //});
+  context.dropDownProjects = TechnologyService.getProjects();
+
   this.addOrUpdateTechnology = function(form){
     var isEdit = (context.id !== undefined);
     if(context.name != null && context.description != null && context.shortDescription != null) {
@@ -66,6 +71,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
     context.shortDescription = '';
     context.webSite = '';
     document.getElementById('technology-name').value = null;
+    document.getElementById('technology-project').value = null;
     document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" />'].join('');
   }
 
@@ -77,6 +83,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, $statePara
     context.description = technology.description;
     context.webSite = technology.website;
     context.image = technology.image;
+    context.project = technology.project;
     if(context.image){
       document.getElementById('list').innerHTML = ['<img src="', context.image,'" title="', context.name, '" />'].join('');
     }

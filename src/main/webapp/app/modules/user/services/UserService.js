@@ -21,7 +21,7 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytic
     var deferred = $q.defer();
 
     var userMail = id + "@ciandt.com";
-    // var userMail = 'example@example.com';
+    //var userMail = 'example@example.com';
 
     var req = {
      email : userMail
