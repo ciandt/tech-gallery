@@ -2,10 +2,9 @@ package com.ciandt.techgallery.persistence.model;
 
 import com.ciandt.techgallery.service.transformer.ProjectTransformer;
 import com.google.api.server.spi.config.ApiTransformer;
-import com.googlecode.objectify.Ref;
-import com.googlecode.objectify.annotation.*;
-
-import java.util.Date;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 /**
  * Project entity.
@@ -48,11 +47,15 @@ public class Project extends BaseEntity<Long> {
     }
 
     /**
-     * Compare the Project entity by ID
+     * Compare the Project entity by Name
      *
      * @param project entity.
      */
-    public int compareTo(Project project) {
-        return this.id.compareTo(project.getId());
+    public int compareTo(Project project){
+        int result = Integer.MAX_VALUE;
+        if(project != null) {
+            result = this.name.compareTo(project.getName());
+        }
+        return result;
     }
 }
