@@ -89,3 +89,12 @@ https://cloud.google.com/endpoints/docs/frameworks/java/maven-endpoints-framewor
 
 Known Issues 
 https://cloud.google.com/endpoints/docs/frameworks/known-issues
+
+Google API Client Libraries - JavaScript
+https://developers.google.com/api-client-library/javascript/start/start-js
+
+Generating a Client Library 
+https://cloud.google.com/endpoints/docs/frameworks/java/gen_clients
+
+Calling Endpoints from a JavaScript App
+https://cloud.google.com/endpoints/docs/frameworks/java/calling-from-javascript 

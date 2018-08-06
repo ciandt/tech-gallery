@@ -23,7 +23,7 @@ module.exports = function($q, $timeout, $rootScope) {
     this.searched = false;
     var req = fillRequestToSave(context);
     var deferred = $q.defer();
-    
+
     gapi.client.rest.addProject(req).execute(function(data){
       deferred.resolve(data);
     });

@@ -2,40 +2,42 @@ package com.ciandt.techgallery.persistence.model;
 
 import com.ciandt.techgallery.service.transformer.ProjectTransformer;
 import com.google.api.server.spi.config.ApiTransformer;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.*;
+
+import java.util.Date;
 
 /**
  * Project entity.
  *
  * @author moizes
+ *
  */
 @Entity
 @ApiTransformer(ProjectTransformer.class)
 public class Project extends BaseEntity<Long> {
 
-    /*
-     * Constants --------------------------------------------
-     */
-    public static final String ID = "id";
-    public static final String NAME = "name";
+  /*
+   * Constants --------------------------------------------
+   */
+  public static final String ID = "id";
+  public static final String NAME = "name";
 
-    @Id
-    private Long id;
+  @Id
+  private Long id;
 
     @Index
     private String name;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+  @Override
+  public Long getId() {
+    return id;
+  }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  @Override
+  public void setId(Long id) {
+    this.id = id;
+  }
 
     public String getName() {
         return name;

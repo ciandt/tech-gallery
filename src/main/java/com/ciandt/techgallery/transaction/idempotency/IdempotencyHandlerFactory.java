@@ -1,6 +1,6 @@
-package com.ciant.techgallery.transaction.idempotency;
+package com.ciandt.techgallery.transaction.idempotency;
 
-import com.ciant.techgallery.transaction.Transactional;
+import com.ciandt.techgallery.transaction.Transactional;
 
 public class IdempotencyHandlerFactory {
 

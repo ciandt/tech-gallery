@@ -1,21 +1,11 @@
 package com.ciandt.techgallery.ofy;
 
+import com.ciandt.techgallery.persistence.model.*;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
-import com.ciandt.techgallery.persistence.model.ApplicationConfiguration;
 
 
-import com.ciandt.techgallery.persistence.model.CronJob;
-import com.ciandt.techgallery.persistence.model.EmailNotification;
-import com.ciandt.techgallery.persistence.model.Endorsement;
-import com.ciandt.techgallery.persistence.model.Skill;
-import com.ciandt.techgallery.persistence.model.TechGalleryUser;
-import com.ciandt.techgallery.persistence.model.Technology;
-import com.ciandt.techgallery.persistence.model.TechnologyComment;
-import com.ciandt.techgallery.persistence.model.TechnologyLink;
-import com.ciandt.techgallery.persistence.model.TechnologyFollowers;
-import com.ciandt.techgallery.persistence.model.TechnologyRecommendation;
 import com.ciandt.techgallery.persistence.model.profile.UserProfile;
 
 import javax.servlet.ServletContextEvent;
@@ -31,6 +21,7 @@ public class OfyService implements ServletContextListener {
 
   /** Define all entities first. */
   static {
+    ObjectifyService.register(Project.class);
     ObjectifyService.register(Technology.class);
     ObjectifyService.register(Endorsement.class);
     ObjectifyService.register(TechGalleryUser.class);
