@@ -37,6 +37,7 @@ public class Technology extends BaseEntity<String> {
   public static final String WEBSITE = "website";
   public static final String AUTHOR = "author";
   public static final String IMAGE = "image";
+  public static final String PROJECT = "project";
   public static final String RECOMMENDATION = "recommendation";
   public static final String RECOMMENDATION_JUSTIFICATION = "recommendationJustification";
   public static final String POSITIVE_RECOMMENDATIONS_COUNTER = "positiveRecommendationsCounter";

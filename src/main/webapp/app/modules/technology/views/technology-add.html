@@ -43,11 +43,20 @@
                   </div>
                 </div>
                 <!--End Technology Name-->
+                <!--Projects Selector-->
+                <div class="form-group col-md-7">
+                  <label for="technology-project">É específico de algum projeto?</label>
+                  <select class="form-control ng-pristine ng-valid ng-empty ng-touched" ng-model="technology.project"
+                          ng-options="project.name for project in technology.dropDownProjects track by project.id" id="technology-project">
+                  </select>
+                </div>
+                <!--End Projects Selector-->
+
                 <div class="form-group col-md-12" ng-show="loggedUserInformation.admin">
                   <div class="btn-group" uib-dropdown>
                     <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
                       {{ technology.selectedRecommendation==null ? 'Recomendação Ci&T' : technology.selectedRecommendation }}
-                      <span class="caret"></span>
+                      <span class="caret"></span> 
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
                       <li role="menuitem" ng-repeat="item in technology.dropDownRecommendation">

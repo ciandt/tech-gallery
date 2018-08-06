@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.persistence.model.Project;
+
 import java.util.Date;
 
 /**
