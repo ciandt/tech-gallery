@@ -74,6 +74,9 @@ public class Technology extends BaseEntity<String> {
   @Unindex
   private String image;
 
+  @Unindex
+  private Project project;
+
   /** company recommendation info. */
   @Unindex
   private String recommendation;
@@ -182,6 +185,14 @@ public class Technology extends BaseEntity<String> {
 
   public void setImage(String image) {
     this.image = image;
+  }
+
+  public Project getProject() {
+    return project;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
   }
 
   public Boolean getActive() {

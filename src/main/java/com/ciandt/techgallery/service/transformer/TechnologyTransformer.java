@@ -26,6 +26,9 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
     product.setLastActivity(baseObject.getLastActivity());
     product.setImageContent(baseObject.getImageContent());
     product.setIdBoard(baseObject.getIdBoard());
+
+    ProjectTransformer projectTransformer = new ProjectTransformer();
+    product.setProject( projectTransformer.transformFrom(baseObject.getProject()));
     return product;
   }
 
@@ -51,6 +54,10 @@ public class TechnologyTransformer implements Transformer<Technology, Technology
       product.setImageContent(baseObject.getImageContent());
       product.setIdBoard(baseObject.getIdBoard());
       product.setBoardUrlPrefix(System.getProperty("board.url.prefix"));
+
+      ProjectTransformer projectTransformer = new ProjectTransformer();
+      product.setProject( projectTransformer.transformTo(baseObject.getProject()));
+
       return product;
     } else {
       return null;
