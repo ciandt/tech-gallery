@@ -53,11 +53,15 @@ public class Project extends BaseEntity<String> {
     }
 
     /**
-     * Compare the Project entity by ID
+     * Compare the Project entity by Name
      *
      * @param project entity.
      */
     public int compareTo(Project project){
-        return this.id.compareTo(project.getId());
+        int result = Integer.MAX_VALUE;
+        if(project != null) {
+            result = this.name.compareTo(project.getName());
+        }
+        return result;
     }
 }
