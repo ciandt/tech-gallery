@@ -21,8 +21,9 @@ var apiUrl =  [
 angular
   .module('TechGallery', [
     require('angular-sanitize'),
-    require('angular-ui-bootstrap'),
     require('angular-ui-router'),
+    require('angular-animate'),
+    require('angular-ui-bootstrap'),
     require('./modules/core'),
     require('./modules/auth'),
     require('./modules/utils'),

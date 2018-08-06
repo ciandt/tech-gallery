@@ -85,7 +85,10 @@ public class ProjectServiceImpl implements ProjectService {
     public Project addOrUpdateProject(Project project, User user)
             throws InternalServerErrorException, BadRequestException, NotFoundException {
 
-        log.info("Starting creating or updating skill");
+        log.info("Starting creating or updating project");
+
+        System.out.println(project.getName());
+        System.out.println(user);
 
         validateInputs(project, user);
 
@@ -136,7 +139,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         final Project newProject = new Project();
         newProject.setName(project.getName());
-        newProject.setId(newProject.getId());
+//        newProject.setId(newProject.getId());
 
         projectDao.add(newProject);
 

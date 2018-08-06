@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.persistence.model;
 
+import com.ciandt.techgallery.service.transformer.ProjectConverter;
 import com.ciandt.techgallery.service.transformer.SkillConverter;
 import com.google.api.server.spi.config.ApiTransformer;
 import com.googlecode.objectify.Ref;
@@ -14,7 +15,7 @@ import java.util.Date;
  *
  */
 @Entity
-@ApiTransformer(SkillConverter.class)
+@ApiTransformer(ProjectConverter.class)
 public class Project extends BaseEntity<Long> {
 
   /*

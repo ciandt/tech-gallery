@@ -1,5 +1,7 @@
+require ('./controllers/ProjectModalController');
+
 angular
-  .module('TechGallery.Technology', [])
+  .module('TechGallery.Technology', ['project.modal'])
   .service('TechnologyService', require('./services/TechnologyService'))
   .controller('TechnologiesController', require('./controllers/TechnologiesController'))
   .controller('TechnologyController', require('./controllers/TechnologyController'))

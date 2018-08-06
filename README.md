@@ -81,7 +81,7 @@ https://cloud.google.com/appengine/docs/standard/java/tools/using-maven
 App Engine Maven Plugin (Cloud SDK-based) Goals and Parameters
 https://cloud.google.com/appengine/docs/standard/java/tools/using-maven
 
-Cloud Endpoints - Required Files and Configuration 
+Cloud Endpoints - Required Files aendpoints-frameworknd Configuration
 https://cloud.google.com/endpoints/docs/frameworks/java/required_files
 
 Endpoints Framework Maven plugin

@@ -42,6 +42,25 @@
                     <span ng-show="addTechnologyForm.name.$error.required" class="help-block">O campo Nome é obrigatório</span>
                   </div>
                 </div>
+
+                <!--Project Modal-->
+                <div ng-controller="ProjectModalCtrl as $ctrl" class="modal-project">
+                  <script type="text/ng-template" id="myModalContent.html">
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="modal-title">New Project</h3>
+                    </div>
+                    <input type="text" class="form-control" id="project-name" name="name" ng-model="$ctrl.projectName" placeholder="Ex.: Awesome Project">
+                    <div class="modal-footer">
+                      <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">Save</button>
+                      <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+                    </div>
+                  </script>
+                  <div class="modal-parent">
+                  </div>
+                  <button type="button" class="btn btn-default" ng-click="$ctrl.open()">Add Project</button>
+                </div>
+
+
                 <!--End Technology Name-->
                 <div class="form-group col-md-12" ng-show="loggedUserInformation.admin">
                   <div class="btn-group" uib-dropdown>
@@ -107,3 +126,4 @@
     </div>
   </div>
 </div>
+
