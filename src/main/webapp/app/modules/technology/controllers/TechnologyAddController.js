@@ -24,6 +24,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, ProjectSer
       context.showTechNotExists = true;
       return;
     }
+    console.log(data);
     AppService.setPageTitle('Editar tecnologia');
     fillTechnology(data);
   });
@@ -32,12 +33,26 @@ module.exports = function ($rootScope, AppService, TechnologyService, ProjectSer
     context.dropDownRecommendation = data;
   });
 
-  ProjectService.getProjects().then(function(data){
-    data.unshift({id:0, name:"Não"});
-   context.dropDownProjects = data;
-  });
+  //A default value is set to cover for old data that do not have an associated project to populate the dropdonw.
+  if(!context.project){
+    context.project = {id: 0, name: "Não"};
+  }
+
+  $scope.initSelect = function(){
+    ProjectService.getProjects().then(function(data){
+      if(!data){ data = [] };
+      data.unshift({id:0, name:"Não"});
+      context.dropDownProjects = data;
+    });
+  }
 
   this.addOrUpdateTechnology = function(form){
+    console.log(context);
+    
+    if(context.project.id == 0){
+      context.project = undefined
+    }
+
     var isEdit = (context.id !== undefined);
     if(context.name != null && context.description != null && context.shortDescription != null) {
       TechnologyService.addOrUpdate(context).then(function(data){
@@ -83,7 +98,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, ProjectSer
     context.description = technology.description;
     context.webSite = technology.website;
     context.image = technology.image;
-    context.project = technology.project ? technology.project : 0;
+    context.project = (technology.project ? technology.project : {id: 0, name: "Não"});
     if(context.image){
       document.getElementById('list').innerHTML = ['<img src="', context.image,'" title="', context.name, '" />'].join('');
     }

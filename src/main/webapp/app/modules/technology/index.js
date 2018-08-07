@@ -1,4 +1,4 @@
-require ('./controllers/ProjectModalController');
+require ('../project/controllers/ProjectModalController');
 
 angular
   .module('TechGallery.Technology', ['project.modal'])

@@ -51,8 +51,8 @@
                   <div class="row">
                     <div class="form-group col-md-5">
                       <label for="technology-project">É específico de algum projeto?</label>
-                      <select class="form-control ng-pristine ng-valid ng-empty ng-touched" ng-model="technology.project" ng-options="project.name for project in technology.dropDownProjects track by project.id"
-                        id="technology-project">
+                      <select class="form-control ng-pristine ng-valid ng-empty ng-touched" ng-model="technology.project" id="technology-project" ng-init="initSelect()"
+                        ng-options="project.name for project in technology.dropDownProjects track by project.id">
                       </select>
                     </div>
                     <div class="form-group col-md-2">

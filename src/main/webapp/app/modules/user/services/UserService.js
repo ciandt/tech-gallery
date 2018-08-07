@@ -27,15 +27,6 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytic
      email : userMail
    };
 
-   this.getProjects(){
-
-      //TechnologyService.getProjects().then(function(data){
-      //  context.dropDownProjects = data;
-      //});
-      return TechnologyService.getProjects();
-
-   }
-
    gapi.client.rest.profile.get(req).execute(function(data) {
       if(data && !data.hasOwnProperty('error')){
         var technologiesCount = 0;

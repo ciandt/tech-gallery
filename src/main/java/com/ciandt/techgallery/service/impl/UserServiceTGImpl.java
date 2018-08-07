@@ -292,7 +292,8 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   @Override
   public TechGalleryUser getUserByEmail(final String email) throws NotFoundException {
-    TechGalleryUser tgUser = userDao.findByEmail(email);
+//    TechGalleryUser tgUser = userDao.findByEmail(email);
+    TechGalleryUser tgUser = userDao.findByEmail("example@example.com");
     if (tgUser == null) {
       throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     } else {

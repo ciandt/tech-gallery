@@ -1,4 +1,4 @@
-module.exports = function ($stateParams, AppService, UserService, $uibModal, $state) {
+module.exports = function ($stateParams, ProjectService, AppService, UserService, $uibModal, $state, $scope) {
 
   /**
    * Object context
@@ -18,7 +18,11 @@ module.exports = function ($stateParams, AppService, UserService, $uibModal, $st
    */ 
   this.profile = UserService.profile;
 
-  context.dropDownProjects = UserService.getProjects();
+  ProjectService.getProjects().then(function(data){
+    if(!data){ data = [] };
+    data.unshift({id:"0", name:"Não"});
+    context.dropDownProjects = data;
+  });
 
   // Update the user info based on the URL param
   UserService.updateUserProfile($stateParams.id).then(function (profile) {
