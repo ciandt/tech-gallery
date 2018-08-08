@@ -41,8 +41,8 @@
       <!--Projects Selector-->
       <div class="pull-right form-group col-md-5">
         <label for="technology-project">Quer visualizar as tecnologias específicas de um projeto?</label>
-        <select class="form-control ng-pristine ng-valid ng-empty ng-touched" ng-model="technology.project"
-                ng-options="project.name for project in technology.dropDownProjects track by project.id" id="technology-project">
+        <select class="form-control ng-pristine ng-valid ng-empty ng-touched" ng-model="user.profile.owner.project" ng-init="initSelect()" ng-change="onProjectSelection()"
+                ng-options="project.name for project in user.dropDownProjects track by project.id" id="technology-project">
         </select>
       </div>
       <!--End Projects Selector-->

@@ -16,6 +16,7 @@ public class TechGalleryUserTransformer implements Transformer<TechGalleryUser, 
     product.setFollowedTechnologyIds(arg0.getFollowedTechIds());
     product.setAdmin(arg0.isAdmin());
     product.setPostGooglePlusPreference(arg0.getPostGooglePlusPreference());
+    product.setProject(arg0.getProject());
     return product;
   }
 
@@ -30,6 +31,7 @@ public class TechGalleryUserTransformer implements Transformer<TechGalleryUser, 
       product.setFollowedTechIds(arg0.getFollowedTechnologyIds());
       product.setAdmin(arg0.isAdmin());
       product.setPostGooglePlusPreference(arg0.getPostGooglePlusPreference());
+      product.setProject(arg0.getProject());
       return product;
     } else {
       return null;

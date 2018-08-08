@@ -257,9 +257,11 @@ public class UserServiceTGImpl implements UserServiceTG {
    */
   @Override
   public TechGalleryUser updateUser(final TechGalleryUser user) throws BadRequestException {
+    System.out.println(user.getId());
     if (!userDataIsValid(user) && user.getId() != null) {
       throw new BadRequestException(i18n.t("User's email cannot be blank."));
     } else {
+      System.out.println(user);
       userDao.update(user);
       return user;
     }

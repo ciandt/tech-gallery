@@ -1,5 +1,7 @@
 package com.ciandt.techgallery.service.model;
 
+import com.ciandt.techgallery.persistence.model.Project;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class UserResponse implements Response, Serializable {
   private List<String> followedTechIds;
   /** save the preference of user. */
   private Boolean postGooglePlusPreference;
+  /** Save the user selected project to watch for technologies. */
+  private Project project;
   
   private String login;
 
@@ -94,5 +98,13 @@ public class UserResponse implements Response, Serializable {
 
   public void setLogin(String login) {
     this.login = login;
+  }
+
+  public Project getProject() {
+    return project;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
   }
 }

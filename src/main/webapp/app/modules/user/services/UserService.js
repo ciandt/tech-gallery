@@ -4,49 +4,49 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytic
    * Object context
    * @type {Object}
    */
-   var context = this;
+  var context = this;
 
   /**
    * The user profile info
    * @type {Object}
    */
-   this.profile = {};
+  this.profile = {};
 
   /**
    * Update the user profile
    * @param  {String} id The user ID
    * @return {Promise}
    */
-   this.updateUserProfile = function (id) {
+  this.updateUserProfile = function (id) {
     var deferred = $q.defer();
 
     var userMail = id + "@ciandt.com";
     //var userMail = 'example@example.com';
 
     var req = {
-     email : userMail
-   };
+      email: userMail
+    };
 
-   gapi.client.rest.profile.get(req).execute(function(data) {
-      if(data && !data.hasOwnProperty('error')){
+    gapi.client.rest.profile.get(req).execute(function (data) {
+      if (data && !data.hasOwnProperty('error')) {
         var technologiesCount = 0;
         var recommendationsCount = 0;
         var commentsCount = 0;
-        if(data.technologies){
+        if (data.technologies) {
           var technologiesCount = data.technologies.length;
-          for (var i=0; i < data.technologies.length; i++) {
-            if(data.technologies[i].recommendation){
+          for (var i = 0; i < data.technologies.length; i++) {
+            if (data.technologies[i].recommendation) {
               recommendationsCount++;
             }
-            if(data.technologies[i].comments){
+            if (data.technologies[i].comments) {
               commentsCount += data.technologies[i].comments.length;
             }
             var skillLevel = data.technologies[i].skillLevel;
             var rating = {
-              value : 0,
-              title : ''
+              value: 0,
+              title: ''
             };
-            if(skillLevel){
+            if (skillLevel) {
               rating = TechnologyService.getRatings()[skillLevel - 1];
             }
             data.technologies[i].rating = rating;
@@ -60,42 +60,50 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytic
       }
       deferred.resolve(data);
     });
-  return deferred.promise;
-}
+    return deferred.promise;
+  }
 
-this.getUserEmail = function(callBackFunction, authResult){
-  setTimeout(function(){
-    gapi.client.load('oauth2', 'v2', function() {
-      gapi.client.oauth2.userinfo.get().execute(function(resp) {
-        $rootScope.userEmail = resp.email;
-          if(authResult == undefined && $rootScope.userEmail){
-        	  Analytics.trackUser($rootScope.userEmail.replace('@'+resp.hd, ''));
+  this.getUserEmail = function (callBackFunction, authResult) {
+    setTimeout(function () {
+      gapi.client.load('oauth2', 'v2', function () {
+        gapi.client.oauth2.userinfo.get().execute(function (resp) {
+          $rootScope.userEmail = resp.email;
+          if (authResult == undefined && $rootScope.userEmail) {
+            Analytics.trackUser($rootScope.userEmail.replace('@' + resp.hd, ''));
           }
-          if(callBackFunction){
+          if (callBackFunction) {
             callBackFunction(authResult);
           }
         })
+      });
+    }, 200);
+  }
+
+  this.getUserInformations = function () {
+    var deferred = $q.defer();
+    gapi.client.rest.getLoggedUser().execute(function (data) {
+      $rootScope.loggedUserInformation = data;
+      $rootScope.loggedUserInformation.postGooglePlus = data.postGooglePlusPreference;
+      deferred.resolve($rootScope.loggedUserInformation);
     });
-  },200);
-}
+    return deferred.promise;
+  }
 
-this.getUserInformations = function(){
-  var deferred = $q.defer();
-  gapi.client.rest.getLoggedUser().execute(function(data) {
-    $rootScope.loggedUserInformation = data;
-    $rootScope.loggedUserInformation.postGooglePlus = data.postGooglePlusPreference;
-    deferred.resolve($rootScope.loggedUserInformation);
-  });
-  return deferred.promise;
-}
+  this.logOutUser = function () {
+    var logoutRedirect = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue='
+    logoutRedirect += location.protocol;
+    logoutRedirect += '//';
+    logoutRedirect += location.hostname;
+    logoutRedirect += location.pathname;
+    logoutRedirect += location.search;
+    return logoutRedirect;
+  }
 
-this.logOutUser = function(){
-  var logoutRedirect = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue='
-  logoutRedirect += location.protocol;
-  logoutRedirect += '//';
-  logoutRedirect += location.hostname;
-  logoutRedirect += location.pathname;
-  logoutRedirect += location.search;
-  return logoutRedirect;
-}
+  this.updateUserProject = function (tgUser){
+    gapi.client.rest.updateUser(tgUser).execute(function (data) {
+      console.log(data);
+
+    });
+  }
+
 }
