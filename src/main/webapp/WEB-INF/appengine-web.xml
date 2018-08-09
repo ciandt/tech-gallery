@@ -3,6 +3,7 @@
 	<application>tech-gallery</application>
 	<version>${app.version}</version>
 	<threadsafe>true</threadsafe>
+  <runtime>java8</runtime>
 	<system-properties>
 		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
 		<property name="board.url.prefix" value="${board.url.prefix}" />

@@ -181,3 +181,6 @@ node
 
 ### VS Code ###
 .vscode/
+
+### Encrypted Files ###
+gce-travis-deploy.json

@@ -1,8 +1,12 @@
 module.exports = function(
   $stateProvider,
   $urlRouterProvider,
-  $urlMatcherFactoryProvider
+  $urlMatcherFactoryProvider,
+  $locationProvider
   ) {
+
+  $locationProvider.hashPrefix('');
+
   // Disable ui-router strict mode
   $urlMatcherFactoryProvider.strictMode(false);
 
