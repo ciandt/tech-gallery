@@ -18,37 +18,32 @@ module.exports = function ($stateParams, ProjectService, AppService, UserService
    */ 
   this.profile = UserService.profile;
 
-  //A default value is set to cover for old data that do not have an associated project to populate the dropdonw.
-  if(!context.project){
-    profile.owner.project = {id: 0, name: "Não"};
-  }
-
-  $scope.initSelect = function(){
-    console.log("init");
-    console.log(context);
-    ProjectService.getProjects().then(function(data){
-      console.log(data);
-      if(!data){ data = [] };
-      data.unshift({id:0, name:"Não"});
-      context.dropDownProjects = data;
-    });
-  }
-
-  $scope.onProjectSelection = function(){
-    console.log(context.profile.owner);
-    UserService.updateUserProject(context.profile.owner);
-  }
-
   // Update the user info based on the URL param
   UserService.updateUserProfile($stateParams.id).then(function (profile) {
     if(!profile.hasOwnProperty('error')){
       context.profile = profile;
       context.loading = false;
       AppService.setPageTitle(profile.name);
+      //A default value is set to cover for old data that do not have an associated project to populate the dropdonw.
+      if(!context.profile.owner.project){
+        profile.owner.project = {id: 0, name: 'Não'};
+      }
     }else{
       $state.go('404');
     }
   });
+
+  $scope.initSelect = function(){
+    ProjectService.getProjects().then(function(data){
+      if(!data){ data = []; }
+      data.unshift({id:0, name:'Não'});
+      context.dropDownProjects = data;
+    });
+  };
+
+  $scope.onProjectSelection = function(){
+    UserService.updateUserProject(context.profile.owner);
+  };
 
   this.openCommentsFor = function (technology) {
     var modalInstance = $uibModal.open({
@@ -62,6 +57,6 @@ module.exports = function ($stateParams, ProjectService, AppService, UserService
       },
       size: 'lg'
     });
-  }
+  };
 
-}
+};

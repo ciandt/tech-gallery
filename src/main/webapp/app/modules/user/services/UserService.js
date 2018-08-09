@@ -20,7 +20,7 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytic
   this.updateUserProfile = function (id) {
     var deferred = $q.defer();
 
-    var userMail = id + "@ciandt.com";
+    var userMail = id + '@ciandt.com';
     //var userMail = 'example@example.com';
 
     var req = {
@@ -33,7 +33,7 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytic
         var recommendationsCount = 0;
         var commentsCount = 0;
         if (data.technologies) {
-          var technologiesCount = data.technologies.length;
+          technologiesCount = data.technologies.length;
           for (var i = 0; i < data.technologies.length; i++) {
             if (data.technologies[i].recommendation) {
               recommendationsCount++;
@@ -51,7 +51,7 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytic
             }
             data.technologies[i].rating = rating;
             data.technologies[i].id = TechnologyService.slugify(data.technologies[i].technologyName);
-          };
+          }
         }
 
         data.owner.technologiesCount = technologiesCount;
@@ -61,7 +61,7 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytic
       deferred.resolve(data);
     });
     return deferred.promise;
-  }
+  };
 
   this.getUserEmail = function (callBackFunction, authResult) {
     setTimeout(function () {
@@ -74,10 +74,10 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytic
           if (callBackFunction) {
             callBackFunction(authResult);
           }
-        })
+        });
       });
     }, 200);
-  }
+  };
 
   this.getUserInformations = function () {
     var deferred = $q.defer();
@@ -97,13 +97,10 @@ module.exports = function ($rootScope, $q, $timeout, TechnologyService, Analytic
     logoutRedirect += location.pathname;
     logoutRedirect += location.search;
     return logoutRedirect;
-  }
+  };
 
-  this.updateUserProject = function (tgUser){
-    gapi.client.rest.updateUser(tgUser).execute(function (data) {
-      console.log(data);
+  this.updateUserProject = function (tgUser) {
+    gapi.client.rest.updateUser(tgUser).execute();
+  };
 
-    });
-  }
-
-}
+};
