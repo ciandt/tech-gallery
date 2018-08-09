@@ -338,7 +338,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * GET Calls the provider API passing a login to obtain user information.
    *
-   * @param userlogin
+   * @param userLogin
    *          the user login to pass to the provider API
    * @throws NotFoundException
    *           in case the user is not found on provider
@@ -364,7 +364,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    * GET Calls the provider API passing a login to obtain a list of users
    * information.
    *
-   * @param string
+   * @param userLogin
    *          to search on provider by name or login
    *
    * @throws NotFoundException

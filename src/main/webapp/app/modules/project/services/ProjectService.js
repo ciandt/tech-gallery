@@ -10,7 +10,6 @@ module.exports = function ($q, $timeout, $rootScope) {
    * @return {Promise} The gapi response
    */
   this.getProjects = function () {
-
     var deferred = $q.defer();
     gapi.client.rest.getAllProjects().execute(function (data) {
       context.foundItems = data.items;
@@ -21,7 +20,9 @@ module.exports = function ($q, $timeout, $rootScope) {
 
   this.addOrUpdate = function (context) {
     this.searched = false;
-    var req = fillRequestToSave(context);
+    var req = {
+      name: context.name
+    };
     var deferred = $q.defer();
 
     gapi.client.rest.addProject(req).execute(function (data) {
@@ -37,17 +38,7 @@ module.exports = function ($q, $timeout, $rootScope) {
       deferred.resolve(data);
     });
     return deferred.promise;
-  }
-
-  /*
-   * Function to fill the request to save the technology.
-   */
-  function fillRequestToSave(context) {
-    var req = {
-      "name": context.name
-    };
-    return req;
-  }
+  };
 
   function slugify(text) {
     return text.toString().toLowerCase()
@@ -58,12 +49,9 @@ module.exports = function ($q, $timeout, $rootScope) {
       .replace(/\-\-+/g, '-')         // Replace multiple - with single -
       .replace(/^-+/, '')             // Trim - from start of text
       .replace(/-+$/, '');            // Trim - from end of text
-
   }
 
   this.slugify = function (text) {
     return slugify(text);
-  }
-
-
+  };
 };
