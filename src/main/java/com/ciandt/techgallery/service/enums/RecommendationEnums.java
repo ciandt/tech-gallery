@@ -14,7 +14,8 @@ public enum RecommendationEnums {
   USE_LEARN("Usar e aprender"), 
   OBSERVED_CONCEPT_TEST("Observar e fazer provas de conceito"), 
   NOT_RECOMMENDED_RETIRED("Não recomendadas ou aposentar"), 
-  UNINFORMED("Não informado"); 
+  UNINFORMED("Não informado"),
+  PROJECT_SPECIFIC("Apenas especificos do meu projeto");
 
 
   private String message;
