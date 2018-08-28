@@ -309,7 +309,7 @@ public class TechnologyServiceImpl implements TechnologyService {
                 technology.getRecommendation() != null && techFilter.getRecommendationIs() != null
                         && (technology.getRecommendation().toLowerCase().equals(techFilter.getRecommendationIs().toLowerCase())
                         || techFilter.getRecommendationIs().toLowerCase().equals(RecommendationEnums.ANY.message().toLowerCase()))
-                        || (techFilter.getRecommendationIs() != null && project != null && techFilter.getRecommendationIs().toLowerCase().equals(RecommendationEnums.PROJECT_SPECIFIC.message().toLowerCase()) && Long.compare(technology.getProject().getId(), project.getId()) == 0)
+                        || verifyProjectSpecificFilter(techFilter, technology, project)
         ) {
             return true;
         }
@@ -320,6 +320,15 @@ public class TechnologyServiceImpl implements TechnologyService {
         if (techFilter.getTitleContains() != null
                 && (technology.getName().toLowerCase().contains(techFilter.getTitleContains().toLowerCase()) || technology
                 .getShortDescription().toLowerCase().contains(techFilter.getShortDescriptionContains().toLowerCase()))) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean verifyProjectSpecificFilter(TechnologyFilter techFilter, Technology technology, Project project) {
+        if (techFilter.getRecommendationIs() != null && technology.getProject() != null && project != null &&
+                techFilter.getRecommendationIs().toLowerCase().equals(RecommendationEnums.PROJECT_SPECIFIC.message().toLowerCase()) &&
+                Long.compare(technology.getProject().getId(), project.getId()) == 0) {
             return true;
         }
         return false;
