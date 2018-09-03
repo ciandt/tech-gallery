@@ -42,7 +42,13 @@ module.exports = function ($stateParams, ProjectService, AppService, UserService
   };
 
   $scope.onProjectSelection = function(){
-    UserService.updateUserProject(context.profile.owner);
+    if(context.profile.owner.project.id == 0){
+      var user = angular.copy(context.profile.owner);
+      delete user.project;
+      UserService.updateUserProject(user);
+    }else {
+      UserService.updateUserProject(context.profile.owner);
+    }
   };
 
   this.openCommentsFor = function (technology) {
