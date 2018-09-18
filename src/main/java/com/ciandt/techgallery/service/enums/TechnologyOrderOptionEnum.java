@@ -81,7 +81,7 @@ public enum TechnologyOrderOptionEnum {
         public int compare(Technology technology1, Technology technology2) {
           int result = Integer.MAX_VALUE;
           if(technology1.getProject() != null) {
-            result = technology1.getProject().compareTo(technology2.getProject());
+            return technology1.getProject().compareTo(technology2.getProject());
           }
           System.out.println("TechnologyOrderOptionEnum-> name1: " + technology1.getName());
           System.out.println("TechnologyOrderOptionEnum-> name2: " + technology2.getName());

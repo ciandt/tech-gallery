@@ -54,7 +54,7 @@ public class Project extends BaseEntity<Long> {
     public int compareTo(Project project){
         int result = Integer.MAX_VALUE;
         if(project != null) {
-            result = this.name.compareTo(project.getName());
+            return this.id.compareTo(project.getId()) == 0 ? 0 : -1;
         }
         return result;
     }
