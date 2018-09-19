@@ -52,10 +52,9 @@ public class Project extends BaseEntity<Long> {
      * @param project entity.
      */
     public int compareTo(Project project){
-        int result = Integer.MAX_VALUE;
         if(project != null) {
-            return this.id.compareTo(project.getId()) == 0 ? 0 : -1;
+            return this.id.compareTo(project.getId()) == 0 ? 0 : 1;
         }
-        return result;
+        return 1;
     }
 }

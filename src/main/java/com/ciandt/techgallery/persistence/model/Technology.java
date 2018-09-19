@@ -12,10 +12,7 @@ import com.ciandt.techgallery.service.enums.TechnologyOrderOptionEnum;
 import com.ciandt.techgallery.service.transformer.TechnologyTransformer;
 
 import java.text.Normalizer;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Technology entity.
@@ -383,6 +380,29 @@ public class Technology extends BaseEntity<String> {
   public static List<Technology> sortTechnologies(List<Technology> techList,
       TechnologyOrderOptionEnum orderBy) {
     orderBy.sort(techList);
+    return techList;
+  }
+
+  public static List<Technology> sortTechnologies(List<Technology> techList, Project project) {
+
+    if(project != null){
+      List<Technology> projTechList = new ArrayList<Technology>();
+      List<Technology> otherTechList = new ArrayList<Technology>();
+      for (Technology tech : techList) {
+        if( project.compareTo(tech.getProject()) == 0 ){
+          projTechList.add(tech);
+        }else{
+          otherTechList.add(tech);
+        }
+      }
+
+      Technology.sortTechnologies(projTechList, TechnologyOrderOptionEnum.APHABETIC);
+      Technology.sortTechnologies(otherTechList, TechnologyOrderOptionEnum.APHABETIC);
+
+      projTechList.addAll(otherTechList);
+
+      return projTechList;
+    }
     return techList;
   }
 

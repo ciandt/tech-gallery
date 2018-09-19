@@ -231,8 +231,12 @@ public class TechnologyServiceImpl implements TechnologyService {
             return new TechnologiesResponse();
         } else {
             if (techFilter.getOrderOptionIs() != null && !techFilter.getOrderOptionIs().isEmpty()) {
-                filteredList = Technology.sortTechnologies(filteredList,
-                        TechnologyOrderOptionEnum.fromString(techFilter.getOrderOptionIs()));
+                if(techFilter.getOrderOptionIs().equals("Projeto")){
+                    filteredList = Technology.sortTechnologies(filteredList, techUser.getProject());
+                } else {
+                    filteredList = Technology.sortTechnologies(filteredList,
+                            TechnologyOrderOptionEnum.fromString(techFilter.getOrderOptionIs()));
+                }
             } else {
                 Technology.sortTechnologiesDefault(filteredList);
             }

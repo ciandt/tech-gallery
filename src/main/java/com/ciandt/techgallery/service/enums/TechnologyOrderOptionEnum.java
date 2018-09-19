@@ -72,24 +72,6 @@ public enum TechnologyOrderOptionEnum {
         }
       });
     }
-  },
-  BYPROJECT("Projeto") {
-    @Override
-    public void sort(List<Technology> techList) {
-      Collections.sort(techList, new Comparator<Technology>() {
-        @Override
-        public int compare(Technology technology1, Technology technology2) {
-          int result = Integer.MAX_VALUE;
-          if(technology1.getProject() != null) {
-            return technology1.getProject().compareTo(technology2.getProject());
-          }
-          System.out.println("TechnologyOrderOptionEnum-> name1: " + technology1.getName());
-          System.out.println("TechnologyOrderOptionEnum-> name2: " + technology2.getName());
-          System.out.println("TechnologyOrderOptionEnum-> sortResult: " + result);
-          return result;
-        }
-      });
-    }
   };
 
   private String option;
