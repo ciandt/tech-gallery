@@ -87,9 +87,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         log.info("Starting creating or updating project");
 
-        System.out.println(project.getName());
-        System.out.println(user);
-
         validateInputs(project, user);
 
         final Project newProject;
@@ -175,7 +172,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         final Project project = projectDao.findById(projId);
         if (project == null) {
-            throw new NotFoundException(i18n.t("User skill do not exist!"));
+            throw new NotFoundException(i18n.t("User skill does not exist!"));
         } else {
             return project;
         }
@@ -191,7 +188,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         final Project project = projectDao.findById(projId);
         if (project == null) {
-            throw new NotFoundException(i18n.t("User skill do not exist!"));
+            throw new NotFoundException(i18n.t("User skill does not exist!"));
         } else {
             return project;
         }
