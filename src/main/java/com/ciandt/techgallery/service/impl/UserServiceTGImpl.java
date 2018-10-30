@@ -293,6 +293,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   @Override
   public TechGalleryUser getUserByEmail(final String email) throws NotFoundException {
     TechGalleryUser tgUser = userDao.findByEmail(email);
+//    TechGalleryUser tgUser = userDao.findByEmail("example@example.com");
     if (tgUser == null) {
       throw new NotFoundException(ValidationMessageEnums.USER_NOT_EXIST.message());
     } else {
@@ -335,7 +336,7 @@ public class UserServiceTGImpl implements UserServiceTG {
   /**
    * GET Calls the provider API passing a login to obtain user information.
    *
-   * @param userlogin
+   * @param userLogin
    *          the user login to pass to the provider API
    * @throws NotFoundException
    *           in case the user is not found on provider
@@ -361,7 +362,7 @@ public class UserServiceTGImpl implements UserServiceTG {
    * GET Calls the provider API passing a login to obtain a list of users
    * information.
    *
-   * @param string
+   * @param userLogin
    *          to search on provider by name or login
    *
    * @throws NotFoundException

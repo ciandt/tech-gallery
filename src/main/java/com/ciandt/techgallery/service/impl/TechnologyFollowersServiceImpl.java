@@ -15,7 +15,7 @@ import com.ciandt.techgallery.service.TechnologyFollowersService;
 import com.ciandt.techgallery.service.TechnologyService;
 import com.ciandt.techgallery.service.UserServiceTG;
 import com.ciandt.techgallery.service.enums.ValidationMessageEnums;
-import com.ciant.techgallery.transaction.Transactional;
+import com.ciandt.techgallery.transaction.Transactional;
 
 import java.util.ArrayList;
 

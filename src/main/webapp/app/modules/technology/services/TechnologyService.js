@@ -86,7 +86,8 @@ module.exports = function($q, $timeout, $rootScope) {
         recommendation : context.selectedRecommendation,
         description : context.description,
         website : context.webSite,
-        image : context.image
+        image : context.image,
+        project : context.project
       };
       return req;
     }else{
@@ -99,7 +100,8 @@ module.exports = function($q, $timeout, $rootScope) {
         recommendation : context.selectedRecommendation,
         description : context.description,
         website : context.webSite,
-        imageContent : context.image
+        imageContent : context.image,
+        project : context.project
       };
       return req;
     }

@@ -1,9 +1,7 @@
 package com.ciandt.techgallery.service.endpoint;
 
 import com.google.api.server.spi.ServiceException;
-import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
-import com.google.api.server.spi.config.AuthLevel;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.config.ApiReference;
@@ -13,7 +11,6 @@ import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.users.User;
 
-import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.model.TechGalleryUser;
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.TechnologyFollowersService;
@@ -24,7 +21,7 @@ import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
 import com.ciandt.techgallery.service.impl.UserServiceTGImpl;
 import com.ciandt.techgallery.service.model.Response;
 import com.ciandt.techgallery.service.model.TechnologyFilter;
-import com.ciant.techgallery.transaction.ServiceFactory;
+import com.ciandt.techgallery.transaction.ServiceFactory;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;

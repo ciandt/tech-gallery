@@ -23,18 +23,18 @@ A skeleton application for Google Cloud Endpoints in Java.
    if you want to have auth protected methods.
 
     1. Update the values:
-        1. `SERVICE_ACCOUNT_CLIENT_ID` | (From a Service Acc on GCP) 
+        1. `SERVICE_ACCOUNT_CLIENT_ID` | (From a Service Acc on GCP)
         1. `WEB_CLIENT_ID` | (Create an OAuth acc on GCP to get credentials)
-        
+
         in `src/main/java/${packageInPathFormat}/Constants.java`
        to reflect the respective client IDs you have registered in the
        [APIs Console][6]. 
-       
+
     1. Update the values:
         1. `CLIENT_ID` | same used in `WEB_CLIENT_ID`
-         
+
         in `src/main/webapp/modules/auth/index.js` to reflect the respective client IDs you have registered in the
-        [APIs Console][6]. 
+        [APIs Console][6].
 
     1. You also need to supply the web client ID you have registered
        in the [APIs Console][4] to your client of choice (web, Android,
@@ -60,8 +60,8 @@ A skeleton application for Google Cloud Endpoints in Java.
 Quickstart for Debian and Ubuntu
 https://cloud.google.com/sdk/docs/quickstart-debian-ubuntu
 
-Migrating to Endpoints Frameworks for App Engine 
-https://cloud.google.com/endpoints/docs/frameworks/java/migrating   
+Migrating to Endpoints Frameworks for App Engine
+https://cloud.google.com/endpoints/docs/frameworks/java/migrating
 
 Setting Up a Development Environment
 https://cloud.google.com/endpoints/docs/frameworks/java/set-up-environment
@@ -72,10 +72,10 @@ https://cloud.google.com/endpoints/docs/frameworks/java/adding-api-management
 Deploying and Testing an API
 https://cloud.google.com/endpoints/docs/frameworks/java/test-deploy
 
-Using Apache Maven and the App Engine Plugin (App Engine SDK-based) 
+Using Apache Maven and the App Engine Plugin (App Engine SDK-based)
 https://cloud.google.com/appengine/docs/standard/java/tools/maven
 
-Using Apache Maven and the App Engine Plugin (Cloud SDK-based) 
+Using Apache Maven and the App Engine Plugin (Cloud SDK-based)
 https://cloud.google.com/appengine/docs/standard/java/tools/using-maven
 
 App Engine Maven Plugin (Cloud SDK-based) Goals and Parameters
@@ -85,7 +85,16 @@ Cloud Endpoints - Required Files aendpoints-frameworknd Configuration
 https://cloud.google.com/endpoints/docs/frameworks/java/required_files
 
 Endpoints Framework Maven plugin
-https://cloud.google.com/endpoints/docs/frameworks/java/maven-endpoints-frameworks-plugin 
+https://cloud.google.com/endpoints/docs/frameworks/java/maven-endpoints-frameworks-plugin
 
-Known Issues 
+Known Issues
 https://cloud.google.com/endpoints/docs/frameworks/known-issues
+
+Google API Client Libraries - JavaScript
+https://developers.google.com/api-client-library/javascript/start/start-js
+
+Generating a Client Library
+https://cloud.google.com/endpoints/docs/frameworks/java/gen_clients
+
+Calling Endpoints from a JavaScript App
+https://cloud.google.com/endpoints/docs/frameworks/java/calling-from-javascript

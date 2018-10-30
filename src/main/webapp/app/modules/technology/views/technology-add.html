@@ -16,62 +16,91 @@
             <h1 class="card-title" ng-if="technology.id.length">Editar tecnologia</h1>
           </div>
           <div class="card-section">
-            <form id="addTechnologyForm" name="addTechnologyForm" ng-submit="technology.addOrUpdateTechnology(addTechnologyForm)" novalidate>
+            <form id="addTechnologyForm" name="addTechnologyForm"
+                  ng-submit="technology.addOrUpdateTechnology(addTechnologyForm)" novalidate>
               <div class="row">
                 <div class="form-group col-md-5">
                   <!--Image-->
                   <div class="media">
                     <div id="div_image" class="media-left">
                       <output id="list">
-                        <label for="technology-image"><img src="assets/images/no_image.png" title="Insira uma imagem"></label>
+                        <label for="technology-image">
+                          <img src="assets/images/no_image.png" title="Insira uma imagem">
+                        </label>
                       </output>
                     </div>
                     <div class="media-body">
                       <label for="technology-image">Imagem</label>
-                      <input type="file" class="form-control" id="technology-image" ng-model="technology.image" onchange="angular.element(this).scope().handleFileSelect(this)">
+                      <input type="file" class="form-control" id="technology-image" ng-model="technology.image"
+                             onchange="angular.element(this).scope().handleFileSelect(this)">
                       <span class="help-block">Tamanho: 100x100</span>
                     </div>
                   </div>
                 </div>
                 <!--End Image-->
                 <!--Technology Name-->
-                <div class="form-group col-md-7" ng-class="{'has-error': (addTechnologyForm.name.$invalid && addTechnologyForm.name.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.name.$invalid)}">
+                <div class="form-group col-md-7"
+                     ng-class="{'has-error': (addTechnologyForm.name.$invalid && addTechnologyForm.name.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.name.$invalid)}">
                   <label for="technology-name">Nome da tecnologia</label>
-                  <input type="text" class="form-control" id="technology-name" name="name" ng-model="technology.name" placeholder="Ex.: AngularJS" required="" maxlength="30" ng-disabled="technology.id.length">
+                  <input type="text" class="form-control" id="technology-name" name="name" ng-model="technology.name"
+                         placeholder="Ex.: AngularJS"
+                         required="" maxlength="30" ng-disabled="technology.id.length">
                   <div ng-show="addTechnologyForm.$submitted || addTechnologyForm.name.$touched">
-                    <span ng-show="addTechnologyForm.name.$error.required" class="help-block">O campo Nome é obrigatório</span>
+                    <span ng-show="addTechnologyForm.name.$error.required"
+                          class="help-block">O campo Nome é obrigatório</span>
                   </div>
                 </div>
                 <!--End Technology Name-->
+                <!--Projects Selector-->
+                <div class="form-group col-md-7">
+                  <label for="technology-project">Exibir apenas para projeto específico</label>
+                  <select class="form-control ng-pristine ng-valid ng-empty ng-touched" ng-model="technology.project"
+                          id="technology-project" ng-init="initSelect()"
+                          ng-options="project.name for project in technology.dropDownProjects track by project.id">
+                  </select>
+                  <!--Project Modal-->
+                </div>
+                <!--End Projects Selector-->
+
                 <div class="form-group col-md-12" ng-show="loggedUserInformation.admin">
                   <div class="btn-group" uib-dropdown>
                     <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
-                      {{ technology.selectedRecommendation==null ? 'Recomendação Ci&T' : technology.selectedRecommendation }}
+                      {{ technology.selectedRecommendation==null ? 'Recomendação Ci&T' :
+                      technology.selectedRecommendation }}
                       <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
                       <li role="menuitem" ng-repeat="item in technology.dropDownRecommendation">
-                        <a href="#" ng-show="item != 'Todos' && item != 'Não informado'" ng-click="technology.selectRecommendation(item)">{{item}}</a>
+                        <a href="#" ng-show="item != 'Todos' && item != 'Não informado'"
+                           ng-click="technology.selectRecommendation(item)">{{item}}</a>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div class="form-group col-md-12" ng-show="loggedUserInformation.admin">
-                  <textarea ng-model="technology.justification" class="form-control" id="idjust" maxlength="500" placeholder="<Justificativa da Recomendação Ci&T>" ></textarea>
+                  <textarea ng-model="technology.justification" class="form-control" id="idjust" maxlength="500"
+                            placeholder="<Justificativa da Recomendação Ci&T>"></textarea>
                 </div>
                 <!--Long Description-->
-                <div class="form-group col-md-12" ng-class="{'has-error': (addTechnologyForm.description.$invalid && addTechnologyForm.description.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.description.$invalid)}">
+                <div class="form-group col-md-12"
+                     ng-class="{'has-error': (addTechnologyForm.description.$invalid && addTechnologyForm.description.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.description.$invalid)}">
                   <label for="technology-description">Descrição</label>
-                  <textarea class="form-control" id="technology-description" style="min-height: 150px; height: 150px; max-height: 300px;" name="description" ng-model="technology.description" maxlength="500" placeholder="Descrição" required></textarea>
+                  <textarea class="form-control" id="technology-description"
+                            style="min-height: 150px; height: 150px; max-height: 300px;" name="description"
+                            ng-model="technology.description" maxlength="500" placeholder="Descrição"
+                            required></textarea>
                   <div ng-show="addTechnologyForm.$submitted || addTechnologyForm.description.$touched">
                     <span ng-show="addTechnologyForm.description.$error.required" class="help-block">O campo Descrição é obrigatório</span>
                   </div>
                 </div>
                 <!--End Long Description-->
                 <!--Short Description-->
-                <div class="form-group col-md-12" ng-class="{'has-error': (addTechnologyForm.shortDescription.$invalid && addTechnologyForm.shortDescription.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.shortDescription.$invalid)}">
+                <div class="form-group col-md-12"
+                     ng-class="{'has-error': (addTechnologyForm.shortDescription.$invalid && addTechnologyForm.shortDescription.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.shortDescription.$invalid)}">
                   <label for="technology-shortDescription">Descrição curta</label>
-                  <textarea class="form-control" id="technology-shortDescription" name="shortDescription" ng-model="technology.shortDescription" maxlength="140" placeholder="Descrição curta" required></textarea>
+                  <textarea class="form-control" id="technology-shortDescription" name="shortDescription"
+                            ng-model="technology.shortDescription"
+                            maxlength="140" placeholder="Descrição curta" required></textarea>
                   <div ng-show="addTechnologyForm.$submitted || addTechnologyForm.shortDescription.$touched">
                     <span ng-show="addTechnologyForm.shortDescription.$error.required" class="help-block">O campo Descrição Curta é obrigatório</span>
                   </div>
@@ -80,7 +109,8 @@
                 <!--Website-->
                 <div class="form-group col-md-12">
                   <label for="technology-website">Website</label>
-                  <input type="text" class="form-control" id="technology-website" ng-model="technology.webSite" placeholder="http://">
+                  <input type="text" class="form-control" id="technology-website" ng-model="technology.webSite"
+                         placeholder="http://">
                 </div>
                 <!--End Website-->
                 <!--Board Id-->
@@ -96,7 +126,8 @@
                     </label>
                   </div>
                   <button type="submit" class="btn btn-primary" ng-if="technology.id.length">Editar tecnologia</button>
-                  <button type="submit" class="btn btn-primary" ng-if="!technology.id.length">Adicionar tecnologia</button>
+                  <button type="submit" class="btn btn-primary" ng-if="!technology.id.length">Adicionar tecnologia
+                  </button>
                   <a href="#/technologies" class="btn btn-link">Cancelar</a>
                 </div>
               </div>
