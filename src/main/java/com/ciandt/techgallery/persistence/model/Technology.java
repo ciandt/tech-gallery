@@ -12,10 +12,7 @@ import com.ciandt.techgallery.service.enums.TechnologyOrderOptionEnum;
 import com.ciandt.techgallery.service.transformer.TechnologyTransformer;
 
 import java.text.Normalizer;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Technology entity.
@@ -37,6 +34,7 @@ public class Technology extends BaseEntity<String> {
   public static final String WEBSITE = "website";
   public static final String AUTHOR = "author";
   public static final String IMAGE = "image";
+  public static final String PROJECT = "project";
   public static final String RECOMMENDATION = "recommendation";
   public static final String RECOMMENDATION_JUSTIFICATION = "recommendationJustification";
   public static final String POSITIVE_RECOMMENDATIONS_COUNTER = "positiveRecommendationsCounter";
@@ -73,6 +71,9 @@ public class Technology extends BaseEntity<String> {
 
   @Unindex
   private String image;
+
+  @Unindex
+  private Project project;
 
   /** company recommendation info. */
   @Unindex
@@ -182,6 +183,14 @@ public class Technology extends BaseEntity<String> {
 
   public void setImage(String image) {
     this.image = image;
+  }
+
+  public Project getProject() {
+    return project;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
   }
 
   public Boolean getActive() {
@@ -371,6 +380,29 @@ public class Technology extends BaseEntity<String> {
   public static List<Technology> sortTechnologies(List<Technology> techList,
       TechnologyOrderOptionEnum orderBy) {
     orderBy.sort(techList);
+    return techList;
+  }
+
+  public static List<Technology> sortTechnologies(List<Technology> techList, Project project) {
+
+    if(project != null){
+      List<Technology> projTechList = new ArrayList<Technology>();
+      List<Technology> otherTechList = new ArrayList<Technology>();
+      for (Technology tech : techList) {
+        if( project.compareTo(tech.getProject()) == 0 ){
+          projTechList.add(tech);
+        }else{
+          otherTechList.add(tech);
+        }
+      }
+
+      Technology.sortTechnologies(projTechList, TechnologyOrderOptionEnum.APHABETIC);
+      Technology.sortTechnologies(otherTechList, TechnologyOrderOptionEnum.APHABETIC);
+
+      projTechList.addAll(otherTechList);
+
+      return projTechList;
+    }
     return techList;
   }
 

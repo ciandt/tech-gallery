@@ -1,4 +1,4 @@
-package com.ciant.techgallery.transaction.idempotency;
+package com.ciandt.techgallery.transaction.idempotency;
 
 import java.lang.reflect.Method;
 import java.util.logging.Logger;

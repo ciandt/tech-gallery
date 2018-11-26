@@ -1,4 +1,4 @@
-package com.ciant.techgallery.transaction;
+package com.ciandt.techgallery.transaction;
 
 import com.googlecode.objectify.TxnType;
 

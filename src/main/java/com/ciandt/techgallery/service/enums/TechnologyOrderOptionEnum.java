@@ -1,5 +1,6 @@
 package com.ciandt.techgallery.service.enums;
 
+import com.ciandt.techgallery.persistence.model.Project;
 import com.ciandt.techgallery.persistence.model.Technology;
 
 import java.util.Collections;

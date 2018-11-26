@@ -4,7 +4,7 @@
         <servlet-class>com.google.api.server.spi.EndpointsServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.SkillEndpoint,com.ciandt.techgallery.service.endpoint.SocialNetworkCommunicationEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyLinkEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint,com.ciandt.techgallery.service.endpoint.profile.UserProfileEndpoint</param-value>
+            <param-value>com.ciandt.techgallery.service.endpoint.EndorsementEndpoint,com.ciandt.techgallery.service.endpoint.ProjectEndpoint,com.ciandt.techgallery.service.endpoint.RecommendationEndpoint,com.ciandt.techgallery.service.endpoint.SkillEndpoint,com.ciandt.techgallery.service.endpoint.SocialNetworkCommunicationEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyLinkEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationCommentEndpoint,com.ciandt.techgallery.service.endpoint.TechnologyRecommendationEndpoint,com.ciandt.techgallery.service.endpoint.UserEndpoint,com.ciandt.techgallery.service.endpoint.profile.UserProfileEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet>

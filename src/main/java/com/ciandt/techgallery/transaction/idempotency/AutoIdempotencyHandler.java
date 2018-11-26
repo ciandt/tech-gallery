@@ -1,4 +1,4 @@
-package com.ciant.techgallery.transaction.idempotency;
+package com.ciandt.techgallery.transaction.idempotency;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 

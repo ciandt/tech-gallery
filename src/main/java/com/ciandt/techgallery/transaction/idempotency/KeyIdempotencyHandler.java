@@ -1,4 +1,4 @@
-package com.ciant.techgallery.transaction.idempotency;
+package com.ciandt.techgallery.transaction.idempotency;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
