@@ -15,11 +15,28 @@ A skeleton application for Google Cloud Endpoints in Java.
 
 ## Setup Instructions
 
-1. Update the value of `application` in `appengine-web.xml` to the app
+1. First of all, follow the quickstart presented on [App Engine][1].
+	
+	1. Create the Google Cloud Project on your machine;
+	2. Initialize the SDK;
+
+2. Create a GCP Project.
+	1. Create on the Google CLoud Page
+	
+	PS: Save the project ID to use it latter.	
+	
+3. Migrating Endpoints Framework to App Engine using  [Google Cloud Endpoints][3].
+	1. Run the command that are described on the link (and pay attention to 'YOUR-PROJECT_ID')
+
+4. Set up you devlopment environment.
+    1. Run the commands presented on [6].
+    2. Run the commands presented on [7].
+    3. On `pom.xml` put your project ID on hostname.
+    4. Update the value of `application` in `appengine-web.xml` to the app
    ID you have registered in the App Engine admin console and would
    like to use to host your instance of this sample.
 
-1. Optional step: These sub steps are not required but you need this
+5. Optional step: These sub steps are not required but you need this
    if you want to have auth protected methods.
 
     1. Update the values:
@@ -40,11 +57,13 @@ A skeleton application for Google Cloud Endpoints in Java.
        in the [APIs Console][4] to your client of choice (web, Android,
        iOS).
 
-1. Run the application with `mvn appengine:run`, and ensure it's
+6. Run the application with `mvn appengine:run`, and ensure it's
    running by visiting your local server's api explorer's address (by
    default [localhost:8080/_ah/api/explorer][5].)
+   
+   PS: `mvn clean package` will help you build the changes that you made on the project.
 
-1. Deploy your application to Google App Engine with
+7. Deploy your application to Google App Engine with
 
    $ mvn appengine:deploy
 
@@ -54,6 +73,8 @@ A skeleton application for Google Cloud Endpoints in Java.
 [3]: https://developers.google.com/appengine/docs/java/endpoints/
 [4]: https://developers.google.com/appengine/docs/java/tools/maven
 [5]: https://localhost:8080/_ah/api/explorer
+[6]: https://cloud.google.com/endpoints/docs/frameworks/java/set-up-environment
+[7]: https://cloud.google.com/endpoints/docs/frameworks/java/adding-api-management
 
 ### Useful links
 
