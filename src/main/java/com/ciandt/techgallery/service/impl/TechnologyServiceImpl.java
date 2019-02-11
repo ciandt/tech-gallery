@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.xml.bind.DatatypeConverter;
 
+import com.ciandt.techgallery.filters.NamespaceFilter;
 import com.ciandt.techgallery.persistence.model.Project;
+import com.google.appengine.api.NamespaceManager;
 import org.apache.commons.lang.StringUtils;
 
 import com.ciandt.techgallery.persistence.dao.StorageDAO;
@@ -44,6 +47,7 @@ public class TechnologyServiceImpl implements TechnologyService {
      * Attributes --------------------------------------------
      */
     private static TechnologyServiceImpl instance;
+    private static final Logger logger = Logger.getLogger(NamespaceFilter.class.getName());
 
     /**
      * tech gallery user service.
@@ -210,25 +214,35 @@ public class TechnologyServiceImpl implements TechnologyService {
     @Override
     public Response findTechnologiesByFilter(TechnologyFilter techFilter, User user)
             throws InternalServerErrorException, NotFoundException, BadRequestException {
-
+        
         validateUser(user);
         TechGalleryUser techUser = userService.getUserByEmail(user.getEmail());
+        
         if (techFilter.getRecommendationIs() != null
                 && techFilter.getRecommendationIs().equals(RecommendationEnums.UNINFORMED.message())) {
             techFilter.setRecommendationIs("");
         }
+        
         List<Technology> completeList = technologyDAO.findAllActives();
         completeList = filterByLastActivityDate(techFilter, completeList);
-
+        logger.info("passou na primeira função");
+        logger.info(String.valueOf(completeList.size()));
         List<Technology> filteredList = new ArrayList<>();
+        
         if (StringUtils.isBlank(techFilter.getTitleContains()) && techFilter.getRecommendationIs() == null) {
-            filteredList.addAll(completeList);
+            
+            //filteredList.addAll(completeList);
+            logger.info("entrou no if - todos os filtros deselecionados");
+            verifyTechnologyWithNoProject(completeList, filteredList);
         } else {
+            logger.info("entrou no else");
             verifyFilters(techFilter, completeList, filteredList, techUser.getProject());
         }
 
         if (filteredList.isEmpty()) {
+            logger.info("filtered list is empty");
             return new TechnologiesResponse();
+            
         } else {
             if (techFilter.getOrderOptionIs() != null && !techFilter.getOrderOptionIs().isEmpty()) {
                 if(techFilter.getOrderOptionIs().equals("Projeto")){
@@ -242,6 +256,7 @@ public class TechnologyServiceImpl implements TechnologyService {
             }
             TechnologiesResponse response = new TechnologiesResponse();
             response.setTechnologies(filteredList);
+            logger.info("entrou no ultimo else");
             return response;
         }
     }
@@ -284,7 +299,17 @@ public class TechnologyServiceImpl implements TechnologyService {
             }
         }
     }
-
+    
+    
+    private void verifyTechnologyWithNoProject( List<Technology> completeList, List<Technology> filteredList) {
+        for (Technology technology : completeList) {
+            if (technology.getProject() == null) {
+                filteredList.add(technology);
+                continue;
+            }
+        }
+    }
+    
     private void verifyFilters(TechnologyFilter techFilter, List<Technology> completeList,
                                List<Technology> filteredList, Project project) {
         for (Technology technology : completeList) {

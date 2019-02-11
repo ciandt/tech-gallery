@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="app-engine-standard" name="Google App Engine Standard">
+      <configuration />
+    </facet>
+    <facet type="app-engine-flexible" name="Google App Engine Flexible">
+      <configuration>
+        <option name="appYamlPath" value="$MODULE_DIR$/src/main/appengine/app.yaml" />
+        <option name="dockerDirectory" value="$MODULE_DIR$/src/main/docker" />
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/techgallery-1.0-SNAPSHOT/WEB-INF/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -127,5 +138,14 @@
     <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.github.virtuald:curvesapi:1.04" level="project" />
     <orderEntry type="library" name="Maven: net.sf.opencsv:opencsv:2.3" level="project" />
+    <orderEntry type="library" name="com.googlecode.objectify:objectify:5.1.22" level="project" />
+    <orderEntry type="library" name="com.google.appengine:appengine-api-1.0-sdk:Release" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="javax.servlet:servlet-api:2.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="javax.servlet:jstl:1.2" level="project" />
+    <orderEntry type="library" name="com.google.endpoints:endpoints-framework:Release" level="project" />
+    <orderEntry type="library" name="com.googlecode.objectify:objectify:5.1.22" level="project" />
+    <orderEntry type="library" name="com.google.endpoints:endpoints-framework:Release" level="project" />
+    <orderEntry type="library" name="com.google.appengine:appengine-api-1.0-sdk:Release" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="javax.servlet:servlet-api:2.5" level="project" />
   </component>
 </module>

@@ -2,6 +2,8 @@ package com.ciandt.techgallery.persistence.dao;
 
 import com.ciandt.techgallery.persistence.model.Technology;
 
+import java.util.List;
+
 /**
  * TechnologyDAOImpl methods interface.
  *
@@ -33,4 +35,15 @@ public interface TechnologyDAO extends GenericDAO<Technology, String> {
    * @return the technology if is active.
    */
   public Technology findByIdActive(String id);
+  
+  /**
+   * Method to get the technology by id active.
+   *
+   * @author <a href="mailto:loraine@ciandt.com"> Loraine Oliveira Duarte </a>
+   * @since 05/02/2019
+   *
+   *
+   * @return all the tecnology with no project linked.
+   */
+  List<Technology> findAllWithNoProjects();
 }
