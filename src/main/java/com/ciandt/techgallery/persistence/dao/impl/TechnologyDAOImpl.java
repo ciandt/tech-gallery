@@ -6,6 +6,9 @@ import com.ciandt.techgallery.ofy.OfyService;
 import com.ciandt.techgallery.persistence.dao.TechnologyDAO;
 import com.ciandt.techgallery.persistence.model.Technology;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * TechnologyDAOImpl methods implementation.
  *
@@ -55,5 +58,20 @@ public class TechnologyDAOImpl extends GenericDAOImpl<Technology, String> implem
       return technology;
     }
     return null;
+  }
+  
+  @Override
+  public List<Technology> findAllWithNoProjects() {
+    
+    List<Technology> allTechnology = super.findAll();
+    List<Technology> technologyWithNoProject =new ArrayList<>();
+    
+    for (Technology technology : allTechnology) {
+      if (technology != null && technology.getProject() == null) {
+        technologyWithNoProject.add(technology);
+      }
+    }
+    
+    return technologyWithNoProject;
   }
 }
