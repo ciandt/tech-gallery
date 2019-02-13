@@ -180,15 +180,21 @@ public class TechnologyServiceImpl implements TechnologyService {
     @Override
     public Response getTechnologies(User user)
             throws InternalServerErrorException, NotFoundException, BadRequestException {
+        
         List<Technology> techEntities = technologyDAO.findAllActives();
+        List<Technology> filteredList = new ArrayList<>();
+        
         // if list is null, return a not found exception
         if (techEntities == null || techEntities.isEmpty()) {
             return new TechnologiesResponse();
         } else {
+            
             verifyTechnologyFollowedByUser(user, techEntities);
+            verifyTechnologyWithNoProject(techEntities, filteredList);
+            
             TechnologiesResponse response = new TechnologiesResponse();
-            Technology.sortTechnologiesDefault(techEntities);
-            response.setTechnologies(techEntities);
+            Technology.sortTechnologiesDefault(filteredList);
+            response.setTechnologies(filteredList);
             return response;
         }
     }
@@ -225,22 +231,16 @@ public class TechnologyServiceImpl implements TechnologyService {
         
         List<Technology> completeList = technologyDAO.findAllActives();
         completeList = filterByLastActivityDate(techFilter, completeList);
-        logger.info("passou na primeira função");
-        logger.info(String.valueOf(completeList.size()));
         List<Technology> filteredList = new ArrayList<>();
         
         if (StringUtils.isBlank(techFilter.getTitleContains()) && techFilter.getRecommendationIs() == null) {
-            
             //filteredList.addAll(completeList);
-            logger.info("entrou no if - todos os filtros deselecionados");
             verifyTechnologyWithNoProject(completeList, filteredList);
         } else {
-            logger.info("entrou no else");
             verifyFilters(techFilter, completeList, filteredList, techUser.getProject());
         }
 
         if (filteredList.isEmpty()) {
-            logger.info("filtered list is empty");
             return new TechnologiesResponse();
             
         } else {
@@ -256,7 +256,6 @@ public class TechnologyServiceImpl implements TechnologyService {
             }
             TechnologiesResponse response = new TechnologiesResponse();
             response.setTechnologies(filteredList);
-            logger.info("entrou no ultimo else");
             return response;
         }
     }
