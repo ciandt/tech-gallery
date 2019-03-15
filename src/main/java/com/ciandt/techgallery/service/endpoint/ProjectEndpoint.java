@@ -72,7 +72,8 @@ public class ProjectEndpoint {
      * @throws BadRequestException when some request parameter is wrong missing
      */
     @ApiMethod(name = "getAllProjects", path = "projects", httpMethod = "get")
-    public List<Project> getProjects() throws BadRequestException{
+    public List<Project> getProjects(User user) throws throws InternalServerErrorException,
+            BadRequestException, OAuthRequestException, NotFoundException{
         return service.getProjects();
     }
 
