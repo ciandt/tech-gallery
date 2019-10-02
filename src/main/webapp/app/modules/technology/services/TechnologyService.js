@@ -170,25 +170,29 @@ module.exports = function($q, $timeout, $rootScope) {
    * Ratings for user skill on a technology
    * @return {Array} The list of rating objects with value and title
    */
-   this.getRatings = function () {
+  this.getRatings = function () {
     return [
-    {
-      value: 1,
-      title : 'Newbie'
-    },
-    {
-      value: 2,
-      title : 'Iniciante'
-    },{
-      value: 3,
-      title : 'Padawan'
-    },{
-      value: 4,
-      title : 'Knight'
-    },{
-      value: 5,
-      title : 'Jedi'
-    },
+      {
+        value: 1,
+        title: 'Newbie',
+        description: 'Might have some theoretical knowledge, but no real practice. Requires training for this subject.'
+      }, {
+        value: 2,
+        title: 'Capable',
+        description: 'Knows something about the subject, but needs some help on complex issues.'
+      }, {
+        value: 3,
+        title: 'Proficient',
+        description: 'Knows the subject and can solve complex problems without help. Is able to help co-workers.'
+      }, {
+        value: 4,
+        title: 'Master',
+        description: 'Is a reference on the subject and can plan the architecture in different contexts. Has worked with it a lot times and knows almost all of its features. Have had the opportunity to make complex mechanisms using this technology.'
+      }, {
+        value: 5,
+        title: 'Advisor',
+        description: 'Is recognized by many colleges from many projects in different contexts. CI&T recognizes the incredible performance.'
+      }
     ];
   }
 
