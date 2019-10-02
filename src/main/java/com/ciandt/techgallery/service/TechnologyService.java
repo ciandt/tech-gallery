@@ -13,6 +13,7 @@ import com.ciandt.techgallery.service.model.TechnologyFilter;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Services for Technologies.
@@ -102,7 +103,7 @@ public interface TechnologyService {
   /**
    * Service to delete a technology.
    *
-   * @param technology entity id.
+   * @param technologyId entity id.
    * @return Technology or message error.
    * @throws InternalServerErrorException .
    * @throws BadRequestException .
@@ -110,4 +111,6 @@ public interface TechnologyService {
   Technology deleteTechnology(final String technologyId, User user)
       throws InternalServerErrorException, BadRequestException, NotFoundException,
       OAuthRequestException;
+
+  Map<String, String> getCategories();
 }

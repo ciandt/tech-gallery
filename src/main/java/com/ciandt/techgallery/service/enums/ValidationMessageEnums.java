@@ -21,6 +21,8 @@ public enum ValidationMessageEnums {
   TECHNOLOGY_NAME_ALREADY_USED("Technology already exists with this name."),
   TECHNOLOGY_NOT_EXIST("Technology doesn't exist."),
   TECHNOLOGY_NAME_CANNOT_CHANGE("Technology's name cannot be changed."),
+  TECHNOLOGY_CATEGORY_BLANK("Technology's category cannot be null or blank."),
+  TECHNOLOGY_CATEGORY_INVALID("Technology's category must be valid. Valid categories: %s. %s given."),
   // Message for users
   USER_CANNOT_BLANK("User or user's id cannot be null or blank."),
   USER_NOT_EXIST("User doesn't exist."),
