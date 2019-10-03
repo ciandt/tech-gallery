@@ -26,6 +26,7 @@ import com.ciandt.techgallery.transaction.ServiceFactory;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -163,4 +164,14 @@ public class TechnologyEndpoint {
     return service.deleteTechnology(technologyId, user);
   }
 
+  /**
+   * Endpoint for getting Technology categories.
+   *
+   * @return all categories
+   * @throws BadRequestException when some request parameter is wrong missing
+   */
+  @ApiMethod(name = "getTechnologyCategories", path = "technology/categories", httpMethod = "get")
+  public Map<String, String> getTechnologyCategories() throws BadRequestException{
+    return service.getCategories();
+  }
 }
