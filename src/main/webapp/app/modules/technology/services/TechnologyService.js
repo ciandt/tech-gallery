@@ -88,7 +88,7 @@ module.exports = function($q, $timeout, $rootScope) {
         website : context.webSite,
         image : context.image,
         project : context.project,
-        category : context.category.id
+        category : context.category
       };
       return req;
     }else{
@@ -103,7 +103,7 @@ module.exports = function($q, $timeout, $rootScope) {
         website : context.webSite,
         imageContent : context.image,
         project : context.project,
-        category : context.category.id
+        category : context.category
       };
       return req;
     }

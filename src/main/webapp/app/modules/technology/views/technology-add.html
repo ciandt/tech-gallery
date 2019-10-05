@@ -58,7 +58,7 @@
                   <label for="technology-category">Categoria</label>
                   <select class="form-control ng-pristine ng-valid ng-empty ng-touched" ng-model="technology.category"
                           id="technology-category" name="category" required="" ng-init="initCategoriesSelect()"
-                          ng-options="category.name for category in technology.dropDownCategories track by category.id">
+                          ng-options="category.id as category.name for category in technology.dropDownCategories">
                   </select>
                   <div ng-show="addTechnologyForm.$submitted || addTechnologyForm.category.$touched">
                     <span ng-show="addTechnologyForm.category.$error.required" class="help-block">O campo Categoria é obrigatório</span>
