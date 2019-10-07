@@ -14,16 +14,16 @@ module.exports = function () {
         ga('send', 'event', 'Skill', name, 'Newbie');
       }
       if(skill === 2){
-        ga('send', 'event', 'Skill', name, 'Initiate');
+        ga('send', 'event', 'Skill', name, 'Capable');
       }
       if(skill === 3){
-        ga('send', 'event', 'Skill', name, 'Padawan');
+        ga('send', 'event', 'Skill', name, 'Proficient');
       }
       if(skill === 4){
-        ga('send', 'event', 'Skill', name, 'Knight');
+        ga('send', 'event', 'Skill', name, 'Master');
       }
       if(skill === 5){
-        ga('send', 'event', 'Skill', name, 'Jedi');
+        ga('send', 'event', 'Skill', name, 'Advisor');
       }
     }
   }
