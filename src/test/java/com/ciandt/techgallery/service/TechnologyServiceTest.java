@@ -1,6 +1,7 @@
 package com.ciandt.techgallery.service;
 
 import com.ciandt.techgallery.persistence.model.Technology;
+import com.ciandt.techgallery.service.enums.TechnologyCategoryEnum;
 import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
 import com.google.api.server.spi.response.BadRequestException;
 import com.google.appengine.api.users.User;
@@ -27,6 +28,7 @@ public class TechnologyServiceTest {
 		technology.setName("Angular JS");
 		technology.setDescription("Framework javascript");
 		technology.setShortDescription("Framework javascript");
+		technology.setCategory(TechnologyCategoryEnum.FRAMEWORK.getId());
 
 		service.addOrUpdateTechnology(technology, currentUser);
 	}
@@ -37,6 +39,31 @@ public class TechnologyServiceTest {
 		technology.setId(technology.convertNameToId("Angular JS"));
 		technology.setDescription("Framework javascript");
 		technology.setShortDescription("Framework javascript");
+		technology.setCategory(TechnologyCategoryEnum.FRAMEWORK.getId());
+
+		service.addOrUpdateTechnology(technology, currentUser);
+	}
+
+	@Test (expected = BadRequestException.class)
+	public void shouldThrowBadRequestWhenInsertWithNoCategory() throws Exception {
+		Technology technology = new Technology();
+		technology.setId(technology.convertNameToId("Angular JS"));
+		technology.setName("Angular JS");
+		technology.setDescription("Framework javascript");
+		technology.setShortDescription("Framework javascript");
+
+		service.addOrUpdateTechnology(technology, currentUser);
+	}
+
+
+	@Test (expected = BadRequestException.class)
+	public void shouldThrowBadRequestWhenInsertWithInvalidCategory() throws Exception {
+		Technology technology = new Technology();
+		technology.setId(technology.convertNameToId("Angular JS"));
+		technology.setName("Angular JS");
+		technology.setDescription("Framework javascript");
+		technology.setShortDescription("Framework javascript");
+		technology.setCategory("invalid-CATEGORY");
 
 		service.addOrUpdateTechnology(technology, currentUser);
 	}

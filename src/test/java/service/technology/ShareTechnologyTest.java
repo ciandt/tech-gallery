@@ -1,8 +1,13 @@
 package service.technology;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 import com.ciandt.techgallery.persistence.model.Technology;
 import com.ciandt.techgallery.service.TechnologyService;
+import com.ciandt.techgallery.service.enums.TechnologyCategoryEnum;
 import com.ciandt.techgallery.service.impl.TechnologyServiceImpl;
+import com.google.api.server.spi.response.BadRequestException;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
@@ -57,6 +62,7 @@ public class ShareTechnologyTest {
         technology.setName("Angular JS");
         technology.setDescription("Framework javascript");
         technology.setShortDescription("Framework javascript");
+        technology.setCategory(TechnologyCategoryEnum.FRAMEWORK.getId());
 
         Technology founded = service.addOrUpdateTechnology(technology, currentUser);
 
@@ -83,6 +89,7 @@ public class ShareTechnologyTest {
         technology.setName("Angular JS");
         technology.setDescription("Framework javascript");
         technology.setShortDescription("Framework javascript");
+        technology.setCategory(TechnologyCategoryEnum.FRAMEWORK.getId());
 
         // add imagem content - TODO: storage bucket not work using unit test
         // technology.setImageContent("sample base64 imagem data");

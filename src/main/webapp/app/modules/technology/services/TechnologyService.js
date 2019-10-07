@@ -87,7 +87,8 @@ module.exports = function($q, $timeout, $rootScope) {
         description : context.description,
         website : context.webSite,
         image : context.image,
-        project : context.project
+        project : context.project,
+        category : context.category
       };
       return req;
     }else{
@@ -101,7 +102,8 @@ module.exports = function($q, $timeout, $rootScope) {
         description : context.description,
         website : context.webSite,
         imageContent : context.image,
-        project : context.project
+        project : context.project,
+        category : context.category
       };
       return req;
     }
@@ -464,6 +466,19 @@ module.exports = function($q, $timeout, $rootScope) {
     req.technology = idTech;
     gapi.client.rest.addEndorsementPlusOne(req).execute(function(data){
       deferred.resolve(data);
+    });
+    return deferred.promise;
+  };
+
+  /**
+   * Retrieve list of categories
+   * @return {Promise} The gapi response
+   */
+  this.getCategories = function () {
+    var deferred = $q.defer();
+    gapi.client.rest.getTechnologyCategories().execute(function (data) {
+      context.foundItems = data.result;
+      deferred.resolve(context.foundItems);
     });
     return deferred.promise;
   };

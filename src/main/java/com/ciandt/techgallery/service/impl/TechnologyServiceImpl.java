@@ -6,13 +6,16 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.xml.bind.DatatypeConverter;
 
 import com.ciandt.techgallery.filters.NamespaceFilter;
 import com.ciandt.techgallery.persistence.model.Project;
+import com.ciandt.techgallery.service.enums.TechnologyCategoryEnum;
 import com.google.appengine.api.NamespaceManager;
 import org.apache.commons.lang.StringUtils;
 
@@ -109,6 +112,7 @@ public class TechnologyServiceImpl implements TechnologyService {
         foundTechnology.setLastActivityUser(getSafeEmail(user));
         foundTechnology.setIdBoard(technology.getIdBoard());
         foundTechnology.setProject(technology.getProject());
+        foundTechnology.setCategory(technology.getCategory());
 
         technologyDAO.update(foundTechnology);
 
@@ -160,6 +164,19 @@ public class TechnologyServiceImpl implements TechnologyService {
             throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_SHORT_DESCRIPTION_BLANK.message());
         } else if (StringUtils.isBlank(technology.getDescription())) {
             throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_DESCRIPTION_BLANK.message());
+        } else if (StringUtils.isBlank(technology.getCategory())) {
+            throw new BadRequestException(ValidationMessageEnums.TECHNOLOGY_CATEGORY_BLANK.message());
+        }
+
+        Map<String, String> categories = getCategories();
+        if(!categories.containsKey(technology.getCategory())) {
+            throw new BadRequestException(
+                String.format(
+                    ValidationMessageEnums.TECHNOLOGY_CATEGORY_INVALID.message(),
+                    String.join(", ", categories.keySet()),
+                    technology.getCategory()
+                )
+            );
         }
 
         Technology dbTechnology = technologyDAO.findByName(technology.getName());
@@ -479,5 +496,14 @@ public class TechnologyServiceImpl implements TechnologyService {
         technology.setLastActivityUser(user.getEmail());
         technologyDAO.update(technology);
         return technology;
+    }
+
+    @Override
+    public Map<String, String> getCategories() {
+        Map<String, String> categories = new HashMap<>();
+        for (TechnologyCategoryEnum category : TechnologyCategoryEnum.values()) {
+            categories.put(category.getId(), category.getTitle());
+        }
+        return categories;
     }
 }

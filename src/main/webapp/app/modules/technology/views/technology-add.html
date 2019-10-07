@@ -51,11 +51,26 @@
                   </div>
                 </div>
                 <!--End Technology Name-->
+
+                <!--Category Selector-->
+                <div class="form-group col-md-3"
+                      ng-class="{'has-error': (addTechnologyForm.category.$invalid && addTechnologyForm.category.$touched) || (addTechnologyForm.$submitted && addTechnologyForm.category.$invalid)}">
+                  <label for="technology-category">Categoria</label>
+                  <select class="form-control ng-pristine ng-valid ng-empty ng-touched" ng-model="technology.category"
+                          id="technology-category" name="category" required="" ng-init="initCategoriesSelect()"
+                          ng-options="category.id as category.name for category in technology.dropDownCategories">
+                  </select>
+                  <div ng-show="addTechnologyForm.$submitted || addTechnologyForm.category.$touched">
+                    <span ng-show="addTechnologyForm.category.$error.required" class="help-block">O campo Categoria é obrigatório</span>
+                  </div>
+                </div>
+                <!--End Category Selector-->
+
                 <!--Projects Selector-->
-                <div class="form-group col-md-7">
+                <div class="form-group col-md-4">
                   <label for="technology-project">Exibir apenas para projeto específico</label>
                   <select class="form-control ng-pristine ng-valid ng-empty ng-touched" ng-model="technology.project"
-                          id="technology-project" ng-init="initSelect()"
+                          id="technology-project" ng-init="initProjectsSelect()"
                           ng-options="project.name for project in technology.dropDownProjects track by project.id">
                   </select>
                   <!--Project Modal-->

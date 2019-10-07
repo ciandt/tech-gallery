@@ -37,7 +37,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, ProjectSer
     context.project = {id: 0, name: 'Não'};
   }
 
-  $scope.initSelect = function () {
+  $scope.initProjectsSelect = function () {
     ProjectService.getProjects().then(function (data) {
       if (!data) {
         data = [];
@@ -47,13 +47,23 @@ module.exports = function ($rootScope, AppService, TechnologyService, ProjectSer
     });
   };
 
+  $scope.initCategoriesSelect = function () {
+    TechnologyService.getCategories().then(function (data) {
+      context.dropDownCategories = [];
+      for (var key in data) {
+        context.dropDownCategories.push({id: key, name: data[key]});
+      }
+    });
+  };
+
+
   this.addOrUpdateTechnology = function (form) {
     if (context.project.id === 0) {
       context.project = undefined;
     }
 
     var isEdit = (context.id !== undefined);
-    if (context.name != null && context.description != null && context.shortDescription != null) {
+    if (context.name != null && context.description != null && context.shortDescription != null && context.category != null) {
       TechnologyService.addOrUpdate(context).then(function (data) {
         if (data.hasOwnProperty('error')) {
           AppService.setAlert(data.error.message, 'error');
@@ -84,6 +94,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, ProjectSer
     context.description = '';
     context.shortDescription = '';
     context.webSite = '';
+    context.category = '';
     document.getElementById('technology-name').value = null;
     document.getElementById('technology-project').value = null;
     document.getElementById('list').innerHTML = ['<img src="/assets/images/no_image.png" title="Insira uma imagem" />'].join('');
@@ -98,6 +109,7 @@ module.exports = function ($rootScope, AppService, TechnologyService, ProjectSer
     context.webSite = technology.website;
     context.image = technology.image;
     context.project = (technology.project ? technology.project : {id: 0, name: 'Não'});
+    context.category = technology.category;
     if (context.image) {
       document.getElementById('list').innerHTML = ['<img src="', context.image, '" title="', context.name, '" />'].join('');
     }

@@ -44,6 +44,7 @@ public class Technology extends BaseEntity<String> {
   public static final String LAST_ACTIVITY = "lastActivity";
   public static final String UPDATE_USER = "updateUser";
   public static final String ACTIVE = "active";
+  public static final String CATEGORY = "category";
 
   /*
    * Attributes --------------------------------------------
@@ -111,6 +112,9 @@ public class Technology extends BaseEntity<String> {
 
   @Ignore
   private String imageContent;
+
+  @Index
+  private String category;
 
   /*
    * Getter's and Setter's --------------------------------------------
@@ -287,6 +291,14 @@ public class Technology extends BaseEntity<String> {
 
   public void setIdBoard(String idBoard) {
     this.idBoard = idBoard;
+  }
+
+  public String getCategory() {
+    return category;
+  }
+
+  public void setCategory(String category) {
+    this.category = category;
   }
 
   /*

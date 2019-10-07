@@ -48,6 +48,8 @@ public class TechnologyTO implements Response {
   private String idBoard;
   /** technology smart canvas board id */
   private String boardUrlPrefix;
+  /** technology category */
+  private String category;
 
   private Date lastActivity;
 
@@ -203,5 +205,13 @@ public class TechnologyTO implements Response {
 
   public void setBoardUrlPrefix(String boardUrlPrefix) {
     this.boardUrlPrefix = boardUrlPrefix;
+  }
+
+  public String getCategory() {
+    return category;
+  }
+
+  public void setCategory(String category) {
+    this.category = category;
   }
 }
