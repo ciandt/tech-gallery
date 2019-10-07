@@ -35,12 +35,12 @@
               <div class="card-section">
                 <form action="" class="form-inline">
                   <div class="radio technology-rating" ng-repeat="rating in technology.ratings" ng-class="{'active' : rating.value == technology.rating}">
-                    <label for="rating-{{ rating.value }}">
+                    <label for="rating-{{ rating.value }}" tooltip-placement="bottom" tooltip-append-to-body="true" uib-tooltip="{{ rating.description }}">
                       <img ng-src="assets/images/{{ rating.title | lowercase }}.png" class="technology-rating-image" alt="{{ rating.title }}">
                       <span class="technology-rating-text">
                         <span class="glyphicon glyphicon-star-empty" ng-repeat="i in [] | range:rating.value"></span>
                       </span>
-                      <span class="technology-rating-text" title="{{ rating.description }}">{{ rating.title }}</span>
+                      <span class="technology-rating-text">{{ rating.title }}</span>
                       <input type="radio" ng-model="technology.rating" ng-click="technology.setSkill(technology.id, rating.value)" name="rating" class="technology-rating-input" id="rating-{{ rating.value }}" value="{{ rating.value }}" ng-checked="rating.value == technology.rating">
                     </label>
                   </div>
