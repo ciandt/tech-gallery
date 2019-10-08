@@ -8,6 +8,6 @@ public interface EmailService {
 
   void push(EmailConfig email);
 
-  void execute(String subject, String body, String reason, String to);
+  void execute(Long emailNotificationId);
 
 }

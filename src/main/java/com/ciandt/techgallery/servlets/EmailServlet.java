@@ -14,7 +14,6 @@ public class EmailServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) {
-    emailService.execute(request.getParameter("subject"), request.getParameter("body"),
-        request.getParameter("reason"), request.getParameter("to"));
+    emailService.execute(Long.parseLong(request.getParameter("emailNotificationId")));
   }
 }
