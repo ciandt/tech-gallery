@@ -3,8 +3,6 @@ package com.ciandt.techgallery.service.impl;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
 
-import com.googlecode.objectify.Key;
-
 import com.ciandt.techgallery.Constants;
 import com.ciandt.techgallery.persistence.dao.EmailNotificationDAO;
 import com.ciandt.techgallery.persistence.dao.impl.EmailNotificationDAOImpl;
@@ -69,52 +67,63 @@ public class EmailServiceImpl implements EmailService {
    * Push email to queue.
    */
   public void push(EmailConfig email) {
+    Long emailNotificationId = addEmailNotification(email);
+
     QueueFactory.getQueue(queueName).add(
-        TaskOptions.Builder.withUrl(queueUrl).param("subject", email.getSubject())
-            .param("body", email.getBody()).param("reason", email.getReason())
-            .param("to", email.getTo()[0]));
+        TaskOptions.Builder
+            .withUrl(queueUrl)
+            .param("emailNotificationId", emailNotificationId.toString())
+    );
   }
 
-  public void execute(String subject, String body, String reason, String to) {
-    sendEmail(new EmailConfig(subject, body, reason, to));
+  public void execute(Long emailNotificationId) {
+    final EmailNotification emailNotification = emailNotificationDao.findById(emailNotificationId);
+    sendEmail(emailNotification);
   }
 
-  private void sendEmail(EmailConfig email) {
+  private void sendEmail(EmailNotification emailNotification) {
     try {
-      Message msg = prepareMessage(email);
+      Message msg = prepareMessage(emailNotification);
       Transport.send(msg);
-      registerEmailNotification(email, true);
+      updateEmailNotification(emailNotification, true);
 
     } catch (Throwable err) {
-      Long notificationId = registerEmailNotification(email, false);
-      log.log(Level.SEVERE, "Error when attempting to send email " + notificationId, err);
+      updateEmailNotification(emailNotification, false);
+      log.log(Level.SEVERE, "Error when attempting to send email " + emailNotification.getId(), err);
     }
   }
 
-  private Message prepareMessage(EmailConfig email) throws UnsupportedEncodingException,
+  private Message prepareMessage(EmailNotification emailNotification) throws UnsupportedEncodingException,
       MessagingException {
 
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props, null);
     MimeMessage msg = new MimeMessage(session);
     msg.setFrom(getFrom());
-    for (String to : email.getTo()) {
+    for (String to : emailNotification.getRecipients()) {
       msg.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
     }
-    msg.setContent(email.getBody(), "text/html");
-    msg.setSubject(email.getSubject(), "UTF-8");
+    msg.setContent(emailNotification.getBody(), "text/html");
+    msg.setSubject(emailNotification.getSubject(), "UTF-8");
     return msg;
   }
 
-  private long registerEmailNotification(EmailConfig email, boolean success) {
+  private long addEmailNotification(EmailConfig email) {
     EmailNotification emailNotification = new EmailNotification();
     emailNotification.setRecipients(Arrays.asList(email.getTo()));
+    emailNotification.setSubject(email.getSubject());
+    emailNotification.setBody(email.getBody());
     emailNotification.setReason(email.getReason());
+    emailNotification.setTimestamp(new Date());
+
+    return emailNotificationDao.add(emailNotification).getId();
+  }
+
+  private void updateEmailNotification(EmailNotification emailNotification, boolean success) {
     emailNotification.setTimestampSend(new Date());
     emailNotification.setEmailStatus(success ? "SUCCESS" : "FAILURE");
 
-    Key<EmailNotification> key = emailNotificationDao.add(emailNotification);
-    return key.getId();
+    emailNotificationDao.update(emailNotification);
   }
 
   private InternetAddress getFrom() throws UnsupportedEncodingException {

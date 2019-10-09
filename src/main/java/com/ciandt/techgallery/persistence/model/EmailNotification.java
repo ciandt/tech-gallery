@@ -2,6 +2,7 @@ package com.ciandt.techgallery.persistence.model;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
 
 import java.util.Date;
@@ -12,16 +13,28 @@ public class EmailNotification extends BaseEntity<Long> {
 
   @Id
   private Long id;
+
   @Unindex
   private List<String> recipients;
+
   @Unindex
-  private String rule;
+  private String subject;
+
+  @Unindex
+  private String body;
+
   @Unindex
   private String reason;
+
   @Unindex
   private String emailStatus;
-  @Unindex
+
+  @Index
+  private Date timestamp;
+
+  @Index
   private Date timestampSend;
+
 
   public Long getId() {
     return id;
@@ -39,12 +52,20 @@ public class EmailNotification extends BaseEntity<Long> {
     this.recipients = recipients;
   }
 
-  public String getRule() {
-    return rule;
+  public String getSubject() {
+    return subject;
   }
 
-  public void setRule(String rule) {
-    this.rule = rule;
+  public void setSubject(String subject) {
+    this.subject = subject;
+  }
+
+  public String getBody() {
+    return body;
+  }
+
+  public void setBody(String body) {
+    this.body = body;
   }
 
   public String getReason() {
@@ -61,6 +82,14 @@ public class EmailNotification extends BaseEntity<Long> {
 
   public void setEmailStatus(String emailStatus) {
     this.emailStatus = emailStatus;
+  }
+
+  public Date getTimestamp() {
+    return timestamp;
+  }
+
+  public void setTimestamp(Date timestamp) {
+    this.timestamp = timestamp;
   }
 
   public Date getTimestampSend() {
